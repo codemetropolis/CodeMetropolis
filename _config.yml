@@ -5,6 +5,7 @@ locale: en_US
 description: See your software as never before.
 logo: site-logo.png
 search: true
+baseurl: http://geryxyz.github.io/CodeMetropolis
 
 # Jekyll configuration
 
