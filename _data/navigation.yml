@@ -1,0 +1,16 @@
+# Site navigation links
+
+- title: About
+  url: /about/
+
+- title: Research
+  url: /research/
+
+- title: Wall of fame
+  url: /wall-of-fame/
+
+- title: Publications
+  url: /publications/
+
+- title: Search
+  url: /search/
