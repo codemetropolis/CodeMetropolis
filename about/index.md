@@ -64,3 +64,11 @@ You can find the generated world in output directory. You have to copy this fold
 After that you have to start Minecraft, choose SinglePlayer then choose the generated world and play selected world.
 
 **Contribution guide**
+This section of the documentation contains a guide for users who want to contribute code or documentation to the CodeMetropolis project. If you like contribute in the project, please send your patches to review.
+You have to follow the next steps:  
+
+* Checkout the branch from the repository.
+* Start Eclipse and set the workspace the *toolchain-maven* directory.
+* Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.  
+
+After that you can run the three tool in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
