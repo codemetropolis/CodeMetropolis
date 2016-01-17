@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="buildables">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="buildable" type="buildableType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute type="xs:string" name="from" use="required"/>
+			<xs:attribute type="xs:string" name="to" use="required"/>
+			<xs:attribute type="xs:string" name="version" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="buildableType">
+		<xs:sequence>
+			<xs:element name="position" type="coordsType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="size" type="coordsType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="attributes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="attribute" type="attributeType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="children">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="buildable" type="buildableType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="coordsType">
+		<xs:attribute type="xs:integer" name="x" use="required"/>
+		<xs:attribute type="xs:integer" name="y" use="required"/>
+		<xs:attribute type="xs:integer" name="z" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="attributeType">
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attribute name="value" use="required"/>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,171 @@
+0,minecraft:air,Air
+1,minecraft:stone,Stone
+2,minecraft:grass,Grass Block
+3,minecraft:dirt,Dirt D B
+4,minecraft:cobblestone,Cobblestone
+5,minecraft:planks,Wood Planks D B
+6,minecraft:sapling,Saplings D B
+7,minecraft:bedrock,Bedrock
+8,minecraft:flowing_water,Water D
+9,minecraft:water,Stationary water D
+10,minecraft:flowing_lava,Lava D
+11,minecraft:lava,Stationary lava D
+12,minecraft:sand,Sand D B
+13,minecraft:gravel,Gravel
+14,minecraft:gold_ore,Gold Ore
+15,minecraft:iron_ore,Iron Ore
+16,minecraft:coal_ore,Coal Ore
+17,minecraft:log,Wood D B
+18,minecraft:leaves,Leaves D B
+19,minecraft:sponge,Sponge
+20,minecraft:glass,Glass
+21,minecraft:lapis_ore,Lapis Lazuli Ore
+22,minecraft:lapis_block,Lapis Lazuli Block
+23,minecraft:dispenser,Dispenser D T
+24,minecraft:sandstone,Sandstone D B
+25,minecraft:noteblock,Note Block T
+26,minecraft:bed,Bed D I
+27,minecraft:golden_rail,Powered Rail D
+28,minecraft:detector_rail,Detector Rail D
+29,minecraft:sticky_piston,Sticky Piston D
+30,minecraft:web,Cobweb
+31,minecraft:tallgrass,Grass D B
+32,minecraft:deadbush,Dead Bush
+33,minecraft:piston,Piston D
+34,minecraft:piston_head,Piston Extension D
+35,minecraft:wool,Wool D B
+36,minecraft:piston_extension,Block moved by Piston T
+37,minecraft:yellow_flower,Dandelion
+38,minecraft:red_flower,Poppy D B
+39,minecraft:brown_mushroom,Brown Mushroom
+40,minecraft:red_mushroom,Red Mushroom
+41,minecraft:gold_block,Block of Gold
+42,minecraft:iron_block,Block of Iron
+43,minecraft:double_stone_slab,Double Stone Slab D B
+44,minecraft:stone_slab,Stone Slab D B
+45,minecraft:brick_block,Bricks
+46,minecraft:tnt,TNT
+47,minecraft:bookshelf,Bookshelf
+48,minecraft:mossy_cobblestone,Moss Stone
+49,minecraft:obsidian,Obsidian
+50,minecraft:torch,Torch D
+51,minecraft:fire,Fire D
+52,minecraft:mob_spawner,Monster Spawner T
+53,minecraft:oak_stairs,Oak Wood Stairs D
+54,minecraft:chest,Chest D T
+55,minecraft:redstone_wire,Redstone Wire D I
+56,minecraft:diamond_ore,Diamond Ore
+57,minecraft:diamond_block,Block of Diamond
+58,minecraft:crafting_table,Crafting Table
+59,minecraft:wheat,Wheat D
+60,minecraft:farmland,Farmland D
+61,minecraft:furnace,Furnace D T
+62,minecraft:lit_furnace,Burning Furnace D T
+63,minecraft:standing_sign,Sign Post D I T
+64,minecraft:wooden_door,Wooden Door D I
+65,minecraft:ladder,Ladders D
+66,minecraft:rail,Rail D
+67,minecraft:stone_stairs,Cobblestone Stairs D
+68,minecraft:wall_sign,Wall Sign D T
+69,minecraft:lever,Lever D
+70,minecraft:stone_pressure_plate,Stone Pressure Plate D
+71,minecraft:iron_door,Iron Door D I
+72,minecraft:wooden_pressure_plate,Wooden Pressure Plate D
+73,minecraft:redstone_ore,Redstone Ore
+74,minecraft:lit_redstone_ore,Glowing Redstone Ore
+75,minecraft:unlit_redstone_torch,Redstone Torch (inactive) D
+76,minecraft:redstone_torch,Redstone Torch (active) D
+77,minecraft:stone_button,Stone Button D
+78,minecraft:snow_layer,Snow D
+79,minecraft:ice,Ice
+80,minecraft:snow,Snow
+81,minecraft:cactus,Cactus D
+82,minecraft:clay,Clay
+83,minecraft:reeds,Sugar Cane D I
+84,minecraft:jukebox,Jukebox D T
+85,minecraft:fence,Fence
+86,minecraft:pumpkin,Pumpkin D
+87,minecraft:netherrack,Netherrack
+88,minecraft:soul_sand,Soul Sand
+89,minecraft:glowstone,Glowstone
+90,minecraft:portal,Nether Portal
+91,minecraft:lit_pumpkin,Jack 'o' Lantern D
+92,minecraft:cake,Cake Block D I
+93,minecraft:unpowered_repeater,Redstone Repeater (inactive) D I
+94,minecraft:powered_repeater,Redstone Repeater (active) D I
+95,minecraft:stained_glass,Stained Glass
+96,minecraft:trapdoor,Trapdoor D
+97,minecraft:monster_egg,Monster Egg D B
+98,minecraft:stonebrick,Stone Bricks D B
+99,minecraft:brown_mushroom_block,Huge Brown Mushroom D
+100,minecraft:red_mushroom_block,Huge Red Mushroom D
+101,minecraft:iron_bars,Iron Bars
+102,minecraft:glass_pane,Glass Pane
+103,minecraft:melon_block,Melon
+104,minecraft:pumpkin_stem,Pumpkin Stem D
+105,minecraft:melon_stem,Melon Stem D
+106,minecraft:vine,Vines D
+107,minecraft:fence_gate,Fence Gate D
+108,minecraft:brick_stairs,Brick Stairs D
+109,minecraft:stone_brick_stairs,Stone Brick Stairs D
+110,minecraft:mycelium,Mycelium
+111,minecraft:waterlily,Lily Pad
+112,minecraft:nether_brick,Nether Brick
+113,minecraft:nether_brick_fence,Nether Brick Fence
+114,minecraft:nether_brick_stairs,Nether Brick Stairs D
+115,minecraft:nether_wart,Nether Wart D I
+116,minecraft:enchanting_table,Enchantment Table T
+117,minecraft:brewing_stand,Brewing Stand D T I
+118,minecraft:cauldron,Cauldron D I
+119,minecraft:end_portal,End Portal T
+120,minecraft:end_portal_frame,End Portal Block D
+121,minecraft:end_stone,End Stone
+122,minecraft:dragon_egg,Dragon Egg
+123,minecraft:redstone_lamp,Redstone Lamp (inactive)
+124,minecraft:lit_redstone_lamp,Redstone Lamp (active)
+125,minecraft:double_wooden_slab,Wooden Double Slab D B
+126,minecraft:wooden_slab,Wooden Slab D B
+127,minecraft:cocoa,Cocoa D I
+128,minecraft:sandstone_stairs,Sandstone Stairs D
+129,minecraft:emerald_ore,Emerald Ore
+130,minecraft:ender_chest,Ender Chest D T
+131,minecraft:tripwire_hook,Tripwire Hook D
+132,minecraft:tripwire,Tripwire D I
+133,minecraft:emerald_block,Block of Emerald
+134,minecraft:spruce_stairs,Spruce Wood Stairs D
+135,minecraft:birch_stairs,Birch Wood Stairs D
+136,minecraft:jungle_stairs,Jungle Wood Stairs D
+137,minecraft:command_block,Command Block T
+138,minecraft:beacon,Beacon T
+139,minecraft:cobblestone_wall,Cobblestone Wall D B
+140,minecraft:flower_pot,Flower Pot D I
+141,minecraft:carrots,Carrots D I
+142,minecraft:potatoes,Potatoes D I
+143,minecraft:wooden_button,Wooden Button D
+144,minecraft:skull,Mob Head D T I
+145,minecraft:anvil,Anvil D B
+146,minecraft:trapped_chest,Trapped Chest D T
+147,minecraft:light_weighted_pressure_plate,Weighted Pressure Plate (Light) D
+148,minecraft:heavy_weighted_pressure_plate,Weighted Pressure Plate (Heavy) D
+149,minecraft:unpowered_comparator,Redstone Comparator (inactive & active) D I
+150,,(unused)
+151,minecraft:daylight_detector,Daylight Sensor T
+152,minecraft:redstone_block,Block of Redstone
+153,minecraft:quartz_ore,Nether Quartz Ore
+154,minecraft:hopper,Hopper D T
+155,minecraft:quartz_block,Block of Quartz D B
+156,minecraft:quartz_stairs,Quartz Stairs D
+157,minecraft:activator_rail,Activator Rail D
+158,minecraft:dropper,Dropper D T
+159,minecraft:stained_hardened_clay,Stained Clay D B
+160,minecraft:stained_glass_pane,Stained Glass Pane D
+161,minecraft:leaves2,Leaves (Acacia/Dark Oak) D B
+162,minecraft:log2,Wood (Acacia/Dark Oak) D B
+163,minecraft:acacia_stairs,Acacia Wood Stairs D
+164,minecraft:dark_oak_stairs,Dark Oak Wood Stairs D
+170,minecraft:hay_block,Hay Block D
+171,minecraft:carpet,Carpet D B
+172,minecraft:hardened_clay,Hardened Clay
+173,minecraft:coal_block,Block of Coal
+174,minecraft:packed_ice,Packed Ice
+175,minecraft:double_plant,Large Flowers D B
