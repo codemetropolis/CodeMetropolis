@@ -123,7 +123,7 @@ public class MappingController {
 							b.setSizeZ((int)(MIN_SIZE + scale * (int)convertedValue));
 							break;
 						default:
-							b.addAttribute(l.getTargetTo(), (String)convertedValue);
+							b.addAttribute(l.getTargetTo(), String.valueOf(convertedValue));
 					}	
 				}
 			}
