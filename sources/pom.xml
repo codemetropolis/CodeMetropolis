@@ -13,7 +13,7 @@
   <repositories>
   	<repository>
        <id>local-repository</id>
-       <url>file://${basedir}/../dependencies</url>
+       <url>file://${basedir}/../../dependencies</url>
     </repository>
   </repositories>
   <dependencies>
