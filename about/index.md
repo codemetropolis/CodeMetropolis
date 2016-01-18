@@ -86,6 +86,7 @@ After that you have to start Minecraft, choose SinglePlayer, then choose the gen
 This section of the documentation contains a guide for users who would like to contribute code or documentation to the CodeMetropolis project. If you would like to contribute in the project, please send your patches to review.
 You have to follow the next steps:  
 
+1. Install [Git LFS 1.1.0](https://git-lfs.github.com/) (or newer) and [Git 2.7.0](https://git-scm.com/) (or newer).
 1. Checkout the `develop` branch from [this](https://github.com/geryxyz/CodeMetropolis) repository.
 1. Start Eclipse and set the workspace the *root* directory.
 1. Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.
