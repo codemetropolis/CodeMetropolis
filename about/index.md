@@ -32,7 +32,7 @@ After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\
 
 Then you have to run Mapping Tool following command:  
 
-   *java -jar cmplacing.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
+   *java -jar cmmapping.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
   
    Options:  
    
