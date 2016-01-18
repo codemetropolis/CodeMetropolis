@@ -12,8 +12,25 @@ It is a set of command line programs, connected into a single toolchain and a co
 CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generate an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generate an output XML file for the Rendering Tool. These XML files are using the same format defined in an XML Schema.  
 
 **Installation guide**  
-In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install Java Runtime Environment 8 to run the command line tools. Mapping Tool use the graph file to get the source code metrics. You have to install Minecraft client 1.8 to display the Minecraft world.  
-First you have to run Mapping Tool following command:  
+In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install Java Runtime Environment 8 to run the command line tools. Mapping Tool use the graph file to get the source code metrics. You have to install Minecraft client 1.8 to display the Minecraft world. 
+First you have to run [SourceMeter][sm] to get the graph file, which contain the source code metrics. You can use it with the following command:
+
+   *SourceMeterJava.exe -projectName=&lt;inputProjectName> -projectBaseDir=&lt;inputProjectDir> -resultsDir= &lt;ResultsDir>*
+
+   Options:
+
+   * -projectName=
+      The name of the project. It will be the name of the directory in the results directory.
+
+   * -projectBaseDir=
+      The path of the directory of the source code.
+
+   * -resultsDir=
+      The path of the directory where the results will be stored.
+
+After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in documentation of [SourceMeter][sm].
+
+Then you have to run Mapping Tool following command:  
 
    *java -jar cmplacing.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
   
@@ -28,7 +45,9 @@ First you have to run Mapping Tool following command:
    * -m &lt;path>, --mapping &lt;path>  
   Path of the input mapping file. Required.
 
-Output xml now should be generated in output directory
+The tool is using the mapping file to link source code elements and metrics to world objects. For example, link the LOC metric to the height of the building.It is a XML file. The *source* tag contain the metric that will be link to the object, the *name* parameter is the element of the source code and the *from* parameter is the metric. The *target* parameter is the world object, the *name* parameter is the name of the element in the city and the *to* parameter is property of the element. If the value of the metric doesn't fit the world element, you have to use conversion. 
+
+Output xml now should be generated in output directory.
 
 Second you have to run Placing Tool with the following command:  
 
@@ -72,3 +91,6 @@ You have to follow the next steps:
 * Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.  
 
 After that you can run the three tool in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
+
+[//]: # 
+[sm]: <https://www.sourcemeter.com/>
