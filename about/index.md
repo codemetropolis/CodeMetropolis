@@ -86,11 +86,13 @@ After that you have to start Minecraft, choose SinglePlayer then choose the gene
 This section of the documentation contains a guide for users who want to contribute code or documentation to the CodeMetropolis project. If you like contribute in the project, please send your patches to review.
 You have to follow the next steps:  
 
-* Checkout the branch from the repository.
-* Start Eclipse and set the workspace the *toolchain-maven* directory.
-* Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.  
+1. Checkout the `develop` branch from [this](https://github.com/geryxyz/CodeMetropolis) repository.
+1. Start Eclipse and set the workspace the *root* directory.
+1. Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.
+1. Make your changes, improvement or fixes.
+1. Create a patch.
+1. Post the patch as attachment of a [new issue](https://github.com/geryxyz/CodeMetropolis/issues/new) with a description of your contribution.
 
 After that you can run the three tool in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
 
-[//]: # 
 [sm]: <https://www.sourcemeter.com/>
