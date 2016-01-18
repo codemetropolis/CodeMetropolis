@@ -8,12 +8,12 @@ image:
 ---
 
 CodeMetropolis is a software visualisation tool. It can create a Minecraft world using the values of source code metrics and the structure of the source code. Thus explore the inner structure of the program or compare several source code elements is easier. CodeMetropolis uses city metaphor for the visualisation of code elements like classes, functions or attributes. The city metaphor is one of the best known metaphors in software visualization. In this metaphor the source code components are represented as a part of a generated city, for example classes represented as buildings or methods represented as floor.  
-It is a set of command line programs, connected into a single toolchain and a couple of supporting plug-ins and scripsts. The first tool is the Mapping Tool. It processes the input file, assigns metrics to objects of the metropolis and generates an ouput XML that is ready to be used by the Placing Tool. The second tool is Placing Tool. This creates the city layout and generates an output XML that is ready to be used by the Render Tool. The last tool is Render Tool. This proccesses the ouput XML file of Placing Tool and creates a virtual city in a Minecrafr world.  
+It is a set of command line programs, connected into a single toolchain and a couple of supporting plug-ins and scripsts. The first tool is the Mapping Tool. It processes the input file, assigns metrics to objects of the metropolis and generates an ouput XML that is ready to be used by the Placing Tool. The second tool is Placing Tool. This tool creates the city layout and generates an output XML that is ready to be used by the Render Tool. The last tool is Render Tool. This tool proccesses the ouput XML file of Placing Tool and creates a virtual city in a Minecrafr world.  
 CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generates an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generates an output XML file for the Rendering Tool. These XML files use the same format defined in an XML Schema.  
 
 **Installation guide**  
-In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install Java Runtime Environment 8 to run the command line tools. Mapping Tool use the graph file to get the source code metrics. You have to install Minecraft client 1.8 to display the Minecraft world. 
-First you have to run [SourceMeter][sm] to get the graph file, which contain the source code metrics. You can use it with the following command:
+In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install Java Runtime Environment 8 to run the command line tools. Mapping Tool uses the graph file to get the source code metrics. You have to install Minecraft client 1.8 to display the Minecraft world. 
+First you have to run [SourceMeter][sm] to get the graph file, which contains the source code metrics. You can use it with the following command:
 
    *SourceMeterJava.exe -projectName=&lt;inputProjectName> -projectBaseDir=&lt;inputProjectDir> -resultsDir= &lt;ResultsDir>*
 
@@ -28,9 +28,9 @@ First you have to run [SourceMeter][sm] to get the graph file, which contain the
    * -resultsDir=
       The path of the directory where the results will be stored.
 
-After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in documentation of [SourceMeter][sm].
+After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in the  documentation of [SourceMeter][sm].
 
-Then you have to run Mapping Tool following command:  
+Then you have to run Mapping Tool with the following command:  
 
    *java -jar cmmapping.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
   
@@ -40,59 +40,59 @@ Then you have to run Mapping Tool following command:
      Path of the input graph file. Required.  
   
    * -o &lt;path>, --output &lt;path>  
-  Output will be generated with the path given. Default: "mappingToPlacing.xml"
+     Output will be generated with the given path. Default: "mappingToPlacing.xml". 
   
    * -m &lt;path>, --mapping &lt;path>  
-  Path of the input mapping file. Required.
+     Path of the input mapping file. Required.
 
-The tool is using the mapping file to link source code elements and metrics to world objects. For example, link the LOC metric to the height of the building.It is a XML file. The *source* tag contain the metric that will be link to the object, the *name* parameter is the element of the source code and the *from* parameter is the metric. The *target* parameter is the world object, the *name* parameter is the name of the element in the city and the *to* parameter is property of the element. If the value of the metric doesn't fit the world element, you have to use conversion. 
+The tool is using the mapping file to link source code elements and metrics to world objects. For example, link of the LOC metric is related to the height of the building. It is a XML file. The *source* tag contains the metric that will be a link to the object, the *name* parameter is the element of the source code and the *from* parameter is the metric. The *target* parameter is the world object, the *name* parameter is the name of the element in the city and the *to* parameter is the property of the element. If the value of the metric doesn't fit the world element, you have to use conversion. 
 
-Output xml now should be generated in output directory.
+Output XML now should be generated in output directory.
 
 Second you have to run Placing Tool with the following command:  
 
    *java -jar cmplacing.jar -i &lt;inputFile>*
   
    * -i &lt;path>, --input &lt;path>  
-    Path of the input xml file. This XML file generated by Placing Tool. Required.
+    Path of the input XML file. This XML file is generated by Placing Tool. Required.
   
    * -o &lt;path>, --output &lt;path>  
-  Output will be generated with the path given. Default: "placingToRendering.xml"
+    Output will be generated with the given path. Default: "placingToRendering.xml".
   
    * -m , --map  
-  Shows the map of the generated metropolis.
+    Shows the map of the generated metropolis.
   
-Output xml now should be generated in output directory
+Output XML now should be generated in the given output directory.
 
-Then you have to run Rendering Tool following command::  
+Then you have to run Rendering Tool with following command::  
 
    *java -jar cmrender.jar -i &lt;inputFile> -world &lt;worldPath>*
   
    Options:  
    
    * -i &lt;path>, --input &lt;path>
-    Path of the input xml file. This XML file generated by the Placing Tool. Required.
+    Path of the input XML file. This XML file is generated by the Placing Tool. Required.
 
    * -world &lt;path>
-    The path of folder where the world will be placed. Required.
+    The path of the folder where the world will be placed. Required.
     
 Output world now should be generated in output directory. It may take a long time, depending on the size of the input.
 
-You can find the generated world in output directory. You have to copy this folder to the "saves" folder in root of Minecraft. It is usually find at "C:\Users\&lt;username>\AppData\Roaming\.minecraft\".
+You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\.minecraft\" directory.
 
-After that you have to start Minecraft, choose SinglePlayer then choose the generated world and play selected world.
+After that you have to start Minecraft, choose SinglePlayer, then choose the generated world and the selected world will be displayed.
 
 **Contribution guide**
-This section of the documentation contains a guide for users who want to contribute code or documentation to the CodeMetropolis project. If you like contribute in the project, please send your patches to review.
+This section of the documentation contains a guide for users who would like to contribute code or documentation to the CodeMetropolis project. If you would like to contribute in the project, please send your patches to review.
 You have to follow the next steps:  
 
 1. Checkout the `develop` branch from [this](https://github.com/geryxyz/CodeMetropolis) repository.
 1. Start Eclipse and set the workspace the *root* directory.
 1. Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.
-1. Make your changes, improvement or fixes.
+1. Make your changes, improvements or fixes.
 1. Create a patch.
 1. Post the patch as attachment of a [new issue](https://github.com/geryxyz/CodeMetropolis/issues/new) with a description of your contribution.
 
-After that you can run the three tool in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
+After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
 
 [sm]: <https://www.sourcemeter.com/>
