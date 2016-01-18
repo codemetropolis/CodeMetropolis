@@ -82,7 +82,7 @@ You can find the generated world in the output directory. You have to copy this 
 
 After that you have to start Minecraft, choose SinglePlayer, then choose the generated world and the selected world will be displayed.
 
-**Contribution guide**
+**Contribution guide**  
 This section of the documentation contains a guide for users who would like to contribute code or documentation to the CodeMetropolis project. If you would like to contribute in the project, please send your patches to review.
 You have to follow the next steps:  
 
@@ -93,6 +93,8 @@ You have to follow the next steps:
 1. Create a patch.
 1. Post the patch as attachment of a [new issue](https://github.com/geryxyz/CodeMetropolis/issues/new) with a description of your contribution.
 
-After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. 
+After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. You can set the arguments in Run Configuration, and run the tools with Run As/Java Application.
+
+You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar.
 
 [sm]: <https://www.sourcemeter.com/>
