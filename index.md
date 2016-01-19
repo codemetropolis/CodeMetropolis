@@ -1,7 +1,7 @@
 ---
 layout: page
 title: In a nutshell
-excerpt: "A simple and clean responsive Jekyll theme for words and photos."
+excerpt: "See your software as never before"
 search_omit: true
 ---
 
