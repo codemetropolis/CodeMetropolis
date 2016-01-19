@@ -33,8 +33,8 @@ exclude: ["__*", "lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Ra
 
 # Site owner
 owner:
-  name: Gergő Balogh
-  avatar: bio-photo.jpg
+  name: CodeMetropolis Team
+  avatar: site-logo.png
   email: you@email.com
   disqus-shortname:
   twitter: #username
