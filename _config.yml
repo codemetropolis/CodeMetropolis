@@ -4,6 +4,7 @@ title: CodeMetropolis
 locale: en_US
 description: See your software as never before.
 logo: site-logo.png
+oglogo: site-logo-og.png
 search: true
 url: http://geryxyz.github.io/CodeMetropolis
 
