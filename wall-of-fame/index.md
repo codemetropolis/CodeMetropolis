@@ -8,3 +8,7 @@ image:
   feature: wall.png
 ---
 
+# Contributors
+
+## [University of Szeged Department of Software Engineering](http://www.sed.inf.u-szeged.hu/)
+Szeged, Hungary
