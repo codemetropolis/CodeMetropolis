@@ -18,14 +18,14 @@ Also feel free to join our [CodeMetropolis Google+ Community](https://plus.googl
 CodeMetropolis are managed and developed by a small, but enthusiastic team of IT professional. 
 Currently the CodeMetropolis Team consists of the following members.
 
-**Gergő Balogh**
-__project manager, developer__
+**Gergő Balogh**  
+_project manager, developer_
 
-**Attila Szabolics**
-__developer__
+**Attila Szabolics**  
+_developer_
 
-**Erika Bordás**
-__developer__
+**Erika Bordás**  
+_developer_
 
-**Rita Bártfai**
-__designer, documentation writer and tester__
+**Rita Bártfai**  
+_designer, documentation writer and tester_
