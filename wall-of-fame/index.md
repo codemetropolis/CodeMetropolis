@@ -10,5 +10,12 @@ image:
 
 # Contributors
 
-## [University of Szeged Department of Software Engineering](http://www.sed.inf.u-szeged.hu/)
+<img src="{{ site.url }}/images/logo/szte.jpg" style="width: 10ex"/><br/>
+>**[University of Szeged Department of Software Engineering](http://www.sed.inf.u-szeged.hu/)**<br/>
+Szeged, Hungary
+
+# Supporter
+
+<img src="{{ site.url }}/images/logo/boni.jpg" style="width: 10ex"/><br/>
+>**[Bonifert Domonkos Primary School](https://sites.google.com/a/bonifert.sulinet.hu/www/)**<br/>
 Szeged, Hungary
