@@ -26,7 +26,7 @@ _project manager, developer_
 _developer_
 
 **Erika Bordás**  
-_developer_
+_developer_  
 <a href="https://hu.linkedin.com/pub/erika-bord%C3%A1s/8b/698/45" style="text-decoration:none;"><span style="font: 80% Arial,sans-serif; color:#0783B6;"><img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_in_20x15.png" width="20" height="15" alt="View Erika Bordás's LinkedIn profile" style="vertical-align:middle;" border="0">&nbsp;View Erika Bordás's profile</span></a>
 
 **Rita Bártfai**  
