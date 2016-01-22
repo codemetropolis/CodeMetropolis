@@ -20,7 +20,6 @@ image:
 If we use the –m option, the following popup window will appear:   
 
 <img src="{{ site.url }}/images/placing_map_example.png"/>
-<img src="{{ site.url }}/images/placing_map_exmaple.png"/>
- 
+
 On the map we can see the structure of the virtual city generated from the source code. After closing this window, the command will be finished. 
 
