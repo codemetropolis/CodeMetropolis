@@ -30,7 +30,7 @@ First you have to run [SourceMeter][sm] to get the graph file, which contains th
 
 After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in the  documentation of [SourceMeter][sm].
 
-Then you have to run Mapping Tool with the following command:  
+Then you have to run **Mapping Tool** with the following command:  
 
    *java -jar cmmapping.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
   
@@ -49,7 +49,9 @@ The tool is using the mapping file to link source code elements and metrics to w
 
 Output XML now should be generated in output directory.
 
-Second you have to run Placing Tool with the following command:  
+[*Details...*][mt]
+
+Second you have to run **Placing Tool** with the following command:  
 
    *java -jar cmplacing.jar -i &lt;inputFile>*
   
@@ -64,7 +66,9 @@ Second you have to run Placing Tool with the following command:
   
 Output XML now should be generated in the given output directory.
 
-Then you have to run Rendering Tool with following command::  
+[*Details...*][pt]
+
+Then you have to run **Rendering Tool** with following command::  
 
    *java -jar cmrender.jar -i &lt;inputFile> -world &lt;worldPath>*
   
@@ -77,6 +81,8 @@ Then you have to run Rendering Tool with following command::
     The path of the folder where the world will be placed. Required.
     
 Output world now should be generated in output directory. It may take a long time, depending on the size of the input.
+
+[*Details...*][rt]
 
 You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\.minecraft\" directory.
 
@@ -101,3 +107,6 @@ You can create a jar file with Maven with *mvn package* command. You have to sta
 [sm]: <https://www.sourcemeter.com/>
 [java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
 [mc]: <https://minecraft.net/download>
+[mt]: <http://geryxyz.github.io/CodeMetropolis/mapping/>
+[pt]: <http://geryxyz.github.io/CodeMetropolis/placing/>
+[rt]: <http://geryxyz.github.io/CodeMetropolis/rendering/>
