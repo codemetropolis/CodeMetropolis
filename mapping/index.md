@@ -10,7 +10,7 @@ image:
 **Usage**: java -jar mapping.jar -i <grapFile> -m <mappingFile> [-o <outputFile>]  
 
 **Command line options:**  
-+
+
 * -h: help, shows the usage of the command line tool.  
 * -i: input, the path of the input graph file. Required.  
 * -o: output, which will be generated to the given path. Default: "mappingToPlacing.xml".  
