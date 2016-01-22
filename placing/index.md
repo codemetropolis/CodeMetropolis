@@ -7,7 +7,7 @@ image:
   feature: town_02.png
 ---
 
-**Usage**: java –jar placing.jar –i <inputFile> [-o <outputFile>] [-m]  
+**Usage**: java –jar placing.jar –i `inputFile` [-o `outputFile`] [-m]  
 
 **Command line options:**  
 
