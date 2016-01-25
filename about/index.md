@@ -84,7 +84,7 @@ Output world now should be generated in output directory. It may take a long tim
 
 [*Details...*][rt]
 
-You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\.minecraft\" directory.
+You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\\.minecraft\" directory.
 
 After that you have to start Minecraft, choose SinglePlayer, then choose the generated world and the selected world will be displayed.
 
