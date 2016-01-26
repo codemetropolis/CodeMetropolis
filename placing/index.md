@@ -7,6 +7,8 @@ image:
   feature: town_02.png
 ---
 
+This application is used to create the city layout and generate an output XML that is ready to be used by CodeMetropolis Render Tool.
+
 **Usage**: java –jar placing.jar –i `inputFile` [-o `outputFile`] [-m]  
 
 **Command line options:**  
