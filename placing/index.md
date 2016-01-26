@@ -23,5 +23,14 @@ If we use the –m option, the following popup window will appear:
 
 On the map we can see the structure of the virtual city generated from the source code. After closing this window, the command will be finished. 
 
-The input of Placing Tool contains only the structure and the main attributes of the city, while the output XML describes the size of inner buildings, like floor and cellar.
+The input of Placing Tool contains only the structure and the main attributes of the city, while the output XML describes the size of inner buildings, like floor and cellar. Here is an example: 
+
+Part of mappingToPlacing.xml: 
+
+<img src="{{ site.url }}/images/mappingToPlacing.jpg"/>
+
+Part of placingToRendering.xml: 
+
+<img src="{{ site.url }}/images/placingToRendering.jpg"/>
+
 
