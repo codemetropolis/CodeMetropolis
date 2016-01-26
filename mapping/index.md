@@ -28,4 +28,4 @@ The mapping file contains the parameters of build up the virtual world from the 
  
 In the <linking> tag we can set how a program element shoul be displayed in the world. We can set the attribute of it like LOC, NUMPAR or McCabe complexity, choose a representation form of it (for example building), the property of the graphical object, like the height of the building and the type of the transition. Parameters also can be customized. 
 
-[sm]: <https://sandbox.sourcemeter.com/>
+[sm]: <https://www.sourcemeter.com/>
