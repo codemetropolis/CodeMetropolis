@@ -7,6 +7,8 @@ image:
   feature: town_03.png
 ---
 
+This application is used to process the output of CodeMetropolis Placing Tool and create a virtual city in a [Minecraft][mc] world. Basicly it generates the descriptions of blocks and makes a Minecraft world of them.
+
 **Usage:** java –jar rendering.jar –i <inputFile> -w <WorldPath> [-s]  
 
 **Command line options:**  
@@ -16,3 +18,4 @@ image:
 * -w: world, the location and the name of the world, which will be generated to the given path.  
 * -s: silent, which means silently overwriting. In the case of an existing world, if this parameter is false, the program will ask the user, does he or she want to overwrite the existing world, and if the silent parameter is true, exactly if it is given, the program will overwrite the existing world without asking. 
 
+[mc]: <https://minecraft.net/download>
