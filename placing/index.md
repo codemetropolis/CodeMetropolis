@@ -25,7 +25,8 @@ If we use the –m option, the following popup window will appear:
 
 On the map we can see the structure of the virtual city generated from the source code. After closing this window, the command will be finished. 
 
-The window shows the map of the generated metropolis. Different colors represent different types of objects.      
+The window shows the map of the generated metropolis. Different colors represent different types of objects.   
+
 * orange: ground    
 * blue: garden     
 * green: floor      
