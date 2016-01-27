@@ -9,7 +9,7 @@ image:
 
 This application is used to create the city layout and generate an output XML that is ready to be used by CodeMetropolis Render Tool.
 
-**Usage**: `java –jar placing.jar –i inputFile [-o outputFile] [-m]`  
+**Usage**: `java –jar placing.jar –i <inputFile> [-o <outputFile>] [-m]`  
 
 **Command line options:**  
 
@@ -28,7 +28,7 @@ On the map we can see the structure of the virtual city generated from the sourc
 The window shows the map of the generated metropolis. Different colors represent different types of objects.   
 
 | Colors    | Objects   |
-| --------- |-----------|
+|-----------|-----------|
 | orange    | ground    |
 | blue      | garden    |
 | green     | floor     |
