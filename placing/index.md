@@ -28,7 +28,7 @@ On the map we can see the structure of the virtual city generated from the sourc
 The window shows the map of the generated metropolis. Different colors represent different types of objects.   
 
 | Colors    | Objects   |
-|-----------|-----------|
+| --------- | --------- |
 | orange    | ground    |
 | blue      | garden    |
 | green     | floor     |
