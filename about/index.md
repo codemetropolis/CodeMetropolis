@@ -11,7 +11,8 @@ CodeMetropolis is a software visualisation tool. It can create a Minecraft world
 It is a set of command line programs, connected into a single toolchain and a couple of supporting plug-ins and scripsts. The first tool is the Mapping Tool. It processes the input file, assigns metrics to objects of the metropolis and generates an ouput XML that is ready to be used by the Placing Tool. The second tool is Placing Tool. This tool creates the city layout and generates an output XML that is ready to be used by the Render Tool. The last tool is Render Tool. This tool proccesses the ouput XML file of Placing Tool and creates a virtual city in a Minecraft world.  
 CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generates an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generates an output XML file for the Rendering Tool. These XML files use the same format defined in an XML Schema.  
 
-**Installation guide**  
+# Installation guide
+
 In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install [Java Runtime Environment 8][java] to run the command line tools. Mapping Tool uses the graph file to get the source code metrics. You have to install [Minecraft client 1.8][mc] to display the Minecraft world. 
 First you have to run [SourceMeter][sm] to get the graph file, which contains the source code metrics. You can use it with the following command:
 
@@ -29,6 +30,8 @@ First you have to run [SourceMeter][sm] to get the graph file, which contains th
       The path of the directory where the results will be stored.
 
 After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in the  documentation of [SourceMeter][sm].
+
+## Mapping Tool
 
 Then you have to run **Mapping Tool** with the following command:  
 
@@ -51,6 +54,8 @@ Output XML now should be generated in output directory.
 
 [*Details...*][mt]
 
+## Placing Tool
+
 Second you have to run **Placing Tool** with the following command:  
 
    *java -jar cmplacing.jar -i &lt;inputFile>*
@@ -68,6 +73,8 @@ Output XML now should be generated in the given output directory.
 
 [*Details...*][pt]
 
+## Rendering Tool
+
 Then you have to run **Rendering Tool** with following command::  
 
    *java -jar cmrender.jar -i &lt;inputFile> -world &lt;worldPath>*
@@ -84,11 +91,14 @@ Output world now should be generated in output directory. It may take a long tim
 
 [*Details...*][rt]
 
+## Displaying the Generated City
+
 You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\\.minecraft\" directory.
 
 After that you have to start Minecraft, choose SinglePlayer, then choose the generated world and the selected world will be displayed.
 
-**Contribution guide**  
+# Contribution guide
+
 This section of the documentation contains a guide for users who would like to contribute code or documentation to the CodeMetropolis project. If you would like to contribute in the project, please send your patches to review.
 You have to follow the next steps:  
 
