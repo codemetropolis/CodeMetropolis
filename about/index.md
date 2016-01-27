@@ -16,7 +16,8 @@ CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool g
 In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install [Java Runtime Environment 8][java] to run the command line tools. Mapping Tool uses the graph file to get the source code metrics. You have to install [Minecraft client 1.8][mc] to display the Minecraft world. 
 First you have to run [SourceMeter][sm] to get the graph file, which contains the source code metrics. You can use it with the following command:
 
-   `SourceMeterJava.exe -projectName=<inputProjectName> -projectBaseDir=<inputProjectDir> -resultsDir=<ResultsDir>`
+   `SourceMeterJava.exe -projectName=<inputProjectName> -projectBaseDir=<inputProjectDir>
+   -resultsDir=<ResultsDir>`
 
    Options:
 
