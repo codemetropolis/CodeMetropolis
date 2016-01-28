@@ -11,8 +11,8 @@ CodeMetropolis tools are using XML files to communicate with each other. Mapping
 These XML files are using the same format defined in an XML Schema.
 Here is an exmaple from a placing output XML:     
 
-```
-foobar
+```xml
+<foobar foo="bla" />
 ```
 
 
