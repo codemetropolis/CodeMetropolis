@@ -12,7 +12,7 @@ url: http://geryxyz.github.io/CodeMetropolis
 
 permalink:   /:categories/:title/
 markdown:    kramdown
-highlighter: pygments
+#highlighter: pygments
 sass:
   sass_dir: _sass
   style: compressed
@@ -20,6 +20,8 @@ gems:
   - jekyll-sitemap
 
 kramdown:
+  input: GFM
+  syntax_highlighter: rouge
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
