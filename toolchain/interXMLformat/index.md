@@ -1,17 +1,17 @@
 ---
 layout: page
-title: About the CodeMetropolis project
+title: Inter tool XML format
 excerpt: 
 modified: 2014-08-08T19:44:38.564948-04:00
 image:
-  feature: outpost-landscape.png
+  feature: inside_the_city_of_glass.png
 ---
 
 CodeMetropolis tools are using XML files to communicate with each other. Mapping Tool generates an output XML file which is used by placing tool as input. Similarly, the Placing Tool generates an XML for Rendering Tool.
 These XML files are using the same format defined in an XML Schema.
-Here is an exmaple from a placing output XML: 
+Here is an exmaple from a placing output XML:     
 
-```xml
+```xml     
 <children>
     <buildable id="L168" name="WordCount" type="garden">
         <position x="9" y="62" z="70"/>
@@ -27,11 +27,10 @@ Here is an exmaple from a placing output XML:
                          <attribute name="external_character" value="metal"/>
                          <attribute name="character" value="glass"/>
                          <attribute name="torches" value="1"/>
-                 </attributes>
-```
+                 </attributes>    
+```    
  
-A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:    
-
+A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:        
 * id: identifies buildable, for example „L176”. 
 * name: name of the buildable, it can be a method, a function etc. 
 * type: buildable type can be ground, garden, floor or cellar.
