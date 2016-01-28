@@ -123,6 +123,6 @@ You can create a jar file with Maven with *mvn package* command. You have to sta
 [sm]: <https://www.sourcemeter.com/>
 [java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
 [mc]: <https://minecraft.net/download>
-[mt]: <http://geryxyz.github.io/CodeMetropolis/mapping/>
-[pt]: <http://geryxyz.github.io/CodeMetropolis/placing/>
-[rt]: <http://geryxyz.github.io/CodeMetropolis/rendering/>
+[mt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/mapping/>
+[pt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/placing/>
+[rt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/rendering/>
