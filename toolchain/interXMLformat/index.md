@@ -7,106 +7,35 @@ image:
   feature: outpost-landscape.png
 ---
 
-CodeMetropolis is a software visualisation tool. It can create a Minecraft world using the values of source code metrics and the structure of the source code. Thus explore the inner structure of the program or compare several source code elements is easier. CodeMetropolis uses city metaphor for the visualisation of code elements like classes, functions or attributes. The city metaphor is one of the best known metaphors in software visualization. In this metaphor the source code components are represented as a part of a generated city, for example classes represented as buildings or methods represented as floor.  
-It is a set of command line programs, connected into a single toolchain and a couple of supporting plug-ins and scripsts. The first tool is the Mapping Tool. It processes the input file, assigns metrics to objects of the metropolis and generates an ouput XML that is ready to be used by the Placing Tool. The second tool is Placing Tool. This tool creates the city layout and generates an output XML that is ready to be used by the Render Tool. The last tool is Render Tool. This tool proccesses the ouput XML file of Placing Tool and creates a virtual city in a Minecraft world.  
-CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generates an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generates an output XML file for the Rendering Tool. These XML files use the same format defined in an XML Schema.  
+CodeMetropolis tools are using XML files to communicate with each other. Mapping Tool generates an output XML file which is used by placing tool as input. Similarly, the Placing Tool generates an XML for Rendering Tool.
+These XML files are using the same format defined in an XML Schema.
+Here is an exmaple from a placing output XML: 
 
-**Installation guide**  
-In order to use all functionality of CodeMetropolis you have to install the following dependencies. First you have to install [Java Runtime Environment 8][java] to run the command line tools. Mapping Tool uses the graph file to get the source code metrics. You have to install [Minecraft client 1.8][mc] to display the Minecraft world. 
-First you have to run [SourceMeter][sm] to get the graph file, which contains the source code metrics. You can use it with the following command:
+```xml
+<children>
+    <buildable id="L168" name="WordCount" type="garden">
+        <position x="9" y="62" z="70"/>
+        <size x="40" y="139" z="25"/>
+        <attributes>
+              <attribute name="flower-ratio" value="0.0"/>
+        </attributes>
+        <children>
+            <buildable id="L237" name="void performExp()" type="floor">
+                 <position x="16" y="128" z="77"/>
+                 <size x="9" y="17" z="11"/>
+                 <attributes>
+                         <attribute name="external_character" value="metal"/>
+                         <attribute name="character" value="glass"/>
+                         <attribute name="torches" value="1"/>
+                 </attributes>
+```
+ 
+A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:    
 
-   *SourceMeterJava.exe -projectName=&lt;inputProjectName> -projectBaseDir=&lt;inputProjectDir> -resultsDir= &lt;ResultsDir>*
-
-   Options:
-
-   * -projectName=
-      The name of the project. It will be the name of the directory in the results directory.
-
-   * -projectBaseDir=
-      The path of the directory of the source code.
-
-   * -resultsDir=
-      The path of the directory where the results will be stored.
-
-After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\java\&lt;date>. You can find more information in the  documentation of [SourceMeter][sm].
-
-Then you have to run **Mapping Tool** with the following command:  
-
-   *java -jar cmmapping.jar -i &lt;inputFile> -o &lt;outputFile> -m &lt;mappingFile>*  
-  
-   Options:  
-   
-   * -i &lt;path>, --input &lt;path>  
-     Path of the input graph file. Required.  
-  
-   * -o &lt;path>, --output &lt;path>  
-     Output will be generated with the given path. Default: "mappingToPlacing.xml". 
-  
-   * -m &lt;path>, --mapping &lt;path>  
-     Path of the input mapping file. Required.
-
-The tool is using the mapping file to link source code elements and metrics to world objects. For example, link of the LOC metric is related to the height of the building. It is a XML file. The *source* tag contains the metric that will be a link to the object, the *name* parameter is the element of the source code and the *from* parameter is the metric. The *target* parameter is the world object, the *name* parameter is the name of the element in the city and the *to* parameter is the property of the element. If the value of the metric doesn't fit the world element, you have to use conversion. 
-
-Output XML now should be generated in output directory.
-
-[*Details...*][mt]
-
-Second you have to run **Placing Tool** with the following command:  
-
-   *java -jar cmplacing.jar -i &lt;inputFile>*
-  
-   * -i &lt;path>, --input &lt;path>    
-    Path of the input XML file. This XML file is generated by Mapping Tool. Required.
-  
-   * -o &lt;path>, --output &lt;path> 
-    Output will be generated with the given path. Default: "placingToRendering.xml".
-  
-   * -m , --map 
-    Shows the map of the generated metropolis.
-  
-Output XML now should be generated in the given output directory.
-
-[*Details...*][pt]
-
-Then you have to run **Rendering Tool** with following command::  
-
-   *java -jar cmrender.jar -i &lt;inputFile> -world &lt;worldPath>*
-  
-   Options:  
-   
-   * -i &lt;path>, --input &lt;path>  
-    Path of the input XML file. This XML file is generated by the Placing Tool. Required.
-
-   * -world &lt;path>  
-    The path of the folder where the world will be placed. Required.
-    
-Output world now should be generated in output directory. It may take a long time, depending on the size of the input.
-
-[*Details...*][rt]
-
-You can find the generated world in the output directory. You have to copy this folder to the "saves" folder in root of Minecraft. You can usually find it at "C:\Users\&lt;username>\AppData\Roaming\\.minecraft\" directory.
-
-After that you have to start Minecraft, choose SinglePlayer, then choose the generated world and the selected world will be displayed.
-
-**Contribution guide**  
-This section of the documentation contains a guide for users who would like to contribute code or documentation to the CodeMetropolis project. If you would like to contribute in the project, please send your patches to review.
-You have to follow the next steps:  
-
-1. Install [Git LFS 1.1.0](https://git-lfs.github.com/) (or newer) and [Git 2.7.0](https://git-scm.com/) (or newer).
-1. Checkout the `develop` branch from [this](https://github.com/geryxyz/CodeMetropolis) repository.
-1. Start Eclipse and set the workspace the *root* directory.
-1. Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.
-1. Make your changes, improvements or fixes.
-1. Create a patch.
-1. Post the patch as attachment of a [new issue](https://github.com/geryxyz/CodeMetropolis/issues/new) with a description of your contribution.
-
-After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. You can set the arguments in Run Configuration, and run the tools with Run As/Java Application.
-
-You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar.
-
-[sm]: <https://www.sourcemeter.com/>
-[java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
-[mc]: <https://minecraft.net/download>
-[mt]: <http://geryxyz.github.io/CodeMetropolis/mapping/>
-[pt]: <http://geryxyz.github.io/CodeMetropolis/placing/>
-[rt]: <http://geryxyz.github.io/CodeMetropolis/rendering/>
+* id: identifies buildable, for example „L176”. 
+* name: name of the buildable, it can be a method, a function etc. 
+* type: buildable type can be ground, garden, floor or cellar.
+* position: position of buildable by x, y and z coordinates.
+* size: size of buildable by x, y and z length. Size can be only a positive integer number.  
+* attributes: all additional attributes like the material the object is made of. It has a name and a value parameter, for example name=”character”, value=”glass”.  
+* children: to represent the hierarchy, some buildables can contain additional buildables. That means the “child” object is part of the “parent”. Grounds can contain grounds or houses and houses can contain floors or cellars. No other relation is allowed.
