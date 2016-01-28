@@ -12,7 +12,7 @@ These XML files are using the same format defined in an XML Schema.
 Here is an exmaple from a placing output XML:     
 
 ~~~xml
-<foobar foo="bla" />
+<foobar foo="bla" foo="1231" />
 ~~~
 
 
