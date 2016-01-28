@@ -9,7 +9,7 @@ image:
 
 CodeMetropolis is a software visualisation tool. It can create a Minecraft world using the values of source code metrics and the structure of the source code. Thus explore the inner structure of the program or compare several source code elements is easier. CodeMetropolis uses city metaphor for the visualisation of code elements like classes, functions or attributes. The city metaphor is one of the best known metaphors in software visualization. In this metaphor the source code components are represented as a part of a generated city, for example classes represented as buildings or methods represented as floor.  
 It is a set of command line programs, connected into a single toolchain and a couple of supporting plug-ins and scripsts. The first tool is the Mapping Tool. It processes the input file, assigns metrics to objects of the metropolis and generates an ouput XML that is ready to be used by the Placing Tool. The second tool is Placing Tool. This tool creates the city layout and generates an output XML that is ready to be used by the Render Tool. The last tool is Render Tool. This tool proccesses the ouput XML file of Placing Tool and creates a virtual city in a Minecraft world.  
-CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generates an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generates an output XML file for the Rendering Tool. These XML files use the same format defined in an XML Schema.  
+CodeMetropolis tools use XML files to communicate with eachother. Mapping Tool generates an ouput XML file which is the input file for the Placing Tool. Then the Placing Tool generates an output XML file for the Rendering Tool. These XML files use the same format defined in an [XML Schema][ixmlf].  
 
 # Installation guide
 
@@ -126,3 +126,4 @@ You can create a jar file with Maven with *mvn package* command. You have to sta
 [mt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/mapping/>
 [pt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/placing/>
 [rt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/rendering/>
+[ixmlf]: <http://geryxyz.github.io/CodeMetropolis/toolchain/interXMLformat/>
