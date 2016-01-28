@@ -31,10 +31,10 @@ Here is an exmaple from a placing output XML:
 ~~~   
  
 A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:        
-- **id:** identifies buildable, for example "L176". 
-- **name:** name of the buildable, it can be a method, a function etc. 
-- **type:** buildable type can be ground, garden, floor or cellar.
-- **position:** position of buildable by x, y and z coordinates.
-- **size:** size of buildable by x, y and z length. Size can be only a positive integer number.  
-- **attributes:** all additional attributes like the material the object is made of. It has a name and a value parameter, for example name="character", value="glass".  
-- **children:** to represent the hierarchy, some buildables can contain additional buildables. That means the "child" object is part of the "parent". Grounds can contain grounds or houses and houses can contain floors or cellars. No other relation is allowed.
++ **id:** identifies buildable, for example "L176". 
++ **name:** name of the buildable, it can be a method, a function etc. 
++ **type:** buildable type can be ground, garden, floor or cellar.
++ **position:** position of buildable by x, y and z coordinates.
++ **size:** size of buildable by x, y and z length. Size can be only a positive integer number.  
++ **attributes:** all additional attributes like the material the object is made of. It has a name and a value parameter, for example name="character", value="glass".  
++ **children:** to represent the hierarchy, some buildables can contain additional buildables. That means the "child" object is part of the "parent". Grounds can contain grounds or houses and houses can contain floors or cellars. No other relation is allowed.
