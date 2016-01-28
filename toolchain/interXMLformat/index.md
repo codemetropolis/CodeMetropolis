@@ -12,11 +12,6 @@ These XML files are using the same format defined in an XML Schema.
 Here is an exmaple from a placing output XML:     
 
 ~~~ xml
-<foobar foo="bla" foo="1231" />
-~~~
-
-
-``` xml
 <children>
     <buildable id="L168" name="WordCount" type="garden">
         <position x="9" y="62" z="70"/>
@@ -33,7 +28,7 @@ Here is an exmaple from a placing output XML:
                          <attribute name="character" value="glass"/>
                          <attribute name="torches" value="1"/>
                  </attributes>
-```   
+~~~   
  
 A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:        
 * **id:** identifies buildable, for example "L176". 
