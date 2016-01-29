@@ -18,4 +18,12 @@ This application is used to process the output of CodeMetropolis Placing Tool an
 * `-w`: world, the location and the name of the world, which will be generated to the given path.  
 * `-s`: silent, which means silently overwriting. In the case of an existing world, if this parameter is false, the program will ask the user, does he or she want to overwrite the existing world, and if the silent parameter is true, exactly if it is given, the program will overwrite the existing world without asking. 
 
+Here is an example that describes which visual object represents different code elements: 
+
+<img src="{{ site.url }}/images/definitions.png"/>
+
+For example, the height of a building represents the lines of code of a method, and the width means the McCabe complexity of it: 
+
+<img src="{{ site.url }}/images/definitions_metrics.png"/>
+
 [mc]: <https://minecraft.net/download>
