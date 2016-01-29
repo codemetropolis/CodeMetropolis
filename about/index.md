@@ -54,8 +54,6 @@ Then you have to run **Mapping Tool** with the following command:
    * `-m <path>`, `--mapping <path>`  
      Path of the input mapping file. Required.
 
-The tool is using the mapping file to link source code elements and metrics to world objects. For example, link of the LOC metric is related to the height of the building. It is a XML file. The *source* tag contains the metric that will be a link to the object, the *name* parameter is the element of the source code and the *from* parameter is the metric. The *target* parameter is the world object, the *name* parameter is the name of the element in the city and the *to* parameter is the property of the element. If the value of the metric doesn't fit the world element, you have to use conversion. 
-
 Output XML now should be generated in output directory.
 
 [*Details...*][mt]
