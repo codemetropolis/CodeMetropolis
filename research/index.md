@@ -11,7 +11,7 @@ image:
 # CodeMetropolis - code visualisation in MineCraft #
 Gergo Balogh and Arpad Beszedes. In *Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on*, pages 136-141. IEEE, 2013.
 
-Before this converence the tool was in prototype state. This version was written in C# using the .Net framework. It is a command line tool which takes the previously mentioned graph as input and creates a Minecraft world from it. There are a couple of open-source API-s for every major language which support editing or creations over these worlds. Our tool uses the Substrate library for .NET Framework. 
+Before this conference the tool was in prototype state. This version was written in C# using the .Net framework. It is a command line tool which takes the previously mentioned graph as input and creates a Minecraft world from it. There are a couple of open-source API-s for every major language which support editing or creations over these worlds. Our tool uses the Substrate library for .NET Framework. 
 
 The representation has two main levels. On the data level, each entity has its own property set – for example metrics. In the current version, these are loaded from the previously mentioned graph, but we plan to support other data sources, for example XML files. These data are displayed on the metaphor level. All buildings in the metropolis belong to this. The buildings and the world itself has a couple of attributes which control visual appearance. The properties are mapped to the attributes in order to visualise the data. However, in the current version this mapping is hardcoded, the further versions will support customisation with a sophisticated mapping language.
 
@@ -38,7 +38,7 @@ CodeMetropolis implements multilevel data visualisation: Minecraft allows fly, s
 * Learning curves.
 * The last problem was the lack of simultaneous data visualisation. The users could identify only three attributes: width, length, and height. This limited set is not enough to visualise the complex items of the data level.
 
-# CodeMetrpolis—A minecraft based collaboration tool for developers.#
+# CodeMetrpolis—A minecraft based collaboration tool for developers.
 Gergo Balogh and Arpád Beszédes. In *Software Visualization (VISSOFT), 2013 First IEEE Working Conference* on, pages 1-4. IEEE, 2013. 
 
 CodeMetropolis is a command line tool  written  in C# and uses the Substrate library for .NET Framework. It takes the output graph of Columbus Tool and creates a Minecraft world from it. Columbus Tools area collection of various programs, which are able to analyse and measure static artifacts related to the source code. The output is given with a unique binary format. The world uses the metropolis metaphor, which means that the source code metrics are represented with the various properties of the different kinds of buildings. 
@@ -56,7 +56,7 @@ The representation has two levels. The data level contains the various object an
 * **Annotating entities**
 * **Present code history**
 
-# CodeMetropolis: Eclipse over the city of source code.#
+# CodeMetropolis: Eclipse over the city of source code.
 
 Gergo Balogh, Attila Szabolics, and Arpad Beszedes. In *Source Code Analysis and Manipulation (SCAM), 2015 IEEE 15th International Working Conference* on, pages 271-276. IEEE, 2015. [ bib | .pdf ]
 Data visualization has four phases: filtering, mapping, rendering, and displaying. 
