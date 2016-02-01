@@ -54,7 +54,7 @@ Then you have to run **Mapping Tool** with the following command:
    * `-m <path>`, `--mapping <path>`  
      Path of the input mapping file. Required.
 
-Output XML now should be generated in output directory.
+The mapping file contains the parameters of build up the virtual world from the source code. You could find more inforamtion about its structure and format in the detailed description of the Mapping Tool. Output XML now should be generated in output directory.
 
 [*Details...*][mt]
 
