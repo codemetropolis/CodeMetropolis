@@ -39,3 +39,18 @@ A buildable is representing an object of the city in hierarchical structure. The
 + **size:** size of buildable by x, y and z length. Size can be only a positive integer number.
 + **attributes:** all additional attributes like the material the object is made of. It has a name and a value parameter, for example name="character", value="glass".
 + **children:** to represent the hierarchy, some buildables can contain additional buildables. That means the "child" object is part of the "parent". Grounds can contain grounds or houses and houses can contain floors or cellars. No other relation is allowed.
+
+Mapping to Placing XML contains only the structure of the city, the attributes of it and the size of inner buildings like floor or cellar, while Placing to Rendering XML defines the position and the size of all buildings. 
+
+As you can see on the following example, only position differs in these two XMLs. 
+
+<img src="{{ site.url }}/images/difference_between_MtP_PtR.png"/>
+
+These XMLs are built up on an [XML schema][XML]. 
+
+[XML]: <https://github.com/geryxyz/CodeMetropolis/blob/master/sources/codemetropolis-toolchain-commons/src/main/resources/cmxml_scheme.xsd>
+
+
+
+
+
