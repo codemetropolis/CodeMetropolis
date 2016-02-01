@@ -32,7 +32,7 @@ CodeMetropolis implements multilevel data visualisation: Minecraft allows fly, s
 * **In-game explanations**: Post and wall sings and books will be used to explain the meaning of the various attributes and to show the source code of the corresponding element.
 * **Navigation support**: We plan to implement a mini-map and a teleportation system. The related classes will be connected with railways allowing the users to navigate and see the connections.
 
-Negative opinios: 
+**Negative opinios:**
 
 * Great distances. The metropolis of a large or medium scale project can be huge and the players need a lot of time to navigate in it. We plan to solve this problem by implementing a quick map and a navigation system.
 * Learning curves.
