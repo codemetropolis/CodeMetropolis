@@ -8,10 +8,10 @@ image:
   feature: outpost-frog.png
 ---
 
-# CodeMetropolis - code visualisation in MineCraft #
-Gergo Balogh and Arpad Beszedes. In *Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on*, pages 136-141. IEEE, 2013.
+#First steps
 
-Before this conference the tool was in prototype state. This version was written in C# using the .Net framework. It is a command line tool which takes the previously mentioned graph as input and creates a Minecraft world from it. There are a couple of open-source API-s for every major language which support editing or creations over these worlds. Our tool uses the Substrate library for .NET Framework. 
+Our main contribution with the CodeMetropolis is to connect data visualisation with hight end-user graphic capabilities. This tool processes the basic source code metrics as input and generates a MineCraft world with buildings, districts and gardens. 
+The tool in 2013, represented at first time on a [conference][1stconf] was in prototype state. This version was written in C# using the .Net framework. It is a command line tool which takes the previously mentioned graph as input and creates a Minecraft world from it. There are a couple of open-source API-s for every major language which support editing or creations over these worlds. Our tool uses the Substrate library for .NET Framework. 
 
 The representation has two main levels. On the data level, each entity has its own property set – for example metrics. In the current version, these are loaded from the previously mentioned graph, but we plan to support other data sources, for example XML files. These data are displayed on the metaphor level. All buildings in the metropolis belong to this. The buildings and the world itself has a couple of attributes which control visual appearance. The properties are mapped to the attributes in order to visualise the data. However, in the current version this mapping is hardcoded, the further versions will support customisation with a sophisticated mapping language.
 
@@ -24,6 +24,8 @@ CodeMetropolis implements multilevel data visualisation: Minecraft allows fly, s
 * **Bad smells detection**
 * **Inspect the structure of code**
 * **Extending the palette of the entities and attributes**: The future version of our converter will use an extended palette of the blocks supported in Minecraft. For example, flowers to decorate beautiful code and zombies (hostile creatures) to indicate bad practices. In addition according to our plans it will be possible explore inner structure of methods with furniture. 
+* **Inter-user communication**: Besides the traditional forms of communication like textual chat and audio connection users will be able to use in-game items and techniques to interact with each other. For example, they could leave signs as notification or if they are walking together in the virtual world they could simply point to or go to a specific part of the “code”.
+* **Understanding inter-metrical relations**: CodeMetropolis will use various sophisticated metaphors. For example, a floor represents a method. Its width and length are mapped to its complexity and its height indicates its size. Furthermore, the number of windows and doors visualise the count of its parameters.
 * **Round-trip source code management**: The changes between the source code and the metropolis will be propagated to each other. 
 * **Support code annotation**: When developers are inspecting the source code, they could leave comments to mark its parts. A future version of our conversion tool will support code annotation. When developers put a wall or post a sign on some entities (floors, buildings) the text on it will be inserted into the source code as a comment. (Planned before)
 * **Present code history** gathered from the version controlling system.
@@ -38,34 +40,20 @@ CodeMetropolis implements multilevel data visualisation: Minecraft allows fly, s
 * Learning curves.
 * The last problem was the lack of simultaneous data visualisation. The users could identify only three attributes: width, length, and height. This limited set is not enough to visualise the complex items of the data level.
 
-# CodeMetrpolis—A minecraft based collaboration tool for developers.
-Gergo Balogh and Arpád Beszédes. In *Software Visualization (VISSOFT), 2013 First IEEE Working Conference* on, pages 1-4. IEEE, 2013. 
+In this year we represent CodeMetropolis on [VISSOFT conference][2ndconf] too. 
 
-CodeMetropolis is a command line tool  written  in C# and uses the Substrate library for .NET Framework. It takes the output graph of Columbus Tool and creates a Minecraft world from it. Columbus Tools area collection of various programs, which are able to analyse and measure static artifacts related to the source code. The output is given with a unique binary format. The world uses the metropolis metaphor, which means that the source code metrics are represented with the various properties of the different kinds of buildings. 
-The representation has two levels. The data level contains the various object and their data, which are directly related to the measured artifacts, for example classes. On the other hand, metaphor level is build up from the visual representations of these, for example buildings and floors. 
+# Move forward with creating Eclipse plug-in
 
-## Benefits and other future possibilities
+In 2015 we developed a new version of CodeMetropolis, with the users can invoke the visualization directly from the IDE. The new version of the tool now includes an Eclipse plug-in and a MineCraft modification in addition to the analysis and visualization modules, which have also been extended with some new features. Our goal was to build a bridge between coding and visualization. We chose Eclipse among the IDEs because it was a common tool for Java developers. We implemented a set of plugins which was able to connect Eclipse and CodeMetropolis, hence it became capable of integrating an elaborated visualization technique without disturbing the daily routine of developers. This version was presented in 2015 on [SCAM conference][3rdconf].  
 
-* **Inter-user communication**: Besides the traditional forms of communication like textual chat and audio connection users will be able to use in-game items and techniques to interact with each other. For example, they could leave signs as notification or if they are walking together in the virtual world they could simply point to or go to a specific part of the “code”.
-* **Understanding inter-metrical relations**: CodeMetropolis will use various sophisticated metaphors. For example, a floor represents a method. Its width and length are mapped to its complexity and its height indicates its size. Furthermore, the number of windows and doors visualise the count of its parameters.
-* **Extending the palette of the entities and attributes**
-* **Navigation support**
-* **In-game explanations**
-* **Round-trip source code management**
-* **Visualize source code history**
-* **Annotating entities**
-* **Present code history**
-
-# CodeMetropolis: Eclipse over the city of source code.
-
-Gergo Balogh, Attila Szabolics, and Arpad Beszedes. In *Source Code Analysis and Manipulation (SCAM), 2015 IEEE 15th International Working Conference* on, pages 271-276. IEEE, 2015. [ bib | .pdf ]
-Data visualization has four phases: filtering, mapping, rendering, and displaying. 
+In this new version of CodeMetropolis, data visualization has four phases: filtering, mapping, rendering, and displaying. 
 
 <img src="{{ site.url }}/images/data_visualisation.png"/>
 
 ## Modifications
 The implementation has three interlinked components. The first is Eclipse, the IDE itself, the second is Minecraft, which displays the generated city, and SourceMeter, a static code analyzer, which provides the metrics and the structures of the source code. These are connected via CodeMetropolis that converts the data to  visual representation using the given mapping and city metaphor. 
 Since the 2013 release of CodeMetropolis toolkit, it has undergone significant changes. A new placing algorithm has been implemented to provicee a more optimal city layout. A brand new build system has also been addid which resulted 100 times faster block creation. The mapping format has been completely redesigned to provice a a cleaner syntex and a lot more options. The background logic of the toolkit had to be changed at multiple points to fit our intentions. 
+
 <img src="{{ site.url }}/images/overview_of_integration.png"/>
 
 **Minecraft modifications:**
@@ -73,5 +61,6 @@ Since the 2013 release of CodeMetropolis toolkit, it has undergone significant c
 * Synchronizing: to prevent any concurrent modification with the game, it disables the user interface while building the generated city. After the conversion the target world is reloaded. We also provide informative messages to notify the user about the state of the process. 
 * Positioning the player: it allows the external processes to set the position and orientation of the player.
 
-
-
+[1stconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
+[2ndconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
+[3rdconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2015codemetropolis.pdf>
