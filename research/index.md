@@ -8,7 +8,7 @@ image:
   feature: outpost-frog.png
 ---
 
-#First steps
+# First steps
 
 Our main contribution with the CodeMetropolis is to connect data visualisation with hight end-user graphic capabilities. This tool processes the basic source code metrics as input and generates a MineCraft world with buildings, districts and gardens. 
 The tool in 2013, represented at first time on a [conference][1stconf] was in prototype state. This version was written in C# using the .Net framework. It is a command line tool which takes the previously mentioned graph as input and creates a Minecraft world from it. There are a couple of open-source API-s for every major language which support editing or creations over these worlds. Our tool uses the Substrate library for .NET Framework. 
