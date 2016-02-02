@@ -1,10 +1,21 @@
 package codemetropolis.toolchain.mapping.control;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
@@ -13,16 +24,8 @@ import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
-import graphlib.Attribute;
-import graphlib.Attribute.AttributeIterator;
-import graphlib.AttributeFloat;
-import graphlib.AttributeInt;
-import graphlib.AttributeString;
-import graphlib.Edge.EdgeIterator;
-import graphlib.Edge.EdgeType;
-import graphlib.Edge.eDirectionType;
-import graphlib.Graph;
-import graphlib.Node;
+
+
 
 public class MappingController {
 	
@@ -44,38 +47,42 @@ public class MappingController {
 	
 	public void createBuildablesFromGraph(String filename) {
 		attributesByBuildables.clear();
-		Graph graph = new Graph();
-		graph.loadBinary(filename);
-		Node root = graph.findNode("L100");
-		List<Node> nodes = getDescendantNodes(root);
-		nodes.add(0, root);
-		
-		for(Node node : nodes) {
-			Buildable buildable = createBuildable(node);
-			Map<String, String> attributes = createAttributeMap(node);
-			attributesByBuildables.put(buildable, attributes);
-		}
-		
-		//Setting the hierarchy of buildables
-		for(Node node : nodes) {
-			Buildable buildable = null;
-			List<Buildable> children = new ArrayList<Buildable>();
-			Node[] childNodes = getChildNodes(node);
-			
-			for(Buildable b : attributesByBuildables.keySet()) {
-				if(b.getId().equals(node.getUID())) {
-					buildable = b;
-				} else {
-					for(Node n : childNodes) {
-						if(b.getId().equals(n.getUID())) {
-							children.add(b);
-							break;
+
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();;
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			File xmlFile = new File(filename);
+			Document doc = dBuilder.parse(xmlFile);
+			doc.getDocumentElement().normalize();
+			NodeList nodes = doc.getElementsByTagName("element");
+			for(int i=0; i<nodes.getLength(); i++){
+				Node nNode = nodes.item(i);
+				if(nNode.getNodeType() == Node.ELEMENT_NODE){
+					Element element = (Element) nNode;
+					Buildable actualB = createBuildable(element);
+					
+					Map<String,String> attributes = new HashMap<>();
+					Node properties = element.getChildNodes().item(3);
+					if(properties.getNodeType() == Node.ELEMENT_NODE){
+						Element propertiesElements = (Element) properties;
+						attributes.putAll(createAttributeMap(propertiesElements));
+						attributes.put("SourceType", element.getAttribute("type"));				
+					}
+					attributesByBuildables.put(actualB, attributes);
+					
+					
+					if("children".equals(element.getParentNode().getNodeName()) && "element".equals(element.getParentNode().getParentNode().getNodeName())){
+						Element parentElement = (Element) element.getParentNode().getParentNode();
+						if(getBuildable(parentElement) != null){
+							Buildable b = getBuildable(parentElement);
+							b.addChild(actualB);						
 						}
 					}
 				}
-				if(buildable != null && children.size() == childNodes.length) break;
 			}
-			buildable.addChildren(children);
+		
+		} catch (ParserConfigurationException | SAXException | IOException e){
+			e.printStackTrace();
 		}
 	}
 	
@@ -104,7 +111,7 @@ public class MappingController {
 					
 					try {
 						for(Conversion c : l.getConversions()) {
-							convertedValue = c.apply(value, limitController.getLimit(l.getSourceName(), l.getSourceFrom()));
+							convertedValue = c.apply(value, limitController.getLimit(l.getSourceName().toLowerCase(), l.getSourceFrom()));
 						}
 					} catch(Exception e) {
 						continue;
@@ -136,88 +143,81 @@ public class MappingController {
 		return buildableTree;
 	}
 	
-	private Node[] getChildNodes(Node node) {
-		List<Node> childList = new ArrayList<Node>();
-		EdgeIterator it = node.findOutEdges(new EdgeType("LogicalTree", eDirectionType.edtDirectional));
-		while(it.hasNext()) {
-			Node childNode = it.next().getToNode();
-			if(!node.getUID().equals(childNode.getUID())) 
-				childList.add(childNode);
-		}
-		return childList.toArray(new Node[childList.size()]);
-	}
-	
-	private List<Node> getDescendantNodes(Node node) {
-		List<Node> temp = new ArrayList<Node>();
-		temp.add(node);
-		List<Node> descendants = new ArrayList<Node>();
-
-		while(!temp.isEmpty()) {
-			Node expanded = temp.remove(0);
-			for(Node child : getChildNodes(expanded)) {
-				temp.add(child);
-				descendants.add(child);
+	private Buildable getBuildable(Element element){
+		String id = element.getAttribute("id");
+		for(Buildable b : attributesByBuildables.keySet()){
+			if(b.getId().equals(id)){
+				return b;
 			}
-		}
-		return descendants;
+		}		
+		return null;		
 	}
 	
-	private Buildable createBuildable(Node node) {
-		String id = node.getUID();
-		String name = ((AttributeString)node.findAttributeByName("Name").next()).getValue();
+	private Buildable createBuildable(Element element) {	
+		
+		String id = element.getAttribute("id");
+		
+		//TODO: id generálás
+		String name = element.getAttribute("name");
 		
 		Type type = null;
-		switch(node.getType().getType()) {
-			case "Package":
-			case "Namespace":
+		switch(element.getAttribute("type")) {
+			case "package":
+			case "namespace":
 				type = Type.GROUND;
 				break;
-			case "Interface":
-			case "Class":
-			case "Enum":
+			case "interface":
+			case "class":
+			case "enum":
 				type = Type.GARDEN;
 				break;
-			case "Method":
+			case "method":
 				type = Type.FLOOR;
 				break;
-			case "Attribute":
+			case "attribute":
 				type = Type.CELLAR;
 		}
 		return new Buildable(id, name, type);
 	}
 	
-	private Map<String, String> createAttributeMap(Node node) {
+	private Map<String, String> createAttributeMap(Element element) {
+
 		Map<String, String> attributes = new HashMap<String, String>();
-		attributes.put("SourceType", node.getType().getType());
 		
-		AttributeIterator attributeIterator = node.getAttributes();
-		while(attributeIterator.hasNext()) {
-			Object value;
-			Double doubleValue = null;
-			Attribute a = attributeIterator.next();
-			switch(a.getType()) {
-				case atString:
-					value = ((AttributeString)a).getValue();
-					break;
-				case atInt:
-					doubleValue = (double)((AttributeInt)a).getValue();
-					value = doubleValue;
-					break;
-				case atFloat:
-					doubleValue = (double)((AttributeFloat)a).getValue(); 
-					value = doubleValue;
-					break;
-				default:
-					value = "";
-			}
-			
-			if(doubleValue != null)
-				limitController.add(node.getType().getType(), a.getName(), doubleValue);
-			
-			attributes.put(
-					a.getName(),
-					String.valueOf(value)
-					);
+		NodeList propNodes = element.getChildNodes();
+		for(int i = 0; i< propNodes.getLength(); i++){
+			Node propNode = propNodes.item(i);
+			if(propNode.getNodeType() == Node.ELEMENT_NODE){
+				Element propElement = (Element) propNode;
+				Object value;
+				Double doubleValue = null;
+				switch(propElement.getAttribute("type")) {
+					case "string":
+						value = propElement.getAttribute("value");
+						break;
+					case "int":
+						doubleValue = Double.valueOf(propElement.getAttribute("value"));
+						value = doubleValue;
+						break;
+					case "float":
+						doubleValue = Double.valueOf(propElement.getAttribute("value"));
+						value = doubleValue;
+						break;
+					default:
+						value = "";
+				}
+				
+				if(doubleValue != null){
+					Element parentElement = (Element)element.getParentNode();
+					limitController.add(parentElement.getAttribute("type").toLowerCase(), propElement.getAttribute("name"), doubleValue);				
+				}
+				String name = propElement.getAttribute("name");
+				attributes.put(
+						name,
+						String.valueOf(value)
+						);
+			}							
+		
 		}
 		return attributes;
 	}
