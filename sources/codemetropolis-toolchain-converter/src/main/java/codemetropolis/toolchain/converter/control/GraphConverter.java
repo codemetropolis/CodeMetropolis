@@ -20,7 +20,6 @@ import graphlib.Node;
 
 public class GraphConverter implements IConverter {
 	
-	private Node root;
 	private List<ElementCDF> elements;
 	private ElementCDF rootElement;
 	String fileName;
@@ -33,7 +32,6 @@ public class GraphConverter implements IConverter {
 	public void createElements(){
 		Graph graph = new Graph();
 		graph.loadBinary(fileName);
-	    root = graph.findNode("L100");
 	    elements = new ArrayList<>();
 		Node root = graph.findNode("L100");
 		List<Node> nodes = getDescendantNodes(root);
@@ -51,15 +49,15 @@ public class GraphConverter implements IConverter {
 			Node[] childNodes = getChildNodes(node);
 			
 			for(ElementCDF e : elements) {	
-				if(rootElement == null && e.getSourceId().equals(root.getUID())){
+				if(rootElement == null && getSourceIdProp(e).equals(root.getUID())){
 					rootElement = e;
 				}
-				if(e.getSourceId().equals(node.getUID())) {
+				if(getSourceIdProp(e).equals(node.getUID())) {
 					e.getProperties().addAll(getProperties(node));
 					elementCDF = e;
 				} else {
 					for(Node n : childNodes) {
-						if(e.getSourceId().equals(n.getUID())) {
+						if(getSourceIdProp(e).equals(n.getUID())) {
 							children.add(e);
 							break;
 						}
@@ -83,11 +81,20 @@ public class GraphConverter implements IConverter {
 		return childList.toArray(new Node[childList.size()]);
 	}
 	
+	private String getSourceIdProp(ElementCDF element){
+		for(Property prop : element.getProperties()){
+			if("sourceid".equals(prop.getName())){
+				return prop.getValue();
+			}
+		}
+		return "";
+	}
 	private List<Property> getProperties(Node node){
 		List<Property> propertiesList = new ArrayList<>();
 		
 		AttributeIterator attributeIterator = node.getAttributes();
 		while(attributeIterator.hasNext()) {
+			
 			Object value;
 			Double doubleValue = null;
 			String type;
@@ -110,7 +117,7 @@ public class GraphConverter implements IConverter {
 			default:
 				value = "";
 				type = "";
-		}
+			}
 		    Property prop = new Property(a.getName(), String.valueOf(value), type);
 		    propertiesList.add(prop);
 		}
@@ -133,14 +140,11 @@ public class GraphConverter implements IConverter {
 	
 	private ElementCDF createElement(Node node){
 		ElementCDF element =  new ElementCDF();
-		String id = node.getUID();
 		String name = ((AttributeString)node.findAttributeByName("Name").next()).getValue();
 		String type = node.getType().getType();
-
-		element.setSourceId(id);
 		element.setName(name);
 		element.setType(type);
-		
+		element.getProperties().add(new Property("sourceid", node.getUID(), "string"));
 		return element;
 		
 	}

@@ -11,7 +11,6 @@ public class ElementCDF {
 
 	private String name;
 	private String type;
-	private String sourceId;
 	private List<Property> properties;
 	private List<ElementCDF> childrenElements;
 	
@@ -45,14 +44,6 @@ public class ElementCDF {
 		this.childrenElements = childrenElements;
 	}
 
-	public String getSourceId() {
-		return sourceId;
-	}
-
-	public void setSourceId(String sourceId) {
-		this.sourceId = sourceId;
-	}
-
 	public int getNumberOfChildren() {
 		return childrenElements.size();
 	}
@@ -78,7 +69,6 @@ public class ElementCDF {
 		Element element = doc.createElement("element");
 		element.setAttribute("name", name);
 		element.setAttribute("type", type.toString().toLowerCase());		
-		element.setAttribute("id", sourceId);
 		Element children = doc.createElement("children");
 		element.appendChild(children);
 		for(ElementCDF c : this.childrenElements) {

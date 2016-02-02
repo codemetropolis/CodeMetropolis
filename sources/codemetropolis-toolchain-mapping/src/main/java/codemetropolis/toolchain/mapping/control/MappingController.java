@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,6 +36,7 @@ public class MappingController {
 	private Map<Buildable, Map<String, String>> attributesByBuildables = new HashMap<>();
 	private double scale;
 	private boolean showNested;
+	private Stack<Buildable> buildableStack = new Stack<>();
 	
 	public MappingController() {
 		this(1.0, false);
@@ -54,33 +56,11 @@ public class MappingController {
 			File xmlFile = new File(filename);
 			Document doc = dBuilder.parse(xmlFile);
 			doc.getDocumentElement().normalize();
-			NodeList nodes = doc.getElementsByTagName("element");
-			for(int i=0; i<nodes.getLength(); i++){
-				Node nNode = nodes.item(i);
-				if(nNode.getNodeType() == Node.ELEMENT_NODE){
-					Element element = (Element) nNode;
-					Buildable actualB = createBuildable(element);
-					
-					Map<String,String> attributes = new HashMap<>();
-					Node properties = element.getChildNodes().item(3);
-					if(properties.getNodeType() == Node.ELEMENT_NODE){
-						Element propertiesElements = (Element) properties;
-						attributes.putAll(createAttributeMap(propertiesElements));
-						attributes.put("SourceType", element.getAttribute("type"));				
-					}
-					attributesByBuildables.put(actualB, attributes);
-					
-					
-					if("children".equals(element.getParentNode().getNodeName()) && "element".equals(element.getParentNode().getParentNode().getNodeName())){
-						Element parentElement = (Element) element.getParentNode().getParentNode();
-						if(getBuildable(parentElement) != null){
-							Buildable b = getBuildable(parentElement);
-							b.addChild(actualB);						
-						}
-					}
-				}
-			}
-		
+			Element rootElement = (Element) doc.getChildNodes().item(0);
+			Buildable actualB = createBuildable(rootElement);
+			setAttributes(actualB, rootElement);
+			setChildren(actualB, rootElement);
+			
 		} catch (ParserConfigurationException | SAXException | IOException e){
 			e.printStackTrace();
 		}
@@ -143,23 +123,41 @@ public class MappingController {
 		return buildableTree;
 	}
 	
-	private Buildable getBuildable(Element element){
-		String id = element.getAttribute("id");
-		for(Buildable b : attributesByBuildables.keySet()){
-			if(b.getId().equals(id)){
-				return b;
+	private void setChildren(Buildable buildable, Element element){
+		buildableStack.add(buildable);
+		Node children = element.getChildNodes().item(1);
+		NodeList childrenNodes = children.getChildNodes();
+		for(int i = 0; i < childrenNodes.getLength(); i++){
+			if(childrenNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
+				Element childElement = (Element) childrenNodes.item(i);
+				Buildable childBuildable = createBuildable(childElement);
+				buildableStack.peek().addChild(childBuildable);
+				setAttributes(childBuildable, childElement);
+				setChildren(childBuildable, childElement);
 			}
-		}		
-		return null;		
+		}
+		
+		buildableStack.pop();
+		
+	}
+	
+	private void setAttributes(Buildable buildable, Element element){
+		Map<String,String> attributes = new HashMap<>();
+		Node properties = element.getChildNodes().item(3);
+		if(properties.getNodeType() == Node.ELEMENT_NODE){
+			Element propertiesElements = (Element) properties;
+			attributes.putAll(createAttributeMap(propertiesElements));
+			attributes.put("SourceType", element.getAttribute("type"));				
+		}
+		attributesByBuildables.put(buildable, attributes);
 	}
 	
 	private Buildable createBuildable(Element element) {	
 		
-		String id = element.getAttribute("id");
+	//	String id = element.getAttribute("id");
 		
 		//TODO: id generálás
 		String name = element.getAttribute("name");
-		
 		Type type = null;
 		switch(element.getAttribute("type")) {
 			case "package":
@@ -177,7 +175,7 @@ public class MappingController {
 			case "attribute":
 				type = Type.CELLAR;
 		}
-		return new Buildable(id, name, type);
+		return new Buildable("", name, type);
 	}
 	
 	private Map<String, String> createAttributeMap(Element element) {
