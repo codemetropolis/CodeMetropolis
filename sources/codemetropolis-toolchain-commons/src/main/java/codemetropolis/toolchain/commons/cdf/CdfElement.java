@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.converter;
+package codemetropolis.toolchain.commons.cdf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,14 @@ import java.util.Stack;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class ElementCDF {
+public class CdfElement {
 
 	private String name;
 	private String type;
-	private List<Property> properties;
-	private List<ElementCDF> childrenElements;
+	private List<CdfProperty> properties;
+	private List<CdfElement> childrenElements;
 	
-	public ElementCDF(){
+	public CdfElement(){
 		properties = new ArrayList<>();
 		childrenElements = new ArrayList<>();
 	}
@@ -31,16 +31,16 @@ public class ElementCDF {
 	public void setType(String sourceType) {
 		this.type = sourceType;
 	}
-	public List<Property> getProperties() {
+	public List<CdfProperty> getProperties() {
 		return properties;
 	}
-	public void setProperties(List<Property> properties) {
+	public void setProperties(List<CdfProperty> properties) {
 		this.properties = properties;
 	}
-	public List<ElementCDF> getChildrenElements() {
+	public List<CdfElement> getChildrenElements() {
 		return childrenElements;
 	}
-	public void setChildrenElements(List<ElementCDF> childrenElements) {
+	public void setChildrenElements(List<CdfElement> childrenElements) {
 		this.childrenElements = childrenElements;
 	}
 
@@ -48,15 +48,15 @@ public class ElementCDF {
 		return childrenElements.size();
 	}
 	
-	public List<ElementCDF> getDescendants() {
+	public List<CdfElement> getDescendants() {
 
-		List<ElementCDF> result = new ArrayList<ElementCDF>();
-		Stack<ElementCDF> temp = new Stack<ElementCDF>();
+		List<CdfElement> result = new ArrayList<CdfElement>();
+		Stack<CdfElement> temp = new Stack<CdfElement>();
 		temp.push(this);
 		while(!temp.isEmpty()) {
-			ElementCDF current = temp.pop();
+			CdfElement current = temp.pop();
 			if(current.getNumberOfChildren() > 0) {
-				for(ElementCDF child : current.getChildrenElements()) {
+				for(CdfElement child : current.getChildrenElements()) {
 					result.add(child);
 					temp.push(child);
 				}
@@ -71,13 +71,13 @@ public class ElementCDF {
 		element.setAttribute("type", type.toString().toLowerCase());		
 		Element children = doc.createElement("children");
 		element.appendChild(children);
-		for(ElementCDF c : this.childrenElements) {
+		for(CdfElement c : this.childrenElements) {
 			children.appendChild(c.toXmlElement(doc));
 		}
 		
 		Element propertiesElement = doc.createElement("properties");
 		element.appendChild(propertiesElement);		
-		for(Property prop : this.properties) {
+		for(CdfProperty prop : this.properties) {
 			Element attr = doc.createElement("property");
 			attr.setAttribute("type", prop.getType());
 			attr.setAttribute("name", prop.getName());

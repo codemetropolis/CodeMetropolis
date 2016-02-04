@@ -1,14 +1,14 @@
 package codemetropolis.toolchain.converter.control;
 
-import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
-import codemetropolis.toolchain.commons.converter.ElementList;
-import codemetropolis.toolchain.commons.converter.IConverter;
+import codemetropolis.toolchain.commons.cdf.CdfElementTree;
+import codemetropolis.toolchain.commons.cdf.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 
 public class ConverterController {
 	
-	private IConverter graphConverter;
+	private CdfConverter graphConverter;
 
-	public ConverterController(IConverter graphConverter){
+	public ConverterController(CdfConverter graphConverter){
 		this.graphConverter = graphConverter;
 	}
 	
@@ -16,10 +16,9 @@ public class ConverterController {
 		graphConverter.createElements();
 	}
 	
-	public void writeToFile(String filePath) throws CmxmlWriterException{ 
-		ElementList elementList = graphConverter.getElementList();
-		elementList.writeToFile(filePath);
-
+	public void writeToFile(String filePath) throws CdfWriterException{ 
+		CdfElementTree elementTree = graphConverter.getElementList();
+		elementTree.writeToFile(filePath);
 	}
 
 	

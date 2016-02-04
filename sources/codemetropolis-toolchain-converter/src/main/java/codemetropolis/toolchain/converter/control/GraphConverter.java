@@ -3,10 +3,10 @@ package codemetropolis.toolchain.converter.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import codemetropolis.toolchain.commons.converter.ElementCDF;
-import codemetropolis.toolchain.commons.converter.ElementList;
-import codemetropolis.toolchain.commons.converter.IConverter;
-import codemetropolis.toolchain.commons.converter.Property;
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfElementTree;
+import codemetropolis.toolchain.commons.cdf.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import graphlib.Attribute;
 import graphlib.Attribute.AttributeIterator;
 import graphlib.AttributeFloat;
@@ -18,10 +18,10 @@ import graphlib.Edge.eDirectionType;
 import graphlib.Graph;
 import graphlib.Node;
 
-public class GraphConverter implements IConverter {
+public class GraphConverter implements CdfConverter {
 	
-	private List<ElementCDF> elements;
-	private ElementCDF rootElement;
+	private List<CdfElement> elements;
+	private CdfElement rootElement;
 	String fileName;
 	
 	public GraphConverter(String filename){
@@ -38,17 +38,16 @@ public class GraphConverter implements IConverter {
 		nodes.add(0, root);
 		
 		for(Node node : nodes) {
-			ElementCDF element = createElement(node);
+			CdfElement element = createElement(node);
 			elements.add(element);
-			
 		}
 		
 		for(Node node : nodes) {
-			ElementCDF elementCDF = null;
-			List<ElementCDF> children = new ArrayList<ElementCDF>();
+			CdfElement elementCDF = null;
+			List<CdfElement> children = new ArrayList<CdfElement>();
 			Node[] childNodes = getChildNodes(node);
 			
-			for(ElementCDF e : elements) {	
+			for(CdfElement e : elements) {	
 				if(rootElement == null && getSourceIdProp(e).equals(root.getUID())){
 					rootElement = e;
 				}
@@ -81,16 +80,17 @@ public class GraphConverter implements IConverter {
 		return childList.toArray(new Node[childList.size()]);
 	}
 	
-	private String getSourceIdProp(ElementCDF element){
-		for(Property prop : element.getProperties()){
+	private String getSourceIdProp(CdfElement element){
+		for(CdfProperty prop : element.getProperties()){
 			if("sourceid".equals(prop.getName())){
 				return prop.getValue();
 			}
 		}
 		return "";
 	}
-	private List<Property> getProperties(Node node){
-		List<Property> propertiesList = new ArrayList<>();
+	
+	private List<CdfProperty> getProperties(Node node){
+		List<CdfProperty> propertiesList = new ArrayList<>();
 		
 		AttributeIterator attributeIterator = node.getAttributes();
 		while(attributeIterator.hasNext()) {
@@ -118,11 +118,12 @@ public class GraphConverter implements IConverter {
 				value = "";
 				type = "";
 			}
-		    Property prop = new Property(a.getName(), String.valueOf(value), type);
+		    CdfProperty prop = new CdfProperty(a.getName(), String.valueOf(value), type);
 		    propertiesList.add(prop);
 		}
 		return propertiesList;	
 	}
+	
 	private List<Node> getDescendantNodes(Node node) {
 		List<Node> temp = new ArrayList<Node>();
 		temp.add(node);
@@ -138,20 +139,19 @@ public class GraphConverter implements IConverter {
 		return descendants;
 	}
 	
-	private ElementCDF createElement(Node node){
-		ElementCDF element =  new ElementCDF();
+	private CdfElement createElement(Node node){
+		CdfElement element =  new CdfElement();
 		String name = ((AttributeString)node.findAttributeByName("Name").next()).getValue();
 		String type = node.getType().getType();
 		element.setName(name);
 		element.setType(type);
-		element.getProperties().add(new Property("sourceid", node.getUID(), "string"));
+		element.getProperties().add(new CdfProperty("sourceid", node.getUID(), "string"));
 		return element;
 		
 	}
-
 	
 	@Override
-	public ElementList getElementList(){
-		return new ElementList(rootElement);
+	public CdfElementTree getElementList(){
+		return new CdfElementTree(rootElement);
 	}
 }

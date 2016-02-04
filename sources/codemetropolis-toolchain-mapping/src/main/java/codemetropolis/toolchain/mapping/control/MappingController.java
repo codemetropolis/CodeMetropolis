@@ -27,8 +27,6 @@ import codemetropolis.toolchain.mapping.conversions.Conversion;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
-
-
 public class MappingController {
 	
 	private static final int MIN_SIZE = 9;
@@ -48,9 +46,9 @@ public class MappingController {
 		this.showNested = showNested;
 	}
 	
-	public void createBuildablesFromGraph(String filename) {
+	public void createBuildablesFromCdf(String filename) {
 		attributesByBuildables.clear();
-
+		
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();;
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -58,9 +56,9 @@ public class MappingController {
 			Document doc = dBuilder.parse(xmlFile);
 			doc.getDocumentElement().normalize();
 			Element rootElement = (Element) doc.getChildNodes().item(0);
-			Buildable actualB = createBuildable(rootElement);
-			setAttributes(actualB, rootElement);
-			setChildren(actualB, rootElement);
+			Buildable actualBuildable = createBuildable(rootElement);
+			setAttributes(actualBuildable, rootElement);
+			setChildren(actualBuildable, rootElement);
 			
 		} catch (ParserConfigurationException | SAXException | IOException e){
 			e.printStackTrace();

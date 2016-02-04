@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.converter;
+package codemetropolis.toolchain.commons.cdf;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,13 +14,13 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 
-public class ElementList {
+public class CdfElementTree {
 	
 	public class Iterator {
 
-		private List<ElementCDF> temp = new ArrayList<ElementCDF>();
+		private List<CdfElement> temp = new ArrayList<CdfElement>();
 		private int index = 0;
 		
 		Iterator() {
@@ -35,8 +35,8 @@ public class ElementList {
 			return !temp.isEmpty();
 		}
 
-		public ElementCDF next() {
-			ElementCDF next = temp.remove(0);
+		public CdfElement next() {
+			CdfElement next = temp.remove(0);
 			temp.addAll(0, next.getChildrenElements());
 			++index;
 			return next;
@@ -44,20 +44,20 @@ public class ElementList {
 		
 	}
 	
-	private ElementCDF root;
+	private CdfElement root;
 	
-	public ElementList(ElementCDF root) {
+	public CdfElementTree(CdfElement root) {
 		this.root = root;
 	}
 	
-	public ElementList() {
+	public CdfElementTree() {
 	}
 	
-	public ElementCDF getRoot() {
+	public CdfElement getRoot() {
 		return root;
 	}
 	
-	public void setRoot(ElementCDF root) {
+	public void setRoot(CdfElement root) {
 		this.root = root;
 	}
 
@@ -65,15 +65,14 @@ public class ElementList {
 		return new Iterator();
 	}
 	
-	public List<ElementCDF> getBuildables() {
-		List<ElementCDF> buildables = new ArrayList<>();
+	public List<CdfElement> getBuildables() {
+		List<CdfElement> buildables = new ArrayList<>();
 		buildables.add(root);
 		buildables.addAll(root.getDescendants());
 		return buildables;
 	}
 
-	public void writeToFile(String filename) throws CmxmlWriterException{
-		
+	public void writeToFile(String filename) throws CdfWriterException{
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -89,8 +88,7 @@ public class ElementList {
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
 		} catch ( Exception e) {
-			throw new CmxmlWriterException(e);
+			throw new CdfWriterException(e);
 		}
-		
 	}
 }
