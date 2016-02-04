@@ -47,16 +47,6 @@
 	  <artifactId>args4j</artifactId>
 	  <version>2.32</version>
 	</dependency>
-    <dependency>
-      <groupId>sed</groupId>
-      <artifactId>graphlib</artifactId>
-      <version>1.0</version>
-    </dependency>
-	<dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-lang3</artifactId>
-	  <version>3.4</version>
-	</dependency>
 	<dependency>
 	  <groupId>org.apache.commons</groupId>
 	  <artifactId>commons-collections4</artifactId>
