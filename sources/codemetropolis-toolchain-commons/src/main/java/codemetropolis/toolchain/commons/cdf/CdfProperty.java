@@ -4,10 +4,9 @@ public class CdfProperty {
 
 	private String name;
 	private String value;
-	private String type;
+	private Type type;
 	
-	public CdfProperty(String name, String value, String type) {
-		super();
+	public CdfProperty(String name, String value, Type type) {
 		this.name = name;
 		this.value = value;
 		this.type = type;
@@ -29,11 +28,17 @@ public class CdfProperty {
 		this.value = value;
 	}
 	
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 	
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
+	}
+	
+	public enum Type {
+		STRING,
+		INT,
+		FLOAT
 	}
 }

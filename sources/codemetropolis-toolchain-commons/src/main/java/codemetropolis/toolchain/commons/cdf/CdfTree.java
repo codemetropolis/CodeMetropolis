@@ -37,7 +37,7 @@ public class CdfTree {
 
 		public CdfElement next() {
 			CdfElement next = temp.remove(0);
-			temp.addAll(0, next.getChildrenElements());
+			temp.addAll(0, next.getChildElements());
 			++index;
 			return next;
 		}
@@ -65,7 +65,7 @@ public class CdfTree {
 		return new Iterator();
 	}
 	
-	public List<CdfElement> getBuildables() {
+	public List<CdfElement> getElements() {
 		List<CdfElement> buildables = new ArrayList<>();
 		buildables.add(root);
 		buildables.addAll(root.getDescendants());
@@ -87,7 +87,7 @@ public class CdfTree {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
-		} catch ( Exception e) {
+		} catch (Exception e) {
 			throw new CdfWriterException(e);
 		}
 	}
