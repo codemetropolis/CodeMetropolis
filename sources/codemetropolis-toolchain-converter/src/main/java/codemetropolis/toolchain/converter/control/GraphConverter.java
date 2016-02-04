@@ -20,6 +20,8 @@ import graphlib.Node;
 
 public class GraphConverter implements CdfConverter {
 	
+	private static final String ROOT_NODE_ID = "L100";
+	
 	private String fileName;
 	
 	public GraphConverter(String filename){
@@ -30,7 +32,7 @@ public class GraphConverter implements CdfConverter {
 	public CdfTree createElements(){
 		Graph graph = new Graph();
 		graph.loadBinary(fileName);
-		Node root = graph.findNode("L100");
+		Node root = graph.findNode(ROOT_NODE_ID);
 		CdfElement rootElement = createElementsRecursively(root);
 		return new CdfTree(rootElement);
 	}

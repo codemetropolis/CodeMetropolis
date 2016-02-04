@@ -135,7 +135,6 @@ public class MappingController {
 				setChildren(childBuildable, childElement);
 			}
 		}
-		
 		buildableStack.pop();
 	}
 	
@@ -174,10 +173,10 @@ public class MappingController {
 	}
 	
 	private Map<String, String> createAttributeMap(Element element) {
-
-		Map<String, String> attributes = new HashMap<String, String>();
 		
+		Map<String, String> attributes = new HashMap<String, String>();
 		NodeList propNodes = element.getChildNodes();
+		
 		for(int i = 0; i< propNodes.getLength(); i++){
 			Node propNode = propNodes.item(i);
 			if(propNode.getNodeType() == Node.ELEMENT_NODE){
@@ -210,7 +209,6 @@ public class MappingController {
 						String.valueOf(value)
 						);
 			}							
-		
 		}
 		return attributes;
 	}
