@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -138,7 +139,6 @@ public class MappingController {
 		}
 		
 		buildableStack.pop();
-		
 	}
 	
 	private void setAttributes(Buildable buildable, Element element){
@@ -152,11 +152,8 @@ public class MappingController {
 		attributesByBuildables.put(buildable, attributes);
 	}
 	
-	private Buildable createBuildable(Element element) {	
-		
-	//	String id = element.getAttribute("id");
-		
-		//TODO: id generálás
+	private Buildable createBuildable(Element element) {
+		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
 		Type type = null;
 		switch(element.getAttribute("type")) {
@@ -175,7 +172,7 @@ public class MappingController {
 			case "attribute":
 				type = Type.CELLAR;
 		}
-		return new Buildable("", name, type);
+		return new Buildable(id, name, type);
 	}
 	
 	private Map<String, String> createAttributeMap(Element element) {
