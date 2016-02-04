@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
-import codemetropolis.toolchain.commons.cdf.CdfElementTree;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import graphlib.Attribute;
@@ -20,8 +20,6 @@ import graphlib.Node;
 
 public class GraphConverter implements CdfConverter {
 	
-	private List<CdfElement> elements;
-	private CdfElement rootElement;
 	String fileName;
 	
 	public GraphConverter(String filename){
@@ -29,10 +27,10 @@ public class GraphConverter implements CdfConverter {
 	}
 	
 	@Override
-	public void createElements(){
+	public CdfTree createElements(){
 		Graph graph = new Graph();
 		graph.loadBinary(fileName);
-	    elements = new ArrayList<>();
+		List<CdfElement> elements = new ArrayList<>();
 		Node root = graph.findNode("L100");
 		List<Node> nodes = getDescendantNodes(root);
 		nodes.add(0, root);
@@ -42,8 +40,10 @@ public class GraphConverter implements CdfConverter {
 			elements.add(element);
 		}
 		
+		CdfElement rootElement = null;
+		
 		for(Node node : nodes) {
-			CdfElement elementCDF = null;
+			CdfElement cdfElement = null;
 			List<CdfElement> children = new ArrayList<CdfElement>();
 			Node[] childNodes = getChildNodes(node);
 			
@@ -53,7 +53,7 @@ public class GraphConverter implements CdfConverter {
 				}
 				if(getSourceIdProp(e).equals(node.getUID())) {
 					e.getProperties().addAll(getProperties(node));
-					elementCDF = e;
+					cdfElement = e;
 				} else {
 					for(Node n : childNodes) {
 						if(getSourceIdProp(e).equals(n.getUID())) {
@@ -62,11 +62,12 @@ public class GraphConverter implements CdfConverter {
 						}
 					}
 				}
-				if(elementCDF != null && children.size() == childNodes.length) break;
+				if(cdfElement != null && children.size() == childNodes.length) break;
 			}
-			elementCDF.getChildrenElements().addAll(children);
-			
-		}	
+			cdfElement.getChildrenElements().addAll(children);
+		}
+		
+		return new CdfTree(rootElement);
 	}
 
 	private Node[] getChildNodes(Node node) {
@@ -86,7 +87,7 @@ public class GraphConverter implements CdfConverter {
 				return prop.getValue();
 			}
 		}
-		return "";
+		return null;
 	}
 	
 	private List<CdfProperty> getProperties(Node node){
@@ -149,9 +150,5 @@ public class GraphConverter implements CdfConverter {
 		return element;
 		
 	}
-	
-	@Override
-	public CdfElementTree getElementList(){
-		return new CdfElementTree(rootElement);
-	}
+
 }

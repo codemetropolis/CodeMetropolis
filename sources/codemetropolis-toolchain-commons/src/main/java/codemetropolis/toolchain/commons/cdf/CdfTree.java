@@ -16,7 +16,7 @@ import org.w3c.dom.Document;
 
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 
-public class CdfElementTree {
+public class CdfTree {
 	
 	public class Iterator {
 
@@ -46,11 +46,11 @@ public class CdfElementTree {
 	
 	private CdfElement root;
 	
-	public CdfElementTree(CdfElement root) {
+	public CdfTree(CdfElement root) {
 		this.root = root;
 	}
 	
-	public CdfElementTree() {
+	public CdfTree() {
 	}
 	
 	public CdfElement getRoot() {
