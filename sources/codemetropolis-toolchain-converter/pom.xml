@@ -1,13 +1,13 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>codemetropolis.toolchain</groupId>
     <artifactId>codemetropolis-toolchain</artifactId>
+    <groupId>codemetropolis.toolchain</groupId>
     <version>1.3</version>
   </parent>
-  <artifactId>codemetropolis-toolchain-mapping</artifactId>
+  <artifactId>codemetropolis-toolchain-converter</artifactId>
+
   <build>
     <plugins>
       <plugin>
@@ -16,7 +16,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>codemetropolis.toolchain.mapping.Main</mainClass>
+                <mainClass>codemetropolis.toolchain.converter.Main</mainClass>
               </manifest>
             </archive>
             <descriptorRefs>
@@ -36,21 +36,22 @@
         </plugin>
       </plugins>
   </build>
+
   <dependencies>
-  	<dependency>
-	  <groupId>codemetropolis.toolchain</groupId>
-	  <artifactId>codemetropolis-toolchain-commons</artifactId>
-	  <version>1.3</version>
-	</dependency>
+    <dependency>
+      <groupId>codemetropolis.toolchain</groupId>
+      <artifactId>codemetropolis-toolchain-commons</artifactId>
+      <version>1.3</version>
+    </dependency>
     <dependency>
       <groupId>args4j</groupId>
-	  <artifactId>args4j</artifactId>
-	  <version>2.32</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-collections4</artifactId>
-	  <version>4.1</version>
-	</dependency>
+      <artifactId>args4j</artifactId>
+      <version>2.32</version>
+    </dependency>
+    <dependency>
+      <groupId>sed</groupId>
+      <artifactId>graphlib</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
 </project>
