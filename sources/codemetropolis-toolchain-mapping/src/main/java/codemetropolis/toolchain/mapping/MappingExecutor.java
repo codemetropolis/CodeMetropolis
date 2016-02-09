@@ -1,6 +1,9 @@
 package codemetropolis.toolchain.mapping;
 
+import java.io.IOException;
+
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.commons.cmxml.Validator;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
@@ -15,6 +18,17 @@ public class MappingExecutor extends AbstractExecutor {
 	@Override
 	public void execute(ExecutorArgs args) {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
+		
+		try {
+			boolean isValid = Validator.validateCdf(mappingArgs.getGraphFile());
+			if(!isValid) {
+				errorStream.println(Resources.get("invalid_cdf_xml_error"));
+				return;
+			}
+		} catch (IOException e) {
+			errorStream.println(Resources.get("missing_input_xml_error"));
+			return;
+		}
 		
 		printStream.println(Resources.get("reading_mapping"));
 		Mapping mapping;

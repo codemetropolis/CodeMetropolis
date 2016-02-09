@@ -20,6 +20,7 @@ import org.xml.sax.SAXException;
 public class Validator {
 	
 	private static final InputStream XSD_STREAM = Validator.class.getClassLoader().getResourceAsStream("cmxml_scheme.xsd");
+	private static final InputStream XSD_CDF_STREAM = Validator.class.getClassLoader().getResourceAsStream("cdfxml_scheme.xsd");
 	private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY = DocumentBuilderFactory.newInstance();
 	
 	public static boolean validate(String xmlPath) throws IOException {
@@ -38,4 +39,19 @@ public class Validator {
 	    return true;
 	}
 
+	public static boolean validateCdf(String xmlPath) throws IOException {
+		File xmlFile = new File(xmlPath);
+		try {
+			DocumentBuilder documentBuilder = DOCUMENT_BUILDER_FACTORY.newDocumentBuilder();
+			Document doc = documentBuilder.parse(xmlFile);
+		    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		    Source schemaFile = new StreamSource(XSD_CDF_STREAM);
+		    Schema schema = factory.newSchema(schemaFile);;
+	    	javax.xml.validation.Validator validator = schema.newValidator();
+	        validator.validate(new DOMSource(doc));
+	    } catch (SAXException | ParserConfigurationException e) {
+	    	return false;
+	    }
+	    return true;
+	}
 }
