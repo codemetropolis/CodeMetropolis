@@ -38,10 +38,36 @@ The input of Placing Tool contains only the structure and the main attributes of
 
 Part of mappingToPlacing.xml: 
 
-<img src="{{ site.url }}/images/mappingToPlacing.jpg"/>
+~~~ xml
+<buildable id="8b224e44-26f8-4ab3-94b0-7831238e3d7a" name="void performExp()" type="floor">
+    <position x="0" y="0" z="0"/>
+    <size x="9" y="17" z="11"/>
+    <attributes>
+        <attribute name="external_character" value="metal"/>
+        <attribute name="character" value="glass"/>
+        <attribute name="torches" value="1"/>
+   </attributes>
+  <children/>
+</buildable>
+~~~ 
+
+In the `buildable` tag there is an id, a name and a type, which defines the the buildable object, for example a method. `Position` tag defines the place of the object, and the `size` specify the size of the object. Every object have attributes. 
 
 Part of placingToRendering.xml: 
 
-<img src="{{ site.url }}/images/placingToRendering.jpg"/>
+~~~ xml
+<buildable id="8b224e44-26f8-4ab3-94b0-7831238e3d7a" name="void performExp()" type="floor">
+    <position x="26" y="63" z="76"/>
+    <size x="9" y="17" z="11"/>
+    <attributes>
+        <attribute name="external_character" value="metal"/>
+        <attribute name="character" value="glass"/>
+        <attribute name="torches" value="1"/>
+    </attributes>
+  <children/>
+</buildable>
+~~~
+
+In placingToRendering.xml a buildable object has got the same parameters and attributes, only the position will be exactly specified in addition. 
 
 
