@@ -44,8 +44,6 @@ Mapping to Placing XML contains only the structure of the city, the attributes o
 
 During placing phase, the position of simple elements (which does not contain any other element) are set and the size of the compound elements are calculated and propagated up along the containment relation. Of course the position of the compound elements are also updated. For example in a garden place (set the position of) two floors in the two opposite corner, then the garden should scaled up (set the size) to be able to contain these floors.
 
-<img src="{{ site.url }}/images/difference_between_MtP_PtR.png"/>
-
 These XMLs are built up on an [XML schema][XML]. 
 
 [XML]: <https://github.com/geryxyz/CodeMetropolis/blob/master/sources/codemetropolis-toolchain-commons/src/main/resources/cmxml_scheme.xsd>
