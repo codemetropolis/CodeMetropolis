@@ -22,15 +22,15 @@ The output XML contains the name and the type of the elements and the properties
 <element name="void main(String[] args)" type="method">
     <children/>
        <properties>
-       <property name="sourceid" type="string" value="L118"/>
-       <property name="Name" type="string" value="void main(String[] args)"/>
-       <property name="LongName" type="string" value="URLExpSimple.main([Ljava/lang/String;)V"/>
-       <property name="CLLC" type="float" value="0.0"/>
-       <property name="CC" type="float" value="0.0"/>
-       <property name="CI" type="int" value="0"/>
-       <property name="CCL" type="int" value="0"/>
-       <property name="CCO" type="int" value="0"/>
-       <property name="LLDC" type="float" value="0.0"/>
+        <property name="sourceid" type="string" value="L118"/>
+        <property name="Name" type="string" value="void main(String[] args)"/>
+        <property name="LongName" type="string" value="URLExpSimple.main([Ljava/lang/String;)V"/>
+        <property name="CLLC" type="float" value="0.0"/>
+        <property name="CC" type="float" value="0.0"/>
+        <property name="CI" type="int" value="0"/>
+        <property name="CCL" type="int" value="0"/>
+        <property name="CCO" type="int" value="0"/>
+        <property name="LLDC" type="float" value="0.0"/>
 ~~~
 
 In the XML source above you can see a method type element called "void main(String[] args)" with several properties. Every property has a name, a type and a value. 
