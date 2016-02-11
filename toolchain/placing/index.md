@@ -46,8 +46,8 @@ Part of mappingToPlacing.xml:
         <attribute name="external_character" value="metal"/>
         <attribute name="character" value="glass"/>
         <attribute name="torches" value="1"/>
-   </attributes>
-  <children/>
+    </attributes>
+    <children/>
 </buildable>
 ~~~ 
 
@@ -64,7 +64,7 @@ Part of placingToRendering.xml:
         <attribute name="character" value="glass"/>
         <attribute name="torches" value="1"/>
     </attributes>
-  <children/>
+    <children/>
 </buildable>
 ~~~
 
