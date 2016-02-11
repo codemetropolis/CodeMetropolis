@@ -26,18 +26,18 @@ The mapping file contains the parameters of build up the virtual world from the 
 
 ~~~ xml
  <linking>
-        <source name="Method" from="McCC" />
-        <target name="floor" to="character" />
-        <conversions>
-            <conversion type="quantization">
+      <source name="Method" from="McCC" />
+      <target name="floor" to="character" />
+      <conversions>
+           <conversion type="quantization">
                 <parameter name="level0" value="glass" />
                 <parameter name="level1" value="sand" />
                 <parameter name="level2" value="planks" />
                 <parameter name="level3" value="stone" />
                 <parameter name="level4" value="obsidian" />
-            </conversion>
-        </conversions>
-    </linking>
+           </conversion>
+      </conversions>
+ </linking>
 ~~~
 
 In the `<linking>` tag we can set how a program element shoul be displayed in the world. We can set the attribute of it like LOC, NUMPAR or McCabe complexity, choose a representation form of it (for example building), the property of the graphical object, like the height of the building and the type of the transition. Parameters also can be customized with giving a name and a value. 
