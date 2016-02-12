@@ -23,9 +23,7 @@ If we use the `–m` option, the following popup window will appear:
 
 <img src="{{ site.url }}/images/placing_map_example.png"/>
 
-On the map we can see the structure of the virtual city generated from the source code. After closing this window, the command will be finished. 
-
-The window shows the map of the generated metropolis. Different colors represent different types of objects.   
+On the map the structure of the virtual city is represented, generated from the source code. Different colors represent different types of objects.   
 
 | Colors    | Objects   |
 | --------- | --------- |
@@ -33,6 +31,8 @@ The window shows the map of the generated metropolis. Different colors represent
 | blue      | garden    |
 | green     | floor     |
 | red       | cellar    |
+
+After closing this window, the building process will be finished.
 
 The input of Placing Tool contains only the structure and the main attributes of the city, while the output XML describes the size of inner buildings, like floor and cellar. Here is an example: 
 
@@ -51,7 +51,7 @@ Part of mappingToPlacing.xml:
 </buildable>
 ~~~ 
 
-In the `buildable` tag there is an id, a name and a type, which defines the the buildable object, for example a method. `Position` tag defines the place of the object, and the `size` specify the size of the object. Every object have attributes. 
+In the `buildable` tag there is an id, a name and a type, which defines the the buildable object, for example a method. `Position` tag defines the place of the object, and the `size` specify the size of the object. Every object can have attributes. 
 
 Part of placingToRendering.xml: 
 
