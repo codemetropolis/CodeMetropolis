@@ -7,7 +7,7 @@ image:
   feature: inside_the_city_of_glass.png
 ---
 
-CodeMetropolis tools are using XML files to communicate with each other. Mapping Tool generates an output XML file which is used by placing tool as input. Similarly, the Placing Tool generates an XML for Rendering Tool.
+CodeMetropolis tools are using XML files to communicate with each other. Mapping Tool generates an output XML file which is used by placing tool as input. Similarly, the Placing Tool creates an XML for Rendering Tool.
 These XML files are using the same format defined in an XML Schema.
 Here is an exmaple from a placing output XML:     
 
@@ -30,7 +30,7 @@ Here is an exmaple from a placing output XML:
                  </attributes>
 ~~~   
  
-A buildable is representing an object of the city in hierarchical structure. These objects have some parameters with specific meaning:
+`Buildable` tags are representing objects of the city, which are located in hierarchical structure. These objects have some parameters with specific meaning:
 
 + **id:** identifies buildable, for example "L176".
 + **name:** name of the buildable, it can be a method, a function etc.
@@ -44,7 +44,7 @@ Mapping to Placing XML contains only the structure of the city, the attributes o
 
 During placing phase, the position of simple elements (which does not contain any other element) are set and the size of the compound elements are calculated and propagated up along the containment relation. Of course the position of the compound elements are also updated. For example in a garden place (set the position of) two floors in the two opposite corner, then the garden should scaled up (set the size) to be able to contain these floors.
 
-These XMLs are built up on an [XML schema][XML]. 
+These XMLs are built up on the same [XML schema][XML]. 
 
 [XML]: <https://github.com/geryxyz/CodeMetropolis/blob/master/sources/codemetropolis-toolchain-commons/src/main/resources/cmxml_scheme.xsd>
 
