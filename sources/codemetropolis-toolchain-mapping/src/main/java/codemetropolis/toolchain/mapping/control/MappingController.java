@@ -24,6 +24,7 @@ import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
+import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
@@ -36,14 +37,16 @@ public class MappingController {
 	private double scale;
 	private boolean showNested;
 	private Stack<Buildable> buildableStack = new Stack<>();
+	private Mapping mapping;
 	
 	public MappingController() {
-		this(1.0, false);
+		this(1.0, false, null);
 	}
 	
-	public MappingController(double scale, boolean showNested) {
+	public MappingController(double scale, boolean showNested, Mapping mapping) {
 		this.scale = scale;
 		this.showNested = showNested;
+		this.mapping = mapping;
 	}
 	
 	public void createBuildablesFromCdf(String filename) {
@@ -87,7 +90,10 @@ public class MappingController {
 					attributes.remove("SourceType");
 					String value = attributes.get(l.getSourceFrom());
 					Object convertedValue = null;
-					
+					if(value == null){
+						value = "10";
+						System.out.println("Warning: Using default value.");
+					}
 					try {
 						for(Conversion c : l.getConversions()) {
 							convertedValue = c.apply(value, limitController.getLimit(l.getSourceName().toLowerCase(), l.getSourceFrom()));
@@ -95,8 +101,6 @@ public class MappingController {
 					} catch(Exception e) {
 						continue;
 					}
-					
-					if(value == null) continue;
 					
 					switch(l.getTargetTo()) {
 						case "height":
@@ -152,22 +156,13 @@ public class MappingController {
 	private Buildable createBuildable(Element element) {
 		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
-		Type type = null;
-		switch(element.getAttribute("type")) {
-			case "package":
-			case "namespace":
-				type = Type.GROUND;
-				break;
-			case "interface":
-			case "class":
-			case "enum":
-				type = Type.GARDEN;
-				break;
-			case "method":
-				type = Type.FLOOR;
-				break;
-			case "attribute":
-				type = Type.CELLAR;
+		Type type = mapping.getType(element.getAttribute("type"));
+		if (type == null){
+			switch (element.getAttribute("type")){
+				case "package":
+					type = Type.GROUND;
+			}
+				
 		}
 		return new Buildable(id, name, type);
 	}
@@ -272,5 +267,40 @@ public class MappingController {
 			}
 		}
 	}
-	
+	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
+
+		BuildableTree.Iterator iterator = buildableTree.iterator();
+		
+		while(iterator.hasNext()){
+			Buildable build = iterator.next();
+			Type buildableType = build.getType();
+			if(build.getParent() != null){
+				Type buildableParentType = build.getParent().getType();
+				switch(buildableType) {
+					case GROUND:
+						if(!Type.GROUND.equals(buildableParentType)){
+							throw new NotValidBuildableStructure();
+						}
+						break;
+					case GARDEN:
+						if(!Type.GROUND.equals(buildableParentType)){
+							throw new NotValidBuildableStructure();
+						}
+						break;
+					case FLOOR:
+					case CELLAR:
+						if(!Type.GARDEN.equals(buildableParentType)){
+							throw new NotValidBuildableStructure();
+						}					
+					break;
+					
+				}
+				
+			} else if(buildableType != Type.GROUND) {
+				throw new NotValidBuildableStructure();
+			}
+			
+		}
+		return false;
+	}
 }

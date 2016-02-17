@@ -8,6 +8,7 @@ import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.control.MappingController;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
+import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
 public class MappingExecutor extends AbstractExecutor {
@@ -17,6 +18,7 @@ public class MappingExecutor extends AbstractExecutor {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
 		
 		printStream.println(Resources.get("reading_mapping"));
+		
 		Mapping mapping;
 		try {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
@@ -30,14 +32,19 @@ public class MappingExecutor extends AbstractExecutor {
 		printStream.println(Resources.get("reading_mapping_done"));
 		
 		printStream.println(Resources.get("reading_graph"));
-		MappingController mappingController = new MappingController(mappingArgs.getScale(), mappingArgs.isShowNested());
+		MappingController mappingController = new MappingController(mappingArgs.getScale(), mappingArgs.isShowNested(), mapping);
 		mappingController.createBuildablesFromCdf(mappingArgs.getGraphFile());
 		printStream.println(Resources.get("reading_graph_done"));
 		
 		printStream.println(Resources.get("linking_metrics"));
 		BuildableTree buildables = mappingController.linkBuildablesToMetrics(mapping);
 		printStream.println(Resources.get("linking_metrics_done"));
-		
+		try {
+			mappingController.validateBuildableStructure(buildables);
+		} catch (NotValidBuildableStructure e) {
+			e.printStackTrace(errorStream);
+			return;
+		}
 		printStream.println(Resources.get("mapping_printing_output"));
 		try {
 			buildables.writeToFile(mappingArgs.getOutputFile(), "mapping", "placing", "1.0");

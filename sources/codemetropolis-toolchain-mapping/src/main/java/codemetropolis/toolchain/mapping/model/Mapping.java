@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
@@ -25,6 +26,7 @@ import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
 public class Mapping {
 	private Map<String, String> constants;
 	private List<Linking> linkings;
+	public static Map<String, Type> correctLinking = new HashMap<>();
 	
 	private Mapping() {
 		constants  = new HashMap<String, String>();
@@ -129,13 +131,62 @@ public class Mapping {
 			linking.setTargetName(targetName);
 			linking.setTargetTo(targetTo);
 			
-			if(linking.isSupported()) {
-				result.add(linking);
-			} else {
+			if(!linking.isSupported()) {
+				throw new NotSupportedLinkingException(String.format(Resources.get("invalid_linking_error"), sourceName, sourceFrom, targetName, targetTo));
+			} else if(!isSameSourceAndTarget(sourceName, targetName)){
+				//TODO: 
+				System.out.println("Warning: Multiple element mapped to the same object!");
+			} else if(checkVisualPropAndProperties(linking, result)){
+				//TODO: 
 				throw new NotSupportedLinkingException(String.format(Resources.get("invalid_linking_error"), sourceName, sourceFrom, targetName, targetTo));
 			}
+			result.add(linking);				
 		}
 		return result;
 	}
+	
+	private static boolean isSameSourceAndTarget(String sourceName, String targetName){
+		Type type = getTypeFromTargetName(targetName.toLowerCase());
 
+		if(type == null){
+			return false;
+		}
+		if(correctLinking.get(sourceName.toLowerCase()) == null){
+			correctLinking.put(sourceName.toLowerCase(), type);
+			return true;
+		} else if(!type.equals(correctLinking.get(sourceName.toLowerCase()))){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private static Type getTypeFromTargetName(String targetName){
+			switch(targetName) {
+			case "ground":
+				return Type.GROUND;
+			case "garden":
+				return Type.GARDEN;
+			case "floor":
+				return Type.FLOOR;
+			case "cellar":
+				return Type.CELLAR;
+			default: return null;
+		}
+	}
+
+	public Type getType(String sourceName){
+		return correctLinking.get(sourceName.toLowerCase());
+	}
+	
+	private static boolean checkVisualPropAndProperties(Linking linking, List<Linking> linkings){
+		for(Linking l : linkings){
+			if(l.getSourceName().equals(linking.getSourceName()) && 
+			   l.getTargetName().equals(linking.getTargetName()) &&
+			   l.getTargetTo().equals(linking.getTargetTo())){
+				return true;
+			}
+		}
+		return false;
+	}
 }
