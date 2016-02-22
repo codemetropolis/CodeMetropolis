@@ -29,6 +29,8 @@ public class Main {
 	    }
 		
 		PlacingExecutor executor = new PlacingExecutor();
+	    executor.setPrefix(Resources.get("placing_prefix"));
+	    executor.setErrorPrefix(Resources.get("error_prefix"));
 		executor.execute(
 				new PlacingExecutorArgs(
 						options.getInputFile(),

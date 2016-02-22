@@ -23,45 +23,45 @@ public class PlacingExecutor extends AbstractExecutor {
 		try {
 			boolean isValid = Validator.validate(placingArgs.getInputFile());
 			if(!isValid) {
-				errorStream.println(Resources.get("invalid_input_xml_error"));
+				printError(Resources.get("invalid_input_xml_error"));
 				return;
 			}
 		} catch (IOException e) {
-			errorStream.println(Resources.get("missing_input_xml_error"));
+			printError(Resources.get("missing_input_xml_error"));
 			return;
 		}
 		
-		printStream.println(Resources.get("placing_reading_input"));
+		print(Resources.get("placing_reading_input"));
 		BuildableTree buildables = new BuildableTree();
 		try {
 			buildables.loadFromFile(placingArgs.getInputFile());
 		} catch (CmxmlReaderException e) {
-			errorStream.println(Resources.get("cmxml_reader_error"));
+			printError(Resources.get("cmxml_reader_error"));
 			return;
 		}
-		printStream.println(Resources.get("placing_reading_input_done"));
+		print(Resources.get("placing_reading_input_done"));
 		
-		printStream.println(Resources.get("calculating_size_and_pos"));
+		print(Resources.get("calculating_size_and_pos"));
 		try {
 			Layout layout = Layout.parse(placingArgs.getLayout());
 			layout.apply(buildables);
 		} catch (NonExistentLayoutException e) {
-			errorStream.println(Resources.get("missing_layout_error"));
+			printError(Resources.get("missing_layout_error"));
 			return;
 		} catch (LayoutException e) {
-			errorStream.println(Resources.get("layout_error"));
+			printError(Resources.get("layout_error"));
 			return;
 		}
-		printStream.println(Resources.get("calculating_size_and_pos_done"));
+		print(Resources.get("calculating_size_and_pos_done"));
 
-		printStream.println(Resources.get("placing_printing_output"));
+		print(Resources.get("placing_printing_output"));
 		try {
 			buildables.writeToFile(placingArgs.getOutputFile(), "placing", "rendering", "1.0");
 		} catch (CmxmlWriterException e) {
-			errorStream.println(Resources.get("cmxml_writer_error"));
+			printError(Resources.get("cmxml_writer_error"));
 			return;
 		}
-		printStream.println(Resources.get("placing_printing_output_done"));
+		print(Resources.get("placing_printing_output_done"));
 		
 		if(placingArgs.showMap()) {
 			final BuildableTree b = buildables;

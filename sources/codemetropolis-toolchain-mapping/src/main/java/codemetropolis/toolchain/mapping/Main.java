@@ -29,6 +29,8 @@ public class Main {
 	    }
 			
 	    MappingExecutor executor = new MappingExecutor();
+	    executor.setPrefix(Resources.get("mapping_prefix"));
+	    executor.setErrorPrefix(Resources.get("error_prefix"));
 	    executor.execute(
 	    		new MappingExecutorArgs(
 		    		options.getInputFile(),

@@ -31,6 +31,8 @@ public class Main {
 	    }
 			
 	    ConverterExecutor executor = new ConverterExecutor();
+	    executor.setPrefix(Resources.get("converter_prefix"));
+	    executor.setErrorPrefix(Resources.get("error_prefix"));
 	    executor.execute(
 	    		new ConverterExecutorArgs(
 		    		options.getInputFile(),

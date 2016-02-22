@@ -15,18 +15,18 @@ public class ConverterExecutor extends AbstractExecutor {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
 		CdfConverter converter = new GraphConverter(converterArgs.getInputFile());
 		
-		printStream.println(Resources.get("converting_to_cdf"));
+		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = converter.createElements();
-		printStream.println(Resources.get("converting_to_cdf_done"));
+		print(Resources.get("converting_to_cdf_done"));
 		
-		printStream.println(Resources.get("printing_cdf"));
+		print(Resources.get("printing_cdf"));
 		try {
 			cdfTree.writeToFile(converterArgs.getOutputFile());
 		} catch (CdfWriterException e) {
-			e.printStackTrace(errorStream);
+			printError(Resources.get("cdf_writer_error"));
 			return;
 		}
-		printStream.println(Resources.get("printing_cdf_done"));
+		print(Resources.get("printing_cdf_done"));
 	}
 
 }

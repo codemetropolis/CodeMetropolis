@@ -29,6 +29,8 @@ public class Main {
 	    }
 	    
 	    RenderingExecutor executor = new RenderingExecutor();
+	    executor.setPrefix(Resources.get("rendering_prefix"));
+	    executor.setErrorPrefix(Resources.get("error_prefix"));
 	    executor.execute(
 	    		new RenderingExecutorArgs(
 	    				options.getInputFile(),

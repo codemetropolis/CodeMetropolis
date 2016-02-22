@@ -28,7 +28,7 @@ public class RenderingExecutor extends AbstractExecutor {
 		
 		if(worldDir.exists() && worldDir.isDirectory()) {
 			if(!overwrite) {
-				printStream.printf(Resources.get("world_already_exists"), tempDir.getAbsolutePath());
+				print(Resources.get("world_already_exists"), tempDir.getAbsolutePath());
 				Scanner in = new Scanner(System.in);
 				String input = "";
 				while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
@@ -38,7 +38,7 @@ public class RenderingExecutor extends AbstractExecutor {
 				if(input.equalsIgnoreCase("Y")) {
 					overwrite = true;
 				} else {
-					printStream.println(Resources.get("render_interrupted"));
+					print(Resources.get("render_interrupted"));
 					return;
 				}
 			}
@@ -50,11 +50,11 @@ public class RenderingExecutor extends AbstractExecutor {
 		try {
 			boolean isValid = Validator.validate(args.getInputFile());
 			if(!isValid) {
-				errorStream.println(Resources.get("invalid_input_xml_error"));
+				printError(Resources.get("invalid_input_xml_error"));
 				return;
 			}
 		} catch (IOException e) {
-			errorStream.println(Resources.get("missing_input_xml_error"));
+			printError(Resources.get("missing_input_xml_error"));
 			return;
 		}
 		
@@ -65,15 +65,15 @@ public class RenderingExecutor extends AbstractExecutor {
 				if(event.COUNT > 0) {
 					switch(event.PHASE){
 						case GENERATING_BLOCKS:
-							printStream.printf(
-									Resources.get("creating_blocks_progress") + "\r",
+							print(
+									Resources.get("creating_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
 									event.getTimeLeft().getMinutes());
 							break;
 						case PLACING_BLOCKS:
-							printStream.printf(
-									Resources.get("placing_blocks_progress") + "\r",
+							print(
+									Resources.get("placing_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
 									event.getTimeLeft().getMinutes());
@@ -85,37 +85,41 @@ public class RenderingExecutor extends AbstractExecutor {
 			}
 		});
 		
-		printStream.println(Resources.get("rendering_reading_input"));
+		print(Resources.get("rendering_reading_input"));
 		try {
 			worldBuilder.createBuildings(args.getInputFile());
 		} catch (BuildingTypeMismatchException e) {
-			e.printStackTrace(errorStream);
+			printError(Resources.get("building_creation_failed_error"));
+			return;
 		}
-		printStream.println(Resources.get("rendering_reading_input_done"));
-		printStream.printf(Resources.get("buildables_found") + "\n", worldBuilder.getNumberOfBuildings());
+		print(Resources.get("rendering_reading_input_done"));
+		print(Resources.get("buildables_found"), worldBuilder.getNumberOfBuildings());
 		
-		printStream.println(Resources.get("creating_blocks"));
+		print(Resources.get("creating_blocks"));
 		try {
 			worldBuilder.createBlocks(tempDir, args.getMaxTime());
 		} catch (RenderingException e) {
-			e.printStackTrace(errorStream);
+			//e.printStackTrace(errorStream);
+			printError("TODO ERROR");
 			return;
 		}
 		long elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		int hours = (int) (elapsed / (1000 * 60 * 60));
         int minutes = (int) (elapsed % (1000 * 60 * 60) / (1000 * 60));
-		printStream.printf(Resources.get("creating_blocks_done") + "\n", worldBuilder.getNumberOfBlocks(), hours, minutes);
+        print(Resources.get("creating_blocks_done"), worldBuilder.getNumberOfBlocks(), hours, minutes);
 		
-		printStream.println(Resources.get("placing_blocks"));
+        print(Resources.get("placing_blocks"));
 		try {
 			worldBuilder.build(tempDir);
 		} catch (RenderingException e) {
-			e.printStackTrace(errorStream);
+			//e.printStackTrace(errorStream);
+			printError("TODO ERROR");
+			return;
 		}
 		elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		hours = (int) (elapsed / (1000 * 60 * 60));
         minutes = (int) (elapsed % (1000 * 60 * 60) / (1000 * 60));
-		printStream.printf(Resources.get("placing_blocks_done") + "                                           \n", hours, minutes);
+        print(Resources.get("placing_blocks_done"), hours, minutes);
 	}
 	
 }
