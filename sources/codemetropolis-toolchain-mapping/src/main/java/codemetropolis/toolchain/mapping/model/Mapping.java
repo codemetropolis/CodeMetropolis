@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.mapping.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,12 +47,16 @@ public class Mapping {
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();;
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document document = db.parse(new File(filename));
+			File xmlFile = new File(filename);
+			if(!xmlFile.exists()) {
+				throw new FileNotFoundException();
+			}
+			Document document = db.parse(xmlFile);
 			document.getDocumentElement().normalize();
 			result.constants = parseResources(document);
 			result.linkings = parseLinkings(document);
 		} catch (ParserConfigurationException | IOException | SAXException e) {
-			throw new MappingReaderException(e);
+			throw new MappingReaderException(Resources.get("mapping_reader_error"), e);
 		}
 		
 		return result;

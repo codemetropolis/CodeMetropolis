@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.mapping.control;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
+import codemetropolis.toolchain.mapping.exceptions.CdfReaderException;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
@@ -46,22 +48,24 @@ public class MappingController {
 		this.showNested = showNested;
 	}
 	
-	public void createBuildablesFromCdf(String filename) {
+	public void createBuildablesFromCdf(String filename) throws CdfReaderException {
 		attributesByBuildables.clear();
 		
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();;
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			File xmlFile = new File(filename);
+			if(!xmlFile.exists()) {
+				throw new FileNotFoundException();
+			}
 			Document doc = dBuilder.parse(xmlFile);
 			doc.getDocumentElement().normalize();
 			Element rootElement = (Element) doc.getChildNodes().item(0);
 			Buildable actualBuildable = createBuildable(rootElement);
 			setAttributes(actualBuildable, rootElement);
 			setChildren(actualBuildable, rootElement);
-			
 		} catch (ParserConfigurationException | SAXException | IOException e){
-			e.printStackTrace();
+			throw new CdfReaderException(e);
 		}
 	}
 	

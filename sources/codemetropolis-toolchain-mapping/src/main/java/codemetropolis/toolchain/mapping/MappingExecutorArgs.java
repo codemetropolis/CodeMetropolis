@@ -4,23 +4,23 @@ import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 
 public class MappingExecutorArgs extends ExecutorArgs {
 	
-	private String graphFile;
+	private String cdfFile;
 	private String outputFile;
 	private String mappingFile;
 	private double scale;
 	private boolean showNested;
 	
-	public MappingExecutorArgs(String graphFile, String outputFile, String mappingFile, double scale, boolean showNested) {
+	public MappingExecutorArgs(String cdfFile, String outputFile, String mappingFile, double scale, boolean showNested) {
 		super();
-		this.graphFile = graphFile;
+		this.cdfFile = cdfFile;
 		this.outputFile = outputFile;
 		this.mappingFile = mappingFile;
 		this.scale = scale;
 		this.showNested = showNested;
 	}
 
-	public String getGraphFile() {
-		return graphFile;
+	public String getCdfFile() {
+		return cdfFile;
 	}
 	
 	public String getOutputFile() {

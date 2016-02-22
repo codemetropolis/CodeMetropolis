@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
+import codemetropolis.toolchain.commons.util.Resources;
 
 public class BuildableTree {
 	
@@ -215,7 +216,7 @@ public class BuildableTree {
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
 		} catch ( Exception e) {
-			throw new CmxmlWriterException(e);
+			throw new CmxmlWriterException(Resources.get("cmxml_writer_error"), e);
 		}
 	}
 	

@@ -36,7 +36,7 @@ public class PlacingExecutor extends AbstractExecutor {
 		try {
 			buildables.loadFromFile(placingArgs.getInputFile());
 		} catch (CmxmlReaderException e) {
-			e.printStackTrace(errorStream);
+			errorStream.println(Resources.get("cmxml_reader_error"));
 			return;
 		}
 		printStream.println(Resources.get("placing_reading_input_done"));
@@ -49,7 +49,8 @@ public class PlacingExecutor extends AbstractExecutor {
 			errorStream.println(Resources.get("missing_layout_error"));
 			return;
 		} catch (LayoutException e) {
-			e.printStackTrace(errorStream);
+			errorStream.println(Resources.get("layout_error"));
+			return;
 		}
 		printStream.println(Resources.get("calculating_size_and_pos_done"));
 
@@ -57,7 +58,8 @@ public class PlacingExecutor extends AbstractExecutor {
 		try {
 			buildables.writeToFile(placingArgs.getOutputFile(), "placing", "rendering", "1.0");
 		} catch (CmxmlWriterException e) {
-			e.printStackTrace(errorStream);
+			errorStream.println(Resources.get("cmxml_writer_error"));
+			return;
 		}
 		printStream.println(Resources.get("placing_printing_output_done"));
 		

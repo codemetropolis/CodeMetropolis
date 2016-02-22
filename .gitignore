@@ -6,6 +6,8 @@
 **/.recommenders/**
 **/RemoteSystemsTempFiles/**
 
+**/.columbus_java/**
+
 *.tmp
 *.bak
 *.swp
