@@ -26,6 +26,7 @@ public class Buildable implements Comparable<Buildable> {
 	private List<Attribute> attributes;
 	private List<Buildable> children;
 	private Buildable parent;
+	private String cdfNames;
 	
 	public Buildable(String id, String name, Type type) {
 		this(id, name, type, new Point(), new Point());
@@ -318,6 +319,14 @@ public class Buildable implements Comparable<Buildable> {
 
 	public String getId() {
 		return id;
+	}
+
+	public String getCdfNames() {
+		return cdfNames;
+	}
+
+	public void setCdfNames(String cdfNames) {
+		this.cdfNames = cdfNames;
 	}
 
 	@Override

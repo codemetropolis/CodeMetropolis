@@ -57,12 +57,18 @@ public class MappingController {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			File xmlFile = new File(filename);
 			Document doc = dBuilder.parse(xmlFile);
+			
 			doc.getDocumentElement().normalize();
 			Element rootElement = (Element) doc.getChildNodes().item(0);
 			Buildable actualBuildable = createBuildable(rootElement);
-			setAttributes(actualBuildable, rootElement);
-			setChildren(actualBuildable, rootElement);
-			
+			if(actualBuildable == null){
+			    actualBuildable = new Buildable(UUID.randomUUID().toString(), "", Type.GROUND);
+				attributesByBuildables.put(actualBuildable, new HashMap<>());
+				setChildren(actualBuildable, rootElement);
+			} else {
+				setAttributes(actualBuildable, rootElement);
+				setChildren(actualBuildable, rootElement);
+			}
 		} catch (ParserConfigurationException | SAXException | IOException e){
 			e.printStackTrace();
 		}
@@ -88,11 +94,19 @@ public class MappingController {
 				
 				if(l.getSourceName().equalsIgnoreCase(sourceType)) {
 					attributes.remove("SourceType");
-					String value = attributes.get(l.getSourceFrom());
+					String value = attributes.get(l.getSourceFrom());				
 					Object convertedValue = null;
 					if(value == null){
-						value = "10";
-						System.out.println("Warning: Using default value.");
+						switch(l.getTargetTo()) {
+						case "height":;
+						case "width":
+						case "length":
+							value = "0.0";
+							break;
+						default:
+							value="unknown";
+						}
+						System.out.println("Warning: Using default value!");
 					}
 					try {
 						for(Conversion c : l.getConversions()) {
@@ -127,6 +141,14 @@ public class MappingController {
 	}
 	
 	private void setChildren(Buildable buildable, Element element){
+		if(buildableStack.isEmpty()){
+			buildable.setCdfNames(buildable.getName());
+		} else {
+			Buildable top = buildableStack.peek();
+			StringBuffer sb = new StringBuffer(top.getCdfNames());
+			sb.append(".").append(buildable.getName());
+			buildable.setCdfNames(sb.toString());
+		}
 		buildableStack.add(buildable);
 		Node children = element.getChildNodes().item(1);
 		NodeList childrenNodes = children.getChildNodes();
@@ -134,12 +156,17 @@ public class MappingController {
 			if(childrenNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
 				Element childElement = (Element) childrenNodes.item(i);
 				Buildable childBuildable = createBuildable(childElement);
-				buildableStack.peek().addChild(childBuildable);
-				setAttributes(childBuildable, childElement);
-				setChildren(childBuildable, childElement);
+				if(childBuildable != null){
+					buildableStack.peek().addChild(childBuildable);
+					setAttributes(childBuildable, childElement);
+					setChildren(childBuildable, childElement);
+				} else {
+					setChildren(buildable, childElement);
+				}
 			}
 		}
 		buildableStack.pop();
+		
 	}
 	
 	private void setAttributes(Buildable buildable, Element element){
@@ -156,13 +183,11 @@ public class MappingController {
 	private Buildable createBuildable(Element element) {
 		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
+	
 		Type type = mapping.getType(element.getAttribute("type"));
-		if (type == null){
-			switch (element.getAttribute("type")){
-				case "package":
-					type = Type.GROUND;
-			}
-				
+
+	    if (type == null){			
+			return null;
 		}
 		return new Buildable(id, name, type);
 	}
@@ -210,7 +235,7 @@ public class MappingController {
 	
 	private Buildable findRoot(Collection<Buildable> buildables) {
 		for(Buildable b : buildables)
-			if(b.isRoot() && b.getType() == Type.GROUND) return b;
+			if(b.isRoot()) return b;
 		return null;
 	}
 	
@@ -241,6 +266,9 @@ public class MappingController {
 			} else {
 				if(b.getType() == Type.FLOOR || b.getType() == Type.CELLAR) {
 					if(children.length > 0) {
+						for(Buildable build : b.getChildren()){
+							b.getParent().addChild(build);
+						}
 						b.clearChildren();
 					}
 				}
@@ -278,26 +306,25 @@ public class MappingController {
 				Type buildableParentType = build.getParent().getType();
 				switch(buildableType) {
 					case GROUND:
-						if(!Type.GROUND.equals(buildableParentType)){
-							throw new NotValidBuildableStructure();
+						if(!Type.GROUND.equals(buildableParentType) && !Type.GARDEN.equals(buildableParentType)){
+							throw new NotValidBuildableStructure(build.getCdfNames());
 						}
 						break;
 					case GARDEN:
 						if(!Type.GROUND.equals(buildableParentType)){
-							throw new NotValidBuildableStructure();
+							throw new NotValidBuildableStructure(build.getCdfNames());
 						}
 						break;
 					case FLOOR:
 					case CELLAR:
-						if(!Type.GARDEN.equals(buildableParentType)){
-							throw new NotValidBuildableStructure();
-						}					
+						if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType)){
+							throw new NotValidBuildableStructure(build.getCdfNames());
+						}				
 					break;
-					
 				}
 				
 			} else if(buildableType != Type.GROUND) {
-				throw new NotValidBuildableStructure();
+				throw new NotValidBuildableStructure(build.getCdfNames());
 			}
 			
 		}
