@@ -1,8 +1,8 @@
 package codemetropolis.toolchain.mapping.exceptions;
 
-public class NotSupportedLinkingException extends Exception {
+public class NotSupportedLinkingException extends MappingException {
 
-	private static final long serialVersionUID = -8880241135777702738L;
+	private static final long serialVersionUID = 6947796707002682357L;
 
 	public NotSupportedLinkingException() {
 		super();

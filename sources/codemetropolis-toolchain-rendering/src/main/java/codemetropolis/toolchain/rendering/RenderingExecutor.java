@@ -14,6 +14,7 @@ import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
+import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
 
 public class RenderingExecutor extends AbstractExecutor {
 	
@@ -98,9 +99,8 @@ public class RenderingExecutor extends AbstractExecutor {
 		print(Resources.get("creating_blocks"));
 		try {
 			worldBuilder.createBlocks(tempDir, args.getMaxTime());
-		} catch (RenderingException e) {
-			//e.printStackTrace(errorStream);
-			printError("TODO ERROR");
+		} catch (TooLongRenderDurationException e) {
+			printError(Resources.get("too_long_render_duration_error"), e.getMaxTime());
 			return;
 		}
 		long elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
@@ -112,8 +112,7 @@ public class RenderingExecutor extends AbstractExecutor {
 		try {
 			worldBuilder.build(tempDir);
 		} catch (RenderingException e) {
-			//e.printStackTrace(errorStream);
-			printError("TODO ERROR");
+			printError(Resources.get("placing_blocks_failed_error"));
 			return;
 		}
 		elapsed = worldBuilder.getTimeElapsedDuringLastPhase();

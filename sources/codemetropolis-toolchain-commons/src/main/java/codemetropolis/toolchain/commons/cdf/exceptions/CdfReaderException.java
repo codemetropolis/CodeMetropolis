@@ -1,6 +1,8 @@
-package codemetropolis.toolchain.mapping.exceptions;
+package codemetropolis.toolchain.commons.cdf.exceptions;
 
-public class CdfReaderException extends Exception {
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+
+public class CdfReaderException extends CodeMetropolisException {
 
 	private static final long serialVersionUID = -8880241135777702738L;
 

@@ -20,12 +20,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfReaderException;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
-import codemetropolis.toolchain.mapping.exceptions.CdfReaderException;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
 

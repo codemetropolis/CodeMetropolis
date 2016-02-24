@@ -2,13 +2,13 @@ package codemetropolis.toolchain.mapping;
 
 import java.io.FileNotFoundException;
 
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfReaderException;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.control.MappingController;
-import codemetropolis.toolchain.mapping.exceptions.CdfReaderException;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
 import codemetropolis.toolchain.mapping.model.Mapping;
