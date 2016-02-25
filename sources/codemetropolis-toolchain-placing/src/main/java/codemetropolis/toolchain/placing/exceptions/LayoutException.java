@@ -1,8 +1,8 @@
 package codemetropolis.toolchain.placing.exceptions;
 
-public class LayoutException extends Exception {
-
-	private static final long serialVersionUID = -8880241135777702738L;
+public class LayoutException extends PlacingException {
+	
+	private static final long serialVersionUID = -1326865817509151611L;
 
 	public LayoutException() {
 		super();

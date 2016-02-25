@@ -3,9 +3,9 @@ package codemetropolis.toolchain.rendering.exceptions;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.rendering.model.building.Building;
 
-public class BuildingTypeMismatchException extends Exception {
+public class BuildingTypeMismatchException extends RenderingException {
 
-	private static final long serialVersionUID = 7171725393210241725L;
+	private static final long serialVersionUID = 3337855398912743115L;
 
 	public BuildingTypeMismatchException() {
 		super();

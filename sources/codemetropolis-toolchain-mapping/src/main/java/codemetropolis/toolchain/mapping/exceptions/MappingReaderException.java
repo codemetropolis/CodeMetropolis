@@ -1,8 +1,8 @@
 package codemetropolis.toolchain.mapping.exceptions;
 
-public class MappingReaderException extends Exception {
-
-	private static final long serialVersionUID = -8880241135777702738L;
+public class MappingReaderException extends MappingException {
+	
+	private static final long serialVersionUID = -4234316064798036413L;
 
 	public MappingReaderException() {
 		super();

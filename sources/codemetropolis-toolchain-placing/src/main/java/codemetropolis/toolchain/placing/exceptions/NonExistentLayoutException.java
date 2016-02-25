@@ -1,8 +1,8 @@
 package codemetropolis.toolchain.placing.exceptions;
 
-public class NonExistentLayoutException extends Exception {
+public class NonExistentLayoutException extends PlacingException {
 
-	private static final long serialVersionUID = -8880241135777702738L;
+	private static final long serialVersionUID = -1943976722667754745L;
 
 	public NonExistentLayoutException() {
 		super();

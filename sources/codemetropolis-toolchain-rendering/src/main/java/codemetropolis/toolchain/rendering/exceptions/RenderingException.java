@@ -1,6 +1,8 @@
 package codemetropolis.toolchain.rendering.exceptions;
 
-public class RenderingException extends Exception {
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+
+public class RenderingException extends CodeMetropolisException {
 
 	private static final long serialVersionUID = 7171725393210241725L;
 

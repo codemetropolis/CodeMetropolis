@@ -3,6 +3,7 @@ package codemetropolis.toolchain.converter;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
 
 public class Main {
@@ -20,6 +21,7 @@ public class Main {
 	        }
 	    } catch (CmdLineException | IllegalArgumentException e) {
 	    	System.err.println(Resources.get("command_line_error"));
+	    	FileLogger.logError(Resources.get("command_line_error"), e);
 	    	System.err.println(Resources.get("converter_usage"));
 	    	return;
 	    }
@@ -31,6 +33,8 @@ public class Main {
 	    }
 			
 	    ConverterExecutor executor = new ConverterExecutor();
+	    executor.setPrefix(Resources.get("converter_prefix"));
+	    executor.setErrorPrefix(Resources.get("error_prefix"));
 	    executor.execute(
 	    		new ConverterExecutorArgs(
 		    		options.getInputFile(),

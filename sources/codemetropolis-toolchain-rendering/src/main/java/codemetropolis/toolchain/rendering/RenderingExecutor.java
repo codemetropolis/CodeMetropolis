@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import codemetropolis.toolchain.commons.cmxml.Validator;
+import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.FileUtils;
@@ -14,21 +15,22 @@ import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
+import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
 
 public class RenderingExecutor extends AbstractExecutor {
 	
 	@Override
-	public void execute(ExecutorArgs executorArgs) {
-		RenderingExecutorArgs args = (RenderingExecutorArgs)executorArgs;
+	public void execute(ExecutorArgs args) {
+		RenderingExecutorArgs renderingArgs = (RenderingExecutorArgs)args;
 		
-		File worldDir = new File(args.getWorldPath());
+		File worldDir = new File(renderingArgs.getWorldPath());
 		File tempDir = new File(worldDir, "TEMP");
 		tempDir.deleteOnExit();
-		boolean overwrite = args.isSilentOverwriteEnabled();
+		boolean overwrite = renderingArgs.isSilentOverwriteEnabled();
 		
 		if(worldDir.exists() && worldDir.isDirectory()) {
 			if(!overwrite) {
-				printStream.printf(Resources.get("world_already_exists"), tempDir.getAbsolutePath());
+				print(false, Resources.get("world_already_exists"), tempDir.getAbsolutePath());
 				Scanner in = new Scanner(System.in);
 				String input = "";
 				while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
@@ -38,7 +40,7 @@ public class RenderingExecutor extends AbstractExecutor {
 				if(input.equalsIgnoreCase("Y")) {
 					overwrite = true;
 				} else {
-					printStream.println(Resources.get("render_interrupted"));
+					print(Resources.get("render_interrupted"));
 					return;
 				}
 			}
@@ -48,32 +50,36 @@ public class RenderingExecutor extends AbstractExecutor {
 		}
 			
 		try {
-			boolean isValid = Validator.validate(args.getInputFile());
+			boolean isValid = Validator.validate(renderingArgs.getInputFile());
 			if(!isValid) {
-				errorStream.println(Resources.get("invalid_input_xml_error"));
-				return;
+				throw new CmxmlValidationFailedException();
 			}
 		} catch (IOException e) {
-			errorStream.println(Resources.get("missing_input_xml_error"));
+			printError(e, Resources.get("missing_input_xml_error"));
+			return;
+		} catch (CmxmlValidationFailedException e) {
+			printError(e, Resources.get("invalid_input_xml_error"));
 			return;
 		}
 		
-		WorldBuilder worldBuilder = new WorldBuilder(args.getWorldPath());
+		WorldBuilder worldBuilder = new WorldBuilder(renderingArgs.getWorldPath());
 		worldBuilder.addEventListener(new ProgressEventListener() {
 			@Override
 			public void onNextState(ProgressEvent event) {
 				if(event.COUNT > 0) {
 					switch(event.PHASE){
 						case GENERATING_BLOCKS:
-							printStream.printf(
-									Resources.get("creating_blocks_progress") + "\r",
+							print(
+									false,
+									Resources.get("creating_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
 									event.getTimeLeft().getMinutes());
 							break;
 						case PLACING_BLOCKS:
-							printStream.printf(
-									Resources.get("placing_blocks_progress") + "\r",
+							print(
+									false,
+									Resources.get("placing_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
 									event.getTimeLeft().getMinutes());
@@ -85,37 +91,39 @@ public class RenderingExecutor extends AbstractExecutor {
 			}
 		});
 		
-		printStream.println(Resources.get("rendering_reading_input"));
+		print(Resources.get("rendering_reading_input"));
 		try {
-			worldBuilder.createBuildings(args.getInputFile());
+			worldBuilder.createBuildings(renderingArgs.getInputFile());
 		} catch (BuildingTypeMismatchException e) {
-			e.printStackTrace(errorStream);
+			printError(e, Resources.get("building_creation_failed_error"));
+			return;
 		}
-		printStream.println(Resources.get("rendering_reading_input_done"));
-		printStream.printf(Resources.get("buildables_found") + "\n", worldBuilder.getNumberOfBuildings());
+		print(Resources.get("rendering_reading_input_done"));
+		print(Resources.get("buildables_found"), worldBuilder.getNumberOfBuildings());
 		
-		printStream.println(Resources.get("creating_blocks"));
+		print(Resources.get("creating_blocks"));
 		try {
-			worldBuilder.createBlocks(tempDir, args.getMaxTime());
-		} catch (RenderingException e) {
-			e.printStackTrace(errorStream);
+			worldBuilder.createBlocks(tempDir, renderingArgs.getMaxTime());
+		} catch (TooLongRenderDurationException e) {
+			printError(e, Resources.get("too_long_render_duration_error"), e.getMaxTime());
 			return;
 		}
 		long elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		int hours = (int) (elapsed / (1000 * 60 * 60));
         int minutes = (int) (elapsed % (1000 * 60 * 60) / (1000 * 60));
-		printStream.printf(Resources.get("creating_blocks_done") + "\n", worldBuilder.getNumberOfBlocks(), hours, minutes);
+        print(Resources.get("creating_blocks_done"), worldBuilder.getNumberOfBlocks(), hours, minutes);
 		
-		printStream.println(Resources.get("placing_blocks"));
+        print(Resources.get("placing_blocks"));
 		try {
 			worldBuilder.build(tempDir);
 		} catch (RenderingException e) {
-			e.printStackTrace(errorStream);
+			printError(e, Resources.get("placing_blocks_failed_error"));
+			return;
 		}
 		elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		hours = (int) (elapsed / (1000 * 60 * 60));
         minutes = (int) (elapsed % (1000 * 60 * 60) / (1000 * 60));
-		printStream.printf(Resources.get("placing_blocks_done") + "                                           \n", hours, minutes);
+        print(Resources.get("placing_blocks_done"), hours, minutes);
 	}
 	
 }

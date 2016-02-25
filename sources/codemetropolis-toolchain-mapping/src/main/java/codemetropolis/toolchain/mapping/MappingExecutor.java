@@ -1,5 +1,8 @@
 package codemetropolis.toolchain.mapping;
 
+import java.io.FileNotFoundException;
+
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfReaderException;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
@@ -16,36 +19,49 @@ public class MappingExecutor extends AbstractExecutor {
 	public void execute(ExecutorArgs args) {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
 		
-		printStream.println(Resources.get("reading_mapping"));
+		print(Resources.get("reading_mapping"));
 		Mapping mapping;
 		try {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
 		} catch (MappingReaderException e) {
-			e.printStackTrace(errorStream);
+			if(e.getCause() instanceof FileNotFoundException) {
+				printError(e, Resources.get("mapping_not_found_error"));
+			} else {
+				printError(e, e.getMessage());
+			}
 			return;
 		} catch (NotSupportedLinkingException e) {
-			errorStream.println(e.getMessage());
+			printError(e, e.getMessage());
 			return;
 		}
-		printStream.println(Resources.get("reading_mapping_done"));
+		print(Resources.get("reading_mapping_done"));
 		
-		printStream.println(Resources.get("reading_graph"));
+		print(Resources.get("reading_graph"));
 		MappingController mappingController = new MappingController(mappingArgs.getScale(), mappingArgs.isShowNested());
-		mappingController.createBuildablesFromCdf(mappingArgs.getGraphFile());
-		printStream.println(Resources.get("reading_graph_done"));
+		try {
+			mappingController.createBuildablesFromCdf(mappingArgs.getCdfFile());
+		} catch (CdfReaderException e) {
+			if(e.getCause() instanceof FileNotFoundException) {
+				printError(e, Resources.get("cdf_not_found_error"));
+			} else {
+				printError(e, Resources.get("cdf_error"));
+			}
+			return;
+		}
+		print(Resources.get("reading_graph_done"));
 		
-		printStream.println(Resources.get("linking_metrics"));
+		print(Resources.get("linking_metrics"));
 		BuildableTree buildables = mappingController.linkBuildablesToMetrics(mapping);
-		printStream.println(Resources.get("linking_metrics_done"));
+		print(Resources.get("linking_metrics_done"));
 		
-		printStream.println(Resources.get("mapping_printing_output"));
+		print(Resources.get("mapping_printing_output"));
 		try {
 			buildables.writeToFile(mappingArgs.getOutputFile(), "mapping", "placing", "1.0");
 		} catch (CmxmlWriterException e) {
-			e.printStackTrace(errorStream);
+			printError(e, Resources.get("cmxml_writer_error"));
 			return;
 		}
-		printStream.println(Resources.get("mapping_printing_output_done"));
+		print(Resources.get("mapping_printing_output_done"));
 	}
 	
 }

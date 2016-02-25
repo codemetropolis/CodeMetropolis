@@ -14,11 +14,11 @@ import codemetropolis.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
-import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
+import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
 import codemetropolis.toolchain.rendering.model.building.*;
 import codemetropolis.toolchain.rendering.model.primitive.Boxel;
 
@@ -84,7 +84,7 @@ public class WorldBuilder {
 		raiseProgressEvent(BuildPhase.READING_INPUT_FILE, 1, 1, -1);
 	}
 	
-	public void createBlocks(File directory, int maxTime) throws RenderingException {
+	public void createBlocks(File directory, int maxTime) throws TooLongRenderDurationException {
 		raiseProgressEvent(BuildPhase.GENERATING_BLOCKS, 0, total, 0);
 		stopWatch.reset();
 		stopWatch.start();
@@ -92,7 +92,7 @@ public class WorldBuilder {
 			count += b.toCSVFile(directory);
 			long timeElapsed = stopWatch.getTime();
 			int timeLeftInMinutes = (int) ((double)timeElapsed / count * (total - count)) / (1000 * 60);
-			if(timeLeftInMinutes > maxTime) throw new RenderingException(String.format(Resources.get("too_long_error"), maxTime));
+			if(timeLeftInMinutes > maxTime) throw new TooLongRenderDurationException(timeLeftInMinutes, maxTime);
 			raiseProgressEvent(BuildPhase.GENERATING_BLOCKS, count, total, timeElapsed);
 		}
 		stopWatch.stop();
