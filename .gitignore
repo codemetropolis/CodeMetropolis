@@ -8,6 +8,8 @@
 
 **/.columbus_java/**
 
+*.log
+*.lck
 *.tmp
 *.bak
 *.swp

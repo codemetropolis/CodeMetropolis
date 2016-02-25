@@ -2,6 +2,8 @@ package codemetropolis.toolchain.commons.executor;
 
 import java.io.PrintStream;
 
+import codemetropolis.toolchain.commons.util.FileLogger;
+
 public abstract class AbstractExecutor {
 
 	private PrintStream printStream = System.out;
@@ -26,21 +28,31 @@ public abstract class AbstractExecutor {
 	}
 	
 	protected void print(String message, Object... args ) {
-		print(true, message, args);
+		print(true, true, message, args);
 	}
 	
-	protected void print(boolean withPrefix, String message, Object... args ) {
+	protected void print(boolean log, String message, Object... args ) {
+		print(true, log, message, args);
+	}
+	
+	protected void print(boolean withPrefix, boolean log, String message, Object... args ) {
 		String str = String.format("%s%s\n", withPrefix ? prefix : "", message);
 		printStream.printf(str, args);
+		if(log) FileLogger.logInfo(String.format(str, args));
 	}
 	
-	protected void printError(String message, Object... args ) {
-		printError(true, message, args);
+	protected void printError(Exception exception, String message, Object... args ) {
+		printError(true, true, exception, message, args);
 	}
 	
-	protected void printError(boolean withPrefix, String message, Object... args ) {
+	protected void printError(boolean log, Exception exception, String message, Object... args ) {
+		printError(true, log, exception, message, args);
+	}
+	
+	protected void printError(boolean withPrefix, boolean log, Exception exception, String message, Object... args ) {
 		String str = String.format("%s%s\n", withPrefix ? errorPrefix : "", message);
 		errorStream.printf(str, args);
+		if(log) FileLogger.logError(message, exception);
 	}
 	
 	public abstract void execute(ExecutorArgs args);

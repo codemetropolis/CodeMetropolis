@@ -3,6 +3,7 @@ package codemetropolis.toolchain.rendering;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
 
 public class Main {
@@ -18,6 +19,7 @@ public class Main {
 	        	throw new IllegalArgumentException();
 	    } catch (CmdLineException | IllegalArgumentException e) {
 	    	System.err.println(Resources.get("command_line_error"));
+	    	FileLogger.logError(Resources.get("command_line_error"), e);
 	    	System.err.println(Resources.get("rendering_usage"));
 	    	return;
 	    }

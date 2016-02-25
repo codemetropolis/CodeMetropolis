@@ -25,13 +25,13 @@ public class MappingExecutor extends AbstractExecutor {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
 		} catch (MappingReaderException e) {
 			if(e.getCause() instanceof FileNotFoundException) {
-				printError(Resources.get("mapping_not_found_error"));
+				printError(e, Resources.get("mapping_not_found_error"));
 			} else {
-				printError(e.getMessage());
+				printError(e, e.getMessage());
 			}
 			return;
 		} catch (NotSupportedLinkingException e) {
-			printError(e.getMessage());
+			printError(e, e.getMessage());
 			return;
 		}
 		print(Resources.get("reading_mapping_done"));
@@ -42,9 +42,9 @@ public class MappingExecutor extends AbstractExecutor {
 			mappingController.createBuildablesFromCdf(mappingArgs.getCdfFile());
 		} catch (CdfReaderException e) {
 			if(e.getCause() instanceof FileNotFoundException) {
-				printError(Resources.get("cdf_not_found_error"));
+				printError(e, Resources.get("cdf_not_found_error"));
 			} else {
-				printError(Resources.get("cdf_error"));
+				printError(e, Resources.get("cdf_error"));
 			}
 			return;
 		}
@@ -58,7 +58,7 @@ public class MappingExecutor extends AbstractExecutor {
 		try {
 			buildables.writeToFile(mappingArgs.getOutputFile(), "mapping", "placing", "1.0");
 		} catch (CmxmlWriterException e) {
-			printError(Resources.get("cmxml_writer_error"));
+			printError(e, Resources.get("cmxml_writer_error"));
 			return;
 		}
 		print(Resources.get("mapping_printing_output_done"));

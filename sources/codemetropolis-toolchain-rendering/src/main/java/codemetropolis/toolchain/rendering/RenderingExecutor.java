@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import codemetropolis.toolchain.commons.cmxml.Validator;
+import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.FileUtils;
@@ -19,17 +20,17 @@ import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationExcept
 public class RenderingExecutor extends AbstractExecutor {
 	
 	@Override
-	public void execute(ExecutorArgs executorArgs) {
-		RenderingExecutorArgs args = (RenderingExecutorArgs)executorArgs;
+	public void execute(ExecutorArgs args) {
+		RenderingExecutorArgs renderingArgs = (RenderingExecutorArgs)args;
 		
-		File worldDir = new File(args.getWorldPath());
+		File worldDir = new File(renderingArgs.getWorldPath());
 		File tempDir = new File(worldDir, "TEMP");
 		tempDir.deleteOnExit();
-		boolean overwrite = args.isSilentOverwriteEnabled();
+		boolean overwrite = renderingArgs.isSilentOverwriteEnabled();
 		
 		if(worldDir.exists() && worldDir.isDirectory()) {
 			if(!overwrite) {
-				print(Resources.get("world_already_exists"), tempDir.getAbsolutePath());
+				print(false, Resources.get("world_already_exists"), tempDir.getAbsolutePath());
 				Scanner in = new Scanner(System.in);
 				String input = "";
 				while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
@@ -49,17 +50,19 @@ public class RenderingExecutor extends AbstractExecutor {
 		}
 			
 		try {
-			boolean isValid = Validator.validate(args.getInputFile());
+			boolean isValid = Validator.validate(renderingArgs.getInputFile());
 			if(!isValid) {
-				printError(Resources.get("invalid_input_xml_error"));
-				return;
+				throw new CmxmlValidationFailedException();
 			}
 		} catch (IOException e) {
-			printError(Resources.get("missing_input_xml_error"));
+			printError(e, Resources.get("missing_input_xml_error"));
+			return;
+		} catch (CmxmlValidationFailedException e) {
+			printError(e, Resources.get("invalid_input_xml_error"));
 			return;
 		}
 		
-		WorldBuilder worldBuilder = new WorldBuilder(args.getWorldPath());
+		WorldBuilder worldBuilder = new WorldBuilder(renderingArgs.getWorldPath());
 		worldBuilder.addEventListener(new ProgressEventListener() {
 			@Override
 			public void onNextState(ProgressEvent event) {
@@ -67,6 +70,7 @@ public class RenderingExecutor extends AbstractExecutor {
 					switch(event.PHASE){
 						case GENERATING_BLOCKS:
 							print(
+									false,
 									Resources.get("creating_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
@@ -74,6 +78,7 @@ public class RenderingExecutor extends AbstractExecutor {
 							break;
 						case PLACING_BLOCKS:
 							print(
+									false,
 									Resources.get("placing_blocks_progress"),
 									event.getPercent(),
 									event.getTimeLeft().getHours(),
@@ -88,9 +93,9 @@ public class RenderingExecutor extends AbstractExecutor {
 		
 		print(Resources.get("rendering_reading_input"));
 		try {
-			worldBuilder.createBuildings(args.getInputFile());
+			worldBuilder.createBuildings(renderingArgs.getInputFile());
 		} catch (BuildingTypeMismatchException e) {
-			printError(Resources.get("building_creation_failed_error"));
+			printError(e, Resources.get("building_creation_failed_error"));
 			return;
 		}
 		print(Resources.get("rendering_reading_input_done"));
@@ -98,9 +103,9 @@ public class RenderingExecutor extends AbstractExecutor {
 		
 		print(Resources.get("creating_blocks"));
 		try {
-			worldBuilder.createBlocks(tempDir, args.getMaxTime());
+			worldBuilder.createBlocks(tempDir, renderingArgs.getMaxTime());
 		} catch (TooLongRenderDurationException e) {
-			printError(Resources.get("too_long_render_duration_error"), e.getMaxTime());
+			printError(e, Resources.get("too_long_render_duration_error"), e.getMaxTime());
 			return;
 		}
 		long elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
@@ -112,7 +117,7 @@ public class RenderingExecutor extends AbstractExecutor {
 		try {
 			worldBuilder.build(tempDir);
 		} catch (RenderingException e) {
-			printError(Resources.get("placing_blocks_failed_error"));
+			printError(e, Resources.get("placing_blocks_failed_error"));
 			return;
 		}
 		elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
