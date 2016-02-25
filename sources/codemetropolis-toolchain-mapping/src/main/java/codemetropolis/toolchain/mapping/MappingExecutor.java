@@ -11,6 +11,7 @@ import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.control.MappingController;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
+import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
 public class MappingExecutor extends AbstractExecutor {
@@ -37,7 +38,7 @@ public class MappingExecutor extends AbstractExecutor {
 		print(Resources.get("reading_mapping_done"));
 		
 		print(Resources.get("reading_graph"));
-		MappingController mappingController = new MappingController(mappingArgs.getScale(), mappingArgs.isShowNested());
+		MappingController mappingController = new MappingController(mapping, mappingArgs.getScale(), !mappingArgs.isHierarchyValidationEnabled());
 		try {
 			mappingController.createBuildablesFromCdf(mappingArgs.getCdfFile());
 		} catch (CdfReaderException e) {
@@ -51,9 +52,14 @@ public class MappingExecutor extends AbstractExecutor {
 		print(Resources.get("reading_graph_done"));
 		
 		print(Resources.get("linking_metrics"));
-		BuildableTree buildables = mappingController.linkBuildablesToMetrics(mapping);
+		BuildableTree buildables = mappingController.linkBuildablesToMetrics();
 		print(Resources.get("linking_metrics_done"));
-		
+		try {
+			mappingController.validateBuildableStructure(buildables);
+		} catch (NotValidBuildableStructure e) {
+			printError(e, Resources.get("invalid_hierarchy"));
+			return;
+		}
 		print(Resources.get("mapping_printing_output"));
 		try {
 			buildables.writeToFile(mappingArgs.getOutputFile(), "mapping", "placing", "1.0");

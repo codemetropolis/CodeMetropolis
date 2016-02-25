@@ -19,8 +19,8 @@ public class CommandLineOptions {
 	@Option(name="-s", aliases = { "--scale" })
 	private double scale = 1.0;
 	
-	@Option(name="-n", aliases = { "--nested" })
-	private boolean nested = false;
+	@Option(name="-v", aliases = { "--validate" })
+	private boolean hierarchyValidation = false;
 
 	public boolean showHelp() {
 		return showHelp;
@@ -42,8 +42,8 @@ public class CommandLineOptions {
 		return scale;
 	}
 
-	public boolean showNested() {
-		return nested;
+	public boolean isHierarchyValidationEnabled() {
+		return hierarchyValidation;
 	}
 	
 }

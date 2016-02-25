@@ -117,6 +117,8 @@ public class BuildableTree {
 						break;
 						case "cellar": type = Type.CELLAR;
 						break;
+						case "container": type = Type.CONTAINER;
+						break;
 					}
 					
 					Point position;

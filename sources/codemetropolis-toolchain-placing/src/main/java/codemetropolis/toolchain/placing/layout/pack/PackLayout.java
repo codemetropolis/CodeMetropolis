@@ -22,22 +22,18 @@ public class PackLayout extends Layout {
 	@Override
 	public void apply(BuildableTree buildables) throws LayoutException {
 		prepareBuildables(buildables);
-		
 		Map<Buildable, List<House>> houses = createHouses(buildables);
 		BuildableWrapper root = new BuildableWrapper(buildables.getRoot());
 		packRecursive(root, houses);
 	}
 	
 	private void prepareBuildables(BuildableTree buildables) {
-		buildables.getRoot().setPositionY(GROUND_LEVEL);
 		for(Buildable b : buildables.getBuildables()) {
-			if(b.getType() == Buildable.Type.FLOOR || b.getType() == Buildable.Type.CELLAR) {
-				b.setPositionYR(b.getPositionY() + 1);
-			} else {
 				if(b.isRoot()) continue;
 				b.setPositionYR(b.getParent().getPositionY() + 1);
-			}
 		}
+		
+		buildables.getRoot().setPositionYR(GROUND_LEVEL);
 	}
 	
 	private Point getMaxSizes(Collection<BuildableWrapper> buildables) {

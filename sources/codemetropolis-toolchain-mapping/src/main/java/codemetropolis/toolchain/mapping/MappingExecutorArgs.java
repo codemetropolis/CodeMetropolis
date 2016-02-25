@@ -8,15 +8,15 @@ public class MappingExecutorArgs extends ExecutorArgs {
 	private String outputFile;
 	private String mappingFile;
 	private double scale;
-	private boolean showNested;
+	private boolean hierarchyValidation;
 	
-	public MappingExecutorArgs(String cdfFile, String outputFile, String mappingFile, double scale, boolean showNested) {
+	public MappingExecutorArgs(String cdfFile, String outputFile, String mappingFile, double scale, boolean hierarchyValidation) {
 		super();
 		this.cdfFile = cdfFile;
 		this.outputFile = outputFile;
 		this.mappingFile = mappingFile;
 		this.scale = scale;
-		this.showNested = showNested;
+		this.hierarchyValidation = hierarchyValidation;
 	}
 
 	public String getCdfFile() {
@@ -35,8 +35,8 @@ public class MappingExecutorArgs extends ExecutorArgs {
 		return scale;
 	}
 	
-	public boolean isShowNested() {
-		return showNested;
+	public boolean isHierarchyValidationEnabled() {
+		return hierarchyValidation;
 	}
 	
 }

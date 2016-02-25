@@ -29,6 +29,8 @@ public class Boxel implements Primitive {
 	}
 	
 	public void render(World world) {
+		if(position.getY() < 0 || position.getY() >= 255) return;
+		
 		switch(block.getId()) {
 			case 63:
 				world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(), info);
