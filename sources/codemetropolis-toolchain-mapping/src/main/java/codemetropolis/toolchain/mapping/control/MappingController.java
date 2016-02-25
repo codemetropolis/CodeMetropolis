@@ -39,14 +39,14 @@ public class MappingController {
 	private Stack<Buildable> buildableStack = new Stack<>();
 	private Mapping mapping;
 	
-	public MappingController() {
-		this(1.0, false, null);
+	public MappingController(Mapping mapping) {
+		this(mapping, 1.0, false);
 	}
 	
-	public MappingController(double scale, boolean showNested, Mapping mapping) {
+	public MappingController(Mapping mapping, double scale, boolean showNested) {
+		this.mapping = mapping;
 		this.scale = scale;
 		this.showNested = showNested;
-		this.mapping = mapping;
 	}
 	
 	public void createBuildablesFromCdf(String filename) {
@@ -72,14 +72,13 @@ public class MappingController {
 				Buildable root = findRoot(attributesByBuildables.keySet());
 				container.addChild(root);
 				attributesByBuildables.put(container, new HashMap<>());
-				System.out.println("");
 			}
 		} catch (ParserConfigurationException | SAXException | IOException e){
 			e.printStackTrace();
 		}
 	}
 	
-	public BuildableTree linkBuildablesToMetrics(Mapping mapping) {
+	public BuildableTree linkBuildablesToMetrics() {
 		
 		List<Linking> linkings = mapping.getLinkings();
 		Map<String, String> constants = mapping.getConstants();
@@ -140,7 +139,6 @@ public class MappingController {
 		
 		Buildable root = findRoot(attributesByBuildables.keySet());
 		BuildableTree buildableTree = new BuildableTree(root);
-		placeGlobalsInGardens(buildableTree);
 		prepareBuildables(buildableTree);
 		return buildableTree;
 	}
@@ -190,7 +188,6 @@ public class MappingController {
 	private Buildable createBuildable(Element element) {
 		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
-	
 		Type type = mapping.getType(element.getAttribute("type"));
 
 	    if (type == null){			
@@ -283,25 +280,6 @@ public class MappingController {
 		}
 	}
 	
-	private void placeGlobalsInGardens(BuildableTree buildables) {
-		Map<Buildable, Buildable> globalsByGrounds = new HashMap<Buildable, Buildable>(); 
-		Iterator it = buildables.iterator();
-		while(it.hasNext()) {
-			Buildable b = it.next();
-			if(
-					(b.getType() == Type.FLOOR || b.getType() == Type.CELLAR) && b.getParent() != null &&
-					b.getParent().getType() == Type.GROUND && b.getParent() != null) {
-				if(globalsByGrounds.containsKey(b.getParent())) {
-					globalsByGrounds.get(b.getParent()).addChild(b);
-				} else {
-					Buildable globals = new Buildable("GL" + (globalsByGrounds.size() + 1), "globals", Type.GARDEN);
-					globalsByGrounds.put(b.getParent(), globals);
-					b.getParent().addChild(globals);
-					globals.addChild(b);
-				}
-			}
-		}
-	}
 	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
 
 		BuildableTree.Iterator iterator = buildableTree.iterator();

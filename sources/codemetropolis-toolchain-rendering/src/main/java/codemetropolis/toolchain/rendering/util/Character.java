@@ -23,13 +23,14 @@ public enum Character {
 	DARK_BRICK,
 	GLASS,
 	GOLD,
-	DIAMOND;
+	DIAMOND,
+	UNDEFINED;
 	
 	public static Character parse(String str) {
 		for(Character c : Character.values()) {
 			if(c.toString().equalsIgnoreCase(str)) return c;
 		}
-		return null;
+		return Character.UNDEFINED;
 	}
 	
 	public BasicBlock getBlock() {
@@ -54,6 +55,7 @@ public enum Character {
 			case GLASS: return new BasicBlock( "minecraft:glass" );
 			case GOLD: return new BasicBlock( "minecraft:gold_block" );
 			case DIAMOND: return new BasicBlock( "minecraft:diamond_block" );
+			case UNDEFINED: return new BasicBlock( "minecraft:wool", 2 );
 			default: return null;
 		}
 	}
