@@ -286,30 +286,11 @@ public class MappingController {
 		
 		while(iterator.hasNext()){
 			Buildable build = iterator.next();
-			Type buildableType = build.getType();
 			if(build.getParent() != null){
 				Type buildableParentType = build.getParent().getType();
-				switch(buildableType) {
-					case GROUND:
-						if(!Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
-							throw new NotValidBuildableStructure(build.getCdfNames());
-						}
-						break;
-					case GARDEN:
-						if(!Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
-							throw new NotValidBuildableStructure(build.getCdfNames());
-						}
-						break;
-					case FLOOR:
-					case CELLAR:
-						if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
-							throw new NotValidBuildableStructure(build.getCdfNames());
-						}				
-						break;
-					default:
-						break;
+				if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
+					throw new NotValidBuildableStructure(build.getCdfNames());
 				}
-				
 			} else if(!Type.CONTAINER.equals(build.getType())) {
 				throw new NotValidBuildableStructure(build.getCdfNames());
 			}
