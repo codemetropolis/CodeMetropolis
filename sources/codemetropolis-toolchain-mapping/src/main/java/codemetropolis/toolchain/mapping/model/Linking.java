@@ -17,7 +17,7 @@ public class Linking {
 		SUPPORTED_TARGETS.put(Type.FLOOR, new String[]{"width", "height", "length", "character", "external_character", "torches"});
 		SUPPORTED_TARGETS.put(Type.CELLAR, new String[]{"width", "height", "length", "character", "external_character", "torches"});
 		SUPPORTED_TARGETS.put(Type.GARDEN, new String[]{"tree-ratio", "mushroom-ratio", "flower-ratio"});
-		SUPPORTED_TARGETS.put(Type.GROUND, new String[]{""});
+		SUPPORTED_TARGETS.put(Type.GROUND, new String[]{});
 	}
 
 	private String sourceName;
@@ -39,6 +39,7 @@ public class Linking {
 	}
 	
 	public Boolean isSupported() {
+		if("".equals(targetTo)) return true;
 		for(Entry<Type, String[]> e : SUPPORTED_TARGETS.entrySet()) {
 			if(e.getKey().toString().equalsIgnoreCase(targetName)) {
 				for(String s : e.getValue()) {

@@ -32,7 +32,7 @@ public class MappingExecutor extends AbstractExecutor {
 		printStream.println(Resources.get("reading_mapping_done"));
 		
 		printStream.println(Resources.get("reading_graph"));
-		MappingController mappingController = new MappingController(mapping, mappingArgs.getScale(), mappingArgs.isShowNested());
+		MappingController mappingController = new MappingController(mapping, mappingArgs.getScale(), !mappingArgs.isHierarchyValidationEnabled());
 		mappingController.createBuildablesFromCdf(mappingArgs.getGraphFile());
 		printStream.println(Resources.get("reading_graph_done"));
 		

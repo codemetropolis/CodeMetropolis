@@ -35,7 +35,7 @@ public class MappingController {
 	private final LimitController limitController = new LimitController();
 	private Map<Buildable, Map<String, String>> attributesByBuildables = new HashMap<>();
 	private double scale;
-	private boolean showNested;
+	private boolean skipInvalidStructures;
 	private Stack<Buildable> buildableStack = new Stack<>();
 	private Mapping mapping;
 	
@@ -43,10 +43,10 @@ public class MappingController {
 		this(mapping, 1.0, false);
 	}
 	
-	public MappingController(Mapping mapping, double scale, boolean showNested) {
+	public MappingController(Mapping mapping, double scale, boolean skipInvalidStructures) {
 		this.mapping = mapping;
 		this.scale = scale;
-		this.showNested = showNested;
+		this.skipInvalidStructures = skipInvalidStructures;
 	}
 	
 	public void createBuildablesFromCdf(String filename) {
@@ -256,26 +256,8 @@ public class MappingController {
 			if(b.getSizeY() < MIN_SIZE) b.setSizeY(MIN_SIZE);
 			if(b.getSizeZ() < MIN_SIZE) b.setSizeZ(MIN_SIZE);
 			
-			Buildable[] children = b.getChildren();
-			
-			if(showNested) {
-				if(b.getType() == Type.FLOOR || b.getType() == Type.CELLAR) {
-					if(children.length > 0) {
-						b.clearChildren();
-						for(Buildable c : children) {
-							b.getParent().addChild(c);
-						}
-					}
-				}
-			} else {
-				if(b.getType() == Type.FLOOR || b.getType() == Type.CELLAR) {
-					if(children.length > 0) {
-						for(Buildable build : b.getChildren()){
-							b.getParent().addChild(build);
-						}
-						b.clearChildren();
-					}
-				}
+			if(skipInvalidStructures && (b.getType() == Type.FLOOR || b.getType() == Type.CELLAR)) {
+				b.clearChildren();
 			}
 		}
 	}
@@ -283,7 +265,6 @@ public class MappingController {
 	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
 
 		BuildableTree.Iterator iterator = buildableTree.iterator();
-		
 		while(iterator.hasNext()){
 			Buildable build = iterator.next();
 			if(build.getParent() != null){

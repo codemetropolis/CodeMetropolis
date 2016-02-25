@@ -3,6 +3,10 @@
         <constant name="cellar_character" value="planks"/>
         <constant name="cellar_external_character" value="wood"/>
     </resources>
+	<linking>
+		<source name="Package" from="" />
+        <target name="ground" to="" />
+	</linking>
     <linking>
         <source name="Method" from="McCC" />
         <target name="floor" to="external_character" />

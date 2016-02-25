@@ -35,7 +35,7 @@ public class Main {
 		    		options.getOutputFile(),
 		    		options.getMappingFile(),
 		    		options.getScale(),
-		    		options.showNested())
+		    		options.isHierarchyValidationEnabled())
 	    		);	
 	    
 	}
