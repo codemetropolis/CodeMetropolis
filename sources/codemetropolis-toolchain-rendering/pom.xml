@@ -3,7 +3,7 @@
   <parent>
     <groupId>codemetropolis.toolchain</groupId>
     <artifactId>codemetropolis-toolchain</artifactId>
-    <version>1.3.1-alpha</version>
+    <version>1.3.2-alpha</version>
   </parent>
   <artifactId>codemetropolis-toolchain-rendering</artifactId>
   <build>
@@ -38,7 +38,7 @@
   	<dependency>
 	  <groupId>codemetropolis.toolchain</groupId>
 	  <artifactId>codemetropolis-toolchain-commons</artifactId>
-	  <version>1.3.1-alpha</version>
+	  <version>1.3.2-alpha</version>
 	</dependency>
     <dependency>
       <groupId>args4j</groupId>
