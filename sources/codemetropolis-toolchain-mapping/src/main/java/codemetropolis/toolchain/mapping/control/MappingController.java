@@ -2,7 +2,6 @@ package codemetropolis.toolchain.mapping.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +11,11 @@ import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfReaderException;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
@@ -78,7 +75,7 @@ public class MappingController {
 				container.addChild(root);
 				attributesByBuildables.put(container, new HashMap<>());
 			}
-		} catch (ParserConfigurationException | SAXException | IOException e){
+		} catch (Exception e){
 			throw new CdfReaderException(e);
 		}
 	}
@@ -107,15 +104,14 @@ public class MappingController {
 					Object convertedValue = null;
 					if(value == null){
 						switch(l.getTargetTo()) {
-						case "height":;
-						case "width":
-						case "length":
-							value = "0.0";
-							break;
-						default:
-							value="unknown";
+							case "height":;
+							case "width":
+							case "length":
+								value = "0.0";
+								break;
+							default:
+								value="unknown";
 						}
-						System.out.println("Warning: Using default value!");
 					}
 					try {
 						for(Conversion c : l.getConversions()) {

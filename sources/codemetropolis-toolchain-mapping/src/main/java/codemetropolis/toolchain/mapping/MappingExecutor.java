@@ -16,9 +16,17 @@ import codemetropolis.toolchain.mapping.model.Mapping;
 
 public class MappingExecutor extends AbstractExecutor {
 
+	public static final double MIN_SCALE = 0.01;
+	public static final double MAX_SCALE = 100;
+	
 	@Override
 	public void execute(ExecutorArgs args) {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
+		
+		if(mappingArgs.getScale() < MIN_SCALE || mappingArgs.getScale() > MAX_SCALE) {
+			printError(null, Resources.get("invalid_scale_error"), MIN_SCALE, MAX_SCALE);
+			return;
+		}
 		
 		print(Resources.get("reading_mapping"));
 		Mapping mapping;
@@ -57,7 +65,7 @@ public class MappingExecutor extends AbstractExecutor {
 		try {
 			mappingController.validateBuildableStructure(buildables);
 		} catch (NotValidBuildableStructure e) {
-			printError(e, Resources.get("invalid_hierarchy"));
+			printError(e, Resources.get("invalid_hierarchy_error"));
 			return;
 		}
 		print(Resources.get("mapping_printing_output"));

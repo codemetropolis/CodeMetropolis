@@ -37,8 +37,9 @@ public abstract class AbstractExecutor {
 	
 	protected void print(boolean withPrefix, boolean log, String message, Object... args ) {
 		String str = String.format("%s%s\n", withPrefix ? prefix : "", message);
-		printStream.printf(str, args);
-		if(log) FileLogger.logInfo(String.format(str, args));
+		String paramStr = String.format(str, args);
+		printStream.print(paramStr);
+		if(log) FileLogger.logInfo(paramStr);
 	}
 	
 	protected void printError(Exception exception, String message, Object... args ) {
@@ -51,8 +52,9 @@ public abstract class AbstractExecutor {
 	
 	protected void printError(boolean withPrefix, boolean log, Exception exception, String message, Object... args ) {
 		String str = String.format("%s%s\n", withPrefix ? errorPrefix : "", message);
-		errorStream.printf(str, args);
-		if(log) FileLogger.logError(message, exception);
+		String paramStr = String.format(str, args);
+		errorStream.print(paramStr);
+		if(log) FileLogger.logError(paramStr, exception);
 	}
 	
 	public abstract void execute(ExecutorArgs args);

@@ -13,14 +13,17 @@ public abstract class Layout {
 	protected static final int MAX_HEIGHT = 200;
 	
 	public static Layout parse(String algorithm) throws NonExistentLayoutException {
-		switch(LayoutAlgorithm.valueOf(algorithm.toUpperCase())) {
-			case PACK:
-				return new PackLayout();
-			case TETRIS:
-				return new TetrisLayout();
-			default:
-				throw new NonExistentLayoutException(algorithm);
-		}	
+		try{
+			switch(LayoutAlgorithm.valueOf(algorithm.toUpperCase())) {
+				case PACK:
+					return new PackLayout();
+				case TETRIS:
+					return new TetrisLayout();
+			}	
+		} catch (IllegalArgumentException e) {
+			throw new NonExistentLayoutException(algorithm);
+		}
+		return null;
 	}
 	
 	public abstract void apply(BuildableTree buildables) throws LayoutException;
