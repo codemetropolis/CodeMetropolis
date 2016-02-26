@@ -2,6 +2,9 @@ package codemetropolis.toolchain.rendering;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
 import java.util.Scanner;
 
 import codemetropolis.toolchain.commons.cmxml.Validator;
@@ -20,7 +23,7 @@ import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationExcept
 public class RenderingExecutor extends AbstractExecutor {
 	
 	@Override
-	public void execute(ExecutorArgs args) {
+	public boolean execute(ExecutorArgs args) {
 		RenderingExecutorArgs renderingArgs = (RenderingExecutorArgs)args;
 		
 		File worldDir = new File(renderingArgs.getWorldPath());
@@ -41,7 +44,7 @@ public class RenderingExecutor extends AbstractExecutor {
 					overwrite = true;
 				} else {
 					print(Resources.get("render_interrupted"));
-					return;
+					return false;
 				}
 			}
 			if(overwrite) {
@@ -56,13 +59,16 @@ public class RenderingExecutor extends AbstractExecutor {
 			}
 		} catch (IOException e) {
 			printError(e, Resources.get("missing_input_xml_error"));
-			return;
+			return false;
 		} catch (CmxmlValidationFailedException e) {
 			printError(e, Resources.get("invalid_input_xml_error"));
-			return;
+			return false;
 		}
 		
 		WorldBuilder worldBuilder = new WorldBuilder(renderingArgs.getWorldPath());
+		for(EventListener listener : listeners) {
+			worldBuilder.addEventListener((ProgressEventListener) listener);
+		}
 		worldBuilder.addEventListener(new ProgressEventListener() {
 			@Override
 			public void onNextState(ProgressEvent event) {
@@ -96,7 +102,7 @@ public class RenderingExecutor extends AbstractExecutor {
 			worldBuilder.createBuildings(renderingArgs.getInputFile());
 		} catch (BuildingTypeMismatchException e) {
 			printError(e, Resources.get("building_creation_failed_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("rendering_reading_input_done"));
 		print(Resources.get("buildables_found"), worldBuilder.getNumberOfBuildings());
@@ -106,7 +112,7 @@ public class RenderingExecutor extends AbstractExecutor {
 			worldBuilder.createBlocks(tempDir, renderingArgs.getMaxTime());
 		} catch (TooLongRenderDurationException e) {
 			printError(e, Resources.get("too_long_render_duration_error"), e.getMaxTime());
-			return;
+			return false;
 		}
 		long elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		int hours = (int) (elapsed / (1000 * 60 * 60));
@@ -118,12 +124,26 @@ public class RenderingExecutor extends AbstractExecutor {
 			worldBuilder.build(tempDir);
 		} catch (RenderingException e) {
 			printError(e, Resources.get("placing_blocks_failed_error"));
-			return;
+			return false;
 		}
 		elapsed = worldBuilder.getTimeElapsedDuringLastPhase();
 		hours = (int) (elapsed / (1000 * 60 * 60));
         minutes = (int) (elapsed % (1000 * 60 * 60) / (1000 * 60));
         print(Resources.get("placing_blocks_done"), hours, minutes);
+        
+        return true;
 	}
+	
+	//region PROGRESS EVENT
+	private List<EventListener> listeners = new ArrayList<EventListener>();
+	
+	public synchronized void addEventListener(ProgressEventListener listener)  {
+		listeners.add(listener);
+	}
+	
+	public synchronized void removeEventListener(ProgressEventListener listener)   {
+		listeners.remove(listener);
+	}
+	//endregion
 	
 }

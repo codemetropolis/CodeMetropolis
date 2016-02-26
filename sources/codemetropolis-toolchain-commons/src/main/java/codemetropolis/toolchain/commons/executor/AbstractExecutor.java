@@ -57,6 +57,6 @@ public abstract class AbstractExecutor {
 		if(log) FileLogger.logError(paramStr, exception);
 	}
 	
-	public abstract void execute(ExecutorArgs args);
+	public abstract boolean execute(ExecutorArgs args);
 	
 }
