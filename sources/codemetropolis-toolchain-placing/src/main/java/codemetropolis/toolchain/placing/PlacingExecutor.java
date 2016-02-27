@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 import java.io.IOException;
 
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
-import codemetropolis.toolchain.commons.cmxml.Validator;
+import codemetropolis.toolchain.commons.cmxml.CmxmlValidator;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
@@ -22,7 +22,7 @@ public class PlacingExecutor extends AbstractExecutor {
 		PlacingExecutorArgs placingArgs = (PlacingExecutorArgs)args;
 			
 		try {
-			boolean isValid = Validator.validate(placingArgs.getInputFile());
+			boolean isValid = CmxmlValidator.validate(placingArgs.getInputFile());
 			if(!isValid) {
 				throw new CmxmlValidationFailedException();
 			}

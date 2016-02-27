@@ -7,7 +7,7 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Scanner;
 
-import codemetropolis.toolchain.commons.cmxml.Validator;
+import codemetropolis.toolchain.commons.cmxml.CmxmlValidator;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
@@ -53,7 +53,7 @@ public class RenderingExecutor extends AbstractExecutor {
 		}
 			
 		try {
-			boolean isValid = Validator.validate(renderingArgs.getInputFile());
+			boolean isValid = CmxmlValidator.validate(renderingArgs.getInputFile());
 			if(!isValid) {
 				throw new CmxmlValidationFailedException();
 			}
