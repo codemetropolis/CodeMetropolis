@@ -57,6 +57,13 @@ public class Buildable implements Comparable<Buildable> {
 				z2 > this.getPositionZ();
 	}
 	
+	public boolean isOverlapping(int x, int z) {
+		return	x <= this.getPositionX() + this.getSizeX() &&
+				x >= this.getPositionX() &&
+				z <= this.getPositionZ() + this.getSizeZ() &&
+				z >= this.getPositionZ(); 
+	}
+	
 	public Point getCenter() {
 		return new Point(
 				position.getX() + size.getX() / 2,
@@ -66,13 +73,14 @@ public class Buildable implements Comparable<Buildable> {
 	}
 	
 	public String getFullName() {
-		return getFullName("::");
+		return getFullName(".");
 	}
 	
 	public String getFullName(String separator) {
 		StringBuilder sb = new StringBuilder();
-		for(Buildable b : getAncestors())
-			sb.append(b.getName()).append(separator);
+		Buildable[] ancestors = getAncestors();
+		for(int i = 1; i < ancestors.length; i++)
+			sb.append(ancestors[i].getName()).append(separator);
 		sb.append(getName());
 		return sb.toString();
 	}
