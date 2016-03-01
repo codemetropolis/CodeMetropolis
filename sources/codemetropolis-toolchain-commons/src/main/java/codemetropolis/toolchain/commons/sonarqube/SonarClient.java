@@ -20,7 +20,7 @@ import codemetropolis.toolchain.commons.sonarqube.SonarResource.Scope;
 
 public class SonarClient {
 
-	private String sonarURL = "http://10.6.13.7:9000/api/";
+	private String sonarURL = "";
 	
 	private static final String SCOPE = "scopes=";
 	private static final String RESOURCE = "resource=";
@@ -31,6 +31,10 @@ public class SonarClient {
 	private String metricNames;
 	
 	private Map<Integer, SonarResource> resources = new ConcurrentHashMap<>();
+	
+	public SonarClient(String sonarUrl){
+		this.sonarURL = sonarUrl;
+	}
 	
 	private void getResources(SonarResource resource) throws IOException{
 		Scope scope = Scope.DIR;
@@ -59,7 +63,32 @@ public class SonarClient {
 		
 	}
 	
-	private void getAllProjects() throws IOException{
+	public Map<Integer, SonarResource> getProject(String projectId) throws MalformedURLException, IOException{
+		metricNames = getMetricsParameterNames();
+		String urlWithParams = createURL(RESOURCES, RESOURCE, projectId, "&",SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
+		String line = getDataFromUrl(urlWithParams);
+		
+		JsonParser jsonParser = new JsonParser();
+		if(jsonParser.parse(line).isJsonArray()){
+			JsonArray jsonArray = (JsonArray) jsonParser.parse(line);
+			Iterator<JsonElement> iterator = jsonArray.iterator();
+			while(iterator.hasNext()){
+				JsonElement element = iterator.next();
+				if(element.isJsonObject()){
+					SonarResource res = createResource((JsonObject)element);
+					resources.put(res.getId(), res);
+				}			
+			}
+		}
+		Iterator<Integer> iterator = resources.keySet().iterator();
+		while(iterator.hasNext()){
+			SonarResource res = resources.get(iterator.next());
+			getResources(res);
+		}
+		return resources;
+	}
+	
+	public Map<Integer, SonarResource> getAllProjects() throws IOException{
 		metricNames = getMetricsParameterNames();
 		String urlWithParams = createURL(RESOURCES,SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
 		String line = getDataFromUrl(urlWithParams);
@@ -81,8 +110,9 @@ public class SonarClient {
 			SonarResource res = resources.get(iterator.next());
 			getResources(res);
 		}
-		
+		return resources;
 	}
+	
 	private String getDataFromUrl(String urlWithParams) throws IOException{
 		URL url = new URL(urlWithParams);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
