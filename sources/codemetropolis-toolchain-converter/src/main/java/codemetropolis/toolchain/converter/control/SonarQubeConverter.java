@@ -3,6 +3,7 @@ package codemetropolis.toolchain.converter.control;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfConverter;
@@ -10,6 +11,8 @@ import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.sonarqube.SonarClient;
+import codemetropolis.toolchain.commons.sonarqube.SonarMetric;
+import codemetropolis.toolchain.commons.sonarqube.SonarMetric.MetricType;
 import codemetropolis.toolchain.commons.sonarqube.SonarResource;
 import codemetropolis.toolchain.commons.sonarqube.SonarResource.Scope;
 
@@ -69,11 +72,26 @@ public class SonarQubeConverter  implements CdfConverter {
 		return cdfElement;
 	}
 	
-	private void addCdfProperties(CdfElement cdfElement, Map<String, String> metrics){
-		for(String key : metrics.keySet()){
-			cdfElement.addProperty(key, metrics.get(key), Type.STRING);
+	private void addCdfProperties(CdfElement cdfElement, List<SonarMetric> metrics){
+		for(SonarMetric metric : metrics){
+			cdfElement.addProperty(metric.getName(), metric.getValue(), getMetricType(metric.getType()));
 		}
 		
+	}
+	
+	private Type getMetricType(MetricType type){
+		switch(type){
+			case INT:
+				return Type.INT;
+			case FLOAT:
+			case PERCENT:
+			case MILLISEC:
+				return Type.FLOAT;
+			case DATA:
+				return Type.STRING;
+			default:
+				return Type.STRING;
+		}
 	}
 	
 	private void setChildrend(CdfElement cdfElement, SonarResource resource){

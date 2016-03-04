@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import codemetropolis.toolchain.commons.sonarqube.SonarMetric.MetricType;
 import codemetropolis.toolchain.commons.sonarqube.SonarResource.Scope;
 
 public class SonarClient {
@@ -28,7 +31,8 @@ public class SonarClient {
 	private static final String DEPTH = "depth=";
 	private static final String RESOURCES= "resources?";
 	
-	private String metricNames;
+	private Map<String, String> metricNamesAndTypes = new HashMap<>();
+	private String metricNames = "";
 	
 	private Map<Integer, SonarResource> resources = new ConcurrentHashMap<>();
 	
@@ -67,7 +71,6 @@ public class SonarClient {
 		metricNames = getMetricsParameterNames();
 		String urlWithParams = createURL(RESOURCES, RESOURCE, projectId, "&",SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
 		String line = getDataFromUrl(urlWithParams);
-		
 		JsonParser jsonParser = new JsonParser();
 		if(jsonParser.parse(line).isJsonArray()){
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(line);
@@ -90,6 +93,7 @@ public class SonarClient {
 	
 	public Map<Integer, SonarResource> getAllProjects() throws IOException{
 		metricNames = getMetricsParameterNames();
+
 		String urlWithParams = createURL(RESOURCES,SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
 		String line = getDataFromUrl(urlWithParams);
 		
@@ -147,6 +151,7 @@ public class SonarClient {
 				JsonObject jsonArray = (JsonObject) element;
 				metricNames.append(jsonArray.get("key").getAsString());
 				metricNames.append(",");
+				metricNamesAndTypes.put(jsonArray.get("key").getAsString(), jsonArray.get("type").getAsString());
 			}
 		}
 		
@@ -178,28 +183,69 @@ public class SonarClient {
 
 		if(jsonObject.get("msr").isJsonArray()){
 			JsonArray array = (JsonArray) jsonObject.get("msr");
-			resource.getMetricNamesandValues().putAll(getMetricNameAndValues(array));;
+			resource.getMetricNamesandValues().addAll(getMetricNameAndValues(array));;
 		}
 		
 		return resource;
 	}
 
-	private Map<String, String> getMetricNameAndValues(JsonArray jsonArray){
-		Map<String, String> map = new HashMap<>();
+	private List<SonarMetric> getMetricNameAndValues(JsonArray jsonArray){
+		List<SonarMetric> metricList = new ArrayList<>();
 		
 		Iterator<JsonElement> iterator = jsonArray.iterator();
 		while(iterator.hasNext()){
 			JsonElement element = iterator.next();
 			if(element.isJsonObject()){
 				JsonObject jsonObject = (JsonObject) element;
-				if(!(jsonObject.get("key") != null) && !(jsonObject.get("val") != null)){
-					map.put(jsonObject.get("key").getAsString(), jsonObject.get("val").getAsString());
+
+				if(!jsonObject.has("key") || (!jsonObject.has("val") && !jsonObject.has("data"))){
+					continue;			
 				}
+				String name = jsonObject.get("key").getAsString();
+				String value = "";
+				if(jsonObject.has("val")){
+					value = jsonObject.get("val").getAsString();
+				} else {
+					value = jsonObject.get("data").getAsString();
+				}
+				String type = metricNamesAndTypes.get(name);
+				SonarMetric metric = new SonarMetric(name, value, getMetricType(type));
+				metricList.add(metric);
 			}
 		}
 		
 		
-		return map;
+		return metricList;
+	}
+	
+	private MetricType getMetricType(String type){
+		
+		if(MetricType.INT.toString().equals(type)){
+			return MetricType.INT;
+		} else if(MetricType.FLOAT.toString().equals(type)){
+			return MetricType.FLOAT;
+		} else if(MetricType.PERCENT.toString().equals(type)) {
+			return MetricType.PERCENT;
+		} else if(MetricType.MILLISEC.toString().equals(type)) {
+			return MetricType.MILLISEC;
+		} else if (MetricType.BOOL.toString().equals(type)) {
+			return MetricType.BOOL;
+		} else if (MetricType.DATA.toString().equals(type)) {
+			return MetricType.DATA;
+		} else if (MetricType.DISTRIB.toString().equals(type)) {
+			return MetricType.DISTRIB;
+		} else if (MetricType.LEVEL.toString().equals(type)) {
+			return MetricType.LEVEL;
+		} else if (MetricType.RATING.toString().equals(type)) {
+			return MetricType.RATING;
+		} else if (MetricType.STRING.toString().equals(type)) {
+			return MetricType.STRING;
+		} else if (MetricType.WORK_DUR.toString().equals(type)){
+			return MetricType.WORK_DUR;
+		} else {
+			return MetricType.DATA;
+		}
+		
 	}
 	
 }

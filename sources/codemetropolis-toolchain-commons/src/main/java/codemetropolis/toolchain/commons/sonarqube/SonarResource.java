@@ -1,16 +1,14 @@
 package codemetropolis.toolchain.commons.sonarqube;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SonarResource {
 
 	private int id;
 	private String name;
 	private Scope scope;
-	private Map<String, String> metricNamesandValues = new HashMap<>();
+	private List<SonarMetric> metricNamesandValues = new ArrayList<>();
 	private List<Integer> childrenResources = new ArrayList<>();
 	
 	public SonarResource(){
@@ -41,11 +39,11 @@ public class SonarResource {
 		this.scope = scope;
 	}
 
-	public Map<String, String> getMetricNamesandValues() {
+	public List<SonarMetric> getMetricNamesandValues() {
 		return metricNamesandValues;
 	}
 
-	public void setMetricNamesandValues(Map<String, String> metricNamesandValues) {
+	public void setMetricNamesandValues(List<SonarMetric> metricNamesandValues) {
 		this.metricNamesandValues = metricNamesandValues;
 	}
 	
