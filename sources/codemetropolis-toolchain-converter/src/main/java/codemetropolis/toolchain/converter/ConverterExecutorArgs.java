@@ -1,28 +1,31 @@
 package codemetropolis.toolchain.converter;
 
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+import codemetropolis.toolchain.converter.control.ConverterType;
 
 public class ConverterExecutorArgs extends ExecutorArgs {
 	
-	private String inputFile;
+	private ConverterType type;
+	private String source;
 	private String outputFile;
 	
-	public String getOutputFile(){
-		return outputFile;
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
+		super();
+		this.type = type;
+		this.source = source;
+		this.outputFile = outputFile;
+	}
+
+	public ConverterType getType() {
+		return type;
 	}
 	
-	public String getInputFile() {
-		return inputFile;
+	public String getSource() {
+		return source;
 	}
 
-	public void setInputFile(String inputFile) {
-		this.inputFile = inputFile;
-	}
-
-	public ConverterExecutorArgs(String inputFile, String outputFile) {
-		super();
-		this.inputFile = inputFile;
-		this.outputFile = outputFile;
+	public String getOutputFile(){
+		return outputFile;
 	}
 
 }

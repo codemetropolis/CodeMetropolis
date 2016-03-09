@@ -22,16 +22,10 @@ public class GraphConverter implements CdfConverter {
 	
 	private static final String ROOT_NODE_ID = "L100";
 	
-	private String fileName;
-	
-	public GraphConverter(String filename){
-		this.fileName = filename;
-	}
-
 	@Override
-	public CdfTree createElements(){
+	public CdfTree createElements(String graphPath){
 		Graph graph = new Graph();
-		graph.loadBinary(fileName);
+		graph.loadBinary(graphPath);
 		Node root = graph.findNode(ROOT_NODE_ID);
 		CdfElement rootElement = createElementsRecursively(root);
 		return new CdfTree(rootElement);

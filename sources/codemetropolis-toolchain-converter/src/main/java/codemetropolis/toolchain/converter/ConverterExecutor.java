@@ -6,21 +6,20 @@ import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
-import codemetropolis.toolchain.converter.control.SonarQubeConverter;
+import codemetropolis.toolchain.converter.control.ConverterLoader;
 
 public class ConverterExecutor extends AbstractExecutor {
-
 	
 	@Override
 	public void execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
-		//CdfConverter converter = new GraphConverter(converterArgs.getInputFile());
-		CdfConverter converter = new SonarQubeConverter();
+		
+		CdfConverter converter = ConverterLoader.load(converterArgs.getType());
 		
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = null;
 		try {
-			cdfTree = converter.createElements();
+			cdfTree = converter.createElements(converterArgs.getSource());
 		} catch (Exception e) {
 			printError(e, Resources.get("converter_error"));
 			return;

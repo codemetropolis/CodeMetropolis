@@ -28,8 +28,8 @@ public class SonarQubeConverter  implements CdfConverter {
 	}
 
 	@Override
-	public CdfTree createElements() {
-		resources.putAll(getResources());
+	public CdfTree createElements(String url) {
+		resources.putAll(getResources(url));
 		
 		CdfTree cdfTree = new CdfTree();	
 		Iterator<Integer> iterator = resources.keySet().iterator();
@@ -47,11 +47,12 @@ public class SonarQubeConverter  implements CdfConverter {
 	}
 	
 	
-	private Map<Integer, SonarResource> getResources() {
+	private Map<Integer, SonarResource> getResources(String url) {
 		Map<Integer, SonarResource> map = new HashMap<>();
 		
-		SonarClient sonarClient = new SonarClient("http://10.6.13.7:9000/api/");
+		SonarClient sonarClient = new SonarClient(url);
 		try {
+			//TODO make it load all projects
 			map.putAll(sonarClient.getProject("log4j"));
 		} catch (IOException e) {
 			e.printStackTrace();

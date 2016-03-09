@@ -18,8 +18,9 @@ public class Main {
 	        if((options.getInputFile() == null || options.getMappingFile() == null) && !options.showHelp())
 	        	throw new IllegalArgumentException();
 	    } catch (CmdLineException | IllegalArgumentException e) {
-	    	System.err.println(Resources.get("command_line_error"));
-	    	FileLogger.logError(Resources.get("command_line_error"), e);
+	    	String message = Resources.get("command_line_error");
+	    	FileLogger.logError(message, e);
+	    	System.err.println(message);
 	    	System.err.println(Resources.get("mapping_usage"));
 	    	return;
 	    }
