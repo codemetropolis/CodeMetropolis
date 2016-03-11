@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.converter.control;
+package codemetropolis.toolchain.converter.sonarqube;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,20 +9,19 @@ import java.util.Map;
 import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
+import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
+import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
-import codemetropolis.toolchain.commons.sonarqube.SonarClient;
-import codemetropolis.toolchain.commons.sonarqube.SonarMetric;
-import codemetropolis.toolchain.commons.sonarqube.SonarMetric.MetricType;
-import codemetropolis.toolchain.commons.sonarqube.SonarResource;
-import codemetropolis.toolchain.commons.sonarqube.SonarResource.Scope;
 
-public class SonarQubeConverter  implements CdfConverter {
+public class SonarQubeConverter extends CdfConverter {
 
+	private static final String PROJECTS_PARAM_NAME = "projects";
+	
 	private Map<Integer, SonarResource> resources;
 	private Map<Integer, CdfElement> cdfElements;
 	
-	
-	public SonarQubeConverter(){
+	public SonarQubeConverter(Map<String, String> params) {
+		super(params);
 		resources = new HashMap<>();
 		cdfElements = new HashMap<>();
 	}
@@ -34,16 +33,25 @@ public class SonarQubeConverter  implements CdfConverter {
 		CdfTree cdfTree = new CdfTree();	
 		Iterator<Integer> iterator = resources.keySet().iterator();
 		
+		CdfElement rootElement = new CdfElement("projects", "container");
+		cdfTree.setRoot(rootElement);
+		
 		while(iterator.hasNext()){
 			Integer rootId = iterator.next();
 			SonarResource res = resources.get(rootId);
 			if(Scope.PRJ.equals(res.getScope())){
-				CdfElement rootElement = createCdfElement(res);
-				cdfTree.setRoot(rootElement);
+				CdfElement projectElement = createCdfElement(res);
+				rootElement.addChildElement(projectElement);
 			}
 		}
 		
 		return cdfTree;
+	}
+	
+	private String[] getProjectsInParams() {
+		String projectStr = getParameter(PROJECTS_PARAM_NAME);
+		if(projectStr == null) return new String[0];
+		return projectStr.split(",");
 	}
 	
 	
@@ -52,8 +60,16 @@ public class SonarQubeConverter  implements CdfConverter {
 		
 		SonarClient sonarClient = new SonarClient(url);
 		try {
-			//TODO make it load all projects
-			map.putAll(sonarClient.getProject("log4j"));
+			
+			String[] projects = getProjectsInParams();
+			if(projects.length == 0) {
+				projects = sonarClient.getProjectKeys();
+			}
+			
+			for(String key : projects) {
+				map.putAll(sonarClient.getProject(key));
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,8 +83,8 @@ public class SonarQubeConverter  implements CdfConverter {
 		cdfElement.setName(resource.getName());	
 		cdfElement.setType(resource.getScope().toString());
 
-		addCdfProperties(cdfElement, resource.getMetricNamesandValues());
-		setChildrend(cdfElement, resource);
+		addCdfProperties(cdfElement, resource.getMetricNamesAndValues());
+		setChildren(cdfElement, resource);
 		cdfElements.put(resource.getId(), cdfElement);
 		return cdfElement;
 	}
@@ -95,7 +111,7 @@ public class SonarQubeConverter  implements CdfConverter {
 		}
 	}
 	
-	private void setChildrend(CdfElement cdfElement, SonarResource resource){
+	private void setChildren(CdfElement cdfElement, SonarResource resource){
 		if(cdfElements.containsKey(resource.getId())){
 			CdfElement child = cdfElements.get(resource.getId());
 			cdfElement.addChildElement(child);

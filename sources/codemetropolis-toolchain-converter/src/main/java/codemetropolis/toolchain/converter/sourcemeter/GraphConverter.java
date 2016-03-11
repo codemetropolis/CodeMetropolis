@@ -1,7 +1,8 @@
-package codemetropolis.toolchain.converter.control;
+package codemetropolis.toolchain.converter.sourcemeter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
@@ -18,8 +19,12 @@ import graphlib.Edge.eDirectionType;
 import graphlib.Graph;
 import graphlib.Node;
 
-public class GraphConverter implements CdfConverter {
+public class GraphConverter extends CdfConverter {
 	
+	public GraphConverter(Map<String, String> params) {
+		super(params);
+	}
+
 	private static final String ROOT_NODE_ID = "L100";
 	
 	@Override

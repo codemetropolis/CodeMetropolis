@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.sonarqube;
+package codemetropolis.toolchain.converter.sonarqube;
 
 public class SonarMetric {
 

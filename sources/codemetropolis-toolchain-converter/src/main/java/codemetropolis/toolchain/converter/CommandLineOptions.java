@@ -16,6 +16,9 @@ public class CommandLineOptions {
 	@Option(name="-o", aliases = {"--output"})
 	private String outputFile = null;
 	
+	@Option(name="-p", aliases = {"--params"})
+	private String params = null;
+	
 	public String getOutputFile(){
 		return outputFile;
 	}
@@ -32,4 +35,8 @@ public class CommandLineOptions {
 		return showHelp;
 	}
 
+	public String getParams() {
+		return params;
+	}
+	
 }

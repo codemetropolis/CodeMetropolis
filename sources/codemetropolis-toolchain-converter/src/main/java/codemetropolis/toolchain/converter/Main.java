@@ -1,5 +1,8 @@
 package codemetropolis.toolchain.converter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -37,6 +40,21 @@ public class Main {
 	    	return;
 	    }
 	    
+	    Map<String, String> params = new HashMap<>();
+	    if(options.getParams() != null) {
+	    	try {
+	 		    String[] paramsArray = options.getParams().split(";");
+	 		    for(String str : paramsArray) {
+	 		    	String[] strParts = str.split("=");
+	 		    	params.put(strParts[0], strParts[1]);
+	 		    }
+	 	    } catch(Exception e) {
+	 	    	String message = Resources.get("invalid_params");
+	 	    	System.err.println(message);
+	 	    	FileLogger.logError(message, e);
+	 	    }
+	    }
+	    
 	    if(options.showHelp()) {
 	    	System.out.println(Resources.get("converter_introduction"));
 	    	System.out.println(Resources.get("converter_usage"));
@@ -50,7 +68,8 @@ public class Main {
 	    		new ConverterExecutorArgs(
 	    			converterType,
 		    		options.getSource(),
-		    		options.getOutputFile()
+		    		options.getOutputFile(),
+		    		params
 	    		));	
 		
 	}

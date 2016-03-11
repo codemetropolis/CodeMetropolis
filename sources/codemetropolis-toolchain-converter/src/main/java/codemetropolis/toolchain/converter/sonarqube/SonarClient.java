@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.sonarqube;
+package codemetropolis.toolchain.converter.sonarqube;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,8 +18,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import codemetropolis.toolchain.commons.sonarqube.SonarMetric.MetricType;
-import codemetropolis.toolchain.commons.sonarqube.SonarResource.Scope;
+import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
+import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
 
 public class SonarClient {
 
@@ -40,7 +40,7 @@ public class SonarClient {
 		this.sonarURL = sonarUrl;
 	}
 	
-	private void getResources(SonarResource resource) throws IOException{
+	private void getResources(SonarResource resource) throws IOException {
 		Scope scope = Scope.DIR;
 		if(Scope.PRJ.equals(resource.getScope()))
 			scope = Scope.DIR;
@@ -64,39 +64,28 @@ public class SonarClient {
 				}			
 			}
 		}
-		
 	}
 	
-	public Map<Integer, SonarResource> getProject(String projectId) throws MalformedURLException, IOException{
-		metricNames = getMetricsParameterNames();
-		String urlWithParams = createURL(RESOURCES, RESOURCE, projectId, "&",SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
-		String line = getDataFromUrl(urlWithParams);
+	public String[] getProjectKeys() throws IOException {
+		List<String> result = new ArrayList<>();
+		String requestURL = createURL(RESOURCES);
+		String responseData = getDataFromUrl(requestURL);
 		JsonParser jsonParser = new JsonParser();
-		if(jsonParser.parse(line).isJsonArray()){
-			JsonArray jsonArray = (JsonArray) jsonParser.parse(line);
+		if(jsonParser.parse(responseData).isJsonArray()){
+			JsonArray jsonArray = (JsonArray) jsonParser.parse(responseData);
 			Iterator<JsonElement> iterator = jsonArray.iterator();
 			while(iterator.hasNext()){
-				JsonElement element = iterator.next();
-				if(element.isJsonObject()){
-					SonarResource res = createResource((JsonObject)element);
-					resources.put(res.getId(), res);
-				}			
+				JsonObject projectJsonObject = iterator.next().getAsJsonObject();
+				result.add(projectJsonObject.get("key").getAsString());	
 			}
 		}
-		Iterator<Integer> iterator = resources.keySet().iterator();
-		while(iterator.hasNext()){
-			SonarResource res = resources.get(iterator.next());
-			getResources(res);
-		}
-		return resources;
+		return result.toArray(new String[result.size()]);
 	}
 	
-	public Map<Integer, SonarResource> getAllProjects() throws IOException{
+	public Map<Integer, SonarResource> getProject(String projectKey) throws MalformedURLException, IOException {	
 		metricNames = getMetricsParameterNames();
-
-		String urlWithParams = createURL(RESOURCES,SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
+		String urlWithParams = createURL(RESOURCES, RESOURCE, projectKey, "&",SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
 		String line = getDataFromUrl(urlWithParams);
-		
 		JsonParser jsonParser = new JsonParser();
 		if(jsonParser.parse(line).isJsonArray()){
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(line);
@@ -183,7 +172,7 @@ public class SonarClient {
 
 		if(jsonObject.get("msr").isJsonArray()){
 			JsonArray array = (JsonArray) jsonObject.get("msr");
-			resource.getMetricNamesandValues().addAll(getMetricNameAndValues(array));;
+			resource.getMetricNamesAndValues().addAll(getMetricNameAndValues(array));;
 		}
 		
 		return resource;

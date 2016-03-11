@@ -14,7 +14,7 @@ public class ConverterExecutor extends AbstractExecutor {
 	public void execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
 		
-		CdfConverter converter = ConverterLoader.load(converterArgs.getType());
+		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams());
 		
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = null;

@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.sonarqube;
+package codemetropolis.toolchain.converter.sonarqube;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ public class SonarResource {
 	private int id;
 	private String name;
 	private Scope scope;
-	private List<SonarMetric> metricNamesandValues = new ArrayList<>();
+	private List<SonarMetric> metricNamesAndValues = new ArrayList<>();
 	private List<Integer> childrenResources = new ArrayList<>();
 	
 	public SonarResource(){
@@ -39,12 +39,12 @@ public class SonarResource {
 		this.scope = scope;
 	}
 
-	public List<SonarMetric> getMetricNamesandValues() {
-		return metricNamesandValues;
+	public List<SonarMetric> getMetricNamesAndValues() {
+		return metricNamesAndValues;
 	}
 
-	public void setMetricNamesandValues(List<SonarMetric> metricNamesandValues) {
-		this.metricNamesandValues = metricNamesandValues;
+	public void setMetricNamesandValues(List<SonarMetric> metricNamesAndValues) {
+		this.metricNamesAndValues = metricNamesAndValues;
 	}
 	
 	public List<Integer> getChildrenResources() {
@@ -61,7 +61,7 @@ public class SonarResource {
 		int result = 1;
 		result = prime * result + ((childrenResources == null) ? 0 : childrenResources.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((metricNamesandValues == null) ? 0 : metricNamesandValues.hashCode());
+		result = prime * result + ((metricNamesAndValues == null) ? 0 : metricNamesAndValues.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
 		return result;
@@ -83,10 +83,10 @@ public class SonarResource {
 			return false;
 		if (id != other.id)
 			return false;
-		if (metricNamesandValues == null) {
-			if (other.metricNamesandValues != null)
+		if (metricNamesAndValues == null) {
+			if (other.metricNamesAndValues != null)
 				return false;
-		} else if (!metricNamesandValues.equals(other.metricNamesandValues))
+		} else if (!metricNamesAndValues.equals(other.metricNamesAndValues))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -97,9 +97,6 @@ public class SonarResource {
 			return false;
 		return true;
 	}
-
-
-
 
 	public enum Scope{
 		PRJ,
