@@ -11,6 +11,8 @@ import codemetropolis.toolchain.commons.cdf.CdfProperty;
 
 public class CdfElement {
 
+	private static final String SOURCE_ID_KEY = "source_id";
+	
 	private String name;
 	private String type;
 	private List<CdfProperty> properties;
@@ -65,6 +67,10 @@ public class CdfElement {
 	
 	public void addProperty(String name, String value, CdfProperty.Type type) {
 		properties.add(new CdfProperty(name, value, type));
+	}
+	
+	public void setSourceId(String id) {
+		addProperty(SOURCE_ID_KEY, id, CdfProperty.Type.STRING);
 	}
 	
 	public List<CdfElement> getChildElements() {

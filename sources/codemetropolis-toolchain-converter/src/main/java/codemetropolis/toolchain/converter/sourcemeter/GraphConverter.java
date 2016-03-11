@@ -40,7 +40,7 @@ public class GraphConverter extends CdfConverter {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
 		CdfElement element =  new CdfElement(name, type);
-		element.addProperty("sourceid", root.getUID(), CdfProperty.Type.STRING);
+		element.setSourceId(root.getUID());
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
 			element.addChildElement(createElementsRecursively(child));

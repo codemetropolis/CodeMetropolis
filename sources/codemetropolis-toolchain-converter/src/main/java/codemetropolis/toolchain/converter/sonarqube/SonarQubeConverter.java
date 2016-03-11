@@ -79,13 +79,13 @@ public class SonarQubeConverter extends CdfConverter {
 	
 	private CdfElement createCdfElement(SonarResource resource){
 		CdfElement cdfElement = new CdfElement();
-		
 		cdfElement.setName(resource.getName());	
 		cdfElement.setType(resource.getScope().toString());
-
+		cdfElement.setSourceId(String.valueOf(resource.getId()));
 		addCdfProperties(cdfElement, resource.getMetricNamesAndValues());
 		setChildren(cdfElement, resource);
 		cdfElements.put(resource.getId(), cdfElement);
+		
 		return cdfElement;
 	}
 	
@@ -93,7 +93,6 @@ public class SonarQubeConverter extends CdfConverter {
 		for(SonarMetric metric : metrics){
 			cdfElement.addProperty(metric.getName(), metric.getValue(), getMetricType(metric.getType()));
 		}
-		
 	}
 	
 	private Type getMetricType(MetricType type){
