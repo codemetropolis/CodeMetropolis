@@ -41,13 +41,17 @@ After that, you can find the graph file in &lt;ResultsDir>&lt;inputProjectName>\
 
 First you have to run the **CDF Converter Tool** with the following command: 
 
-  `java -jar converter.jar -i <graph file> -o <output.xml>`
-
+  `java -jar converter.jar -i <graph file> [-o <output.xml>] [-t <tpye>] [-p <parameter>]`
+  
   Options: 
   
   * `-i`: input, the path of the input graph file. Required. 
   
   * `-o`: output, the path of the output XML file.  
+  
+  * `-t`: type, the type of the conversion. In the current version it can be 'sourcemeter' or 'sonarqube'.  
+  
+  * `-p`: parameter, a string value, for example: -p projects=project1;project2.
   
 Output XML will be used by the Mapping Tool. 
 
