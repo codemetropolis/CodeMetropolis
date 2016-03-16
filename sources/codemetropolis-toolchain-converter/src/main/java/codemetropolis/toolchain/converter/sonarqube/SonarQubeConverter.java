@@ -1,6 +1,5 @@
 package codemetropolis.toolchain.converter.sonarqube;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,13 +8,16 @@ import java.util.Map;
 import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
 import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
-import codemetropolis.toolchain.commons.cdf.CdfTree;
 
 public class SonarQubeConverter extends CdfConverter {
 
 	private static final String PROJECTS_PARAM_NAME = "projects";
+	private static final String ROOT_CONTAINER_NAME = "projects";
+	private static final String ROOT_CONTAINER_TYPE = "container";
 	
 	private Map<Integer, SonarResource> resources;
 	private Map<Integer, CdfElement> cdfElements;
@@ -27,13 +29,13 @@ public class SonarQubeConverter extends CdfConverter {
 	}
 
 	@Override
-	public CdfTree createElements(String url) {
+	public CdfTree createElements(String url) throws CodeMetropolisException {
 		resources.putAll(getResources(url));
 		
 		CdfTree cdfTree = new CdfTree();	
 		Iterator<Integer> iterator = resources.keySet().iterator();
 		
-		CdfElement rootElement = new CdfElement("projects", "container");
+		CdfElement rootElement = new CdfElement(ROOT_CONTAINER_NAME, ROOT_CONTAINER_TYPE);
 		cdfTree.setRoot(rootElement);
 		
 		while(iterator.hasNext()){
@@ -55,26 +57,21 @@ public class SonarQubeConverter extends CdfConverter {
 	}
 	
 	
-	private Map<Integer, SonarResource> getResources(String url) {
-		Map<Integer, SonarResource> map = new HashMap<>();
+	private Map<Integer, SonarResource> getResources(String url) throws SonarConnectException {
+		Map<Integer, SonarResource> result = new HashMap<>();
 		
 		SonarClient sonarClient = new SonarClient(url);
-		try {
-			
-			String[] projects = getProjectsInParams();
-			if(projects.length == 0) {
-				projects = sonarClient.getProjectKeys();
-			}
-			
-			for(String key : projects) {
-				map.putAll(sonarClient.getProject(key));
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+		sonarClient.init();
+		String[] projects = getProjectsInParams();
+		if(projects.length == 0) {
+			projects = sonarClient.getProjectKeys();
 		}
 		
-		return map;
+		for(String key : projects) {
+			result.putAll(sonarClient.getProject(key));
+		}
+		
+		return result;
 	}
 	
 	private CdfElement createCdfElement(SonarResource resource){
@@ -82,7 +79,7 @@ public class SonarQubeConverter extends CdfConverter {
 		cdfElement.setName(resource.getName());	
 		cdfElement.setType(resource.getScope().toString());
 		cdfElement.setSourceId(String.valueOf(resource.getId()));
-		addCdfProperties(cdfElement, resource.getMetricNamesAndValues());
+		addCdfProperties(cdfElement, resource.getMetrics());
 		setChildren(cdfElement, resource);
 		cdfElements.put(resource.getId(), cdfElement);
 		
@@ -115,13 +112,11 @@ public class SonarQubeConverter extends CdfConverter {
 			CdfElement child = cdfElements.get(resource.getId());
 			cdfElement.addChildElement(child);
 		} else {
-			for(Integer ids : resource.getChildrenResources()){
+			for(Integer ids : resource.getChildIdList()){
 				CdfElement child = createCdfElement(resources.get(ids));
 				cdfElement.addChildElement(child);
 			}
-		}
-				
+		}			
 	}
-	
 	
 }

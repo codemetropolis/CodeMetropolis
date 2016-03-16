@@ -7,7 +7,6 @@ public class SonarMetric {
 	private MetricType type;
 	
 	public SonarMetric(String name, String value, MetricType type) {
-		super();
 		this.name = name;
 		this.value = value;
 		this.type = type;
@@ -67,7 +66,6 @@ public class SonarMetric {
 	}
 
 	public enum MetricType {
-
 	    INT,
 	    FLOAT,
 	    PERCENT,
@@ -79,7 +77,6 @@ public class SonarMetric {
 	    DISTRIB,
 	    RATING,
 	    WORK_DUR
-
 	}
 	
 }

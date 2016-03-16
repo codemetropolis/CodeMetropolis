@@ -1,6 +1,8 @@
 package codemetropolis.toolchain.converter.sonarqube;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class SonarResource {
@@ -8,12 +10,8 @@ public class SonarResource {
 	private int id;
 	private String name;
 	private Scope scope;
-	private List<SonarMetric> metricNamesAndValues = new ArrayList<>();
-	private List<Integer> childrenResources = new ArrayList<>();
-	
-	public SonarResource(){
-		
-	}
+	private List<SonarMetric> metrics = new ArrayList<>();
+	private List<Integer> childIdList = new ArrayList<>();
 	
 	public int getId() {
 		return id;
@@ -39,29 +37,41 @@ public class SonarResource {
 		this.scope = scope;
 	}
 
-	public List<SonarMetric> getMetricNamesAndValues() {
-		return metricNamesAndValues;
-	}
-
-	public void setMetricNamesandValues(List<SonarMetric> metricNamesAndValues) {
-		this.metricNamesAndValues = metricNamesAndValues;
+	public List<SonarMetric> getMetrics() {
+		return Collections.unmodifiableList(metrics);
 	}
 	
-	public List<Integer> getChildrenResources() {
-		return childrenResources;
+	public void addMetrics(Collection<SonarMetric> metrics) {
+		this.metrics.addAll(metrics);
 	}
-
-	public void setChildrenResources(List<Integer> childrenResources) {
-		this.childrenResources = childrenResources;
+	
+	public void addMetric(SonarMetric... metric) {
+		for(SonarMetric m : metric) {
+			metrics.add(m);
+		}
+	}
+	
+	public List<Integer> getChildIdList() {
+		return Collections.unmodifiableList(childIdList);
+	}
+	
+	public void addChildren(Collection<Integer> idCollection) {
+		childIdList.addAll(idCollection);
+	}
+	
+	public void addChild(int... id) {
+		for(int c : id) {
+			childIdList.add(c);
+		}
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((childrenResources == null) ? 0 : childrenResources.hashCode());
+		result = prime * result + ((childIdList == null) ? 0 : childIdList.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((metricNamesAndValues == null) ? 0 : metricNamesAndValues.hashCode());
+		result = prime * result + ((metrics == null) ? 0 : metrics.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
 		return result;
@@ -76,17 +86,17 @@ public class SonarResource {
 		if (getClass() != obj.getClass())
 			return false;
 		SonarResource other = (SonarResource) obj;
-		if (childrenResources == null) {
-			if (other.childrenResources != null)
+		if (childIdList == null) {
+			if (other.childIdList != null)
 				return false;
-		} else if (!childrenResources.equals(other.childrenResources))
+		} else if (!childIdList.equals(other.childIdList))
 			return false;
 		if (id != other.id)
 			return false;
-		if (metricNamesAndValues == null) {
-			if (other.metricNamesAndValues != null)
+		if (metrics == null) {
+			if (other.metrics != null)
 				return false;
-		} else if (!metricNamesAndValues.equals(other.metricNamesAndValues))
+		} else if (!metrics.equals(other.metrics))
 			return false;
 		if (name == null) {
 			if (other.name != null)

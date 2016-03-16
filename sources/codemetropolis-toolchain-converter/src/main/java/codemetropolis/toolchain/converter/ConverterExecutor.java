@@ -3,6 +3,7 @@ package codemetropolis.toolchain.converter;
 import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
@@ -20,6 +21,9 @@ public class ConverterExecutor extends AbstractExecutor {
 		CdfTree cdfTree = null;
 		try {
 			cdfTree = converter.createElements(converterArgs.getSource());
+		} catch (CodeMetropolisException e) {
+			printError(e, e.getMessage());
+			return;
 		} catch (Exception e) {
 			printError(e, Resources.get("converter_error"));
 			return;
