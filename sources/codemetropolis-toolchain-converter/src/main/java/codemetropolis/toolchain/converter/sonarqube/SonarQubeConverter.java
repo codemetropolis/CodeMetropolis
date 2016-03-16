@@ -56,7 +56,6 @@ public class SonarQubeConverter extends CdfConverter {
 		return projectStr.split(",");
 	}
 	
-	
 	private Map<Integer, SonarResource> getResources(String url) throws SonarConnectException {
 		Map<Integer, SonarResource> result = new HashMap<>();
 		

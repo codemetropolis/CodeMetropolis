@@ -13,4 +13,13 @@ public class FileUtils {
 		directory.delete();
 	}
 	
+	public static void createDirectories(String path) {
+		File file = new File(path);
+		if(file.isDirectory()) {
+			file.mkdirs();
+		} else {
+			file.getParentFile().mkdirs();
+		}
+	}
+	
 }
