@@ -73,6 +73,8 @@ public class WorldBuilder {
 					grounds.add(ground);
 					total += ground.getNumberOfBlocks();
 					break;
+				case CONTAINER:
+					break;
 			}
 		}
 		

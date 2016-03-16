@@ -16,9 +16,17 @@ import codemetropolis.toolchain.mapping.model.Mapping;
 
 public class MappingExecutor extends AbstractExecutor {
 
+	public static final double MIN_SCALE = 0.01;
+	public static final double MAX_SCALE = 100;
+	
 	@Override
-	public void execute(ExecutorArgs args) {
+	public boolean execute(ExecutorArgs args) {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
+		
+		if(mappingArgs.getScale() < MIN_SCALE || mappingArgs.getScale() > MAX_SCALE) {
+			printError(null, Resources.get("invalid_scale_error"), MIN_SCALE, MAX_SCALE);
+			return false;
+		}
 		
 		print(Resources.get("reading_mapping"));
 		Mapping mapping;
@@ -30,10 +38,10 @@ public class MappingExecutor extends AbstractExecutor {
 			} else {
 				printError(e, e.getMessage());
 			}
-			return;
+			return false;
 		} catch (NotSupportedLinkingException e) {
 			printError(e, e.getMessage());
-			return;
+			return false;
 		}
 		print(Resources.get("reading_mapping_done"));
 		
@@ -47,7 +55,7 @@ public class MappingExecutor extends AbstractExecutor {
 			} else {
 				printError(e, Resources.get("cdf_error"));
 			}
-			return;
+			return false;
 		}
 		print(Resources.get("reading_graph_done"));
 		
@@ -57,17 +65,19 @@ public class MappingExecutor extends AbstractExecutor {
 		try {
 			mappingController.validateBuildableStructure(buildables);
 		} catch (NotValidBuildableStructure e) {
-			printError(e, Resources.get("invalid_hierarchy"));
-			return;
+			printError(e, Resources.get("invalid_hierarchy_error"));
+			return false;
 		}
 		print(Resources.get("mapping_printing_output"));
 		try {
 			buildables.writeToFile(mappingArgs.getOutputFile(), "mapping", "placing", "1.0");
 		} catch (CmxmlWriterException e) {
 			printError(e, Resources.get("cmxml_writer_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("mapping_printing_output_done"));
+		
+		return true;
 	}
 	
 }

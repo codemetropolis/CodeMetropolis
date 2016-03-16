@@ -14,7 +14,7 @@ import codemetropolis.toolchain.converter.control.ConverterLoader;
 public class ConverterExecutor extends AbstractExecutor {
 	
 	@Override
-	public void execute(ExecutorArgs args) {
+	public boolean execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
 		
 		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams());
@@ -36,7 +36,7 @@ public class ConverterExecutor extends AbstractExecutor {
 			return;
 		} catch (Exception e) {
 			printError(e, Resources.get("converter_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("converting_to_cdf_done"));
 		
@@ -45,9 +45,11 @@ public class ConverterExecutor extends AbstractExecutor {
 			cdfTree.writeToFile(converterArgs.getOutputFile());
 		} catch (CdfWriterException e) {
 			printError(e, Resources.get("cdf_writer_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("printing_cdf_done"));
+		
+		return true;
 	}
 
 }

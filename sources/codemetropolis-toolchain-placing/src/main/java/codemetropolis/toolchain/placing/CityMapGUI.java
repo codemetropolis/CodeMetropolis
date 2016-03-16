@@ -78,14 +78,20 @@ public class CityMapGUI extends Frame {
 	    	
 	    	for(Buildable b : buildables.getBuildables()) {
 	        	switch(b.getType()) {
-	        		case GROUND : g2d.setColor(new Color(240, 180, 100)); //orange
-	        		break;
-	        		case GARDEN : g2d.setColor(new Color(40, 80, 140)); //blue
-	        		break;
-	        		case FLOOR : g2d.setColor(new Color(170, 200, 30)); //green
-	        		break;
-	        		case CELLAR : g2d.setColor(new Color(230, 50, 40)); //red
-	        		break;
+	        		case GROUND :
+	        			g2d.setColor(new Color(240, 180, 100)); //orange
+	        			break;
+	        		case GARDEN :
+	        			g2d.setColor(new Color(40, 80, 140)); //blue
+	        			break;
+	        		case FLOOR :
+	        			g2d.setColor(new Color(170, 200, 30)); //green
+	        			break;
+	        		case CELLAR :
+	        			g2d.setColor(new Color(230, 50, 40)); //red
+	        			break;
+	        		default:
+	        			break;
 	        	}
 	        	g2d.drawRect(b.getPositionX() * SCALE, b.getPositionZ() * SCALE, b.getSizeX() * SCALE, b.getSizeZ() * SCALE);
 	        }

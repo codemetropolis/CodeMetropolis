@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 import java.io.IOException;
 
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
-import codemetropolis.toolchain.commons.cmxml.Validator;
+import codemetropolis.toolchain.commons.cmxml.CmxmlValidator;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlWriterException;
@@ -18,20 +18,20 @@ import codemetropolis.toolchain.placing.layout.Layout;
 public class PlacingExecutor extends AbstractExecutor {
 
 	@Override
-	public void execute(ExecutorArgs args) {
+	public boolean execute(ExecutorArgs args) {
 		PlacingExecutorArgs placingArgs = (PlacingExecutorArgs)args;
 			
 		try {
-			boolean isValid = Validator.validate(placingArgs.getInputFile());
+			boolean isValid = CmxmlValidator.validate(placingArgs.getInputFile());
 			if(!isValid) {
 				throw new CmxmlValidationFailedException();
 			}
 		} catch (IOException e) {
 			printError(e, Resources.get("missing_input_xml_error"));
-			return;
+			return false;
 		} catch (CmxmlValidationFailedException e) {
 			printError(e, Resources.get("invalid_input_xml_error"));
-			return;
+			return false;
 		}
 		
 		print(Resources.get("placing_reading_input"));
@@ -40,7 +40,7 @@ public class PlacingExecutor extends AbstractExecutor {
 			buildables.loadFromFile(placingArgs.getInputFile());
 		} catch (CmxmlReaderException e) {
 			printError(e, Resources.get("cmxml_reader_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("placing_reading_input_done"));
 		
@@ -50,10 +50,10 @@ public class PlacingExecutor extends AbstractExecutor {
 			layout.apply(buildables);
 		} catch (NonExistentLayoutException e) {
 			printError(e, Resources.get("missing_layout_error"));
-			return;
+			return false;
 		} catch (LayoutException e) {
 			printError(e, Resources.get("layout_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("calculating_size_and_pos_done"));
 
@@ -62,7 +62,7 @@ public class PlacingExecutor extends AbstractExecutor {
 			buildables.writeToFile(placingArgs.getOutputFile(), "placing", "rendering", "1.0");
 		} catch (CmxmlWriterException e) {
 			printError(e, Resources.get("cmxml_writer_error"));
-			return;
+			return false;
 		}
 		print(Resources.get("placing_printing_output_done"));
 		
@@ -75,6 +75,8 @@ public class PlacingExecutor extends AbstractExecutor {
 				}
 			});
 		}
+		
+		return true;
 	}
 	
 }

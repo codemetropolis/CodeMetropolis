@@ -14,7 +14,7 @@ public class CommandLineOptions {
 	private String source = null;
 	
 	@Option(name="-o", aliases = {"--output"})
-	private String outputFile = null;
+	private String outputFile = "converterToMapping.xml";
 	
 	@Option(name="-p", aliases = {"--params"})
 	private String params = null;

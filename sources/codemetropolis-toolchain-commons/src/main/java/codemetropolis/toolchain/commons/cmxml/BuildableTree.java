@@ -92,6 +92,18 @@ public class BuildableTree {
 		return null;
 	}
 	
+	public Buildable[] findBuildables(int x, int z) {
+		List<Buildable> result = new ArrayList<Buildable>();
+		Iterator it = iterator();
+		while(it.hasNext()) {
+			Buildable b = it.next();
+			if(b.isOverlapping(x, z)) {
+				result.add(b);
+			}
+		}
+		return result.toArray(new Buildable[result.size()]);
+	}
+	
 	public void loadFromFile(String path) throws CmxmlReaderException {
 		try {
 			root = null;
