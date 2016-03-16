@@ -33,7 +33,7 @@ public class ConverterExecutor extends AbstractExecutor {
 			cdfTree = converter.createElements(converterArgs.getSource());
 		} catch (CodeMetropolisException e) {
 			printError(e, e.getMessage());
-			return;
+			return false;
 		} catch (Exception e) {
 			printError(e, Resources.get("converter_error"));
 			return false;
