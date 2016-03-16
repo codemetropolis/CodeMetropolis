@@ -6,7 +6,7 @@ import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
-import codemetropolis.toolchain.commons.cdf.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import graphlib.Attribute;
 import graphlib.Attribute.AttributeIterator;

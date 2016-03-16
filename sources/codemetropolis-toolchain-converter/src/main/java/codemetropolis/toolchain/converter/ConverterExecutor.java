@@ -1,7 +1,9 @@
 package codemetropolis.toolchain.converter;
 
-import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.converter.ConverterEvent;
+import codemetropolis.toolchain.commons.cdf.converter.ConverterEventListener;
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
@@ -16,6 +18,14 @@ public class ConverterExecutor extends AbstractExecutor {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
 		
 		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams());
+		converter.addConverterEventListener(new ConverterEventListener() {
+			
+			@Override
+			public void onConverterEvent(ConverterEvent event) {
+				print(event.getMessage());
+			}
+			
+		});
 		
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = null;

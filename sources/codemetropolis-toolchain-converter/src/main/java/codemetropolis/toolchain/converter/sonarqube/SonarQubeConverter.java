@@ -5,11 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import codemetropolis.toolchain.commons.cdf.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
 import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
 
@@ -67,6 +68,7 @@ public class SonarQubeConverter extends CdfConverter {
 		}
 		
 		for(String key : projects) {
+			fireConverterEvent(String.format(Resources.get("sonar_downloading_project"), key));
 			result.putAll(sonarClient.getProject(key));
 		}
 		

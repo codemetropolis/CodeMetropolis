@@ -2,7 +2,7 @@ package codemetropolis.toolchain.converter.control;
 
 import java.util.Map;
 
-import codemetropolis.toolchain.commons.cdf.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.converter.sonarqube.SonarQubeConverter;
 import codemetropolis.toolchain.converter.sourcemeter.GraphConverter;
 
