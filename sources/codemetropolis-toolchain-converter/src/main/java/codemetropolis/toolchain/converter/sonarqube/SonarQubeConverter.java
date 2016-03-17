@@ -48,7 +48,11 @@ public class SonarQubeConverter extends CdfConverter {
 			}
 		}
 		
-		processDirHierarchy(cdfTree);
+		String splitDirsParam = getParameter("splitDirs");
+		if(splitDirsParam != null && Boolean.valueOf(splitDirsParam)) {
+			processDirHierarchy(cdfTree);
+		}
+		
 		return cdfTree;
 	}
 	
