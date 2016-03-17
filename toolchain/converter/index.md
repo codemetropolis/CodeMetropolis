@@ -35,6 +35,8 @@ The output XML contains the name and the type of the elements and the properties
            <property name="LLDC" type="float" value="0.0"/>
 ~~~
 
+In the represented XML source a method type element called "void main(String[] args)" with several properties are shown. Every property has a name, a type and a value. Type can be string, float or int. 
+
 There is a boolean splitDirs option, which can be given in the -p parameter. In case of splitDirs=false, the name of the directory will complex, and only one element, for example: 
 
 ~~~ xml
@@ -43,7 +45,12 @@ There is a boolean splitDirs option, which can be given in the -p parameter. In 
 
 When splitDirs=true, all part of the directory will be a uniq dir element. In the following example there are two different city built from the same project using splitDirs=false and then splitDirs=true. 
 
-In the represented XML source a method type element called "void main(String[] args)" with several properties are shown. Every property has a name, a type and a value. Type can be string, float or int. 
+<img src="{{ site.url }}/images/splitdir.jpg"/>
+
+To build a city with separated directories, the following command should be given to run Converter Tool: 
+
+`java -jar converter.jar -t sonarqube -i <serverName> -o <outputFilename> -p projects=<projectname> splitDirs=true`
+
 
 
 [sm]: <https://www.sourcemeter.com/>
