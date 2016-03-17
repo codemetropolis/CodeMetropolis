@@ -181,10 +181,12 @@ public class SonarClient {
 		SonarResource resource = new SonarResource();
 		String name = jsonObject.get("name").getAsString();
 		String scope = jsonObject.get("scope").getAsString();
+		String key = jsonObject.get("key").getAsString();
 		int id = jsonObject.get("id").getAsInt();
 		
 		resource.setName(name);
 		resource.setScope(Scope.valueOf(scope));
+		resource.setKey(key);
 		resource.setId(id);
 
 		if(jsonObject.get("msr").isJsonArray()){

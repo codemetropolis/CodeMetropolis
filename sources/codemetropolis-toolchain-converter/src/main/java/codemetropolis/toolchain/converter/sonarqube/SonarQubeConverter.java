@@ -7,8 +7,8 @@ import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
-import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
@@ -48,6 +48,7 @@ public class SonarQubeConverter extends CdfConverter {
 			}
 		}
 		
+		processDirHierarchy(cdfTree);
 		return cdfTree;
 	}
 	
@@ -80,6 +81,7 @@ public class SonarQubeConverter extends CdfConverter {
 		cdfElement.setName(resource.getName());	
 		cdfElement.setType(resource.getScope().toString());
 		cdfElement.setSourceId(String.valueOf(resource.getId()));
+		cdfElement.addProperty("key", resource.getKey(), Type.STRING);
 		addCdfProperties(cdfElement, resource.getMetrics());
 		setChildren(cdfElement, resource);
 		cdfElements.put(resource.getId(), cdfElement);
@@ -118,6 +120,52 @@ public class SonarQubeConverter extends CdfConverter {
 				cdfElement.addChildElement(child);
 			}
 		}			
+	}
+	
+	private void processDirHierarchy(CdfTree cdfTree) {
+		CdfTree.Iterator it = cdfTree.iterator();
+		while(it.hasNext()) {
+			
+			CdfElement prj = it.next();
+			if(!"prj".equalsIgnoreCase(prj.getType())) {
+				continue;
+			}
+			
+			String prjKey = prj.getPropertyValue("key");
+			for(CdfElement child : prj.getChildElements()) {
+				
+				String childKey = child.getPropertyValue("key");	
+				String[] nodeNames = childKey.replaceFirst(prjKey + ":", "").split("/");
+				if(nodeNames.length < 2) continue;
+				
+				CdfElement dir = prj;
+				int i = 0;
+				while(i < nodeNames.length - 1) {
+					CdfElement matchingChild = getChildByName(dir, nodeNames[i]);
+					if(matchingChild == null) break;
+					dir = matchingChild;
+					i++;
+				}
+				
+				while(i < nodeNames.length - 1) {
+					CdfElement newElement = new CdfElement(nodeNames[i], "dir");
+					dir.addChildElement(newElement);
+					dir = newElement;
+					i++;
+				}
+				
+				prj.removeChildElement(child);
+				child.setName(nodeNames[nodeNames.length - 1]);
+				dir.addChildElement(child);
+			}	
+		}
+	}
+	
+	private CdfElement getChildByName(CdfElement parent, String name) {
+		for(CdfElement child : parent.getChildElements()) {
+			if(child.getName().equals(name)) return child;
+		}
+		return null;
 	}
 	
 }

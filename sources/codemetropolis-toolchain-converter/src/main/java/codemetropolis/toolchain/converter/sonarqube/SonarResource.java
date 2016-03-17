@@ -9,6 +9,7 @@ public class SonarResource {
 
 	private int id;
 	private String name;
+	private String key;
 	private Scope scope;
 	private List<SonarMetric> metrics = new ArrayList<>();
 	private List<Integer> childIdList = new ArrayList<>();
@@ -27,6 +28,14 @@ public class SonarResource {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public Scope getScope() {
