@@ -51,7 +51,7 @@ First you have to run the **CDF Converter Tool** with the following command:
   
   * `-t`: type, the type of the conversion. In the current version it can be 'sourcemeter' or 'sonarqube'.  
   
-  * `-p`: parameter, a string value, for example: -p projects=project1;project2.
+  * `-p`: parameter, a string value, for example: -p projects=project1,project2 splitDirs=true.
   
 Output XML will be used by the Mapping Tool. 
 
