@@ -45,7 +45,7 @@ There is a boolean splitDirs option, which can be given in the -p parameter. In 
 
 When splitDirs=true, all part of the directory will be a uniq dir element. In the following example there are two different city built from the same project using splitDirs=false and then splitDirs=true. 
 
-<img src="{{ site.url }}/images/splitdir.jpg" />
+<img src="https://github.com/geryxyz/CodeMetropolis/blob/gh-pages/images/splitdir.jpg" />
 
 To build a city with separated directories, the following command should be given to run Converter Tool: 
 
