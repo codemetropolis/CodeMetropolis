@@ -43,7 +43,7 @@ public class Main {
 	    Map<String, String> params = new HashMap<>();
 	    if(options.getParams() != null) {
 	    	try {
-	 		    String[] paramsArray = options.getParams().split(";");
+	 		    String[] paramsArray = options.getParams();
 	 		    for(String str : paramsArray) {
 	 		    	String[] strParts = str.split("=");
 	 		    	params.put(strParts[0], strParts[1]);

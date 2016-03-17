@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.converter;
 
 import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.StringArrayOptionHandler;
 
 public class CommandLineOptions {
 	
@@ -16,8 +17,8 @@ public class CommandLineOptions {
 	@Option(name="-o", aliases = {"--output"})
 	private String outputFile = "converterToMapping.xml";
 	
-	@Option(name="-p", aliases = {"--params"})
-	private String params = null;
+	@Option(name="-p", handler = StringArrayOptionHandler.class, aliases = {"--params"})
+	private String[] params = null;
 	
 	public String getOutputFile(){
 		return outputFile;
@@ -35,7 +36,7 @@ public class CommandLineOptions {
 		return showHelp;
 	}
 
-	public String getParams() {
+	public String[] getParams() {
 		return params;
 	}
 	
