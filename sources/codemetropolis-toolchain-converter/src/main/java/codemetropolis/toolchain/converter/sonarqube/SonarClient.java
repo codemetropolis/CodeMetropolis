@@ -3,9 +3,12 @@ package codemetropolis.toolchain.converter.sonarqube;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,12 +34,20 @@ public class SonarClient {
 	private static final String METRIC_SEARCH = "metrics/search?f=name";
 	
 	private String sonarUrl;
+	private String username;
+	private String password;
 	private String metricNames;
 	private Map<Integer, SonarResource> resources = new ConcurrentHashMap<Integer, SonarResource>();
 	private Map<String, String> metricNamesAndTypes = new HashMap<String, String>();
 	
-	public SonarClient(String sonarUrl){
+	public SonarClient(String sonarUrl, String username, String password) {
 		this.sonarUrl = sonarUrl;
+		this.username = username;
+		this.password = password;
+	}
+	
+	public SonarClient(String sonarUrl) {
+		this(sonarUrl, null, null);
 	}
 	
 	public void init() throws SonarConnectException {
@@ -115,14 +126,21 @@ public class SonarClient {
 	
 	private String sendRequest(String urlWithParams) throws SonarConnectException {
 		try {
+			String authStr = String.format("%s:%s", username, password);
+			String encodedAuthStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 			URL url = new URL(urlWithParams);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				throw new RuntimeException("HTTP request returned an error. HTTP error code : " + conn.getResponseCode());
-			}
-			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Authorization", "Basic " + encodedAuthStr);
+			connection.connect();
+			if(connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+				throw new SonarConnectException(Resources.get("sonar_unauthorized_error"));
+			} else if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new RuntimeException("HTTP request returned an error. HTTP error code : " + connection.getResponseCode());
+			} 
+			BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
 			String line = br.readLine();
-			conn.disconnect();	
+			connection.disconnect();	
 			return line;
 		} catch(IOException e) {
 			throw new SonarConnectException(Resources.get("sonar_connect_error"));

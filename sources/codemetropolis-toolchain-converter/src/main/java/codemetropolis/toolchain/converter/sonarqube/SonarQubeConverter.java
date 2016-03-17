@@ -60,7 +60,7 @@ public class SonarQubeConverter extends CdfConverter {
 	private Map<Integer, SonarResource> getResources(String url) throws SonarConnectException {
 		Map<Integer, SonarResource> result = new HashMap<>();
 		
-		SonarClient sonarClient = new SonarClient(url);
+		SonarClient sonarClient = new SonarClient(url, getParameter("username"), getParameter("password"));
 		sonarClient.init();
 		String[] projects = getProjectsInParams();
 		if(projects.length == 0) {
