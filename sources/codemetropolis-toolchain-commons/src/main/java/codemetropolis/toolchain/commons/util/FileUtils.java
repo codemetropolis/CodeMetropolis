@@ -18,7 +18,10 @@ public class FileUtils {
 		if(file.isDirectory()) {
 			file.mkdirs();
 		} else {
-			file.getParentFile().mkdirs();
+			File parent = file.getParentFile();
+			if(parent != null) {
+				file.mkdirs();
+			}
 		}
 	}
 	
