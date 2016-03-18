@@ -1,11 +1,12 @@
-package codemetropolis.toolchain.converter.control;
+package codemetropolis.toolchain.converter.sourcemeter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
-import codemetropolis.toolchain.commons.cdf.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import graphlib.Attribute;
 import graphlib.Attribute.AttributeIterator;
@@ -18,20 +19,18 @@ import graphlib.Edge.eDirectionType;
 import graphlib.Graph;
 import graphlib.Node;
 
-public class GraphConverter implements CdfConverter {
+public class GraphConverter extends CdfConverter {
 	
-	private static final String ROOT_NODE_ID = "L100";
-	
-	private String fileName;
-	
-	public GraphConverter(String filename){
-		this.fileName = filename;
+	public GraphConverter(Map<String, String> params) {
+		super(params);
 	}
 
+	private static final String ROOT_NODE_ID = "L100";
+	
 	@Override
-	public CdfTree createElements(){
+	public CdfTree createElements(String graphPath){
 		Graph graph = new Graph();
-		graph.loadBinary(fileName);
+		graph.loadBinary(graphPath);
 		Node root = graph.findNode(ROOT_NODE_ID);
 		CdfElement rootElement = createElementsRecursively(root);
 		return new CdfTree(rootElement);
@@ -41,7 +40,7 @@ public class GraphConverter implements CdfConverter {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
 		CdfElement element =  new CdfElement(name, type);
-		element.addProperty("sourceid", root.getUID(), CdfProperty.Type.STRING);
+		element.setSourceId(root.getUID());
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
 			element.addChildElement(createElementsRecursively(child));

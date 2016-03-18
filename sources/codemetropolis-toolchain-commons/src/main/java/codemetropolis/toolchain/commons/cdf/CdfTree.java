@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
+import codemetropolis.toolchain.commons.util.FileUtils;
 
 public class CdfTree {
 	
@@ -72,8 +73,9 @@ public class CdfTree {
 		return buildables;
 	}
 
-	public void writeToFile(String filename) throws CdfWriterException{
+	public void writeToFile(String filename) throws CdfWriterException{	
 		try {
+			FileUtils.createDirectories(filename);
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.newDocument();

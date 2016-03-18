@@ -11,6 +11,8 @@ import codemetropolis.toolchain.commons.cdf.CdfProperty;
 
 public class CdfElement {
 
+	private static final String SOURCE_ID_KEY = "source_id";
+	
 	private String name;
 	private String type;
 	private List<CdfProperty> properties;
@@ -50,7 +52,7 @@ public class CdfElement {
 	public String getPropertyValue(String name){
 		CdfProperty property = getProperty(name);
 		if(property == null) return null;
-		return property.getName();
+		return property.getValue();
 	}
 	
 	public CdfProperty getProperty(String name){
@@ -67,12 +69,24 @@ public class CdfElement {
 		properties.add(new CdfProperty(name, value, type));
 	}
 	
+	public String getSourceId() {
+		return getPropertyValue(SOURCE_ID_KEY);
+	}
+	
+	public void setSourceId(String id) {
+		addProperty(SOURCE_ID_KEY, id, CdfProperty.Type.STRING);
+	}
+	
 	public List<CdfElement> getChildElements() {
 		return new ArrayList<>(childElements);
 	}
 	
 	public void addChildElement(CdfElement child) {
 		childElements.add(child);
+	}
+	
+	public void removeChildElement(CdfElement child) {
+		childElements.remove(child);
 	}
 
 	public int getNumberOfChildren() {

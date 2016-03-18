@@ -1,14 +1,17 @@
 package codemetropolis.toolchain.converter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.converter.control.ConverterType;
 
 public class Main {
 
-	
 	public static void main(String[] args) {
 		
 		CommandLineOptions options = new CommandLineOptions();
@@ -16,14 +19,40 @@ public class Main {
 
 	    try {
 	        parser.parseArgument(args);
-	        if(options.getInputFile() == null ){
+	        if(options.getType() == null || options.getSource() == null ){
 	        	throw new IllegalArgumentException();
 	        }
 	    } catch (CmdLineException | IllegalArgumentException e) {
-	    	System.err.println(Resources.get("command_line_error"));
-	    	FileLogger.logError(Resources.get("command_line_error"), e);
+	    	String message = Resources.get("command_line_error");
+	    	FileLogger.logError(message, e);
+	    	System.err.println(message);
 	    	System.err.println(Resources.get("converter_usage"));
 	    	return;
+	    }
+	    
+	    ConverterType converterType = null;
+	    try {
+	    	converterType = ConverterType.valueOf(options.getType().toUpperCase());
+	    } catch(IllegalArgumentException e) {
+	    	String message = String.format("%s%s", Resources.get("error_prefix"), Resources.get("invalid_converter_type"));
+	    	System.err.println(message);
+	    	FileLogger.logError(message, e);
+	    	return;
+	    }
+	    
+	    Map<String, String> params = new HashMap<>();
+	    if(options.getParams() != null) {
+	    	try {
+	 		    String[] paramsArray = options.getParams();
+	 		    for(String str : paramsArray) {
+	 		    	String[] strParts = str.split("=");
+	 		    	params.put(strParts[0], strParts[1]);
+	 		    }
+	 	    } catch(Exception e) {
+	 	    	String message = Resources.get("invalid_params");
+	 	    	System.err.println(message);
+	 	    	FileLogger.logError(message, e);
+	 	    }
 	    }
 	    
 	    if(options.showHelp()) {
@@ -37,9 +66,12 @@ public class Main {
 	    executor.setErrorPrefix(Resources.get("error_prefix"));
 	    executor.execute(
 	    		new ConverterExecutorArgs(
-		    		options.getInputFile(),
-		    		options.getOutputFile()
+	    			converterType,
+		    		options.getSource(),
+		    		options.getOutputFile(),
+		    		params
 	    		));	
 		
 	}
+	
 }

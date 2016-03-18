@@ -1,28 +1,48 @@
 package codemetropolis.toolchain.converter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+import codemetropolis.toolchain.converter.control.ConverterType;
 
 public class ConverterExecutorArgs extends ExecutorArgs {
 	
-	private String inputFile;
+	private ConverterType type;
+	private String source;
 	private String outputFile;
+	private Map<String, String> params;
 	
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
+		this(type, source, outputFile, null);
+	}
+	
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map<String, String> params) {
+		super();
+		this.type = type;
+		this.source = source;
+		this.outputFile = outputFile;
+		this.params = params;
+	}
+
+	public ConverterType getType() {
+		return type;
+	}
+	
+	public String getSource() {
+		return source;
+	}
+
 	public String getOutputFile(){
 		return outputFile;
 	}
 	
-	public String getInputFile() {
-		return inputFile;
+	public Map<String, String> getParams() {
+		return new HashMap<>(params);
 	}
-
-	public void setInputFile(String inputFile) {
-		this.inputFile = inputFile;
-	}
-
-	public ConverterExecutorArgs(String inputFile, String outputFile) {
-		super();
-		this.inputFile = inputFile;
-		this.outputFile = outputFile;
+	
+	public String getParameter(String key) {
+		return params.get(key);
 	}
 
 }
