@@ -8,9 +8,11 @@ import codemetropolis.toolchain.mapping.model.Parameter;
 
 public class QuantizationConversion extends Conversion {
 
+	public static final String NAME = "quantization";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
-		double valueDouble = Double.parseDouble(value);
+	public Object apply(Object value, Limit limit) {
+		double dValue = toDouble(value);
 		double distance = limit.getMax() - limit.getMin();
 		
 		Map<Integer, String> levelsMap = new HashMap<>();
@@ -28,7 +30,7 @@ public class QuantizationConversion extends Conversion {
 		
 		for(int i = 0; i < levels.length; i++) {
 			double levelLimit = (i + 1) * step + limit.getMin();
-			if(valueDouble <= levelLimit) {
+			if(dValue <= levelLimit) {
 				return levels[i];
 			}
 		}

@@ -4,12 +4,14 @@ import codemetropolis.toolchain.mapping.model.Limit;
 
 public class NormalizeConversion extends Conversion {
 
+	public static final String NAME = "normalize";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
-		double valueDouble = (double)new ToDoubleConversion().apply(value, null);
+	public Object apply(Object value, Limit limit) {
+		double dValue = toDouble(value);
 		double distance = limit.getMax() - limit.getMin();
-		valueDouble = distance == 0 ? 1 : (valueDouble - limit.getMin()) / distance;
-		return valueDouble;
-	}	
+		dValue = distance == 0 ? 1 : (dValue - limit.getMin()) / distance;
+		return dValue;
+	}
 	
 }

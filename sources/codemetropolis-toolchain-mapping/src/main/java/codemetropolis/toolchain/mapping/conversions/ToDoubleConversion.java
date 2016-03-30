@@ -4,8 +4,11 @@ import codemetropolis.toolchain.mapping.model.Limit;
 
 public class ToDoubleConversion extends Conversion {
 
+	public static final String NAME = "to_double";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
-		return Double.parseDouble(value);
-	}	
+	public Object apply(Object value, Limit limit) {
+		return toDouble(value);
+	}
+	
 }

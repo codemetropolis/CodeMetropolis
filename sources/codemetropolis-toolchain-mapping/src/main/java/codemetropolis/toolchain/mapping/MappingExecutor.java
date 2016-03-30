@@ -32,12 +32,11 @@ public class MappingExecutor extends AbstractExecutor {
 		Mapping mapping;
 		try {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
+		} catch (FileNotFoundException e) {
+			printError(e, Resources.get("mapping_not_found_error"));
+			return false;
 		} catch (MappingReaderException e) {
-			if(e.getCause() instanceof FileNotFoundException) {
-				printError(e, Resources.get("mapping_not_found_error"));
-			} else {
-				printError(e, e.getMessage());
-			}
+			printError(e, e.getMessage());
 			return false;
 		} catch (NotSupportedLinkingException e) {
 			printError(e, e.getMessage());
