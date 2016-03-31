@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
+import codemetropolis.toolchain.mapping.exceptions.MissingResourceException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
 
 @XmlRootElement
@@ -71,7 +72,7 @@ public class Mapping {
 		return null;
 	}
 
-	public static Mapping readFromXML(String mappingFile) throws MappingReaderException, FileNotFoundException, NotSupportedLinkingException {
+	public static Mapping readFromXML(String mappingFile) throws MappingReaderException, FileNotFoundException {
 
 		File file = new File(mappingFile);
 		if(!file.exists()) {
@@ -89,9 +90,9 @@ public class Mapping {
 		
 	}
 	
-	public void validate() throws NotSupportedLinkingException {
+	public void validate() throws NotSupportedLinkingException, MissingResourceException {
 		for(Linking linking : linkings) {
-			linking.validate();
+			linking.validate(resources);
 		}
 	}
 	

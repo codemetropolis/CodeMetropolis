@@ -84,9 +84,7 @@ public class MappingController {
 		}
 	}
 	
-	
-	
-	public BuildableTree linkBuildablesToMetrics() throws MissingResourceException {
+	public BuildableTree linkBuildablesToMetrics() {
 		
 		List<Linking> linkings = mapping.getLinkings();
 		Map<String, String> resources = mapping.getResourceMap();
@@ -112,7 +110,6 @@ public class MappingController {
 				String variableId = binding.getVariableId();
 				if(variableId != null) {
 					String resource = resources.get(variableId);
-					if(resource == null) throw new MissingResourceException(String.format(Resources.get("missing_resource_error"), variableId));
 					setProperty(b, binding.getTo(), resource, false);
 					continue;
 				}
