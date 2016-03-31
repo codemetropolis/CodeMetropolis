@@ -5,8 +5,10 @@ import codemetropolis.toolchain.mapping.model.Parameter;
 
 public class SwitchConversion extends Conversion {
 
+	public static final String NAME = "switch";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
+	public Object apply(Object value, Limit limit) {
 		String defaultValue = null;
 		for(Parameter p : parameters) {
 			if(p.getName().equals("default")) {

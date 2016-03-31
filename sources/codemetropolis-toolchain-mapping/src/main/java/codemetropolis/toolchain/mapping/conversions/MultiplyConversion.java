@@ -5,15 +5,17 @@ import codemetropolis.toolchain.mapping.model.Parameter;
 
 public class MultiplyConversion extends Conversion {
 
+	public static final String NAME = "multiply";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
+	public Object apply(Object value, Limit limit) {
 		double multiplier = 1;
 		for(Parameter p : parameters) {
 			if(p.getName().matches("multiplier")) {
 				multiplier = Double.parseDouble(p.getValue());
 			}
 		}
-		return Double.parseDouble(value) * multiplier;
-	}	
+		return toDouble(value) * multiplier;
+	}
 	
 }

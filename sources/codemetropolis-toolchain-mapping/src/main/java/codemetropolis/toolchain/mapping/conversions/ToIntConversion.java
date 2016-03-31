@@ -4,9 +4,11 @@ import codemetropolis.toolchain.mapping.model.Limit;
 
 public class ToIntConversion extends Conversion {
 
+	public static final String NAME = "to_int";
+	
 	@Override
-	public Object apply(String value, Limit limit) {
-		return (int)Double.parseDouble(value);
+	public Object apply(Object value, Limit limit) {
+		return toInt(value);
 	}
 	
 }

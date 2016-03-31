@@ -10,6 +10,7 @@ import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.control.MappingController;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
+import codemetropolis.toolchain.mapping.exceptions.MissingResourceException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
 import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Mapping;
@@ -32,18 +33,26 @@ public class MappingExecutor extends AbstractExecutor {
 		Mapping mapping;
 		try {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
-		} catch (MappingReaderException e) {
-			if(e.getCause() instanceof FileNotFoundException) {
-				printError(e, Resources.get("mapping_not_found_error"));
-			} else {
-				printError(e, e.getMessage());
-			}
+		} catch (FileNotFoundException e) {
+			printError(e, Resources.get("mapping_not_found_error"));
 			return false;
-		} catch (NotSupportedLinkingException e) {
+		} catch (MappingReaderException e) {
 			printError(e, e.getMessage());
 			return false;
 		}
 		print(Resources.get("reading_mapping_done"));
+		
+		print(Resources.get("validating_mapping"));
+		try {
+			mapping.validate();
+		} catch (NotSupportedLinkingException e) {
+			printError(e, e.getMessage());
+			return false;
+		} catch (MissingResourceException e) {
+			printError(e, e.getMessage());
+			return false;
+		}
+		print(Resources.get("validating_mapping_done"));
 		
 		print(Resources.get("reading_graph"));
 		MappingController mappingController = new MappingController(mapping, mappingArgs.getScale(), !mappingArgs.isHierarchyValidationEnabled());

@@ -24,6 +24,8 @@ import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
 import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
+import codemetropolis.toolchain.mapping.model.Binding;
+import codemetropolis.toolchain.mapping.model.Limit;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
@@ -83,65 +85,77 @@ public class MappingController {
 	public BuildableTree linkBuildablesToMetrics() {
 		
 		List<Linking> linkings = mapping.getLinkings();
-		Map<String, String> constants = mapping.getConstants();
+		Map<String, String> resources = mapping.getResourceMap();
 		
 		for(Map.Entry<Buildable, Map<String, String>> entry : attributesByBuildables.entrySet()) {
 			
 			Buildable b = entry.getKey();
 			Map<String, String> attributes = entry.getValue();
-			String sourceType = (String) attributes.get("SourceType");
 			
+			Linking linking = null;
 			for(Linking l : linkings) {
+				if(l.getTarget().equalsIgnoreCase(b.getType().toString())) {
+					linking = l;
+					break;
+				}
+			}
+			
+			if(linking == null) {
+				continue;
+			}
 				
-				if(l.getSourceName().equalsIgnoreCase("Constant") && b.getType().toString().equalsIgnoreCase(l.getTargetName())) {
-					b.addAttribute(l.getTargetTo(), constants.get(l.getSourceFrom()));
+			for(Binding binding : linking.getBindings()) {
+				String variableId = binding.getVariableId();
+				if(variableId != null) {
+					String resource = resources.get(variableId);
+					setProperty(b, binding.getTo(), resource, false);
 					continue;
 				}
 				
-				if(l.getSourceName().equalsIgnoreCase(sourceType)) {
-					attributes.remove("SourceType");
-					String value = attributes.get(l.getSourceFrom());				
-					Object convertedValue = null;
-					if(value == null){
-						switch(l.getTargetTo()) {
-							case "height":;
-							case "width":
-							case "length":
-								value = "0.0";
-								break;
-							default:
-								value="unknown";
-						}
-					}
-					try {
-						for(Conversion c : l.getConversions()) {
-							convertedValue = c.apply(value, limitController.getLimit(l.getSourceName().toLowerCase(), l.getSourceFrom()));
-						}
-					} catch(Exception e) {
-						continue;
-					}
-					
-					switch(l.getTargetTo()) {
-						case "height":
-							b.setSizeY((int)(MIN_SIZE + scale * (int)convertedValue));
-							break;
-						case "width":
-							b.setSizeX((int)(MIN_SIZE + scale * (int)convertedValue));
-							break;
-						case "length":
-							b.setSizeZ((int)(MIN_SIZE + scale * (int)convertedValue));
-							break;
-						default:
-							b.addAttribute(l.getTargetTo(), String.valueOf(convertedValue));
-					}	
+				Object value = attributes.get(binding.getFrom());
+				if(value == null) continue;
+				
+				Limit limit = limitController.getLimit(linking.getSource(), binding.getFrom());
+				
+				for(Conversion c : binding.getConversions()) {
+					value = c.apply(value, limit);
 				}
+				
+				setProperty(b, binding.getTo(), value, true);
 			}
+			
 		}
 		
 		Buildable root = findRoot(attributesByBuildables.keySet());
 		BuildableTree buildableTree = new BuildableTree(root);
 		prepareBuildables(buildableTree);
 		return buildableTree;
+	}
+	
+	private void setProperty(Buildable b, String propertyName, Object value, boolean adjustSize) {
+
+		switch(propertyName) {
+			case "height":
+			case "width":
+			case "length":
+				value = Conversion.toInt(value);
+				if(adjustSize) value = Conversion.toInt(MIN_SIZE + (int)value * scale);
+				break;
+		}
+		
+		switch(propertyName) {
+			case "height":
+				b.setSizeY((int)value);
+				break;
+			case "width":
+				b.setSizeX((int)value);
+				break;
+			case "length":
+				b.setSizeZ((int)value);
+				break;
+			default:
+				b.addAttribute(propertyName, String.valueOf(value));
+		}	
 	}
 	
 	private void setChildren(Buildable buildable, Element element){
@@ -189,11 +203,13 @@ public class MappingController {
 	private Buildable createBuildable(Element element) {
 		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
-		Type type = mapping.getType(element.getAttribute("type"));
-
-	    if (type == null){			
+		String typeStr = mapping.getTargetTypeOf(element.getAttribute("type"));
+		
+		if (typeStr == null){			
 			return null;
 		}
+		
+		Type type = Type.valueOf(typeStr);
 		return new Buildable(id, name, type);
 	}
 	

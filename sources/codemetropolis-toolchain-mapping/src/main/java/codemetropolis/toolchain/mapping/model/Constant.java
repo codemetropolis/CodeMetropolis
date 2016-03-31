@@ -5,29 +5,29 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Parameter {
+public class Constant {
 
 	@XmlAttribute
-	String name;
+	private String id;
 	
 	@XmlAttribute
-	String value;
+	private String value;
 	
-	public Parameter() {
+	public Constant() {
 		this("", "");
 	}
 	
-	public Parameter(String name, String value) {
-		this.name = name;
+	public Constant(String id, String value) {
+		this.id = id;
 		this.value = value;
 	}
 
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getValue() {

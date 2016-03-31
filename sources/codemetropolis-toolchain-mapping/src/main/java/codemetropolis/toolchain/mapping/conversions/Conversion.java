@@ -3,9 +3,12 @@ package codemetropolis.toolchain.mapping.conversions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import codemetropolis.toolchain.mapping.model.Limit;
 import codemetropolis.toolchain.mapping.model.Parameter;
 
+@XmlJavaTypeAdapter(ConversionAdapter.class)
 public abstract class Conversion {
 	
 	protected List<Parameter> parameters;
@@ -14,7 +17,7 @@ public abstract class Conversion {
 		parameters = new ArrayList<Parameter>();
 	}
 	
-	public abstract Object apply(String value, Limit limit);
+	public abstract Object apply(Object value, Limit limit);
 	
 	public void clearParameters() {
 		parameters.clear();
@@ -36,22 +39,33 @@ public abstract class Conversion {
 	
 	public static Conversion createFromName(String name) {	
 		switch(name.toLowerCase()) {
-			case "to int":
-			case "to_int":
+			case ToIntConversion.NAME:
 				return new ToIntConversion();
-			case "to double":
-			case "to_double":
+			case ToDoubleConversion.NAME:
 				return new ToDoubleConversion();
-			case "multiply":
+			case MultiplyConversion.NAME:
 				return new MultiplyConversion();
-			case "quantization":
+			case QuantizationConversion.NAME:
 				return new QuantizationConversion();
-			case "normalize":
+			case NormalizeConversion.NAME:
 				return new NormalizeConversion();
-			case "switch":
+			case SwitchConversion.NAME:
 				return new SwitchConversion();
 		}
 		return null;
 	}
+	
+	//region conversion helpers
+	public static double toDouble(Object value) {
+		if(value instanceof String) {
+			return Double.parseDouble((String)value);
+		}
+		return (double)value;
+	}
+	
+	public static int toInt(Object value) {
+		return (int)toDouble(value);
+	}
+	//endregion
 		
 }
