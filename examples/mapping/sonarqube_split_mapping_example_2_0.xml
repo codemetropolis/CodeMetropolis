@@ -1,0 +1,37 @@
+<mapping version="2.0">
+	<linking source="prj" target="ground"/>
+	<linking source="dir" target="garden">
+		<binding from="complexity" to="flower-ratio">
+			<conversions>
+				<conversion type="normalize"/>
+			</conversions>
+		</binding>
+	</linking>
+	<linking source="fil" target="floor">
+		<binding from="functions" to="height"/>
+		<binding from="comment_lines" to="width"/>
+		<binding from="comment_lines" to="length"/>
+		<binding from="violations" to="character">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="glass"/>
+					<parameter name="level1" value="sand"/>
+					<parameter name="level2" value="planks"/>
+					<parameter name="level3" value="stone"/>
+					<parameter name="level4" value="obsidian"/>
+				</conversion>
+			</conversions>
+		</binding>
+		<binding from="violations" to="external_character">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="metal"/>
+					<parameter name="level1" value="sandstone"/>
+					<parameter name="level2" value="wood"/>
+					<parameter name="level3" value="cobblestone"/>
+					<parameter name="level4" value="obsidian"/>
+				</conversion>
+			</conversions>
+		</binding>
+	</linking>
+</mapping>
