@@ -9,19 +9,18 @@ import java.util.logging.SimpleFormatter;
 public final class FileLogger {
 	
 	private static final String LOGGER_NAME = "CodeMetropolis.Log";
-	private static final String LOG_FILE = "../CodeMetropolis_toolchain.log";
 	
 	private static Logger logger;  
 	private static FileHandler fileHandler;
 	
 	private FileLogger() {}
 	 
-	static {
+	public static void load(String filePath) {
 		try {
 			logger = Logger.getLogger(LOGGER_NAME);  
 			logger.setLevel(Level.ALL);
 			logger.setUseParentHandlers(false);
-			fileHandler = new FileHandler(LOG_FILE, true); 
+			fileHandler = new FileHandler(filePath, true); 
 			fileHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(fileHandler);
 		} catch (SecurityException | IOException e) {

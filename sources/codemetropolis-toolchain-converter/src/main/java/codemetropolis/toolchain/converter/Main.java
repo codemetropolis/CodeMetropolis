@@ -8,11 +8,14 @@ import org.kohsuke.args4j.CmdLineParser;
 
 import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.commons.util.Settings;
 import codemetropolis.toolchain.converter.control.ConverterType;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		FileLogger.load(Settings.get("converter_log_file"));
 		
 		CommandLineOptions options = new CommandLineOptions();
 	    CmdLineParser parser = new CmdLineParser(options);

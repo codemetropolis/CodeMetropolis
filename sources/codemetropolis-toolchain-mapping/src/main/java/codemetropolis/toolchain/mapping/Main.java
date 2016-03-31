@@ -5,10 +5,13 @@ import org.kohsuke.args4j.CmdLineParser;
 
 import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.commons.util.Settings;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		FileLogger.load(Settings.get("mapping_log_file"));
 		
 		CommandLineOptions options = new CommandLineOptions();
 	    CmdLineParser parser = new CmdLineParser(options);
