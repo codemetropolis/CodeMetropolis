@@ -10,6 +10,7 @@ import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.control.MappingController;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
+import codemetropolis.toolchain.mapping.exceptions.MissingResourceException;
 import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
 import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Mapping;
@@ -32,6 +33,7 @@ public class MappingExecutor extends AbstractExecutor {
 		Mapping mapping;
 		try {
 			mapping = Mapping.readFromXML(mappingArgs.getMappingFile());
+			mapping.validate();
 		} catch (FileNotFoundException e) {
 			printError(e, Resources.get("mapping_not_found_error"));
 			return false;
@@ -59,7 +61,13 @@ public class MappingExecutor extends AbstractExecutor {
 		print(Resources.get("reading_graph_done"));
 		
 		print(Resources.get("linking_metrics"));
-		BuildableTree buildables = mappingController.linkBuildablesToMetrics();
+		BuildableTree buildables;
+		try {
+			buildables = mappingController.linkBuildablesToMetrics();
+		} catch (MissingResourceException e) {
+			printError(e, e.getMessage());
+			return false;
+		}
 		print(Resources.get("linking_metrics_done"));
 		try {
 			mappingController.validateBuildableStructure(buildables);

@@ -22,7 +22,9 @@ import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
+import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.mapping.conversions.Conversion;
+import codemetropolis.toolchain.mapping.exceptions.MissingResourceException;
 import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
 import codemetropolis.toolchain.mapping.model.Binding;
 import codemetropolis.toolchain.mapping.model.Limit;
@@ -84,7 +86,7 @@ public class MappingController {
 	
 	
 	
-	public BuildableTree linkBuildablesToMetrics() {
+	public BuildableTree linkBuildablesToMetrics() throws MissingResourceException {
 		
 		List<Linking> linkings = mapping.getLinkings();
 		Map<String, String> resources = mapping.getResourceMap();
@@ -109,7 +111,9 @@ public class MappingController {
 			for(Binding binding : linking.getBindings()) {
 				String variableId = binding.getVariableId();
 				if(variableId != null) {
-					setProperty(b, binding.getTo(), resources.get(variableId), false);
+					String resource = resources.get(variableId);
+					if(resource == null) throw new MissingResourceException(String.format(Resources.get("missing_resource_error"), variableId));
+					setProperty(b, binding.getTo(), resource, false);
 					continue;
 				}
 				

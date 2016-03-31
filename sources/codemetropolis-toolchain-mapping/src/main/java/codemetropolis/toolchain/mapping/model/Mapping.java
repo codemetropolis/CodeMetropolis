@@ -82,7 +82,6 @@ public class Mapping {
 			JAXBContext context = JAXBContext.newInstance(Mapping.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			Mapping mapping = (Mapping) unmarshaller.unmarshal(file);
-			validateMapping(mapping);
 			return mapping;
 		} catch (JAXBException e) {
 			throw new MappingReaderException(e);
@@ -90,19 +89,10 @@ public class Mapping {
 		
 	}
 	
-	private static void validateMapping(Mapping mapping) throws NotSupportedLinkingException {
-		//TODO
-//		for(Linking linking : lingings) {
-//            if(!linking.isSupported()) {
-//                throw new NotSupportedLinkingException(String.format(Resources.get("invalid_linking_error"), sourceName, sourceFrom, targetName, targetTo));
-//            } else if(!isSameSourceAndTarget(sourceName, targetName)){
-//                //TODO: 
-//                System.out.println("Warning: Multiple element mapped to the same object!");
-//            } else if(checkVisualPropAndProperties(linking, result)){
-//                //TODO: 
-//                throw new NotSupportedLinkingException(String.format(Resources.get("invalid_linking_error"), sourceName, sourceFrom, targetName, targetTo));
-//            }
-//		}
+	public void validate() throws NotSupportedLinkingException {
+		for(Linking linking : linkings) {
+			linking.validate();
+		}
 	}
 	
 }
