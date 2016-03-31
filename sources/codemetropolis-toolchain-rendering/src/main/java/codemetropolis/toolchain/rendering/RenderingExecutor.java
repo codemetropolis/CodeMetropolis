@@ -14,7 +14,6 @@ import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.FileUtils;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.rendering.control.WorldBuilder;
-import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
@@ -69,33 +68,6 @@ public class RenderingExecutor extends AbstractExecutor {
 		for(EventListener listener : listeners) {
 			worldBuilder.addEventListener((ProgressEventListener) listener);
 		}
-		worldBuilder.addEventListener(new ProgressEventListener() {
-			@Override
-			public void onNextState(ProgressEvent event) {
-				if(event.COUNT > 0) {
-					switch(event.PHASE){
-						case GENERATING_BLOCKS:
-							print(
-									false,
-									Resources.get("creating_blocks_progress"),
-									event.getPercent(),
-									event.getTimeLeft().getHours(),
-									event.getTimeLeft().getMinutes());
-							break;
-						case PLACING_BLOCKS:
-							print(
-									false,
-									Resources.get("placing_blocks_progress"),
-									event.getPercent(),
-									event.getTimeLeft().getHours(),
-									event.getTimeLeft().getMinutes());
-							break;
-						default:
-							break;
-					}
-				}
-			}
-		});
 		
 		print(Resources.get("rendering_reading_input"));
 		try {
