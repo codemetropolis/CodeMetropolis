@@ -115,6 +115,8 @@ public class MappingController {
 				}
 				
 				Object value = attributes.get(binding.getFrom());
+				if(value == null) continue;
+				
 				Limit limit = limitController.getLimit(linking.getSource(), binding.getFrom());
 				
 				for(Conversion c : binding.getConversions()) {
