@@ -193,7 +193,7 @@ public class BuildableTree {
 	
 	public void writeToFile(String filePath, String from, String to, String version, boolean recursive) throws CmxmlWriterException  {
 		try {
-			FileUtils.createDirectories(filePath);
+			FileUtils.createContainingDirs(filePath);
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.newDocument();

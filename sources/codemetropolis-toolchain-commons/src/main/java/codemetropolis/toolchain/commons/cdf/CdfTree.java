@@ -75,7 +75,7 @@ public class CdfTree {
 
 	public void writeToFile(String filename) throws CdfWriterException{	
 		try {
-			FileUtils.createDirectories(filename);
+			FileUtils.createContainingDirs(filename);
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.newDocument();
