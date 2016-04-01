@@ -39,7 +39,7 @@ The mapping file contains the parameters of build up the virtual world from the 
 				<parameter name="level4" value="obsidian"/>
 			</conversion>
 		</conversions>
-  </binding>
+    </binding>
 </linking>
 ~~~
 
