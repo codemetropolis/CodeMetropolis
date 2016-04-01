@@ -123,12 +123,16 @@ public class SonarClient {
 	}
 	
 	private String sendRequest(String urlWithParams) throws SonarConnectException {
+		return sendRequest(urlWithParams, "GET");
+	}
+	
+	private String sendRequest(String urlWithParams, String method) throws SonarConnectException {
 		try {
 			String authStr = String.format("%s:%s", username, password);
 			String encodedAuthStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 			URL url = new URL(urlWithParams);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
+			connection.setRequestMethod(method);
 			connection.setRequestProperty("Authorization", "Basic " + encodedAuthStr);
 			connection.connect();
 			if(connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
