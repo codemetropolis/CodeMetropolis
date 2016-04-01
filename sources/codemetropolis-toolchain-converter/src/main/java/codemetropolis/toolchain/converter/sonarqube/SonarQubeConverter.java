@@ -2,8 +2,10 @@ package codemetropolis.toolchain.converter.sonarqube;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
@@ -16,6 +18,9 @@ import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
 
 public class SonarQubeConverter extends CdfConverter {
 
+	private static final String USERNAME_PARAM_NAME = "username";
+	private static final String PASSWORD_PARAM_NAME = "password";
+	private static final String SPLIT_DIRS_PARAM_NAME = "splitDirs";
 	private static final String PROJECTS_PARAM_NAME = "projects";
 	private static final String ROOT_CONTAINER_NAME = "projects";
 	private static final String ROOT_CONTAINER_TYPE = "container";
@@ -48,7 +53,7 @@ public class SonarQubeConverter extends CdfConverter {
 			}
 		}
 		
-		String splitDirsParam = getParameter("splitDirs");
+		String splitDirsParam = getParameter(SPLIT_DIRS_PARAM_NAME);
 		if(splitDirsParam != null && Boolean.valueOf(splitDirsParam)) {
 			processDirHierarchy(cdfTree);
 		}
@@ -65,11 +70,24 @@ public class SonarQubeConverter extends CdfConverter {
 	private Map<Integer, SonarResource> getResources(String url) throws SonarConnectException {
 		Map<Integer, SonarResource> result = new HashMap<>();
 		
-		SonarClient sonarClient = new SonarClient(url, getParameter("username"), getParameter("password"));
+		SonarClient sonarClient = new SonarClient(url, getParameter(USERNAME_PARAM_NAME), getParameter(PASSWORD_PARAM_NAME));
 		sonarClient.init();
-		String[] projects = getProjectsInParams();
-		if(projects.length == 0) {
-			projects = sonarClient.getProjectKeys();
+		
+		String[] projectRegexList = getProjectsInParams();
+		List<String> allProjects = sonarClient.getProjectKeys();
+		Set<String> projects = new LinkedHashSet<>();
+		
+		if(projectRegexList.length == 0) {
+			projects.addAll(allProjects);
+		} else {
+			for(String p : allProjects) {
+				for(String regex : projectRegexList) {
+					if(p.matches(regex)) {
+						projects.add(p);
+						break;
+					}
+				}
+			}
 		}
 		
 		for(String key : projects) {

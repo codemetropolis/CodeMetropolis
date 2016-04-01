@@ -83,7 +83,7 @@ public class SonarClient {
 		}
 	}
 	
-	public String[] getProjectKeys() throws SonarConnectException {
+	public List<String> getProjectKeys() throws SonarConnectException {
 		List<String> result = new ArrayList<>();
 		String requestUrl = createRequestUrl(RESOURCES);
 		String responseStr = sendRequest(requestUrl);
@@ -96,7 +96,7 @@ public class SonarClient {
 				result.add(projectJsonObject.get("key").getAsString());	
 			}
 		}
-		return result.toArray(new String[result.size()]);
+		return result;
 	}
 	
 	public Map<Integer, SonarResource> getProject(String projectKey) throws SonarConnectException {	
