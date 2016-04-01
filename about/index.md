@@ -136,7 +136,7 @@ You have to follow the these steps:
 
 After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. You can set the arguments in Run Configuration, and run the tools with Run As/Java Application.
 
-You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar.
+You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar and a lib directory, which is also required to generate cities. It is recommended to copy all jar files to a common directory with the lib directory, which has to contain all lib directory content of each tool. 
 
 [sm]: <https://www.sourcemeter.com/>
 [java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
