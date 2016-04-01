@@ -26,20 +26,20 @@ The mapping file contains the parameters of build up the virtual world from the 
 
 ~~~ xml
 <linking source="method" target="floor">
-		<binding from="LLOC" to="height"/>
-		<binding from="NII" to="width"/>
-		<binding from="NOI" to="length"/>
-		<binding from="McCC" to="character">
-			<conversions>
-				<conversion type="quantization">
-					<parameter name="level0" value="glass"/>
-					<parameter name="level1" value="sand"/>
-					<parameter name="level2" value="planks"/>
-					<parameter name="level3" value="stone"/>
-					<parameter name="level4" value="obsidian"/>
-				</conversion>
-			</conversions>
-		</binding>
+	<binding from="LLOC" to="height"/>
+	<binding from="NII" to="width"/>
+	<binding from="NOI" to="length"/>
+	<binding from="McCC" to="character">
+		<conversions>
+			<conversion type="quantization">
+				<parameter name="level0" value="glass"/>
+				<parameter name="level1" value="sand"/>
+				<parameter name="level2" value="planks"/>
+				<parameter name="level3" value="stone"/>
+				<parameter name="level4" value="obsidian"/>
+			</conversion>
+		</conversions>
+  </binding>
 </linking>
 ~~~
 
@@ -47,8 +47,8 @@ In the `<linking>` tag it can be set how a program element should be displayed i
 
 ~~~ xml  
 <conversion type="quantization">
-					<parameter name="level0" value="1"/>
-					<parameter name="level1" value="2"/>
+	<parameter name="level0" value="1"/>
+	<parameter name="level1" value="2"/>
 </conversion>
 ~~~
 
