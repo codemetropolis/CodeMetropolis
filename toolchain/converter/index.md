@@ -16,20 +16,22 @@ This application using sourcemeter as type is used to process the graph file gen
 * `-i`: input, the path of the input graph file. Required. 
 * `-o`: output, the path of the output XML file. Optional. 
 * `-t`: type, the type of the conversion, in this case it will be ‘sourcemeter’. Required. 
-* `-p`: parameter, a string value, for example: -p projects=project1,project2.
+* `-p`: parameter, a string value, for example: -p projects=project1,project2. Regex expressions are allowed to use in project names.
+ 
+As we mentioned, projects can also be defined with regex expression, for example if you would like to convert all projects start with "a" letter, use projects=^a.*. In these expressions comma (,) and equal sign (=) are forbidden.  If there is an other special character in the name of the project, escape character should be used, for example if the project name is "project.java", you should type it projects=project\.java.
 
 After executing the tool a Converter output xml will be generated, which contains package, class, attribute, method and constant elements with different properties. 
 
 # SonarQube CDF conversion
 
-This application using sonarqube as type is used to process one or more projects from a SonarQube server, which creates properties for each item, for exmaple files that will be processed later by the Mapping Tool. 
+This application using sonarqube as type is used to process one or more projects from a SonarQube server, which creates properties for each item, for exmaple files that will be processed later by the Mapping Tool. The Tool works properly only with 5.3 version of SonarQube.
 
 **Usage**: `java -jar converter.jar -t <tpye> -i <graph file> [-o <output.xml>]  [-p <parameter>]`
 
 * `-i`: input, the URL of the server. 
 * `-o`: output, the path of the output XML file. Optional. 
 * `-t`: type, the type of the conversion. In this case it will be ‘sonarqube’. Required. 
-* `-p`: parameter, a string value, for example: -p projects=project1,project2. Parameters can be 'username', 'password', 'projets', 'splitDirs'. 
+* `-p`: parameter, a string value, for example: -p projects=project1,project2. Parameters can be 'username', 'password', 'projets', 'splitDirs'. Regex expressions are allowed to use in project names. 
 
 After executing the tool a Converter output xml will be generated, which contains project, directory and file elements. 
 
