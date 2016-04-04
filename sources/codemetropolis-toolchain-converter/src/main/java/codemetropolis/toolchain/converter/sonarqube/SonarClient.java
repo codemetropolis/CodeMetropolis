@@ -1,12 +1,6 @@
 package codemetropolis.toolchain.converter.sonarqube;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,19 +12,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
 import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
 
 public class SonarClient {
 
-	private static final String RESOURCES = "resources?";
-	private static final String SCOPE = "scopes=";
-	private static final String RESOURCE = "resource=";
-	private static final String METRICS = "metrics=";
-	private static final String DEPTH = "depth=";
-	private static final String METRIC_SEARCH = "metrics/search?f=name";
-	
+	private static final String URL_METRIC_SEARCH = "metrics/search?f=name";
+	private static final String URL_RESOURCES = "resources";
+	private static final String PARAM_SCOPE = "scopes";
+	private static final String PARAM_RESOURCE = "resource";
+	private static final String PARAM_METRICS = "metrics";
+	private static final String PARAM_DEPTH = "depth";
+
 	private String sonarUrl;
 	private String username;
 	private String password;
@@ -65,8 +58,14 @@ public class SonarClient {
 				return;
 		}
 		
-		String requestUrl = createRequestUrl(RESOURCES, RESOURCE, String.valueOf(resource.getId()), "&", DEPTH, String.valueOf(-1), "&", SCOPE, scope.toString(), "&", METRICS, metricNames);
-		String responseStr = sendRequest(requestUrl);
+		String requestUrl = String.format("%s%s", sonarUrl, URL_RESOURCES);
+		SonarRequest request = new SonarRequest(requestUrl, username, password);
+		request.setParameter(PARAM_RESOURCE, String.valueOf(resource.getId()));
+		request.setParameter(PARAM_DEPTH, String.valueOf(-1));
+		request.setParameter(PARAM_SCOPE, scope.toString());
+		request.setParameter(PARAM_METRICS, metricNames);
+		String responseStr = request.sendPost();
+				
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonElement = jsonParser.parse(responseStr);
 		if(jsonElement.isJsonArray()){
@@ -85,8 +84,9 @@ public class SonarClient {
 	
 	public List<String> getProjectKeys() throws SonarConnectException {
 		List<String> result = new ArrayList<>();
-		String requestUrl = createRequestUrl(RESOURCES);
-		String responseStr = sendRequest(requestUrl);
+		String requestUrl = String.format("%s%s", sonarUrl, URL_RESOURCES);
+		SonarRequest request = new SonarRequest(requestUrl, username, password);
+		String responseStr = request.sendPost();
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonElement = jsonParser.parse(responseStr);
 		if(jsonElement.isJsonArray()){
@@ -99,9 +99,15 @@ public class SonarClient {
 		return result;
 	}
 	
-	public Map<Integer, SonarResource> getProject(String projectKey) throws SonarConnectException {	
-		String requestUrl = createRequestUrl(RESOURCES, RESOURCE, projectKey, "&",SCOPE,Scope.PRJ.toString(), "&", METRICS, metricNames);
-		String responseStr = sendRequest(requestUrl);
+	public Map<Integer, SonarResource> getProject(String projectKey) throws SonarConnectException {
+		
+		String requestUrl = String.format("%s%s", sonarUrl, URL_RESOURCES);
+		SonarRequest request = new SonarRequest(requestUrl, username, password);
+		request.setParameter(PARAM_RESOURCE, projectKey);
+		request.setParameter(PARAM_SCOPE, Scope.PRJ.toString());
+		request.setParameter(PARAM_METRICS, metricNames);
+		String responseStr = request.sendPost();
+		
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonElement = jsonParser.parse(responseStr);
 		if(jsonElement.isJsonArray()){
@@ -122,37 +128,12 @@ public class SonarClient {
 		return resources;
 	}
 	
-	private String sendRequest(String urlWithParams) throws SonarConnectException {
-		return sendRequest(urlWithParams, "GET");
-	}
-	
-	private String sendRequest(String urlWithParams, String method) throws SonarConnectException {
-		try {
-			String authStr = String.format("%s:%s", username, password);
-			String encodedAuthStr = Base64.getEncoder().encodeToString(authStr.getBytes());
-			URL url = new URL(urlWithParams);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod(method);
-			connection.setRequestProperty("Authorization", "Basic " + encodedAuthStr);
-			connection.connect();
-			if(connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new SonarConnectException(Resources.get("sonar_unauthorized_error"));
-			} else if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				throw new RuntimeException("HTTP request returned an error. HTTP error code : " + connection.getResponseCode());
-			} 
-			BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
-			String line = br.readLine();
-			connection.disconnect();	
-			return line;
-		} catch(IOException e) {
-			throw new SonarConnectException(Resources.get("sonar_connect_error"));
-		}
-	}
-	
 	private String getMetricsParameterNames() throws SonarConnectException{
 		StringBuilder metricNames = new StringBuilder();
-		String requestUrl = createRequestUrl(METRIC_SEARCH);
-		String responeStr = sendRequest(requestUrl);
+		
+		String requestUrl = String.format("%s%s", sonarUrl, URL_METRIC_SEARCH);
+		SonarRequest request = new SonarRequest(requestUrl, username, password);
+		String responeStr = request.sendPost();
 		
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonElement = jsonParser.parse(responeStr);
@@ -170,14 +151,6 @@ public class SonarClient {
 		}
 		
 		return metricNames.toString();
-	}
-	
-	private String createRequestUrl(String... params){
-		StringBuilder sb = new StringBuilder(sonarUrl);
-		for(String p : params){
-			sb.append(p);
-		}
-		return sb.toString();
 	}
 	
 	private SonarResource createResource(JsonObject jsonObject){
