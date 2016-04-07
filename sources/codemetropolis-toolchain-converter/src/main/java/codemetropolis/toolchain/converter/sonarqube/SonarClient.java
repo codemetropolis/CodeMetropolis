@@ -166,7 +166,8 @@ public class SonarClient {
 		resource.setKey(key);
 		resource.setId(id);
 
-		if(jsonObject.get("msr").isJsonArray()){
+		JsonElement metrics = jsonObject.get("msr");
+		if(metrics != null && metrics.isJsonArray()){
 			JsonArray array = (JsonArray) jsonObject.get("msr");
 			resource.addMetrics(getMetricNameAndValues(array));
 		}
