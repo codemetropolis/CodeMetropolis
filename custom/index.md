@@ -12,9 +12,17 @@ The first thing you have to do is to checkout the CodeMetropolis Git repository 
 Now it’s time to create the main component of the converter. Create a new class, name it `MyCustomConverter` and place it in the package you’ve just created. Make this class extend `codemetropolis.toolchain.commons.cdf.converter.CdfConverter`. You also have to override an abstract method:
 
 ~~~ java
-@Override
-public CdfTree createElements(String source) {
-	//implement conversion logic here
+public class MyCustomConverter extends CdfConverter {
+
+  public MyCustomConverter(Map<String, String> params) {
+    super(params);
+  }
+  
+  @Override
+  public CdfTree createElements(String source) {
+    //implement conversion logic here
+  }
+  
 }
 ~~~
 
