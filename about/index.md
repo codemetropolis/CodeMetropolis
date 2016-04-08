@@ -151,5 +151,5 @@ CodeMetropolis converter logic has been designed to make it easy to visualize da
 [pt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/placing/>
 [rt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/rendering/>
 [ct]: <http://geryxyz.github.io/CodeMetropolis/toolchain/converter/>
-[cc]: <http://geryxyz.github.io/CodeMetropolis/toolchain/custom/>
+[cc]: <http://geryxyz.github.io/CodeMetropolis/custom/>
 [ixmlf]: <http://geryxyz.github.io/CodeMetropolis/toolchain/interXMLformat/>
