@@ -12,21 +12,38 @@ Basically, there are two ways to implement a converter: to expand the codemetrop
 The first thing you have to do is to checkout the CodeMetropolis Git repository and load the Maven projects into Eclipse. For more information on this, please read the contribution guide. You need to add a new package to the codemetropolis-toolchain-converter project. Its name should be `codemetropolis.toolchain.converter.<name>` by convention where <name> is the name of the converter containing only lowercase letters of English alphabet. Please stick to our naming conventions if you are planning to (contrib link!) send a patch to us. I am going to call mine `MyCustomConverter` for the rest of this tutorial so in this case our package is 
 `codemetropolis.toolchain.converter.mycustom`.
 
-Now it’s time to create the main component of the converter. Create a new class, name it MyCustomConverter and place it in the package you’ve just created. Make this class extend the codemetropolis.toolchain.commons.cdf.converter.CdfConverter. You also have to override an abstract method:
+Now it’s time to create the main component of the converter. Create a new class, name it MyCustomConverter and place it in the package you’ve just created. Make this class extend the `codemetropolis.toolchain.commons.cdf.converter.CdfConverter`. You also have to override an abstract method:
 
-`public abstract CdfTree createElements(String source) throws CodeMetropolisException`
+~~~ java
+@Override
+public CdfTree createElements(String source) {
+	//implement conversion logic here
+}
+~~~
 
-`…`
 
 This method is used to construct the structure of the output CDF document. The `source` parameter holds the path to the source of the data you want to convert and is passed as command line argument (or executor argument when using the CodeMetropolis API). This could be for example a file or a server, but you are free to use any kind of data source. The implementation should load the data from the source, create the CDF elements and place them in a tree structure. The method must return a CdfTree object which holds the (no surprise) CDF tree. All CDF related classes are placed in package `codemetropolis.toolchain.commons.cdf`. Since we will need all of them, we can import them like: 
 
-`import codemetropolis.toolchain.commons.cdf.*;`
+~~~ java
+import codemetropolis.toolchain.commons.cdf.*;
+~~~
 
 The data conversion logic fully depends on the data source and your own purposes, therefore I will only explain the creation of the CDF structure. To compose the `CdfTree`, first you have to transform your data into `CdfElement` objects. A `CdfElement` represents a data object with a name, a type, and a bunch of properties. All elements in a CdfTree must connect to each other through parent-child relations. There must be a single root element with no parent. Every other element must have exactly one parent and any number of children. You can construct an element as follows:
 
-`…`
+~~~ java
+CdfElement element = new CdfElement("name", "type");
+element.addProperty("property_1", "value", CdfProperty.Type.STRING);
+element.addProperty("property_2", "10", CdfProperty.Type.INT);
+element.addProperty("property_3", "3.14", CdfProperty.Type.FLOAT);
+element.addChildElement(otherElement);
+~~~
 
 When you finished creating your `CdfElement` objects you have to place them in a `CdfTree`. To achieve this, you only need call the constructor of the `CdfTree` class passing the root `CdfElement` as an argument. Then you can simply return the newly created object.
+
+~~~ java
+return new CdfTree(rootElement);
+~~~
+
 The conversion might need some custom parameters coming for command line arguments. You can access these with the `getParameter("parameter_id")` method. In command line the syntax of custom parameters are the following:
 
 `-p parameter1=value1 parameter2=value2 […]`
