@@ -3,13 +3,13 @@ layout: page
 title: Custom CDF Converter Tutorial
 ---
 
-Converters are responsibly for turning data into a CDF (Common Data Format) file which can be used as the input of the mapping component. CDF uses a simple XML-based syntax as it is described here. Fortunately, the CodeMetropolis toolchain already provides a few classes which help developers to deal with CDF files. I will talk about these soon.
+Converters are responsibly for turning data into a CDF (Common Data Format) file which can be used as the input of the mapping component. CDF uses a simple XML-based syntax as it is described [here][ct]. Fortunately, the CodeMetropolis toolchain already provides a few classes which help developers to deal with CDF files. I will talk about these soon.
 
 Basically, there are two ways to implement a converter: to expand the codemetropolis-toolchain-converter project, or to create your own separated converter project. This tutorial will guide you through the first method as it is the recommended way if you are willing to share your converter with the community.
 
-The first thing you have to do is to checkout the CodeMetropolis Git repository and load the Maven projects into Eclipse. For more information on this, please read the contribution guide. You need to add a new package to the codemetropolis-toolchain-converter project. Its name should be `codemetropolis.toolchain.converter.<name>` by convention where <name> is the name of the converter containing only lowercase letters of English alphabet. Please stick to our naming conventions if you are planning to send a patch to us. I am going to call mine `MyCustomConverter` for the rest of this tutorial so in this case our package is `codemetropolis.toolchain.converter.mycustom`.
+The first thing you have to do is to checkout the CodeMetropolis Git repository and load the Maven projects into Eclipse. For more information on this please read the contribution guide. You need to add a new package to the `codemetropolis-toolchain-converter project`. Its name should be `codemetropolis.toolchain.converter.<name>` by convention where <name> is the name of the converter containing only lowercase letters of English alphabet. Please stick to our naming conventions if you are planning to send a patch to us. I am going to call mine `MyCustomConverter` for the rest of this tutorial so in this case our package is `codemetropolis.toolchain.converter.mycustom`.
 
-Now it’s time to create the main component of the converter. Create a new class, name it MyCustomConverter and place it in the package you’ve just created. Make this class extend the `codemetropolis.toolchain.commons.cdf.converter.CdfConverter`. You also have to override an abstract method:
+Now it’s time to create the main component of the converter. Create a new class, name it `MyCustomConverter` and place it in the package you’ve just created. Make this class extend `codemetropolis.toolchain.commons.cdf.converter.CdfConverter`. You also have to override an abstract method:
 
 ~~~ java
 @Override
@@ -19,7 +19,7 @@ public CdfTree createElements(String source) {
 ~~~
 
 
-This method is used to construct the structure of the output CDF document. The `source` parameter holds the path to the source of the data you want to convert and is passed as command line argument (or executor argument when using the CodeMetropolis API). This could be for example a file or a server, but you are free to use any kind of data source. The implementation should load the data from the source, create the CDF elements and place them in a tree structure. The method must return a CdfTree object which holds the (no surprise) CDF tree. All CDF related classes are placed in package `codemetropolis.toolchain.commons.cdf`. Since we will need all of them, we can import them like: 
+This method is used to construct the structure of the output CDF document. The `source` parameter holds the path to the source of the data you want to convert and is passed as command line argument (or executor argument when using the CodeMetropolis API). This could be for example a file or a server, but you are free to use any kind of data source. The implementation should load the data from the source, create the CDF elements and place them in a tree structure. The method must return a `CdfTree` object which holds the (no surprise) CDF tree. All CDF related classes are placed in a package named `codemetropolis.toolchain.commons.cdf`. Since we will need all of these, we can import them like: 
 
 ~~~ java
 import codemetropolis.toolchain.commons.cdf.*;
@@ -49,8 +49,33 @@ During the conversion process you might also want to print some information to t
 
 By now, you have already implemented the data conversion logic. The last thing to do is to register your converter so it becomes accessible as a valid converter type. Look up the `codemetropolis.toolchain.converter.control`  package and open the `ConverterType` enum for editing and add name of your converter to the list:
 
+~~~ java
+public enum ConverterType {
+	SOURCEMETER,
+	SONARQUBE,
+	MYCUSTOM
+}
+~~~
+
 Now open the `ConverterLoader` class and add a new case statement to the load method:
+
+~~~ java
+public static CdfConverter load(ConverterType converterType, Map<String, String> params) {
+		switch(converterType) {
+			case SOURCEMETER:
+				return new GraphConverter(params);
+			case SONARQUBE:
+				return new SonarQubeConverter(params);
+			case MYCUSTOM:
+				return new MyCustomConverter(params);
+			default:
+				return null;
+		}
+	}
+~~~
 
 That’s all. Now you can use your converter just like the default converters:
 
 `java -jar converter.jar -t mycustom -s <source> -o <output_xml>`
+
+[ct]: <http://geryxyz.github.io/CodeMetropolis/toolchain/converter/>
