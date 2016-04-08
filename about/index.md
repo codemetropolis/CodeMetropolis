@@ -136,7 +136,13 @@ You have to follow the these steps:
 
 After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. You can set the arguments in Run Configuration, and run the tools with Run As/Java Application.
 
-You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar and a lib directory, which is also required to generate cities. It is recommended to copy all jar files to a common directory with the lib directory, which has to contain all lib directory content of each tool. 
+You can create a jar file with Maven with *mvn package* command. You have to start command line in *toolchain-repository/sources* directory and type the command. Then there will be a *target* directory in every project's directory and this *target* directory contain the created jar and a lib directory, which is also required to generate cities. It is recommended to copy all jar files to a common directory with the lib directory, which has to contain all lib directory content of each tool.
+
+# How to use CodeMetropolis with custom data source
+
+CodeMetropolis converter logic has been designed to make it easy to visualize data from any source. The toolchain ships with converters for SourceMeter and SonarQube. These tools are great for presenting the structure and metrics of software projects but there might be a bunch of other use cases in which visualization could be very useful. By implementing a custom converter one can build a metropolis based on not just software entities, but any kind of data. This short tutorial will show you how to create your own converter.
+
+[*Details...*][cc]
 
 [sm]: <https://www.sourcemeter.com/>
 [java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
@@ -145,4 +151,5 @@ You can create a jar file with Maven with *mvn package* command. You have to sta
 [pt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/placing/>
 [rt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/rendering/>
 [ct]: <http://geryxyz.github.io/CodeMetropolis/toolchain/converter/>
+[cc]: <http://geryxyz.github.io/CodeMetropolis/toolchain/custom/>
 [ixmlf]: <http://geryxyz.github.io/CodeMetropolis/toolchain/interXMLformat/>
