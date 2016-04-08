@@ -11,7 +11,7 @@
 		<binding from="functions" to="height"/>
 		<binding from="comment_lines" to="width"/>
 		<binding from="comment_lines" to="length"/>
-		<binding from="violations" to="character">
+		<binding from="violations" to="character" default="glass">
 			<conversions>
 				<conversion type="quantization">
 					<parameter name="level0" value="glass"/>
@@ -22,7 +22,7 @@
 				</conversion>
 			</conversions>
 		</binding>
-		<binding from="violations" to="external_character">
+		<binding from="violations" to="external_character" default="metal">
 			<conversions>
 				<conversion type="quantization">
 					<parameter name="level0" value="metal"/>

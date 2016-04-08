@@ -21,6 +21,9 @@ public class Binding {
 	@XmlAttribute
 	private String to;
 	
+	@XmlAttribute(name="default")
+	private String defaultValue;
+	
 	@XmlElementWrapper(name="conversions")
 	@XmlElement(name="conversion")
 	private List<Conversion> conversions = new ArrayList<>();
@@ -33,6 +36,10 @@ public class Binding {
 		return to;
 	}
 	
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
 	public String getVariableId() {
 		String pattern = "^\\$\\{.*\\}$";
 		if(from.matches(pattern)) {

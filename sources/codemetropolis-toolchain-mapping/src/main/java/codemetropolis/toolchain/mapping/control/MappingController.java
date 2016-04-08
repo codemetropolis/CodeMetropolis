@@ -113,7 +113,12 @@ public class MappingController {
 				}
 				
 				Object value = attributes.get(binding.getFrom());
-				if(value == null) continue;
+				if(value == null) {
+					String defaultValue = binding.getDefaultValue();
+					if(defaultValue == null || defaultValue.isEmpty()) continue;
+					setProperty(b, binding.getTo(), defaultValue, true);
+					continue;
+				}
 				
 				Limit limit = limitController.getLimit(linking.getSource(), binding.getFrom());
 				
