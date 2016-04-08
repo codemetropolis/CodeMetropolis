@@ -61,17 +61,17 @@ Now open the `ConverterLoader` class and add a new case statement to the load me
 
 ~~~ java
 public static CdfConverter load(ConverterType converterType, Map<String, String> params) {
-		switch(converterType) {
-			case SOURCEMETER:
-				return new GraphConverter(params);
-			case SONARQUBE:
-				return new SonarQubeConverter(params);
-			case MYCUSTOM:
-				return new MyCustomConverter(params);
-			default:
-				return null;
-		}
+	switch(converterType) {
+		case SOURCEMETER:
+			return new GraphConverter(params);
+		case SONARQUBE:
+			return new SonarQubeConverter(params);
+		case MYCUSTOM:
+			return new MyCustomConverter(params);
+		default:
+			return null;
 	}
+}
 ~~~
 
 That’s all. Now you can use your converter just like the default converters:
