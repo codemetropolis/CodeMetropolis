@@ -30,5 +30,6 @@
   	<module>codemetropolis-toolchain-rendering</module>
   	<module>codemetropolis-toolchain-commons</module>
     <module>codemetropolis-toolchain-converter</module>
+    <module>codemetropolis-toolchain-gui</module>
   </modules>
 </project>
