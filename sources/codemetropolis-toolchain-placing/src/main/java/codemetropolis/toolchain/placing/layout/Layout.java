@@ -17,8 +17,9 @@ public abstract class Layout {
 			switch(LayoutAlgorithm.valueOf(algorithm.toUpperCase())) {
 				case PACK:
 					return new PackLayout();
-				case TETRIS:
-					return new TetrisLayout();
+				//TODO tetris layout is out of date and needs to be updated
+				//case TETRIS:
+				//	return new TetrisLayout();
 			}	
 		} catch (IllegalArgumentException e) {
 			throw new NonExistentLayoutException(algorithm);
