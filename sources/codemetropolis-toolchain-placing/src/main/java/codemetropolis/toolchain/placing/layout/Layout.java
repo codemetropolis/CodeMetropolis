@@ -4,7 +4,7 @@ import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.placing.exceptions.LayoutException;
 import codemetropolis.toolchain.placing.exceptions.NonExistentLayoutException;
 import codemetropolis.toolchain.placing.layout.pack.PackLayout;
-import codemetropolis.toolchain.placing.layout.tetris.TetrisLayout;
+//import codemetropolis.toolchain.placing.layout.tetris.TetrisLayout;
 
 public abstract class Layout {
 
