@@ -28,7 +28,7 @@ public class GraphConverter extends CdfConverter {
 	private static final String ROOT_NODE_ID = "L100";
 	
 	@Override
-	public CdfTree createElements(String graphPath){
+	public CdfTree createElements(String graphPath) {
 		Graph graph = new Graph();
 		graph.loadBinary(graphPath);
 		Node root = graph.findNode(ROOT_NODE_ID);
@@ -39,7 +39,7 @@ public class GraphConverter extends CdfConverter {
 	private CdfElement createElementsRecursively(Node root) {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
-		CdfElement element =  new CdfElement(name, type);
+		CdfElement element = new CdfElement(name, type);
 		element.setSourceId(root.getUID());
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
