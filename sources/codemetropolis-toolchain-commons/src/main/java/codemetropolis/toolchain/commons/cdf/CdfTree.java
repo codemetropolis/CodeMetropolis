@@ -1,7 +1,6 @@
 package codemetropolis.toolchain.commons.cdf;
 
 import java.io.FileWriter;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,43 +66,18 @@ public class CdfTree {
 		buildables.addAll(root.getDescendants());
 		return buildables;
 	}
-
-//	public void writeToFile(String filename) throws CdfWriterException{	
-//		try {
-//			FileUtils.createContainingDirs(filename);
-//			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-//			Document doc = docBuilder.newDocument();
-//			
-//			doc.appendChild(root.toXmlElement(doc));			
-//			
-//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//			Transformer transformer = transformerFactory.newTransformer();
-//			DOMSource source = new DOMSource(doc);
-//			StreamResult result = new StreamResult(new File(filename));
-//			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-//			transformer.transform(source, result);
-//		} catch (Exception e) {
-//			throw new CdfWriterException(e);
-//		}
-//	}
 	
 	public void writeToFile(String filename) throws CdfWriterException{	
 		try {
 			FileUtils.createContainingDirs(filename);
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+			outputFactory.setProperty("escapeCharacters", false);
 			XMLStreamWriter writer = outputFactory.createXMLStreamWriter(new FileWriter(filename));
-			XmlStreamPrettyPrinter prettyPrinter = new XmlStreamPrettyPrinter(writer);
-			writer = (XMLStreamWriter) Proxy.newProxyInstance(
-					XMLStreamWriter.class.getClassLoader(),
-					new Class[]{XMLStreamWriter.class},
-					prettyPrinter );
-			
+			writer = XmlStreamPrettyPrinter.create(writer);
+
 			writer.writeStartDocument();
 			root.toXml(writer);
 			writer.writeEndDocument();
-			
 		} catch (Exception e) {
 			throw new CdfWriterException(e);
 		}

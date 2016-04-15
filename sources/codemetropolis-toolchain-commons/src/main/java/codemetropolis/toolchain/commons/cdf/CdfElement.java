@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.commons.cdf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -10,14 +11,15 @@ import javax.xml.stream.XMLStreamWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class CdfElement {
+import codemetropolis.toolchain.commons.util.PrintableXmlElement;
+
+public class CdfElement extends PrintableXmlElement {
 
 	private static final String SOURCE_ID_KEY = "source_id";
 	
 	private String name;
 	private String type;
 	private List<CdfProperty> properties;
-	private List<CdfElement> childElements;
 	
 	public CdfElement() {
 		this(null, null);
@@ -27,7 +29,6 @@ public class CdfElement {
 		this.name = name;
 		this.type = type;
 		properties = new ArrayList<>();
-		childElements = new ArrayList<>();
 	}
 	
 	public String getName() {
@@ -78,8 +79,9 @@ public class CdfElement {
 		addProperty(SOURCE_ID_KEY, id, CdfProperty.Type.STRING);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<CdfElement> getChildElements() {
-		return new ArrayList<>(childElements);
+		return Collections.unmodifiableList((List<CdfElement>)(List<?>)childElements);
 	}
 	
 	public void addChildElement(CdfElement child) {
@@ -117,7 +119,7 @@ public class CdfElement {
 		element.setAttribute("type", type.toString().toLowerCase());		
 		Element children = doc.createElement("children");
 		element.appendChild(children);
-		for(CdfElement c : this.childElements) {
+		for(CdfElement c : getChildElements()) {
 			children.appendChild(c.toXmlElement(doc));
 		}
 		
@@ -141,9 +143,10 @@ public class CdfElement {
 			writer.writeAttribute("type", type.toString().toLowerCase());
 			
 			writer.writeStartElement("children");
-			for(CdfElement child : this.childElements) {
+			for(CdfElement child : getChildElements()) {
 				child.toXml(writer);
 			}
+			writer.writeCharacters(lightWeightContent);
 			writer.writeEndElement();
 			
 			writer.writeStartElement("properties");

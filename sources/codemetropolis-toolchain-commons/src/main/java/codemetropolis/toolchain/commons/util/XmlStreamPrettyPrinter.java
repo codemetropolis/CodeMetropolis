@@ -2,9 +2,11 @@ package codemetropolis.toolchain.commons.util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class XmlStreamPrettyPrinter implements InvocationHandler {
@@ -15,8 +17,16 @@ public class XmlStreamPrettyPrinter implements InvocationHandler {
 	private static final String INDENT_CHAR = "\t";
 	private static final String LINEFEED_CHAR = "\n";
 
-	public XmlStreamPrettyPrinter(XMLStreamWriter target) {
+	private XmlStreamPrettyPrinter(XMLStreamWriter target) {
 		this.target = target;
+	}
+	
+	public static XMLStreamWriter create(XMLStreamWriter writer) throws XMLStreamException {
+		XmlStreamPrettyPrinter prettyPrinter = new XmlStreamPrettyPrinter(writer);
+		return (XMLStreamWriter) Proxy.newProxyInstance(
+				XMLStreamWriter.class.getClassLoader(),
+				new Class[]{XMLStreamWriter.class},
+				prettyPrinter );
 	}
 	  
 	@Override
