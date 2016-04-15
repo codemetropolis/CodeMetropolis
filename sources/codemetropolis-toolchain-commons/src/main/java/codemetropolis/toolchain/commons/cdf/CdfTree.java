@@ -1,21 +1,16 @@
 package codemetropolis.toolchain.commons.cdf;
 
-import java.io.File;
+import java.io.FileWriter;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 
 import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
 import codemetropolis.toolchain.commons.util.FileUtils;
+import codemetropolis.toolchain.commons.util.XmlStreamPrettyPrinter;
 
 public class CdfTree {
 	
@@ -73,22 +68,42 @@ public class CdfTree {
 		return buildables;
 	}
 
+//	public void writeToFile(String filename) throws CdfWriterException{	
+//		try {
+//			FileUtils.createContainingDirs(filename);
+//			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+//			Document doc = docBuilder.newDocument();
+//			
+//			doc.appendChild(root.toXmlElement(doc));			
+//			
+//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//			Transformer transformer = transformerFactory.newTransformer();
+//			DOMSource source = new DOMSource(doc);
+//			StreamResult result = new StreamResult(new File(filename));
+//			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+//			transformer.transform(source, result);
+//		} catch (Exception e) {
+//			throw new CdfWriterException(e);
+//		}
+//	}
+	
 	public void writeToFile(String filename) throws CdfWriterException{	
 		try {
 			FileUtils.createContainingDirs(filename);
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.newDocument();
+			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+			XMLStreamWriter writer = outputFactory.createXMLStreamWriter(new FileWriter(filename));
+			XmlStreamPrettyPrinter prettyPrinter = new XmlStreamPrettyPrinter(writer);
+			writer = (XMLStreamWriter) Proxy.newProxyInstance(
+					XMLStreamWriter.class.getClassLoader(),
+					new Class[]{XMLStreamWriter.class},
+					prettyPrinter );
 			
-			doc.appendChild(root.toXmlElement(doc));			
+			writer.writeStartDocument();
+			root.toXml(writer);
+			writer.writeEndDocument();
 			
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(filename));
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-			transformer.transform(source, result);
 		} catch (Exception e) {
 			throw new CdfWriterException(e);
 		}

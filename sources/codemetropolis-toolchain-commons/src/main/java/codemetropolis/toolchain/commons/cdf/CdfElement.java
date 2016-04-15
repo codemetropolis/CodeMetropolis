@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import codemetropolis.toolchain.commons.cdf.CdfProperty;
 
 public class CdfElement {
 
@@ -131,6 +132,35 @@ public class CdfElement {
 		}
 		
 		return element;
+	}
+	
+	public void toXml(XMLStreamWriter writer) {
+		try {
+			writer.writeStartElement("element");
+			writer.writeAttribute("name", name);
+			writer.writeAttribute("type", type.toString().toLowerCase());
+			
+			writer.writeStartElement("children");
+			for(CdfElement child : this.childElements) {
+				child.toXml(writer);
+			}
+			writer.writeEndElement();
+			
+			writer.writeStartElement("properties");
+			for(CdfProperty prop : this.properties) {
+				writer.writeStartElement("property");
+				writer.writeAttribute("name", prop.getName());
+				writer.writeAttribute("value", prop.getValue());
+				writer.writeAttribute("type", prop.getType().name().toLowerCase());
+				writer.writeEndElement();
+			}
+			writer.writeEndElement();
+			
+			writer.writeEndElement();
+			writer.flush();
+		} catch (XMLStreamException e) {
+			return;
+		}
 	}
 	
 }
