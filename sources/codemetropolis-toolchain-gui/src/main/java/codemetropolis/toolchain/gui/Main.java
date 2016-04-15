@@ -8,9 +8,10 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 public class Main {
 
-  private static final String SOURCE_SANS = "fonts/SourceSansPro-";
+  private static final String SOURCE_SANS = "fonts/SourceSansPro";
   private static final int TTF = Font.TRUETYPE_FONT;
 
   public static void main(String[] args) {
@@ -37,12 +38,14 @@ public class Main {
       ge.registerFont(Font.createFont(TTF, ClassLoader.getSystemResourceAsStream(SOURCE_SANS + "-Semibold.ttf")));
       ge.registerFont(Font.createFont(TTF, ClassLoader.getSystemResourceAsStream(SOURCE_SANS + "-SemiboldItalic.ttf")));
     } catch (FontFormatException | IOException e) {
+    	e.printStackTrace();
       // Failed to load font files. Using defaults instead.
     }
 
     // Instantiate GUI
-    CodeMetropolisGUI gui = new CodeMetropolisGUI();
+    GUIController controller = new GUIController();
+    CodeMetropolisGUI gui = new CodeMetropolisGUI(controller);
     gui.setVisible(true);
-  }
+  }   
 
 }
