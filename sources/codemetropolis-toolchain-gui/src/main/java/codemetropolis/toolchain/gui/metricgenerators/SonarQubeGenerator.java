@@ -60,8 +60,9 @@ public class SonarQubeGenerator extends MetricGenerator {
 	}
 
 	@Override
-	public void execute(String dst, ExecutionOptions execOpt) {
+	public String execute(String dst, ExecutionOptions execOpt) {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 

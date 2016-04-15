@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.gui.metricgenerators;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class SourceMeterGenerator extends MetricGenerator {
 	}
 	
 	@Override
-	public void execute(String dst, ExecutionOptions execOpt) {
+	public String execute(String dst, ExecutionOptions execOpt) {
 		System.out.println("Generate");
 		String smPath = sourceMeterPath.getText();
 		String projectPath = projectRootPath.getText();
@@ -91,11 +92,41 @@ public class SourceMeterGenerator extends MetricGenerator {
             inputStream.close();
             bufferedReader.close();
 	        
-            System.out.println(command);
+            String result = dst + File.separator + execOpt.getProjectName() + File.separator + goIntoFirstDirectoryNTimes(dst + File.separator + execOpt.getProjectName(), 2) + execOpt.getProjectName() +".graph";
+            System.out.println(result);
+            return result;
+                       
+            //System.out.println(command);
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-	    }
+	    	return "";
+	    }		
 		
+		
+		
+	}
+	
+	/**
+	 * Goes down to the file hierarchy in n deepness always to the first folder
+	 * @param baseFolder
+	 * @param n deepness of the recursion
+	 * @return a String with the relative path
+	 */
+	private String goIntoFirstDirectoryNTimes(String baseFolder, int n) {
+		if (n>0) {
+			File base = new File(baseFolder);
+			File[] filesInFolder = base.listFiles();
+			int j = 0;
+			while (j<filesInFolder.length) {
+				if (filesInFolder[j].isDirectory()) {
+					return filesInFolder[j].getName() + File.separator + goIntoFirstDirectoryNTimes(filesInFolder[j].getAbsolutePath(), n-1);
+				}
+				j++;
+			}	
+			return "";
+		} else {
+			return "";
+		}
 	}
 
 }

@@ -42,9 +42,10 @@ public abstract class MetricGenerator {
 	 * Executes the metric generator from the options set on the guiPanel. The result file (e.g. graph in SourceMeter)
 	 * will be saved to dst path.
 	 * @param dst
-	 * @param Other execution options if needed.
+	 * @param execOpt Other execution options if needed.
+	 * @return String The filepath where the input of the converter can be found.
 	 */
-	public abstract void execute(String dst, ExecutionOptions execOpt);
+	public abstract String execute(String dst, ExecutionOptions execOpt);
 	
 	//getters and setters
 	public ConverterType getType() {
