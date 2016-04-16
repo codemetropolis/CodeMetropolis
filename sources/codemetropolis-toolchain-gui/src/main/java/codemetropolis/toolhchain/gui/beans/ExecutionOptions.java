@@ -1,57 +1,120 @@
 package codemetropolis.toolhchain.gui.beans;
 
-import codemetropolis.toolchain.converter.control.ConverterType;
-import codemetropolis.toolchain.gui.metricgenerators.MetricGenerator;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
+import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+
+/**
+ * Contains the parameters required for running the CodeMetropolis toolchain on a given project.
+ *
+ * @author Abel Szkalisity {@literal <SZAVAET.SZE>}
+ */
 public class ExecutionOptions {
-	private String projectName;	
-	private MetricGenerator metricGenerator;
-	private String mappingXml;
-	private String minecraftRoot;
-	private boolean showMap;
-		
-	public ExecutionOptions(String projectName,
-			MetricGenerator metricGenerator, String mappingXml,
-			String minecraftRoot, boolean showMap) {
-		super();
-		this.projectName = projectName;		
-		this.metricGenerator = metricGenerator;
-		this.mappingXml = mappingXml;
-		this.minecraftRoot = minecraftRoot;
-		this.showMap = showMap;
-	}
-	public String getProjectName() {
-		return projectName;
-	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}	
-	public MetricGenerator getMetricGenerator() {
-		return metricGenerator;
-	}
-	public void setMetricGenerator(MetricGenerator metricGenerator) {
-		this.metricGenerator = metricGenerator;
-	}
-	public String getMappingXml() {
-		return mappingXml;
-	}
-	public void setMappingXml(String mappingXml) {
-		this.mappingXml = mappingXml;
-	}
-	public String getMinecraftRoot() {
-		return minecraftRoot;
-	}
-	public void setMinecraftRoot(String minecraftRoot) {
-		this.minecraftRoot = minecraftRoot;
-	}
-	public boolean isShowMap() {
-		return showMap;
-	}
-	public void setShowMap(boolean showMap) {
-		this.showMap = showMap;
-	}
-	
-	
-	
-	
+
+  // General
+  private String projectName;
+
+  // Converter tool
+  private ConverterType converterType;
+  private Map<String, Object> metricGenerationParams;
+
+  // Mapping tool
+  private File mappingXml;
+  private float scale;
+  private boolean validate;
+
+  // Placing tool
+  private LayoutAlgorithm layoutAlgorithm;
+  private boolean showMap;
+
+  // Rendering tool
+  private File minecraftRoot;
+
+  /**
+   * Constructs an {@link ExecutionOptions} instance with default values.
+   */
+  public ExecutionOptions() {
+    this.converterType = ConverterType.SOURCEMETER;
+    this.metricGenerationParams = new HashMap<String, Object>();
+    this.scale = 1.0f;
+    this.validate = false;
+    this.layoutAlgorithm = LayoutAlgorithm.PACK;
+    this.showMap = false;
+  }
+
+  public String getProjectName() {
+    return projectName;
+  }
+
+  public ConverterType getConverterType() {
+    return converterType;
+  }
+
+  public Map<String, Object> getMetricGenerationParams() {
+    return metricGenerationParams;
+  }
+
+  public File getMappingXml() {
+    return mappingXml;
+  }
+
+  public float getScale() {
+    return scale;
+  }
+
+  public boolean isValidate() {
+    return validate;
+  }
+
+  public LayoutAlgorithm getLayoutAlgorithm() {
+    return layoutAlgorithm;
+  }
+
+  public boolean isShowMap() {
+    return showMap;
+  }
+
+  public File getMinecraftRoot() {
+    return minecraftRoot;
+  }
+
+  public void setProjectName(String projectName) {
+    this.projectName = projectName;
+  }
+
+  public void setConverterType(ConverterType converterType) {
+    this.converterType = converterType;
+  }
+
+  public void setMetricGenerationParams(Map<String, Object> metricGenerationParams) {
+    this.metricGenerationParams = metricGenerationParams;
+  }
+
+  public void setMappingXml(File mappingXml) {
+    this.mappingXml = mappingXml;
+  }
+
+  public void setScale(float scale) {
+    this.scale = scale;
+  }
+
+  public void setValidate(boolean validate) {
+    this.validate = validate;
+  }
+
+  public void setLayoutAlgorithm(LayoutAlgorithm layoutAlgorithm) {
+    this.layoutAlgorithm = layoutAlgorithm;
+  }
+
+  public void setShowMap(boolean showMap) {
+    this.showMap = showMap;
+  }
+
+  public void setMinecraftRoot(File minecraftRoot) {
+    this.minecraftRoot = minecraftRoot;
+  }
+
 }

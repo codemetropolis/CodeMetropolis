@@ -1,45 +1,52 @@
 package codemetropolis.toolchain.gui.components;
+
 import javax.swing.JPanel;
 
-import codemetropolis.toolchain.gui.CodeMetropolisGUI;
-import codemetropolis.toolchain.gui.metricgenerators.MetricGenerator;
+import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
- * Extension to JPanel, as we need to store to which metric generator (SourceMeter, SonarQube) this panel
- * provides information.
- * 
- * @author szkabel
+ * Extension to JPanel, as we need to store to which metric generator (SourceMeter, SonarQube) this panel provides
+ * options for. Can also validate the fields and fill them into a gievn {@link ExecutionOptions} instance.
  *
+ * @author Abel Szkalisity {@literal <SZAVAET.SZE>}
  */
-public class CMMetricPanel extends JPanel {				
-	
-	private static final long serialVersionUID = 1L;
-		
-	//Parent GUI to this object	 
-	private CodeMetropolisGUI mainWindow;
-	private MetricGenerator metricGenerator;
+public abstract class CMMetricPanel extends JPanel {
 
-	public CodeMetropolisGUI getMainWindow() {
-		return mainWindow;
-	}
+  private static final long serialVersionUID = 1L;
 
-	public void setMainWindow(CodeMetropolisGUI parent) {
-		this.mainWindow = parent;
-	}	
-	
-	public MetricGenerator getMetricGenerator() {
-		return metricGenerator;
-	}
+  protected String tabTitle;
+  protected ConverterType converterType;
 
-	public void setMetricGenerator(MetricGenerator metricGenerator) {
-		this.metricGenerator = metricGenerator;
-	}
+  /**
+   * Fills the given {@link ExecutionOptions} instance with data from the panel.
+   *
+   * @param executionOptions The target {@link ExecutionOptions} instance.
+   */
+  public abstract void fillFields(ExecutionOptions executionOptions);
 
-	public CMMetricPanel(MetricGenerator mc, CodeMetropolisGUI p) {
-		super();
-		mainWindow = p;
-		metricGenerator = mc;
-	}
-	
+  /**
+   * Validates the given {@link ExecutionOptions} instance.
+   *
+   * @param executionOptions The instance to validate.
+   * @return True, if the options related to this panel are existent and valid, false otherwise.
+   */
+  public abstract boolean validateFields(ExecutionOptions executionOptions);
+
+  public String getTabTitle() {
+    return tabTitle;
+  }
+
+  public ConverterType getConverterType() {
+    return converterType;
+  }
+
+  public void setTabTitle(String tabTitle) {
+    this.tabTitle = tabTitle;
+  }
+
+  public void setConverterType(ConverterType converterType) {
+    this.converterType = converterType;
+  }
 
 }

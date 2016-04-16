@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -14,14 +15,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
+import codemetropolis.toolchain.gui.components.CMComboBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
+import codemetropolis.toolchain.gui.components.CMMetricPanel;
+import codemetropolis.toolchain.gui.components.CMSpinner;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
-import codemetropolis.toolchain.gui.components.listeners.GenerateListener;
-import codemetropolis.toolchain.gui.metricgenerators.MetricGenerator;
+import codemetropolis.toolchain.gui.utils.GuiUtils;
+import codemetropolis.toolchain.gui.utils.XmlFileFilter;
+import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
  * GUI window for the CodeMetropolis toolchain.
@@ -31,61 +39,62 @@ import codemetropolis.toolchain.gui.metricgenerators.MetricGenerator;
 public class CodeMetropolisGUI extends JFrame {
 
   private static final long serialVersionUID = 1L;
+
+  private static final FileFilter XML_FILTER = new XmlFileFilter();
+
   private GUIController controller;
-  
-  
-  private CMTextField projectName;  
-  private JTabbedPane metricTabbedPane;    
+
+  private CMTextField projectName;
+  private JTabbedPane metricTabbedPane;
   private CMTextField mappingPath;
   private CMTextField mcRootPath;
   private CMCheckBox showMap;
-  
+  private CMCheckBox validateStructure;
+  private CMSpinner scaleSpinner;
+  private CMComboBox<LayoutAlgorithm> layoutSelector;
 
   /**
    * Instantiates the CodeMetropolis GUI.
-   * 
-   * @param con
+   *
+   * @param controller The {@link GUIController} instance.
    */
-  public CodeMetropolisGUI(GUIController con) {
-    super("CodeMetropolis");        
-    controller = con;
+  public CodeMetropolisGUI(GUIController controller) {
+    super("CodeMetropolis");
+    this.controller = controller;
 
     JPanel panel = createBasePanel();
     addHeaderImages(panel);
     addTitle(panel);
     addProjectNameField(panel);
     addMetricTabs(panel);
-    addMappingPathBrowser(panel);
+    addMappingOptions(panel);
+    addPlacingOptions(panel);
     addMinecraftRootBrowser(panel);
-    addShowMapCheckbox(panel);
     addStartButton(panel);
-    
-    initGUI();
+
+    initFields();
 
     this.setResizable(false);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setContentPane(panel);
     this.pack();
-    this.setLocationRelativeTo(null);       
+    this.setLocationRelativeTo(null);
   }
-  
+
   /**
-   * Do automatic initializations for possible fields.
-   * Search for Minecraft folder if exists.
+   * Does automatic initialization for some of the fields. Search for Minecraft folder if exists.
    */
-  public void initGUI() {
-	  File mcLocation = new File(System.getProperty("user.home") + "\\AppData\\Roaming\\.minecraft");
-	  if (mcLocation.isDirectory()) {
-		  mcRootPath.setText(mcLocation.getAbsolutePath());
-	  } else {
-		  mcRootPath.setText("Unable to find Minecraft folder");
-	  }
+  public void initFields() {
+    String minecraftRoot = GuiUtils.findMinecraftRoot();
+    if (minecraftRoot != null) {
+      mcRootPath.setText(minecraftRoot);
+    }
   }
 
   /**
    * Creates the base panel for the CodeMetropolis GUI.
    *
-   * @return The generated panel.
+   * @return The generated {@link JPanel}.
    */
   private static final JPanel createBasePanel() {
     JPanel panel = new JPanel();
@@ -93,7 +102,7 @@ public class CodeMetropolisGUI extends JFrame {
     panel.setBackground(Color.WHITE);
     panel.setBounds(0, 0, 500, 700);
 
-    Dimension size = new Dimension(500, 705);
+    Dimension size = new Dimension(500, 750);
     panel.setMinimumSize(size);
     panel.setPreferredSize(size);
     panel.setMaximumSize(size);
@@ -104,21 +113,24 @@ public class CodeMetropolisGUI extends JFrame {
   /**
    * Adds the cover image and the logo to the top of the {@code panel}.
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addHeaderImages(JPanel panel) {
     JPanel headerPanel = new JPanel();
     headerPanel.setLayout(null);
 
     Image coverImage = new ImageIcon(ClassLoader.getSystemResource("images/cm-background-1.png")).getImage()
-        .getScaledInstance(500, 200, java.awt.Image.SCALE_SMOOTH);
-    Image logoImage = new ImageIcon(ClassLoader.getSystemResource("images/cm-logo-border.png")).getImage()
-        .getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH);
+        .getScaledInstance(500, 200, Image.SCALE_SMOOTH);
+    ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource("images/cm-logo-border.png"));
+    Image logoImage = logoIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 
     JLabel coverImageContainer = new JLabel(new ImageIcon(coverImage));
     coverImageContainer.setBounds(0, 0, 500, 200);
     JLabel logoImageContainer = new JLabel(new ImageIcon(logoImage));
     logoImageContainer.setBounds(175, 125, 150, 150);
+
+    // Add the icon to the window title bar as well
+    setIconImage(logoIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
     headerPanel.setBackground(Color.WHITE);
     headerPanel.setBounds(0, 0, 500, 275);
@@ -133,26 +145,26 @@ public class CodeMetropolisGUI extends JFrame {
   /**
    * Adds the CodeMetropolis title to the {@code panel}
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addTitle(JPanel panel) {
     JLabel title = new JLabel("CodeMetropolis");
     title.setFont(new Font("Source Sans Pro", Font.BOLD, 26));
     title.setHorizontalAlignment(SwingConstants.CENTER);
     title.setBounds(0, 280, 500, 30);
+
     panel.add(title);
   }
 
   /**
    * Adds the project name field to the {@code panel}.
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addProjectNameField(JPanel panel) {
-    CMLabel label = new CMLabel("Project name:");
-    label.setBounds(15, 325, 120, 30);
-    projectName = new CMTextField();
-    projectName.setBounds(145, 325, 340, 30);
+    CMLabel label = new CMLabel("Project name:", 15, 325, 120, 30);
+    projectName = new CMTextField(145, 325, 340, 30);
+
     panel.add(label);
     panel.add(projectName);
   }
@@ -160,51 +172,76 @@ public class CodeMetropolisGUI extends JFrame {
   /**
    * Adds the metric generation tabbed pane to the {@code panel}
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addMetricTabs(JPanel panel) {
     metricTabbedPane = new JTabbedPane();
-    List<MetricGenerator> metricList = controller.getGeneratorList();
-    for (int i=0; i<metricList.size(); i++) {
-    	metricTabbedPane.add(metricList.get(i).getName(),metricList.get(i).getGUIpanel(this));
+
+    for (CMMetricPanel metricPanel : controller.getMetricGeneratorPanels()) {
+      metricTabbedPane.add(metricPanel.getTabTitle(), metricPanel);
     }
-    
+
     metricTabbedPane.setBounds(15, 365, 472, 180);
     metricTabbedPane.setFont(new Font("Source Sans Pro", Font.PLAIN, 16));
     panel.add(metricTabbedPane);
-  }  
+  }
 
   /**
-   * Adds the mapping path browser to the {@code panel}.
+   * Adds the options for the mapping tool to the {@code panel}.
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
-  private final void addMappingPathBrowser(JPanel panel) {
-    CMLabel mappingLabel = new CMLabel("Mapping xml:");
-    mappingLabel.setBounds(15, 555, 120, 30);
-    mappingPath = new CMTextField();
-    mappingPath.setBounds(145, 555, 235, 30);
-    CMButton mappingBrowse = new CMButton("Browse");
-    mappingBrowse.addActionListener(new BrowseListener(this, mappingPath, JFileChooser.FILES_ONLY));
-    mappingBrowse.setBounds(385, 555, 100, 30);    
+  private final void addMappingOptions(JPanel panel) {
+    CMLabel mappingLabel = new CMLabel("Mapping xml:", 15, 555, 120, 30);
+    mappingPath = new CMTextField(145, 555, 235, 30);
+    CMButton mappingBrowse = new CMButton("Browse", 385, 555, 100, 30);
+    mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));
+
+    CMLabel scaleLabel = new CMLabel("Scale:", 15, 590, 120, 30);
+    scaleSpinner = new CMSpinner(145, 590, 120, 30);
+
+    validateStructure = new CMCheckBox(275, 590, 20, 30);
+    CMLabel validateStructureLabel = new CMLabel("Validate structure elements", 300, 590, 185, 30);
+
     panel.add(mappingLabel);
     panel.add(mappingPath);
     panel.add(mappingBrowse);
+    panel.add(scaleLabel);
+    panel.add(scaleSpinner);
+    panel.add(validateStructure);
+    panel.add(validateStructureLabel);
+  }
+
+  /**
+   * Adds the options for the placing tool to the {@code panel}.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addPlacingOptions(JPanel panel) {
+    CMLabel layoutLabel = new CMLabel("Layout algorithm:", 15, 625, 120, 30);
+    layoutSelector = new CMComboBox<LayoutAlgorithm>(LayoutAlgorithm.values());
+    layoutSelector.setBounds(145, 625, 120, 30);
+
+    showMap = new CMCheckBox(275, 625, 20, 30);
+    CMLabel showMapLabel = new CMLabel("Show generated map", 300, 625, 185, 30);
+
+    panel.add(layoutLabel);
+    panel.add(layoutSelector);
+    panel.add(showMap);
+    panel.add(showMapLabel);
   }
 
   /**
    * Adds the minecraft root folder browser. This should actually be automatically filled, but in case it is not found
    * or the user wishes to save the results to a different location, it enables them to do so.
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addMinecraftRootBrowser(JPanel panel) {
-    CMLabel mcRootLabel = new CMLabel("Minecraft root:");
-    mcRootLabel.setBounds(15, 590, 120, 30);    
-    mcRootPath = new CMTextField();
-    mcRootPath.setBounds(145, 590, 235, 30);
-    CMButton mcRootBrowse = new CMButton("Browse");
-    mcRootBrowse.setBounds(385, 590, 100, 30);
+    CMLabel mcRootLabel = new CMLabel("Minecraft root:", 15, 660, 120, 30);
+    mcRootPath = new CMTextField(145, 660, 235, 30);
+    CMButton mcRootBrowse = new CMButton("Browse", 385, 660, 100, 30);
+    mcRootBrowse.addActionListener(new BrowseListener(mcRootPath, JFileChooser.DIRECTORIES_ONLY, null));
 
     panel.add(mcRootLabel);
     panel.add(mcRootPath);
@@ -212,69 +249,72 @@ public class CodeMetropolisGUI extends JFrame {
   }
 
   /**
-   * Adds the checkbox for enabling showing the generated map blueprint.
-   *
-   * @param panel The panel to add the components to.
-   */
-  private final void addShowMapCheckbox(JPanel panel) {
-    showMap = new CMCheckBox();
-    showMap.setBounds(12, 625, 20, 30);
-    CMLabel showMapLabel = new CMLabel("Show generated map");
-    showMapLabel.setBounds(40, 625, 445, 30);
-    panel.add(showMap);
-    panel.add(showMapLabel);
-  }
-
-  /**
    * Adds the start button to the bottom of panel.
    *
-   * @param panel The panel to add the components to.
+   * @param panel The {@link JPanel} to add the components to.
    */
   private final void addStartButton(JPanel panel) {
-    CMButton start = new CMButton("Generate");
-    start.addActionListener(new GenerateListener(controller, this));
-    start.setBounds(200, 660, 100, 30);
+    CMButton start = new CMButton("Generate", 190, 705, 120, 30);
+    start.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent event) {
+        ExecutionOptions executionOptions = controller.getExecutionOptions();
+        fillMetricOptions(executionOptions);
+        fillOptions(executionOptions);
+
+        if (GuiUtils.validateOptions(controller.getExecutionOptions())) {
+          start.setEnabled(false);
+          start.setText("Running...");
+
+          new SwingWorker<Void, Integer>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+              controller.execute();
+              return null;
+            }
+
+            @Override
+            protected void done() {
+              start.setText("Generate");
+              start.setEnabled(true);
+              super.done();
+            }
+          }.execute();
+        }
+      }
+    });
+
     panel.add(start);
   }
 
-	public CMTextField getProjectName() {
-		return projectName;
-	}
-	
-	public void setProjectName(CMTextField projectName) {
-		this.projectName = projectName;
-	}
-	
-	public JTabbedPane getMetricTabbedPane() {
-		return metricTabbedPane;
-	}
-	
-	public void setMetricTabbedPane(JTabbedPane metricTabbedPane) {
-		this.metricTabbedPane = metricTabbedPane;
-	}
-	
-	public CMTextField getMappingPath() {
-		return mappingPath;
-	}
-	
-	public void setMappingPath(CMTextField mappingPath) {
-		this.mappingPath = mappingPath;
-	}
-	
-	public CMTextField getMcRootPath() {
-		return mcRootPath;
-	}
-	
-	public void setMcRootPath(CMTextField mcRootPath) {
-		this.mcRootPath = mcRootPath;
-	}
-	
-	public CMCheckBox getShowMap() {
-		return showMap;
-	}
-	
-	public void setShowMap(CMCheckBox showMap) {
-		this.showMap = showMap;
-	}  
+  /**
+   * Fills the data required for the metric generation tools.
+   *
+   * @param executionOptions The target {@link ExecutionOptions} instance.
+   */
+  private final void fillMetricOptions(ExecutionOptions executionOptions) {
+    executionOptions.getMetricGenerationParams().clear();
+
+    CMMetricPanel currentTab = (CMMetricPanel) metricTabbedPane.getSelectedComponent();
+    currentTab.fillFields(executionOptions);
+    currentTab.validateFields(executionOptions);
+  }
+
+  /**
+   * Fills the data from the UI fields to the given {@link ExecutionOptions} instance.
+   *
+   * @param executionOptions The target instance.
+   */
+  private final void fillOptions(ExecutionOptions executionOptions) {
+    Double scale = (Double) scaleSpinner.getValue();
+    executionOptions.setProjectName(projectName.getText());
+    executionOptions.setMappingXml(new File(mappingPath.getText()));
+    executionOptions.setScale(scale.floatValue());
+    executionOptions.setValidate(validateStructure.isSelected());
+    executionOptions.setLayoutAlgorithm((LayoutAlgorithm) layoutSelector.getSelectedItem());
+    executionOptions.setShowMap(showMap.isSelected());
+    executionOptions.setMinecraftRoot(new File(mcRootPath.getText()));
+  }
 
 }

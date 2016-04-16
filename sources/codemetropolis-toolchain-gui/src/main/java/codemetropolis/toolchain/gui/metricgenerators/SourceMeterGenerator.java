@@ -1,132 +1,115 @@
 package codemetropolis.toolchain.gui.metricgenerators;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
-import codemetropolis.toolchain.gui.CodeMetropolisGUI;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.utils.ExeFileFilter;
+import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
- * Class for SourceMeter metric generation. It encapsulates the GUI to set the objects and also the execution.
- * @author szkabel
+ * Metric generation settings panel for the SonarQube settings.
  *
+ * @author Abel Szkalisity {@literal <SZAVAET.SZE>}
  */
-public class SourceMeterGenerator extends MetricGenerator {
-	
-	private CMTextField projectRootPath;	
-	private CMTextField sourceMeterPath;	
-	
-	/**
-	 * Constructor and register the type of the corresponding ConverterType.
-	 */
-	public SourceMeterGenerator() {
-		super(ConverterType.SOURCEMETER,"SourceMeter");
-	}
+public class SourceMeterGenerator extends CMMetricPanel {
 
-	@Override
-	public CMMetricPanel getGUIpanel(CodeMetropolisGUI gui) {
-		CMMetricPanel result = new CMMetricPanel(this, gui);
-		result.setLayout(null);
+  private static final long serialVersionUID = 1L;
 
-		// Label for the root path
-	    CMLabel projectRootLabel = new CMLabel("Project root:");
-	    projectRootLabel.setBounds(5, 5, 120, 30);
-	    result.add(projectRootLabel);
-	    
-	    //text field
-	    projectRootPath = new CMTextField();
-	    projectRootPath.setBounds(130, 5, 225, 30);
-	    result.add(projectRootPath);	    
-	    //Button
-	    CMButton projectRootBrowse = new CMButton("Browse");	    
-	    //projectRootBrowse.addActionListener(new DirBrowseListener(this.getParent(),projectRootPath));
-	    projectRootBrowse.addActionListener(new BrowseListener(gui,projectRootPath,JFileChooser.DIRECTORIES_ONLY));
-	    projectRootBrowse.setBounds(360, 5, 100, 30);
-	    result.add(projectRootBrowse);
-	    
-	    //label for source meter location
-	    CMLabel sourceMeterLabel = new CMLabel("SourceMeter exe:");
-	    sourceMeterLabel.setBounds(5, 40, 120, 30);
-	    result.add(sourceMeterLabel);
-	    
-	    //text field
-	    sourceMeterPath = new CMTextField();
-	    sourceMeterPath.setBounds(130, 40, 225, 30);
-	    result.add(sourceMeterPath);	    	   
-	    //button
-	    CMButton sourceMeterBrowse = new CMButton("Browse");
-	    sourceMeterBrowse.addActionListener(new BrowseListener(gui, sourceMeterPath,JFileChooser.FILES_ONLY));
-	    sourceMeterBrowse.setBounds(360, 40, 100, 30);	    	    	    	    	   
-	    result.add(sourceMeterBrowse);
-	    
-	    return result;
-	}
-	
-	@Override
-	public String execute(String dst, ExecutionOptions execOpt) {
-		System.out.println("Generate");
-		String smPath = sourceMeterPath.getText();
-		String projectPath = projectRootPath.getText();
-		String command = smPath + " -projectName=" + execOpt.getProjectName() + " -projectBaseDir=" + projectPath + " -resultsDir=" + dst;
-		try {
-			ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", command);
-			Process p = pb.start();
-			InputStream inputStream = p.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream), 1);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-            }
-            inputStream.close();
-            bufferedReader.close();
-	        
-            String result = dst + File.separator + execOpt.getProjectName() + File.separator + goIntoFirstDirectoryNTimes(dst + File.separator + execOpt.getProjectName(), 2) + execOpt.getProjectName() +".graph";
-            System.out.println(result);
-            return result;
-                       
-            //System.out.println(command);
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	return "";
-	    }		
-		
-		
-		
-	}
-	
-	/**
-	 * Goes down to the file hierarchy in n deepness always to the first folder
-	 * @param baseFolder
-	 * @param n deepness of the recursion
-	 * @return a String with the relative path
-	 */
-	private String goIntoFirstDirectoryNTimes(String baseFolder, int n) {
-		if (n>0) {
-			File base = new File(baseFolder);
-			File[] filesInFolder = base.listFiles();
-			int j = 0;
-			while (j<filesInFolder.length) {
-				if (filesInFolder[j].isDirectory()) {
-					return filesInFolder[j].getName() + File.separator + goIntoFirstDirectoryNTimes(filesInFolder[j].getAbsolutePath(), n-1);
-				}
-				j++;
-			}	
-			return "";
-		} else {
-			return "";
-		}
-	}
+  private static final FileFilter EXE_FILTER = new ExeFileFilter();
+
+  private CMTextField projectRootPath;
+  private CMTextField sourceMeterPath;
+
+  /**
+   * Instantiates a SourceMeter settings panel.
+   */
+  public SourceMeterGenerator() {
+    setTabTitle("SourceMeter");
+    setConverterType(ConverterType.SOURCEMETER);
+
+    setLayout(null);
+
+    addProjectRootField();
+    addSourceMeterExecutableField();
+  }
+
+  /**
+   * Adds the project root browser to the panel.
+   */
+  public void addProjectRootField() {
+    CMLabel label = new CMLabel("Project root:", 5, 5, 120, 30);
+    projectRootPath = new CMTextField(130, 5, 225, 30);
+    CMButton browseButton = new CMButton("Browse", 360, 5, 100, 30);
+    browseButton.addActionListener(new BrowseListener(projectRootPath, JFileChooser.DIRECTORIES_ONLY, null));
+
+    add(label);
+    add(projectRootPath);
+    add(browseButton);
+  }
+
+  /**
+   * Adds the SourceMeter executable browser to the panel.
+   */
+  public void addSourceMeterExecutableField() {
+    CMLabel label = new CMLabel("SourceMeter exe:", 5, 40, 120, 30);
+    sourceMeterPath = new CMTextField(130, 40, 225, 30);
+    CMButton browseButton = new CMButton("Browse", 360, 40, 100, 30);
+    browseButton.addActionListener(new BrowseListener(sourceMeterPath, JFileChooser.FILES_ONLY, EXE_FILTER));
+
+    add(label);
+    add(sourceMeterPath);
+    add(browseButton);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void fillFields(ExecutionOptions executionOptions) {
+    File sourceMeterExe = new File(sourceMeterPath.getText());
+    File projectRoot = new File(projectRootPath.getText());
+
+    Map<String, Object> params = executionOptions.getMetricGenerationParams();
+    params.put("sourceMeterExe", sourceMeterExe);
+    params.put("projectRoot", projectRoot);
+
+    executionOptions.setConverterType(converterType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean validateFields(ExecutionOptions executionOptions) {
+    Map<String, Object> params = executionOptions.getMetricGenerationParams();
+
+    try {
+      File sourceMeterExe = (File) params.get("sourceMeterExe");
+      File projectRoot = (File) params.get("projectRoot");
+
+      if (sourceMeterExe == null || !sourceMeterExe.exists() || !sourceMeterExe.isFile() || !sourceMeterExe.canRead()
+          || !sourceMeterExe.canExecute() || !sourceMeterExe.getName().endsWith(".exe")) {
+        GuiUtils.showError("Invalid SourceMeter exe file!");
+        return false;
+      } else if (projectRoot == null || !projectRoot.exists() || !projectRoot.isDirectory() || !projectRoot.canRead()) {
+        GuiUtils.showError("Invalid project root!");
+        return false;
+      }
+    } catch (ClassCastException e) {
+      GuiUtils.showError("Unexpected error occured!");
+    }
+
+    return true;
+  }
 
 }

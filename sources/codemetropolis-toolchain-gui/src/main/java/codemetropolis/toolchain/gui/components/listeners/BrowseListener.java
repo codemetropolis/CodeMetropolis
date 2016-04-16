@@ -2,45 +2,45 @@ package codemetropolis.toolchain.gui.components.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JFileChooser;
-import codemetropolis.toolchain.gui.CodeMetropolisGUI;
+import javax.swing.filechooser.FileFilter;
+
 import codemetropolis.toolchain.gui.components.CMTextField;
 
 /**
- * Listener class to handle browse callbacks for directories.
- * 
- * @author szkabel
+ * Listener class to handle file and directory browsing.
  *
+ * @author Abel Szkalisity {@literal <SZAVAET.SZE>}
  */
 public class BrowseListener implements ActionListener {
-			
-	private CodeMetropolisGUI mainWindow;
-	private int fileMode;
-	//A text field to where the path will be saved of the selected directory.
-	private CMTextField textField;
-	
-	public BrowseListener(CodeMetropolisGUI mainWin, CMTextField tf, int fm) {		
-		mainWindow = mainWin;
-		textField = tf;
-		fileMode = fm;
-	}
 
-	/**
-	 * When a user press browse, a popup File chooser appears and the selected directory path or file
-	 * is copied to the appropriate text field. 
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		JFileChooser fc = new JFileChooser();
-		fc.setFileSelectionMode(fileMode);
-		int returnVal = fc.showOpenDialog(mainWindow);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            textField.setText(file.getAbsolutePath());
-        }		
-	}
+  private JFileChooser fileChooser;
+  private CMTextField fileNameTextField;
+
+  /**
+   * Constructs a {@link BrowseListener} instance with the given parameters.
+   *
+   * @param fileNameTextField The {@link CMTextField} instance that will contain the path for the selected file.
+   * @param fileSelectionMode The file selection mode for the {@link JFileChooser}. See
+   *          {@link JFileChooser#setFileSelectionMode(int)} for details.
+   * @param filter Optional. If provided, it will be used for the {@link JFileChooser} to filter the visible entities.
+   */
+  public BrowseListener(CMTextField fileNameTextField, int fileSelectionMode, FileFilter filter) {
+    this.fileNameTextField = fileNameTextField;
+
+    this.fileChooser = new JFileChooser();
+    this.fileChooser.setFileSelectionMode(fileSelectionMode);
+    if (filter != null) {
+      this.fileChooser.setFileFilter(filter);
+    }
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent event) {
+    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+      fileNameTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+    }
+  }
 
 }
