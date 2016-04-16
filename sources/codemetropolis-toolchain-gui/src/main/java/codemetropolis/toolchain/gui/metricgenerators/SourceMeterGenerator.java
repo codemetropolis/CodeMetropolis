@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMMetricPanel;
@@ -14,7 +15,6 @@ import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.ExeFileFilter;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
  * Metric generation settings panel for the SonarQube settings.

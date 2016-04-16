@@ -1,4 +1,4 @@
-package codemetropolis.toolhchain.gui.beans;
+package codemetropolis.toolchain.gui.beans;
 
 import java.io.File;
 import java.util.HashMap;

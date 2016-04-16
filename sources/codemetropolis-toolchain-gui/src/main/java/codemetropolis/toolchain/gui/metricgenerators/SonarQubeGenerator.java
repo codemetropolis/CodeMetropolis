@@ -5,13 +5,13 @@ import java.net.URL;
 import java.util.Map;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMPasswordField;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
  * Metric generation settings panel for the SonarQube settings.

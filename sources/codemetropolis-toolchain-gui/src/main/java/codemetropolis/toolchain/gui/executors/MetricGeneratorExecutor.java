@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import codemetropolis.toolhchain.gui.beans.ExecutionException;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.beans.ExecutionException;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 
 /**
  * {@link ToolchainExecutor} implementation for the metric generation.

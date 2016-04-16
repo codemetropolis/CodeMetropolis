@@ -2,8 +2,8 @@ package codemetropolis.toolchain.gui.executors;
 
 import java.io.File;
 
-import codemetropolis.toolhchain.gui.beans.ExecutionException;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.beans.ExecutionException;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 
 /**
  * Interface class for the specific toolchain executors.

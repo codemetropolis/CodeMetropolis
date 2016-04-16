@@ -1,4 +1,4 @@
-package codemetropolis.toolhchain.gui.beans;
+package codemetropolis.toolchain.gui.beans;
 
 /**
  * Exception class for handling exceptions that occur during an execution.

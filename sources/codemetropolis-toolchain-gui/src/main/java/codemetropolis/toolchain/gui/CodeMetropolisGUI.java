@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMComboBox;
@@ -30,7 +31,6 @@ import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
  * GUI window for the CodeMetropolis toolchain.

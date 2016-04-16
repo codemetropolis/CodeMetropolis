@@ -3,7 +3,7 @@ package codemetropolis.toolchain.gui.components;
 import javax.swing.JPanel;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 
 /**
  * Extension to JPanel, as we need to store to which metric generator (SourceMeter, SonarQube) this panel provides

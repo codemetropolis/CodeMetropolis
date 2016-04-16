@@ -9,8 +9,8 @@ import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.commons.util.Settings;
 import codemetropolis.toolchain.converter.ConverterExecutor;
 import codemetropolis.toolchain.converter.ConverterExecutorArgs;
-import codemetropolis.toolhchain.gui.beans.ExecutionException;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.beans.ExecutionException;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 
 /**
  * {@link ToolchainExecutor} implementation for the converter tool.

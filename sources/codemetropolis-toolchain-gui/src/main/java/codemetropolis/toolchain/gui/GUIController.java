@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import codemetropolis.toolchain.gui.beans.ExecutionException;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.executors.ConverterToolExecutor;
 import codemetropolis.toolchain.gui.executors.MappingToolExecutor;
@@ -14,8 +16,6 @@ import codemetropolis.toolchain.gui.executors.PlacingToolExecutor;
 import codemetropolis.toolchain.gui.executors.RenderingToolExecutor;
 import codemetropolis.toolchain.gui.metricgenerators.SonarQubeGenerator;
 import codemetropolis.toolchain.gui.metricgenerators.SourceMeterGenerator;
-import codemetropolis.toolhchain.gui.beans.ExecutionException;
-import codemetropolis.toolhchain.gui.beans.ExecutionOptions;
 
 /**
  * Controller class for the GUI that handles tasks like managing the toolchain execution.
