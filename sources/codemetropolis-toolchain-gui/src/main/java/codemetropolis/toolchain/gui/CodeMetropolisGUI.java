@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -41,6 +42,8 @@ public class CodeMetropolisGUI extends JFrame {
   private static final long serialVersionUID = 1L;
 
   private static final FileFilter XML_FILTER = new XmlFileFilter();
+  private static final int COVER_IMAGE_COUNT = 4;
+  private static final Random rng = new Random();
 
   private GUIController controller;
 
@@ -119,8 +122,8 @@ public class CodeMetropolisGUI extends JFrame {
     JPanel headerPanel = new JPanel();
     headerPanel.setLayout(null);
 
-    Image coverImage = new ImageIcon(ClassLoader.getSystemResource("images/cm-background-1.png")).getImage()
-        .getScaledInstance(500, 200, Image.SCALE_SMOOTH);
+    Image coverImage = new ImageIcon(ClassLoader.getSystemResource("images/cm-background-"
+        + (rng.nextInt(COVER_IMAGE_COUNT) + 1) + ".png")).getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
     ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource("images/cm-logo-border.png"));
     Image logoImage = logoIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 
