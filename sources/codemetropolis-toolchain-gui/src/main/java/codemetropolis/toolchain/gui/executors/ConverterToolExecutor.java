@@ -44,8 +44,6 @@ public class ConverterToolExecutor implements ToolchainExecutor {
     Map<String, Object> executionParams = executionOptions.getMetricGenerationParams();
 
     switch (executionOptions.getConverterType()) {
-      case SOURCEMETER:
-        break;
       case SONARQUBE:
         boolean splitDirs = (boolean) executionParams.get("splitDirs");
         params.put("username", executionParams.get("username").toString());
@@ -104,7 +102,7 @@ public class ConverterToolExecutor implements ToolchainExecutor {
     File contents = project.listFiles()[0].listFiles()[0];
 
     File graph = new File(contents.getAbsolutePath() + File.separator + project.getName() + ".graph");
-    if (graph != null && graph.exists() && graph.isFile() && graph.canRead()) {
+    if (graph.exists() && graph.isFile() && graph.canRead()) {
       return graph.getAbsolutePath();
     } else {
       throw new ExecutionException("SourceMeter graph file not found at the expected location!");

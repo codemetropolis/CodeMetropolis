@@ -13,7 +13,29 @@ import codemetropolis.toolchain.gui.beans.ExecutionOptions;
  */
 public class GuiUtils {
 
+  /**
+   * Attempts to find the location for the root folder of Minecraft, if it is installed.
+   *
+   * @return The path for the root folder, if found.
+   */
   public static String findMinecraftRoot() {
+    String expectedLocation = getMinecraftExpectedLocation();
+
+    File minecraftRoot = new File(expectedLocation);
+    if (minecraftRoot.exists() && minecraftRoot.isDirectory()) {
+      return minecraftRoot.getAbsolutePath();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Assembles a path based on the host operating system, which is expected to be the root folder for Minecraft if it is
+   * installed.
+   *
+   * @return The path to the expected location.
+   */
+  private static String getMinecraftExpectedLocation() {
     String os = System.getProperty("os.name").toLowerCase();
 
     String location = "";
@@ -24,16 +46,9 @@ public class GuiUtils {
     } else if (os.indexOf("mac") > -1) {
       location = '~' + File.separator + "Library" + File.separator + "Application Support" + File.separator
           + "minecraft";
-    } else {
-      return null;
     }
 
-    File minecraftRoot = new File(location);
-    if (minecraftRoot.exists() && minecraftRoot.isDirectory()) {
-      return minecraftRoot.getAbsolutePath();
-    } else {
-      return null;
-    }
+    return location;
   }
 
   /**
