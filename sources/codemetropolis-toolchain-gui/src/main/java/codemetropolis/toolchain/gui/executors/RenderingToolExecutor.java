@@ -28,7 +28,9 @@ public class RenderingToolExecutor implements ToolchainExecutor {
     RenderingExecutor executor = new RenderingExecutor();
     executor.setPrefix(Resources.get("rendering_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
-    executor.execute(args);
+    if (!executor.execute(args)) {
+      throw new ExecutionException("Failed to complete rendering step!");
+    }
   }
 
   /**

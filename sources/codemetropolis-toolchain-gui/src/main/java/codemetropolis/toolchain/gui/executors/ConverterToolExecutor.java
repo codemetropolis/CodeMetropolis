@@ -30,7 +30,9 @@ public class ConverterToolExecutor implements ToolchainExecutor {
     ConverterExecutor executor = new ConverterExecutor();
     executor.setPrefix(Resources.get("converter_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
-    executor.execute(args);
+    if (!executor.execute(args)) {
+      throw new ExecutionException("Failed to complete convert step!");
+    }
   }
 
   /**

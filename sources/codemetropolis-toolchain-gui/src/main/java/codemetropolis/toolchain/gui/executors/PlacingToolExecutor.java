@@ -28,7 +28,9 @@ public class PlacingToolExecutor implements ToolchainExecutor {
     PlacingExecutor executor = new PlacingExecutor();
     executor.setPrefix(Resources.get("placing_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
-    executor.execute(args);
+    if (!executor.execute(args)) {
+      throw new ExecutionException("Failed to complete placing step!");
+    }
   }
 
   /**

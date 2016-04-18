@@ -28,7 +28,9 @@ public class MappingToolExecutor implements ToolchainExecutor {
     MappingExecutor executor = new MappingExecutor();
     executor.setPrefix(Resources.get("mapping_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
-    executor.execute(args);
+    if (!executor.execute(args)) {
+      throw new ExecutionException("Failed to complete mapping step!");
+    }
   }
 
   /**

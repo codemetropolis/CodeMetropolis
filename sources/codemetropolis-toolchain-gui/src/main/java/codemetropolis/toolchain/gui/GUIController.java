@@ -42,8 +42,10 @@ public class GUIController {
   /**
    * Handles toolchain execution. Creates the folder that stores the intermediate project files, then it runs each part
    * of the toolchain in sequence.
+   *
+   * @throws ExecutionException if any exception occurs during execution.
    */
-  public void execute() {
+  public void execute() throws ExecutionException {
     try {
       File projectRoot = createTargetFolder();
 
@@ -52,8 +54,8 @@ public class GUIController {
       new MappingToolExecutor().execute(projectRoot, executionOptions);
       new PlacingToolExecutor().execute(projectRoot, executionOptions);
       new RenderingToolExecutor().execute(projectRoot, executionOptions);
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ExecutionException("Toolchain execution failed!", e);
     }
   }
 

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
@@ -273,9 +274,12 @@ public class CodeMetropolisGUI extends JFrame {
           start.setText("Running...");
 
           new SwingWorker<Void, Integer>() {
+            private boolean successful = false;
+
             @Override
             protected Void doInBackground() throws Exception {
               controller.execute();
+              successful = true;
               return null;
             }
 
@@ -283,6 +287,13 @@ public class CodeMetropolisGUI extends JFrame {
             protected void done() {
               start.setText("Generate");
               start.setEnabled(true);
+              if (successful) {
+                JOptionPane.showMessageDialog(null, "World generation successfully finished!", "Finished!",
+                    JOptionPane.INFORMATION_MESSAGE);
+              } else {
+                JOptionPane.showMessageDialog(null, "World generation failed! Check logs for details!", "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+              }
               super.done();
             }
           }.execute();
