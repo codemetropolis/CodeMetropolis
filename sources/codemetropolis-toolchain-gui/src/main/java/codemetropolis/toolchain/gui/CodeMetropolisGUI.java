@@ -263,7 +263,9 @@ public class CodeMetropolisGUI extends JFrame {
       @Override
       public void actionPerformed(ActionEvent event) {
         ExecutionOptions executionOptions = controller.getExecutionOptions();
-        fillMetricOptions(executionOptions);
+        if (!fillAndValidateMetricOptions(executionOptions)) {
+          return;
+        }
         fillOptions(executionOptions);
 
         if (GuiUtils.validateOptions(controller.getExecutionOptions())) {
@@ -295,13 +297,14 @@ public class CodeMetropolisGUI extends JFrame {
    * Fills the data required for the metric generation tools.
    *
    * @param executionOptions The target {@link ExecutionOptions} instance.
+   * @return True if the options are valid, false otherwise.
    */
-  private final void fillMetricOptions(ExecutionOptions executionOptions) {
+  private final boolean fillAndValidateMetricOptions(ExecutionOptions executionOptions) {
     executionOptions.getMetricGenerationParams().clear();
 
     CMMetricPanel currentTab = (CMMetricPanel) metricTabbedPane.getSelectedComponent();
     currentTab.fillFields(executionOptions);
-    currentTab.validateFields(executionOptions);
+    return currentTab.validateFields(executionOptions);
   }
 
   /**
