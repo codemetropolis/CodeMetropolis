@@ -63,10 +63,11 @@ The bindings are used to tell the mapping component which properties of the sour
 **\*supported values:** stone, cobblestone, mossy_stone, sandstone, obsidian, wood, dark_wood, birch_wood, planks, dark_planks, metal, dirt, sand, red_sand, brick, stone_brick, dark_brick, glass, gold, diamond
 
 Sometimes a source value doesn't fit the world element we use as target. In this case, we use conversions. At the moment, the following conversions are available:
-  - **to int**
-  - **quantization**
-  - **normalize**
-  - **switch**
+
+  * `to int`
+  * `quantization`
+  * `normalize`
+  * `switch`
 
 The next example show a quantization conversion.
 
