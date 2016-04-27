@@ -16,6 +16,7 @@ import codemetropolis.toolchain.gui.executors.PlacingToolExecutor;
 import codemetropolis.toolchain.gui.executors.RenderingToolExecutor;
 import codemetropolis.toolchain.gui.metricgenerators.SonarQubeGenerator;
 import codemetropolis.toolchain.gui.metricgenerators.SourceMeterGenerator;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * Controller class for the GUI that handles tasks like managing the toolchain execution.
@@ -66,15 +67,14 @@ public class GUIController {
    * @throws ExecutionException if creating the directory failed.
    */
   private File createTargetFolder() throws ExecutionException {
-    File cmRoot = new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator
-        + ".code-metropolis");
+    File cmRoot = new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis");
     if (!cmRoot.exists()) {
       cmRoot.mkdir();
     }
 
     File projectRoot = new File(cmRoot.getAbsolutePath() + File.separator + getCurrentDateString());
     if (!projectRoot.mkdir()) {
-      throw new ExecutionException("Failed to create project folder under minecraft root!");
+      throw new ExecutionException(Translations.t("gui_err_mkdir_project_failed"));
     }
     return projectRoot;
   }

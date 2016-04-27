@@ -15,6 +15,7 @@ import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.ExeFileFilter;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * Metric generation settings panel for the SonarQube settings.
@@ -34,7 +35,7 @@ public class SourceMeterGenerator extends CMMetricPanel {
    * Instantiates a SourceMeter settings panel.
    */
   public SourceMeterGenerator() {
-    setTabTitle("SourceMeter");
+    setTabTitle(Translations.t("gui_tab_sm"));
     setConverterType(ConverterType.SOURCEMETER);
 
     setLayout(null);
@@ -47,9 +48,9 @@ public class SourceMeterGenerator extends CMMetricPanel {
    * Adds the project root browser to the panel.
    */
   public void addProjectRootField() {
-    CMLabel label = new CMLabel("Project root:", 5, 5, 120, 30);
+    CMLabel label = new CMLabel(Translations.t("gui_l_project_root"), 5, 5, 120, 30);
     projectRootPath = new CMTextField(130, 5, 225, 30);
-    CMButton browseButton = new CMButton("Browse", 360, 5, 100, 30);
+    CMButton browseButton = new CMButton(Translations.t("gui_b_browse"), 360, 5, 100, 30);
     browseButton.addActionListener(new BrowseListener(projectRootPath, JFileChooser.DIRECTORIES_ONLY, null));
 
     add(label);
@@ -61,9 +62,9 @@ public class SourceMeterGenerator extends CMMetricPanel {
    * Adds the SourceMeter executable browser to the panel.
    */
   public void addSourceMeterExecutableField() {
-    CMLabel label = new CMLabel("SourceMeter exe:", 5, 40, 120, 30);
+    CMLabel label = new CMLabel(Translations.t("gui_l_sm_exe"), 5, 40, 120, 30);
     sourceMeterPath = new CMTextField(130, 40, 225, 30);
-    CMButton browseButton = new CMButton("Browse", 360, 40, 100, 30);
+    CMButton browseButton = new CMButton(Translations.t("gui_b_browse"), 360, 40, 100, 30);
     browseButton.addActionListener(new BrowseListener(sourceMeterPath, JFileChooser.FILES_ONLY, EXE_FILTER));
 
     add(label);
@@ -99,14 +100,14 @@ public class SourceMeterGenerator extends CMMetricPanel {
 
       if (sourceMeterExe == null || !sourceMeterExe.exists() || !sourceMeterExe.isFile() || !sourceMeterExe.canRead()
           || !sourceMeterExe.canExecute() || !sourceMeterExe.getName().endsWith(".exe")) {
-        GuiUtils.showError("Invalid SourceMeter exe file!");
+        GuiUtils.showError(Translations.t("gui_err_invalid_sm_exe"));
         return false;
       } else if (projectRoot == null || !projectRoot.exists() || !projectRoot.isDirectory() || !projectRoot.canRead()) {
-        GuiUtils.showError("Invalid project root!");
+        GuiUtils.showError(Translations.t("gui_err_invalid_project_root"));
         return false;
       }
     } catch (ClassCastException e) {
-      GuiUtils.showError("Unexpected error occured!");
+      GuiUtils.showError(Translations.t("gui_err_unexpected_err"));
     }
 
     return true;

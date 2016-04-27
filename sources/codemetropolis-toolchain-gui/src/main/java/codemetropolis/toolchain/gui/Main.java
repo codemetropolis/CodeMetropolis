@@ -23,7 +23,7 @@ public class Main {
 
   /**
    * The CodeMetropolis GUI application entry point.
-   * 
+   *
    * @param args The command line arguments. Since this a GUI application, it is currently unused.
    */
   public static void main(String[] args) {

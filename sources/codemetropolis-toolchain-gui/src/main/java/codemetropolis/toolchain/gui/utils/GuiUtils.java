@@ -62,12 +62,12 @@ public class GuiUtils {
     File minecraftRoot = executionOptions.getMinecraftRoot();
 
     if (executionOptions.getProjectName() == null || executionOptions.getProjectName().isEmpty()) {
-      showError("Invalid project name!");
+      showError(Translations.t("gui_err_invalid_project_name"));
     } else if (mappingXml == null || !mappingXml.exists() || !mappingXml.isFile() || !mappingXml.canRead()) {
-      showError("Invalid mapping xml file!");
+      showError(Translations.t("gui_err_invalid_mapping_xml"));
     } else if (minecraftRoot == null || !minecraftRoot.exists() || !minecraftRoot.isDirectory()
         || !minecraftRoot.canRead() || !minecraftRoot.canWrite()) {
-      showError("Invalid minecraft root!");
+      showError(Translations.t("gui_err_invalid_mc_root"));
     } else {
       return true;
     }
@@ -81,7 +81,7 @@ public class GuiUtils {
    * @param message The error message to show.
    */
   public static void showError(String message) {
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, message, Translations.t("gui_err_title"), JOptionPane.ERROR_MESSAGE);
   }
 
 }

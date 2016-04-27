@@ -11,6 +11,7 @@ import codemetropolis.toolchain.converter.ConverterExecutor;
 import codemetropolis.toolchain.converter.ConverterExecutorArgs;
 import codemetropolis.toolchain.gui.beans.ExecutionException;
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * {@link ToolchainExecutor} implementation for the converter tool.
@@ -81,14 +82,14 @@ public class ConverterToolExecutor implements ToolchainExecutor {
         source = executionOptions.getMetricGenerationParams().get("url").toString();
         break;
       default:
-        throw new ExecutionException("Unhandled metric source!");
+        throw new ExecutionException(Translations.t("gui_err_unhandled_metric_source"));
     }
 
     return new ConverterExecutorArgs(
-        executionOptions.getConverterType(),
-        source,
-        cmRoot.getAbsolutePath() + File.separator + "converter-results.xml",
-        convertParams(executionOptions));
+      executionOptions.getConverterType(),
+      source,
+      cmRoot.getAbsolutePath() + File.separator + "converter-results.xml",
+      convertParams(executionOptions));
   }
 
   /**
@@ -107,7 +108,7 @@ public class ConverterToolExecutor implements ToolchainExecutor {
     if (graph.exists() && graph.isFile() && graph.canRead()) {
       return graph.getAbsolutePath();
     } else {
-      throw new ExecutionException("SourceMeter graph file not found at the expected location!");
+      throw new ExecutionException(Translations.t("gui_err_graph_not_found"));
     }
   }
 

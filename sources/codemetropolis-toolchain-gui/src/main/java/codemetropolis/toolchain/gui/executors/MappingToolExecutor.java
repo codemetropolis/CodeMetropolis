@@ -42,11 +42,11 @@ public class MappingToolExecutor implements ToolchainExecutor {
    */
   private MappingExecutorArgs assembleArguments(File cmRoot, ExecutionOptions executionOptions) {
     return new MappingExecutorArgs(
-        cmRoot.getAbsolutePath() + File.separator + "converter-results.xml",
-        cmRoot.getAbsolutePath() + File.separator + "mapping-results.xml",
-        executionOptions.getMappingXml().getAbsolutePath(),
-        executionOptions.getScale(),
-        executionOptions.isValidate());
+      cmRoot.getAbsolutePath() + File.separator + "converter-results.xml",
+      cmRoot.getAbsolutePath() + File.separator + "mapping-results.xml",
+      executionOptions.getMappingXml().getAbsolutePath(),
+      executionOptions.getScale(),
+      executionOptions.isValidate());
   }
 
 }

@@ -12,6 +12,7 @@ import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMPasswordField;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * Metric generation settings panel for the SonarQube settings.
@@ -32,7 +33,7 @@ public class SonarQubeGenerator extends CMMetricPanel {
    * Instantiates a SonarQube metric panel.
    */
   public SonarQubeGenerator() {
-    setTabTitle("SonarQube");
+    setTabTitle(Translations.t("gui_tab_sq"));
     setConverterType(ConverterType.SONARQUBE);
 
     setLayout(null);
@@ -47,7 +48,7 @@ public class SonarQubeGenerator extends CMMetricPanel {
    * Adds the SonarQube url field to the panel.
    */
   public void addUrlField() {
-    CMLabel label = new CMLabel("URL:", 5, 5, 80, 30);
+    CMLabel label = new CMLabel(Translations.t("gui_l_url"), 5, 5, 80, 30);
     url = new CMTextField(90, 5, 370, 30);
 
     add(label);
@@ -58,9 +59,9 @@ public class SonarQubeGenerator extends CMMetricPanel {
    * Adds the username and password fields to the panel.
    */
   public void addAuthenticationFields() {
-    CMLabel usernameLabel = new CMLabel("Username:", 5, 40, 80, 30);
+    CMLabel usernameLabel = new CMLabel(Translations.t("gui_l_username"), 5, 40, 80, 30);
     username = new CMTextField(90, 40, 145, 30);
-    CMLabel passwordLabel = new CMLabel("Password:", 240, 40, 80, 30);
+    CMLabel passwordLabel = new CMLabel(Translations.t("gui_l_password"), 240, 40, 80, 30);
     password = new CMPasswordField(315, 40, 145, 30);
 
     add(usernameLabel);
@@ -73,7 +74,7 @@ public class SonarQubeGenerator extends CMMetricPanel {
    * Adds the projects field to the panel.
    */
   public void addProjectsField() {
-    CMLabel label = new CMLabel("Projects:", 5, 75, 80, 30);
+    CMLabel label = new CMLabel(Translations.t("gui_l_projects"), 5, 75, 80, 30);
     projects = new CMTextField(90, 75, 370, 30);
 
     add(label);
@@ -85,7 +86,7 @@ public class SonarQubeGenerator extends CMMetricPanel {
    */
   public void addSplitDirsCheckbox() {
     splitDirs = new CMCheckBox(5, 110, 20, 30);
-    CMLabel label = new CMLabel("Split dirs", 30, 110, 370, 30);
+    CMLabel label = new CMLabel(Translations.t("gui_l_split_dirs"), 30, 110, 370, 30);
 
     add(splitDirs);
     add(label);
@@ -116,7 +117,7 @@ public class SonarQubeGenerator extends CMMetricPanel {
     try {
       new URL(params.get("url").toString());
     } catch (MalformedURLException e) {
-      GuiUtils.showError("Invalid Sonar URL!");
+      GuiUtils.showError(Translations.t("gui_err_invalid_sonar_url"));
       return false;
     }
 

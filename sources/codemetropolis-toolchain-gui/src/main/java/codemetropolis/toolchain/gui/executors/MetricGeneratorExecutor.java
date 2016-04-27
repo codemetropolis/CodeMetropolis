@@ -6,6 +6,7 @@ import java.util.Map;
 
 import codemetropolis.toolchain.gui.beans.ExecutionException;
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * {@link ToolchainExecutor} implementation for the metric generation.
@@ -27,8 +28,7 @@ public class MetricGeneratorExecutor implements ToolchainExecutor {
         // Will be executed by the converter tool
         break;
       default:
-        // Should never happen, as the options are already validated
-        throw new ExecutionException("Invalid converter type!");
+        throw new ExecutionException(Translations.t("gui_err_invalid_converter"));
     }
   }
 
@@ -47,15 +47,15 @@ public class MetricGeneratorExecutor implements ToolchainExecutor {
     try {
       File resultsDir = createResultsDir(cmRoot);
       ProcessBuilder processBuilder = new ProcessBuilder(sourceMeterExe.getAbsolutePath(),
-          "-projectName=\"" + executionOptions.getProjectName() + "\"",
-          "-projectBaseDir=\"" + projectRoot.getAbsolutePath() + "\"",
-          "-resultsDir=\"" + resultsDir.getAbsolutePath() + "\"");
+        "-projectName=\"" + executionOptions.getProjectName() + "\"",
+        "-projectBaseDir=\"" + projectRoot.getAbsolutePath() + "\"",
+        "-resultsDir=\"" + resultsDir.getAbsolutePath() + "\"");
 
       if (processBuilder.start().waitFor() != 0) {
-        throw new ExecutionException("Error during SourceMeter execution!");
+        throw new ExecutionException(Translations.t("gui_err_sm_exec_failed"));
       }
     } catch (IOException | InterruptedException e) {
-      throw new ExecutionException("Failed to run SourceMeter!", e);
+      throw new ExecutionException(Translations.t("gui_err_sm_run_failed"), e);
     }
   }
 
@@ -69,7 +69,7 @@ public class MetricGeneratorExecutor implements ToolchainExecutor {
   private File createResultsDir(File cmRoot) throws ExecutionException {
     File resultsDir = new File(cmRoot.getAbsolutePath() + File.separator + "source-meter");
     if (!resultsDir.mkdir()) {
-      throw new ExecutionException("Failed to create SourceMeter results folder!");
+      throw new ExecutionException(Translations.t("gui_err_mkdir_failed"));
     }
 
     return resultsDir;

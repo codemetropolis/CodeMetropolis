@@ -24,7 +24,7 @@ public class XmlFileFilter extends FileFilter {
    */
   @Override
   public String getDescription() {
-    return "XML files (*.xml)";
+    return Translations.t("gui_filter_xml");
   }
 
 }

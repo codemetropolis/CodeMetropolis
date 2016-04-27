@@ -24,7 +24,7 @@ public class ExeFileFilter extends FileFilter {
    */
   @Override
   public String getDescription() {
-    return "Executables (*.exe)";
+    return Translations.t("gui_filter_exe");
   }
 
 }
