@@ -107,8 +107,8 @@ public class ExecutionDialog extends JDialog {
   }
 
   /**
-   * Starts a {@link SwingWorker} that will read from the specified {@link PipedOutputStream} by feeding it into a
-   * {@link PipedInputStream}. It appends the lines it reads to the textArea on the dialog frame.
+   * Starts a {@link javax.swing.SwingWorker} that will read from the specified {@link PipedOutputStream} by feeding it
+   * into a {@link java.io.PipedInputStream}. It appends the lines it reads to the textArea on the dialog frame.
    *
    * @param out The {@link PipedOutputStream} used by the executors.
    */

@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 /**
  * Custom combobox class for setting custom defaults for the JComboBoxes we use.
  *
+ * @param <T> The type parameter for the {@link JComboBox}.
  * @author Adam Bankeszi {@literal <BAAVAGT.SZE>}
  */
 public class CMComboBox<T> extends JComboBox<T> {

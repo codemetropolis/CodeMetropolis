@@ -56,6 +56,7 @@ public class GuiUtils {
    * selected are readable/writable.
    *
    * @param executionOptions The {@link ExecutionOptions} instance to validate.
+   * @return True, if the options are valid, false otherwise.
    */
   public static boolean validateOptions(ExecutionOptions executionOptions) {
     File mappingXml = executionOptions.getMappingXml();
