@@ -23,7 +23,7 @@ public class BrowseListener implements ActionListener {
    *
    * @param fileNameTextField The {@link CMTextField} instance that will contain the path for the selected file.
    * @param fileSelectionMode The file selection mode for the {@link JFileChooser}. See
-   *          {@link JFileChooser#setFileSelectionMode(int)} for details.
+   *   {@link JFileChooser#setFileSelectionMode(int)} for details.
    * @param filter Optional. If provided, it will be used for the {@link JFileChooser} to filter the visible entities.
    */
   public BrowseListener(CMTextField fileNameTextField, int fileSelectionMode, FileFilter filter) {

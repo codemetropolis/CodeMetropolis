@@ -124,8 +124,9 @@ public class CodeMetropolisGUI extends JFrame {
     JPanel headerPanel = new JPanel();
     headerPanel.setLayout(null);
 
+    // Load the cover and logo images
     Image coverImage = new ImageIcon(ClassLoader.getSystemResource("images/cm-background-"
-        + (rng.nextInt(COVER_IMAGE_COUNT) + 1) + ".png")).getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
+      + (rng.nextInt(COVER_IMAGE_COUNT) + 1) + ".png")).getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
     ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource("images/cm-logo-border.png"));
     Image logoImage = logoIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 

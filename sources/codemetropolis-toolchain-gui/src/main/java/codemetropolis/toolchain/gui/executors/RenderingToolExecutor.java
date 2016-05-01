@@ -45,10 +45,10 @@ public class RenderingToolExecutor implements ToolchainExecutor {
    */
   private RenderingExecutorArgs assembleArguments(File cmRoot, ExecutionOptions executionOptions) {
     return new RenderingExecutorArgs(
-        cmRoot.getAbsolutePath() + File.separator + "placing-results.xml",
-        executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + "saves" + File.separator
-            + executionOptions.getProjectName().replace(" +;\\/\"?", ""),
-        true);
+      cmRoot.getAbsolutePath() + File.separator + "placing-results.xml",
+      executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + "saves" + File.separator
+        + executionOptions.getProjectName().replace(" +;\\/\"?", ""),
+      true);
   }
   
 }

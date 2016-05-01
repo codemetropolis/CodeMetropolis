@@ -27,7 +27,7 @@ public class ExecutionWorker extends SwingWorker<Void, Integer> {
    * Instantiates the {@link ExecutionWorker}.
    *
    * @param start The button used to start the execution. This reference is required because at the start and at the end
-   *          of the execution it will be disabled and re-enabled, respectively.
+   *   of the execution it will be disabled and re-enabled, respectively.
    * @param controller The controller instance that will do the actual execution.
    * @param out The {@link PipedOutputStream} that will be used by the executors.
    */
@@ -56,10 +56,10 @@ public class ExecutionWorker extends SwingWorker<Void, Integer> {
     start.setEnabled(true);
     if (successful) {
       JOptionPane.showMessageDialog(null, Translations.t("gui_info_world_gen_successful"),
-          Translations.t("gui_info_finished"), JOptionPane.INFORMATION_MESSAGE);
+        Translations.t("gui_info_finished"), JOptionPane.INFORMATION_MESSAGE);
     } else {
       JOptionPane.showMessageDialog(null, Translations.t("gui_err_world_gen_failed"),
-          Translations.t("gui_err_title"), JOptionPane.ERROR_MESSAGE);
+        Translations.t("gui_err_title"), JOptionPane.ERROR_MESSAGE);
     }
     super.done();
   }

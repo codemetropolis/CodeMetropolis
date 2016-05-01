@@ -45,7 +45,7 @@ public class GuiUtils {
       location = '~' + File.separator + ".minecraft";
     } else if (os.indexOf("mac") > -1) {
       location = '~' + File.separator + "Library" + File.separator + "Application Support" + File.separator
-          + "minecraft";
+        + "minecraft";
     }
 
     return location;

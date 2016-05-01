@@ -45,10 +45,10 @@ public class PlacingToolExecutor implements ToolchainExecutor {
    */
   private PlacingExecutorArgs assembleArguments(File cmRoot, ExecutionOptions executionOptions) {
     return new PlacingExecutorArgs(
-        cmRoot.getAbsolutePath() + File.separator + "mapping-results.xml",
-        cmRoot.getAbsolutePath() + File.separator + "placing-results.xml",
-        executionOptions.getLayoutAlgorithm().toString(),
-        executionOptions.isShowMap());
+      cmRoot.getAbsolutePath() + File.separator + "mapping-results.xml",
+      cmRoot.getAbsolutePath() + File.separator + "placing-results.xml",
+      executionOptions.getLayoutAlgorithm().toString(),
+      executionOptions.isShowMap());
   }
 
 }

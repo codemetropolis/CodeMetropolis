@@ -71,7 +71,7 @@ public class ConverterToolExecutor implements ToolchainExecutor {
    * @param executionOptions The {@link ExecutionOptions} instance.
    * @return The assembled {@link ConverterExecutorArgs} object which will be used for execution.
    * @throws ExecutionException if the {@link codemetropolis.toolchain.converter.control.ConverterType} in the
-   *           {@code executionOptions} is unhandled.
+   *   {@code executionOptions} is unhandled.
    */
   private ConverterExecutorArgs assembleArguments(File cmRoot, ExecutionOptions executionOptions)
       throws ExecutionException {
