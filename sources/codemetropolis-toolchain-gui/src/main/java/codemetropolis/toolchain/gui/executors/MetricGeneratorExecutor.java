@@ -2,6 +2,7 @@ package codemetropolis.toolchain.gui.executors;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Map;
 
 import codemetropolis.toolchain.gui.beans.ExecutionException;
@@ -19,9 +20,10 @@ public class MetricGeneratorExecutor implements ToolchainExecutor {
    * {@inheritDoc}
    */
   @Override
-  public void execute(File cmRoot, ExecutionOptions executionOptions) throws ExecutionException {
+  public void execute(File cmRoot, ExecutionOptions executionOptions, PrintStream out) throws ExecutionException {
     switch (executionOptions.getConverterType()) {
       case SOURCEMETER:
+        out.println(Translations.t("gui_info_sm_exec_started"));
         executeSourceMeter(cmRoot, executionOptions);
         break;
       case SONARQUBE:

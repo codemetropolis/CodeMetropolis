@@ -7,6 +7,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -259,6 +262,7 @@ public class CodeMetropolisGUI extends JFrame {
    * @param panel The {@link JPanel} to add the components to.
    */
   private final void addStartButton(JPanel panel) {
+    CodeMetropolisGUI self = this;
     CMButton start = new CMButton(Translations.t("gui_b_generate"), 190, 705, 120, 30);
     start.addActionListener(new ActionListener() {
 
@@ -271,22 +275,29 @@ public class CodeMetropolisGUI extends JFrame {
         }
 
         if (GuiUtils.validateOptions(controller.getExecutionOptions())) {
-          start.setEnabled(false);
-          start.setText(Translations.t("gui_b_running"));
+          PipedOutputStream out = new PipedOutputStream();
+          ExecutionDialog dialog = new ExecutionDialog(self, out);
+          dialog.setVisible(true);
 
           new SwingWorker<Void, Integer>() {
             private boolean successful = false;
 
             @Override
             protected Void doInBackground() throws Exception {
-              controller.execute();
+              start.setEnabled(false);
+              controller.execute(new PrintStream(out));
               successful = true;
               return null;
             }
 
             @Override
             protected void done() {
-              start.setText(Translations.t("gui_b_generate"));
+              try {
+                out.close();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+
               start.setEnabled(true);
               if (successful) {
                 JOptionPane.showMessageDialog(null, Translations.t("gui_info_world_gen_successful"),

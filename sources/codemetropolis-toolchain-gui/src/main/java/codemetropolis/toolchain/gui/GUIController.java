@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.gui;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,17 +45,19 @@ public class GUIController {
    * Handles toolchain execution. Creates the folder that stores the intermediate project files, then it runs each part
    * of the toolchain in sequence.
    *
+   * @param out The {@link PrintStream} instance that will be set for each executor, so we can read their outputs and
+   *          display them for the user.
    * @throws ExecutionException if any exception occurs during execution.
    */
-  public void execute() throws ExecutionException {
+  public void execute(PrintStream out) throws ExecutionException {
     try {
       File projectRoot = createTargetFolder();
 
-      new MetricGeneratorExecutor().execute(projectRoot, executionOptions);
-      new ConverterToolExecutor().execute(projectRoot, executionOptions);
-      new MappingToolExecutor().execute(projectRoot, executionOptions);
-      new PlacingToolExecutor().execute(projectRoot, executionOptions);
-      new RenderingToolExecutor().execute(projectRoot, executionOptions);
+      new MetricGeneratorExecutor().execute(projectRoot, executionOptions, out);
+      new ConverterToolExecutor().execute(projectRoot, executionOptions, out);
+      new MappingToolExecutor().execute(projectRoot, executionOptions, out);
+      new PlacingToolExecutor().execute(projectRoot, executionOptions, out);
+      new RenderingToolExecutor().execute(projectRoot, executionOptions, out);
     } catch (Exception e) {
       throw new ExecutionException("Toolchain execution failed!", e);
     }

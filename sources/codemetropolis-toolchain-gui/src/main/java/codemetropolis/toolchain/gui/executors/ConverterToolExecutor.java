@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.gui.executors;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +25,13 @@ public class ConverterToolExecutor implements ToolchainExecutor {
    * {@inheritDoc}
    */
   @Override
-  public void execute(File cmRoot, ExecutionOptions executionOptions) throws ExecutionException {
+  public void execute(File cmRoot, ExecutionOptions executionOptions, PrintStream out) throws ExecutionException {
     FileLogger.load(Settings.get("converter_log_file"));
 
     ConverterExecutorArgs args = assembleArguments(cmRoot, executionOptions);
     ConverterExecutor executor = new ConverterExecutor();
+    executor.setPrintStream(out);
+    executor.setErrorStream(out);
     executor.setPrefix(Resources.get("converter_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
     if (!executor.execute(args)) {

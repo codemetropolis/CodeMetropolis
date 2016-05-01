@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.gui.executors;
 
 import java.io.File;
+import java.io.PrintStream;
 
 import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
@@ -21,11 +22,13 @@ public class RenderingToolExecutor implements ToolchainExecutor {
    * {@inheritDoc}
    */
   @Override
-  public void execute(File cmRoot, ExecutionOptions executionOptions) throws ExecutionException {
+  public void execute(File cmRoot, ExecutionOptions executionOptions, PrintStream out) throws ExecutionException {
     FileLogger.load(Settings.get("rendering_log_file"));
 
     RenderingExecutorArgs args = assembleArguments(cmRoot, executionOptions);
     RenderingExecutor executor = new RenderingExecutor();
+    executor.setPrintStream(out);
+    executor.setErrorStream(out);
     executor.setPrefix(Resources.get("rendering_prefix"));
     executor.setErrorPrefix(Resources.get("error_prefix"));
     if (!executor.execute(args)) {
