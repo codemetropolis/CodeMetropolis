@@ -7,7 +7,7 @@
   <parent>
     <groupId>codemetropolis.toolchain</groupId>
     <artifactId>codemetropolis-toolchain</artifactId>
-    <version>1.3.2-alpha</version>
+    <version>1.4.0</version>
   </parent>
 
   <artifactId>codemetropolis-toolchain-gui</artifactId>
@@ -59,27 +59,27 @@
     <dependency>
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-commons</artifactId>
-      <version>1.3.2-alpha</version>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-converter</artifactId>
-      <version>1.3.2-alpha</version>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-mapping</artifactId>
-      <version>1.3.2-alpha</version>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-placing</artifactId>
-      <version>1.3.2-alpha</version>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-rendering</artifactId>
-      <version>1.3.2-alpha</version>
+      <version>1.4.0</version>
     </dependency>
 
     <!-- JUnit 4 -->
