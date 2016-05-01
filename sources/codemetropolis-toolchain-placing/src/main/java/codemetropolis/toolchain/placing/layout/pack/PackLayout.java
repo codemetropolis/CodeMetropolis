@@ -83,10 +83,12 @@ public class PackLayout extends Layout {
 			b.setPositionZ(r.y + space);
 		}
 		
-		Point parentSize = calculateParentSize(buildables, space);
-		Buildable parent = buildables.iterator().next().getParent();
-		parent.setSizeX(parentSize.getX());
-		parent.setSizeZ(parentSize.getZ());
+		if(!buildables.isEmpty()) {
+			Point parentSize = calculateParentSize(buildables, space);
+			Buildable parent = buildables.iterator().next().getParent();
+			parent.setSizeX(parentSize.getX());
+			parent.setSizeZ(parentSize.getZ());
+		}
 	}
 	
 	private Point calculateParentSize(Collection<BuildableWrapper> buildables, int space) {

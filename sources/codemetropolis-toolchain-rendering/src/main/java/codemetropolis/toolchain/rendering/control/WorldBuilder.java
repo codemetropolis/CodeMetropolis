@@ -101,6 +101,11 @@ public class WorldBuilder {
 	}
 	
 	public void build(File sourceDirectory) throws RenderingException {
+		
+		if(!sourceDirectory.exists()) {
+			return;
+		}
+		
 		raiseProgressEvent(BuildPhase.PLACING_BLOCKS, 0, total, 0);
         count = 0;
         stopWatch.reset();
