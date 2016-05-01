@@ -3,21 +3,18 @@ package codemetropolis.toolchain.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMTextArea;
+import codemetropolis.toolchain.gui.utils.StreamReaderWorker;
 import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
@@ -117,30 +114,10 @@ public class ExecutionDialog extends JDialog {
    */
   private void startReaderThread(PipedOutputStream out) {
     try {
-      PipedInputStream in = new PipedInputStream(out);
-      new SwingWorker<Void, Integer>() {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-          String line;
-          BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-          while ((line = reader.readLine()) != null) {
-            textArea.append(line);
-            textArea.append("\n");
-          }
-
-          reader.close();
-          in.close();
-          return null;
-        }
-
-        @Override
-        protected void done() {
-          close.setEnabled(true);
-        };
-
-      }.execute();
+      StreamReaderWorker worker = new StreamReaderWorker(close, textArea, out);
+      worker.execute();
     } catch (IOException e) {
+      // Can't really do anything about this
       e.printStackTrace();
     }
   }

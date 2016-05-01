@@ -7,20 +7,16 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.io.PipedOutputStream;
-import java.io.PrintStream;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
@@ -32,6 +28,7 @@ import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMSpinner;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.utils.ExecutionWorker;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
@@ -278,37 +275,8 @@ public class CodeMetropolisGUI extends JFrame {
           PipedOutputStream out = new PipedOutputStream();
           ExecutionDialog dialog = new ExecutionDialog(self, out);
           dialog.setVisible(true);
-
-          new SwingWorker<Void, Integer>() {
-            private boolean successful = false;
-
-            @Override
-            protected Void doInBackground() throws Exception {
-              start.setEnabled(false);
-              controller.execute(new PrintStream(out));
-              successful = true;
-              return null;
-            }
-
-            @Override
-            protected void done() {
-              try {
-                out.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
-
-              start.setEnabled(true);
-              if (successful) {
-                JOptionPane.showMessageDialog(null, Translations.t("gui_info_world_gen_successful"),
-                  Translations.t("gui_info_finished"), JOptionPane.INFORMATION_MESSAGE);
-              } else {
-                JOptionPane.showMessageDialog(null, Translations.t("gui_err_world_gen_failed"),
-                  Translations.t("gui_err_title"), JOptionPane.ERROR_MESSAGE);
-              }
-              super.done();
-            }
-          }.execute();
+          ExecutionWorker worker = new ExecutionWorker(start, controller, out);
+          worker.execute();
         }
       }
     });
