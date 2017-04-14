@@ -25,14 +25,14 @@ public class House {
 	}
 
 	public boolean add(Buildable b) throws LayoutException {
-		if(b.getType() == Buildable.Type.FLOOR)
+		if(b.getType() == Buildable.Type.FLOOR || b.getType() == Buildable.Type.DECORATION_FLOOR)
 			return addFloor(b);
 		else
 			return addCellar(b);
 	}
 	
 	public boolean addFloor(Buildable floor) throws LayoutException {
-		if(floor.getType() != Buildable.Type.FLOOR) {
+		if(floor.getType() != Buildable.Type.FLOOR && floor.getType() != Buildable.Type.DECORATION_FLOOR) {
 			throw new LayoutException(String.format("Cannot add %s %d as a floor. Wrong buildable type.", floor.getType().toString(), floor.getId()));
 		}
 		if(bottomFloor == null) {
@@ -59,6 +59,10 @@ public class House {
 		topFloor = floor;
 		
 		return true;
+	}
+	
+	public Buildable getTopFloor() {
+		return this.topFloor;
 	}
 	
 	public boolean addCellar(Buildable cellar) throws LayoutException {
@@ -150,6 +154,10 @@ public class House {
 
 	public Buildable getParent() {
 		return parent;
+	}
+	
+	public void setParent(Buildable parent) {
+		this.parent = parent;
 	}
 	
 }

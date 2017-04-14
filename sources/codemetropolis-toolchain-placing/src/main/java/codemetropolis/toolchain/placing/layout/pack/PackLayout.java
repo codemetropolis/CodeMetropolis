@@ -1,11 +1,13 @@
 package codemetropolis.toolchain.placing.layout.pack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
@@ -151,6 +153,25 @@ public class PackLayout extends Layout {
 				housesOfParent.add(h);
 			}
 		}
+		
+		Collection<List<House>> collectionOfHouses = houses.values();
+		Buildable oldTopFloor;
+		for(List<House> listOfHouses : collectionOfHouses) {
+			for(House house : listOfHouses) {
+				oldTopFloor = house.getTopFloor();
+				Buildable decorationFloor = new Buildable(UUID.randomUUID().toString(),
+						"decorationFloor", Buildable.Type.DECORATION_FLOOR);
+				decorationFloor.setSizeX(oldTopFloor.getSizeX());
+				decorationFloor.setSizeY(9);
+				decorationFloor.setSizeZ(oldTopFloor.getSizeZ());
+				decorationFloor.setAttributes(Arrays.asList(oldTopFloor.getAttributes()));
+				decorationFloor.setCdfNames(oldTopFloor.getCdfNames());
+				decorationFloor.setParent(oldTopFloor.getParent());
+				oldTopFloor.getParent().addChild(decorationFloor);
+				house.add(decorationFloor);
+			}
+		}
+		
 		return houses;
 	}
 }

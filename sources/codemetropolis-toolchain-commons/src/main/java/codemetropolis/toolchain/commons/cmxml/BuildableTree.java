@@ -128,6 +128,8 @@ public class BuildableTree {
 						break;
 						case "floor": type = Type.FLOOR;
 						break;
+						case "decoration_floor": type = Type.DECORATION_FLOOR;
+						break;
 						case "cellar": type = Type.CELLAR;
 						break;
 						case "container": type = Type.CONTAINER;

@@ -47,6 +47,7 @@ public class WorldBuilder {
 		}
 		
 		List<Floor> floors = new ArrayList<Floor>();
+		List<DecorationFloor> decorationFloors = new ArrayList<DecorationFloor>();
 		List<Cellar> cellars = new ArrayList<Cellar>();
 		List<Garden> gardens = new ArrayList<Garden>();
 		List<Ground> grounds = new ArrayList<Ground>();
@@ -57,6 +58,11 @@ public class WorldBuilder {
 					Floor floor = new Floor(b);
 					floors.add(floor);
 					total += floor.getNumberOfBlocks();
+					break;
+				case DECORATION_FLOOR:
+					DecorationFloor decorationFloor = new DecorationFloor(b);
+					decorationFloors.add(decorationFloor);
+					total += decorationFloor.getNumberOfBlocks();
 					break;
 				case CELLAR: 
 					Cellar cellar = new Cellar(b);
@@ -82,6 +88,7 @@ public class WorldBuilder {
 		buildings.addAll(gardens);
 		buildings.addAll(cellars);
 		buildings.addAll(floors);
+		buildings.addAll(decorationFloors);
 		
 		raiseProgressEvent(BuildPhase.READING_INPUT_FILE, 1, 1, -1);
 	}

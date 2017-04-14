@@ -85,6 +85,7 @@ public class CityMapGUI extends Frame {
 	        			g2d.setColor(new Color(40, 80, 140)); //blue
 	        			break;
 	        		case FLOOR :
+	        		case DECORATION_FLOOR :
 	        			g2d.setColor(new Color(170, 200, 30)); //green
 	        			break;
 	        		case CELLAR :

@@ -15,6 +15,7 @@ public class Buildable implements Comparable<Buildable> {
 		GROUND,
 		GARDEN,
 		FLOOR,
+		DECORATION_FLOOR,
 		CELLAR,
 		CONTAINER;
 	}
@@ -99,6 +100,10 @@ public class Buildable implements Comparable<Buildable> {
 				return a.getValue();
 		}
 		return null;
+	}
+	
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
 	}
 	
 	public Buildable[] getAncestors() {
@@ -320,6 +325,10 @@ public class Buildable implements Comparable<Buildable> {
 
 	public Buildable getParent() {
 		return parent;
+	}
+	
+	public void setParent(Buildable parent) {
+		this.parent = parent;
 	}
 
 	public boolean isRoot() {
