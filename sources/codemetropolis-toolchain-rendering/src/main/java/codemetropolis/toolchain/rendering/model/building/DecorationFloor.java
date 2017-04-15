@@ -15,6 +15,7 @@ public class DecorationFloor extends Building {
 		super(innerBuildable);
 		
 		prepareCeiling();
+		prepareRoof();
 	}
 	
 	protected void prepareCeiling() {
@@ -27,6 +28,37 @@ public class DecorationFloor extends Building {
 				new RepeationPattern( new BasicBlock[][][] { { { _str } } } ),
 				new RepeationPattern( new BasicBlock[][][] { { { _str } } } ),
 				Orientation.NearY ) );
+	}
+	
+	private void prepareRoof() {
+		BasicBlock _fire = new BasicBlock( "minecraft:fire", 51 );
+		BasicBlock _iron = new BasicBlock( "minecraft:iron_bars" );
+		BasicBlock _base = new BasicBlock( "minecraft:netherrack" );
+		BasicBlock _air = new BasicBlock( (short) 0 );
+		primitives.add(
+			new SolidBox(
+				position.translate( new Point( center.getX() - (5/2), 1, center.getZ() - (5/2) ) ),
+				new Point( 5, 2, 5 ),
+				new RepeationPattern(
+					new BasicBlock[][][]
+						{
+							{ 
+								{ _air,  _air,  _air,  _air, _air },
+								{ _air, _iron, _iron, _iron, _air },
+								{ _air, _iron, _fire, _iron, _air },
+								{ _air, _iron, _iron, _iron, _air },
+								{ _air,  _air,  _air,  _air, _air }
+							},
+							{ 
+								{ _air,  _air,  _air,  _air, _air },
+								{ _air, _base, _base, _base, _air },
+								{ _air, _base, _base, _base, _air },
+								{ _air, _base, _base, _base, _air },
+								{ _air,  _air,  _air,  _air, _air },
+						}
+					} ),
+				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( (short) 0 )  } } } ),
+				Orientation.NearY ) );	
 	}
 
 }
