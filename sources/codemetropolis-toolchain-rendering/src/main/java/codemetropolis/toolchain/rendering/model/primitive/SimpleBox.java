@@ -7,6 +7,12 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.Pattern;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
+/**
+ * A simpler version of {@link SolidBox}.
+ * It gets rid of unnecessary stroke.
+ * 
+ * @author Abigel Mester {@literal <MEAWABT.SZE>}
+ */
 public class SimpleBox extends SolidBox {
 
 	public SimpleBox(Point basePoint, Point size, Pattern fill, Orientation orientation) {

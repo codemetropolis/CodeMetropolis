@@ -4,18 +4,28 @@ import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Garden;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.pattern.YSplitPattern;
 import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
+/**
+ * A {@link Garden} subclass for the {@link Themes#MINIMALIST} theme.
+ * A simple garden without flowers, or any kind of obstacles.
+ * 
+ * @author Abigel Mester {@literal <MEAWABT.SZE>}
+ */
 public class MinimalistGarden extends Garden {
 
 	public MinimalistGarden(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
 	
+	/**
+	 * A simple garden without flowers, or any kind of obstacles.
+	 */
 	@Override
 	protected void prepareBase() {		
 		BasicBlock[][][] fence = new BasicBlock[size.getX()][1][size.getZ()];
@@ -43,9 +53,15 @@ public class MinimalistGarden extends Garden {
 						Orientation.NearX ) );
 	}
 	
+	/**
+	 * According to {@link Themes#MINIMALIST} theme there are no doors.
+	 */
 	@Override
 	protected void prepareDoor() {}
 	
+	/**
+	 * According to {@link Themes#MINIMALIST} theme there are no signs.
+	 */
 	@Override
 	protected void prepareSigns() {}
 

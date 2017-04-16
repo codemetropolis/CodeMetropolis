@@ -9,6 +9,12 @@ import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
+/**
+ * A new type of {@link Building}, which is meant to close the top of buildings.
+ * On top of this floor you can add fancy decorations.
+ * 
+ * @author Abigel Mester {@literal <MEAWABT.SZE>}
+ */
 public class DecorationFloor extends Building {
 
 	public DecorationFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -18,6 +24,10 @@ public class DecorationFloor extends Building {
 		prepareRoof();
 	}
 	
+	/**
+	 * This function creates one simple layer.
+	 * It closes the top of the building with the same block, which was used for the {@link Floor}.
+	 */
 	protected void prepareCeiling() {
 		Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
 		BasicBlock _str = externalCharacter.getBlock();
@@ -30,6 +40,10 @@ public class DecorationFloor extends Building {
 				Orientation.NearY ) );
 	}
 	
+	/**
+	 * This function creates some fancy decoration on the top of the building.
+	 * It can even be a creative decoration or a simple roof.
+	 */
 	protected void prepareRoof() {
 		BasicBlock _fire = new BasicBlock( "minecraft:fire", 51 );
 		BasicBlock _iron = new BasicBlock( "minecraft:iron_bars" );

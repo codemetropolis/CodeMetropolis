@@ -1,7 +1,13 @@
 package codemetropolis.toolchain.rendering.model.building.theme.minimalist;
 
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.Themes;
 
+/**
+ * Collection of the used blocks in the {@link Themes#MINIMALIST} theme.
+ * 
+ * @author Abigel Mester {@literal <MEAWABT.SZE>}
+ */
 public class MinimalistBlocks {
 	public final static BasicBlock GARDEN = new BasicBlock( "minecraft:sand", 1 );
 	public final static BasicBlock FENCE = new BasicBlock( (short) 192 );
