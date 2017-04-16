@@ -2,6 +2,8 @@ package codemetropolis.toolchain.rendering;
 
 import org.kohsuke.args4j.Option;
 
+import codemetropolis.toolchain.rendering.model.Themes;
+
 public class CommandLineOptions {
 	
 	@Option(name="-h", aliases = { "--help" })
@@ -16,6 +18,9 @@ public class CommandLineOptions {
 	@Option(name="-s", aliases = { "-ow", "--overwrite", "--silent" })
 	private boolean overwriteSilently = false;
 	
+	@Option(name="-t", aliases = { "-theme", "--theme" })
+	private String theme = Themes.BASIC; 
+		
 	public boolean showHelp() {
 		return showHelp;
 	}
@@ -26,6 +31,10 @@ public class CommandLineOptions {
 
 	public String getWorld() {
 		return world;
+	}
+	
+	public String getTheme() {
+		return theme;
 	}
 
 	public boolean overwriteSilently() {

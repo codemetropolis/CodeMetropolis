@@ -30,12 +30,13 @@ public class DecorationFloor extends Building {
 				Orientation.NearY ) );
 	}
 	
-	private void prepareRoof() {
+	protected void prepareRoof() {
 		BasicBlock _fire = new BasicBlock( "minecraft:fire", 51 );
 		BasicBlock _iron = new BasicBlock( "minecraft:iron_bars" );
 		BasicBlock _base = new BasicBlock( "minecraft:netherrack" );
 		BasicBlock _air = new BasicBlock( (short) 0 );
 		primitives.add(
+			// TODO change to SimpleBox
 			new SolidBox(
 				position.translate( new Point( center.getX() - (5/2), 1, center.getZ() - (5/2) ) ),
 				new Point( 5, 2, 5 ),

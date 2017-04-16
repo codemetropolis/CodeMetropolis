@@ -25,7 +25,7 @@ public class Garden extends Building {
 		prepareSigns();
 	}
 	
-	private void prepareBase( ) {
+	protected void prepareBase( ) {
 		BasicBlock _fnc = new BasicBlock( "minecraft:fence" );
 		BasicBlock _sns = new BasicBlock( "minecraft:sandstone" );
 		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NonBlock } } } ) );
@@ -138,7 +138,7 @@ public class Garden extends Building {
 			);
 	}
 	
-	private void prepareSigns( ) {
+	protected void prepareSigns( ) {
 		primitives.add(new SignPost(position.getX(), position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHWEST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHEAST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX(), position.getY() + 2, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHWEST, innerBuildable.getName()));

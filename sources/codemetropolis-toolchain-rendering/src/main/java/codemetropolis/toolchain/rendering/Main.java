@@ -74,7 +74,8 @@ public class Main {
 	    		new RenderingExecutorArgs(
 	    				options.getInputFile(),
 	    				options.getWorld(),
-	    				options.overwriteSilently())
+	    				options.overwriteSilently(),
+	    				options.getTheme())
 	    		);
 	    
 	}

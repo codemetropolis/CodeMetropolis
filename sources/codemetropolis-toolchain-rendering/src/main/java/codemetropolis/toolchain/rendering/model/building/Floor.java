@@ -241,7 +241,7 @@ public class Floor extends Building {
 			);
 	}
 	
-	private void prepareSigns( ) {
+	protected void prepareSigns( ) {
 		//Wall signs outside
 		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() - 1, WallSign.Orientation.NORTH, innerBuildable.getName()));
 		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ()  + size.getZ(), WallSign.Orientation.SOUTH, innerBuildable.getName()));
@@ -254,7 +254,7 @@ public class Floor extends Building {
 		primitives.add(new WallSign(position.getX() + size.getX() - 2, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.WEST, innerBuildable.getName()));	
 	}
 	
-	private void prepareTorches( ) {
+	protected void prepareTorches( ) {
 		
 		if(!innerBuildable.hasAttribute( "torches" )) return;
 		

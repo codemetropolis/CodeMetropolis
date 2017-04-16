@@ -81,4 +81,8 @@ public class Building {
 		return result;
 	}
 	
+	public LinkedList<Primitive> getPrimitives() {
+		return this.primitives;
+	}
+	
 }

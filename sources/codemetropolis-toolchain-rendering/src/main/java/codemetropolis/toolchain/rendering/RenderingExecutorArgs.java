@@ -1,6 +1,7 @@
 package codemetropolis.toolchain.rendering;
 
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+import codemetropolis.toolchain.rendering.model.Themes;
 
 public class RenderingExecutorArgs extends ExecutorArgs {
 	
@@ -8,21 +9,27 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 	private String worldPath;
 	private boolean overwriteSilently;
 	private int maxTime;
+	private String theme;
 	
 	public RenderingExecutorArgs(String inputFile, String worldPath) {
 		this(inputFile, worldPath, false);
 	}
 	
 	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently) {
-		this(inputFile, worldPath, overwriteSilently, Integer.MAX_VALUE);
+		this(inputFile, worldPath, overwriteSilently, Themes.BASIC, Integer.MAX_VALUE);
 	}
 	
-	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, int maxTime) {
+	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, String theme) {
+		this(inputFile, worldPath, overwriteSilently, theme, Integer.MAX_VALUE);
+	}
+	
+	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, String theme, int maxTime) {
 		super();
 		this.inputFile = inputFile;
 		this.worldPath = worldPath;
 		this.overwriteSilently = overwriteSilently;
-		this.maxTime = maxTime;
+		this.theme = theme;
+		this.maxTime = maxTime;		
 	}
 
 	public String getInputFile() {
@@ -39,6 +46,10 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 
 	public int getMaxTime() {
 		return maxTime;
+	}
+
+	public String getTheme() {
+		return theme;
 	}
 	
 }

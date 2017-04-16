@@ -22,7 +22,7 @@ public class Ground extends Building {
 		prepareSigns();
 	}
 	
-	private void prepareBase( ) {
+	protected void prepareBase( ) {
 		primitives.add(
 			new SolidBox(
 				position,
@@ -32,7 +32,7 @@ public class Ground extends Building {
 				Orientation.NearX ) );
 	}
 	
-	private void prepareSigns( ) {
+	protected void prepareSigns( ) {
 		primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ(), SignPost.Orientation.NORTHWEST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 1, position.getZ(), SignPost.Orientation.NORTHEAST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHWEST, innerBuildable.getName()));

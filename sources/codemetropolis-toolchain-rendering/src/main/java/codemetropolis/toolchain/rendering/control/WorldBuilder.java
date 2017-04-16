@@ -20,6 +20,11 @@ import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchExcepti
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
 import codemetropolis.toolchain.rendering.model.building.*;
+import codemetropolis.toolchain.rendering.model.building.factory.CellarFactory;
+import codemetropolis.toolchain.rendering.model.building.factory.DecorationFloorFactory;
+import codemetropolis.toolchain.rendering.model.building.factory.FloorFactory;
+import codemetropolis.toolchain.rendering.model.building.factory.GardenFactory;
+import codemetropolis.toolchain.rendering.model.building.factory.GroundFactory;
 import codemetropolis.toolchain.rendering.model.primitive.Boxel;
 
 public class WorldBuilder {
@@ -37,7 +42,7 @@ public class WorldBuilder {
 		world = new World(worldPath, GROUND_LEVEL);
 	}
 	
-	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{
+	public void createBuildings(String inputPath, String theme) throws BuildingTypeMismatchException{
 		BuildableTree buildables = new BuildableTree();
 		try {
 			buildables.loadFromFile(inputPath);
@@ -54,28 +59,28 @@ public class WorldBuilder {
 
 		for(Buildable b : buildables.getBuildables()) {
 			switch(b.getType()) {
-				case FLOOR: 
-					Floor floor = new Floor(b);
+				case FLOOR:
+					Floor floor = FloorFactory.createFloor(b, theme);
 					floors.add(floor);
 					total += floor.getNumberOfBlocks();
 					break;
 				case DECORATION_FLOOR:
-					DecorationFloor decorationFloor = new DecorationFloor(b);
+					DecorationFloor decorationFloor = DecorationFloorFactory.createDecorationFloor(b, theme);
 					decorationFloors.add(decorationFloor);
 					total += decorationFloor.getNumberOfBlocks();
 					break;
 				case CELLAR: 
-					Cellar cellar = new Cellar(b);
+					Cellar cellar = CellarFactory.createCellar(b, theme);
 					cellars.add(cellar);
 					total += cellar.getNumberOfBlocks();
 					break;
 				case GARDEN: 
-					Garden garden = new Garden(b);
+					Garden garden = GardenFactory.createGarden(b, theme);
 					gardens.add(garden);
 					total += garden.getNumberOfBlocks();
 					break;
 				case GROUND:
-					Ground ground = new Ground(b);
+					Ground ground = GroundFactory.createGround(b, theme);
 					grounds.add(ground);
 					total += ground.getNumberOfBlocks();
 					break;
