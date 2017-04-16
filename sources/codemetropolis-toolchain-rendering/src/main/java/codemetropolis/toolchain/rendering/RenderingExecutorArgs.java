@@ -9,7 +9,7 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 	private String worldPath;
 	private boolean overwriteSilently;
 	private int maxTime;
-	private String theme;
+	private Themes theme;
 	
 	public RenderingExecutorArgs(String inputFile, String worldPath) {
 		this(inputFile, worldPath, false);
@@ -19,11 +19,11 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 		this(inputFile, worldPath, overwriteSilently, Themes.BASIC, Integer.MAX_VALUE);
 	}
 	
-	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, String theme) {
+	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, Themes theme) {
 		this(inputFile, worldPath, overwriteSilently, theme, Integer.MAX_VALUE);
 	}
 	
-	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, String theme, int maxTime) {
+	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, Themes theme, int maxTime) {
 		super();
 		this.inputFile = inputFile;
 		this.worldPath = worldPath;
@@ -48,7 +48,7 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 		return maxTime;
 	}
 
-	public String getTheme() {
+	public Themes getTheme() {
 		return theme;
 	}
 	

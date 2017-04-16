@@ -19,7 +19,7 @@ public class CommandLineOptions {
 	private boolean overwriteSilently = false;
 	
 	@Option(name="-t", aliases = { "-theme", "--theme" })
-	private String theme = Themes.BASIC; 
+	private Themes theme = Themes.BASIC; 
 		
 	public boolean showHelp() {
 		return showHelp;
@@ -33,7 +33,7 @@ public class CommandLineOptions {
 		return world;
 	}
 	
-	public String getTheme() {
+	public Themes getTheme() {
 		return theme;
 	}
 

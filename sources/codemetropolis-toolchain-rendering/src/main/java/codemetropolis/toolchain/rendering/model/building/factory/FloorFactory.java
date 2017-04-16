@@ -8,11 +8,11 @@ import codemetropolis.toolchain.rendering.model.building.theme.minimalist.Minima
 
 public class FloorFactory {
 	
-	public static Floor createFloor(Buildable buildable, String theme) throws BuildingTypeMismatchException {
+	public static Floor createFloor(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
 		switch(theme) {
-			case Themes.MINIMALIST:
+			case MINIMALIST:
 				return new MinimalistFloor(buildable);
-			case Themes.BASIC:
+			case BASIC:
 			default:
 				return new Floor(buildable);
 		}

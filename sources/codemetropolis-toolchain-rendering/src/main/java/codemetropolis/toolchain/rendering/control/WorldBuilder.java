@@ -19,6 +19,7 @@ import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
+import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.*;
 import codemetropolis.toolchain.rendering.model.building.factory.CellarFactory;
 import codemetropolis.toolchain.rendering.model.building.factory.DecorationFloorFactory;
@@ -42,7 +43,7 @@ public class WorldBuilder {
 		world = new World(worldPath, GROUND_LEVEL);
 	}
 	
-	public void createBuildings(String inputPath, String theme) throws BuildingTypeMismatchException{
+	public void createBuildings(String inputPath, Themes theme) throws BuildingTypeMismatchException{
 		BuildableTree buildables = new BuildableTree();
 		try {
 			buildables.loadFromFile(inputPath);

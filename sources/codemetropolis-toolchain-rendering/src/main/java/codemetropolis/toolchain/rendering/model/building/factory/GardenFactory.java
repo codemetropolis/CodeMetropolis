@@ -8,11 +8,11 @@ import codemetropolis.toolchain.rendering.model.building.theme.minimalist.Minima
 
 public class GardenFactory {
 	
-	public static Garden createGarden(Buildable buildable, String theme) throws BuildingTypeMismatchException {
+	public static Garden createGarden(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
 		switch(theme) {
-			case Themes.MINIMALIST:
+			case MINIMALIST:
 				return new MinimalistGarden(buildable);
-			case Themes.BASIC:
+			case BASIC:
 			default:
 				return new Garden(buildable);
 		}
