@@ -158,20 +158,22 @@ public class PackLayout extends Layout {
 		Buildable oldTopFloor;
 		for(List<House> listOfHouses : collectionOfHouses) {
 			for(House house : listOfHouses) {
-				oldTopFloor = house.getTopFloor();
-				Buildable decorationFloor = new Buildable(UUID.randomUUID().toString(),
-						"decorationFloor", Buildable.Type.DECORATION_FLOOR);
-				decorationFloor.setSizeX(oldTopFloor.getSizeX());
-				decorationFloor.setSizeY(9);
-				decorationFloor.setSizeZ(oldTopFloor.getSizeZ());
-				decorationFloor.setAttributes(Arrays.asList(oldTopFloor.getAttributes()));
-				decorationFloor.setCdfNames(oldTopFloor.getCdfNames());
-				decorationFloor.setParent(oldTopFloor.getParent());
-				oldTopFloor.getParent().addChild(decorationFloor);
-				house.add(decorationFloor);
+				if(house.getTopFloor() != null) {	
+					oldTopFloor = house.getTopFloor();
+					Buildable decorationFloor = new Buildable(UUID.randomUUID().toString(),
+							"decorationFloor", Buildable.Type.DECORATION_FLOOR);
+					decorationFloor.setSizeX(oldTopFloor.getSizeX());
+					decorationFloor.setSizeY(9);
+					decorationFloor.setSizeZ(oldTopFloor.getSizeZ());
+					decorationFloor.setAttributes(Arrays.asList(oldTopFloor.getAttributes()));
+					decorationFloor.setCdfNames(oldTopFloor.getCdfNames());
+					decorationFloor.setParent(oldTopFloor.getParent());
+					oldTopFloor.getParent().addChild(decorationFloor);
+					house.add(decorationFloor);
+				}
 			}
 		}
-		
+	
 		return houses;
 	}
 }

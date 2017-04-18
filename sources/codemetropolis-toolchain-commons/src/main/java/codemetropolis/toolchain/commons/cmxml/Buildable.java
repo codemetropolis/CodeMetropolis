@@ -183,6 +183,12 @@ public class Buildable implements Comparable<Buildable> {
 		attributes.clear();
 	}
 	
+	public void addFirstChild(Buildable b) {
+		if(!b.isRoot()) b.parent.children.remove(b);
+		children.add(0, b);
+		b.parent = this;
+	}
+	
 	public void addChild(Buildable b) {
 		if(!b.isRoot()) b.parent.children.remove(b);
 		children.add(b);
