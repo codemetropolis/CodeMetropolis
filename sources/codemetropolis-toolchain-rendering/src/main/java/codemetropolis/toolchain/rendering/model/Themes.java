@@ -8,7 +8,8 @@ package codemetropolis.toolchain.rendering.model;
 public enum Themes {
 	
 	BASIC ( "basic" ),
-	MINIMALIST ( "minimalist" );
+	MINIMALIST ( "minimalist" ),
+	RAILWAY ( "railway" );
 	
 	private final String theme;
 	

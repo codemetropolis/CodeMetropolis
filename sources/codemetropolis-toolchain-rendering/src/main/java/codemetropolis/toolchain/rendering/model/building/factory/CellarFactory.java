@@ -5,6 +5,7 @@ import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchExcepti
 import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Cellar;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistCellar;
+import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayCellar;
 
 /**
  * Create the proper {@link Cellar} subclass depending on the {@link Themes}.
@@ -25,6 +26,8 @@ public class CellarFactory {
 		switch(theme) {
 			case MINIMALIST:
 				return new MinimalistCellar(buildable);
+			case RAILWAY:
+				return new RailwayCellar(buildable);
 			case BASIC:
 			default:
 				return new Cellar(buildable);

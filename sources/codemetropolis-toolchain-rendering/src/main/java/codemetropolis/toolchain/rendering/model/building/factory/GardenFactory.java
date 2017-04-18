@@ -5,6 +5,7 @@ import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchExcepti
 import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Garden;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistGarden;
+import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayGarden;
 
 /**
  * Create the proper {@link Garden} subclass depending on the {@link Themes}.
@@ -25,6 +26,8 @@ public class GardenFactory {
 		switch(theme) {
 			case MINIMALIST:
 				return new MinimalistGarden(buildable);
+			case RAILWAY:
+				return new RailwayGarden(buildable);
 			case BASIC:
 			default:
 				return new Garden(buildable);
