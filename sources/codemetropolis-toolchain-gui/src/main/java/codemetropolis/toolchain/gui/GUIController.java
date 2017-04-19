@@ -26,7 +26,7 @@ import codemetropolis.toolchain.gui.utils.Translations;
  */
 public class GUIController {
 
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd-hhmmss-SSS");
+  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
 
   private ExecutionOptions executionOptions;
   private List<CMMetricPanel> metricGeneratorPanels = new ArrayList<CMMetricPanel>();
