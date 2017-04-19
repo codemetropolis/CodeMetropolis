@@ -55,7 +55,7 @@ public class RailwayDecorationFloor extends DecorationFloor {
 	}
 	
 	/**
-	 * Create the whole engine.
+	 * Creates the whole engine.
 	 * 
 	 * @return The requested layer.
 	 */

@@ -328,6 +328,10 @@ public class Buildable implements Comparable<Buildable> {
 	public Buildable[] getChildren() {
 		return children.toArray(new Buildable[children.size()]);
 	}
+	
+	public List<Buildable> getChildrenList() {
+		return children;
+	}
 
 	public Buildable getParent() {
 		return parent;

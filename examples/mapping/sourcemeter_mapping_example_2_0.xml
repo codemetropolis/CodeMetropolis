@@ -11,6 +11,13 @@
 			</conversions>
 		</binding>
 	</linking>
+	<linking source="interface" target="garden">
+		<binding from="CBO" to="flower-ratio">
+			<conversions>
+				<conversion type="normalize"/>
+			</conversions>
+		</binding>
+	</linking>
     <linking source="method" target="floor">
 		<binding from="LLOC" to="height"/>
 		<binding from="NII" to="width"/>

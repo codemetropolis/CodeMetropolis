@@ -1,7 +1,13 @@
 package codemetropolis.toolchain.rendering.model.building.theme.railway;
 
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.Themes;
 
+/**
+ * Collection of the used blocks in the {@link Themes#RAILWAY} theme.
+ * 
+ * @author Abigel Mester {@literal <MEAWABT.SZE>}
+ */
 public class RailwayBlocks {
 	public final static BasicBlock EMPTY_BLOCK = new BasicBlock( (short) 0 );
 	public final static BasicBlock RAIL_STONE = new BasicBlock( "minecraft:dirt", 1);

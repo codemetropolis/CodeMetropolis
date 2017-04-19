@@ -9,7 +9,8 @@ public enum Themes {
 	
 	BASIC ( "basic" ),
 	MINIMALIST ( "minimalist" ),
-	RAILWAY ( "railway" );
+	RAILWAY ( "railway" ),
+	TOWN ( "town" );
 	
 	private final String theme;
 	

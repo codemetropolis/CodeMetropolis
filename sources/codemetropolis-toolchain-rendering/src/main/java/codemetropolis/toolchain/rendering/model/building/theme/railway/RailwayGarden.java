@@ -51,18 +51,62 @@ public class RailwayGarden extends Garden {
 	}
 	
 	/**
-	 * According to {@link Themes#RAILWAY} theme there are no doors.
+	 * Representing doors as bumpers.
 	 */
 	@Override
-	protected void prepareDoor() {}
+	protected void prepareDoor() {
+		BasicBlock I = RailwayBlocks.EMPTY_BLOCK;
+		BasicBlock O = RailwayBlocks.RAIL_IRON;
+		BasicBlock S = RailwayBlocks.RAIL_STONE;
+		BasicBlock W = RailwayBlocks.RAIL_WOOD;
+		BasicBlock[][][] bumper = new BasicBlock[][][]
+				{
+					{
+						{ O, I },
+						{ I, I },
+						{ O, I }
+					},
+					{
+						{ O, O },
+						{ I, O },
+						{ O, O }						
+					},
+					{
+						{ I, O },
+						{ I, I },
+						{ I, O }						
+					},
+					{
+						{ W, O },
+						{ W, S },
+						{ W, O }
+					}
+				};
+		
+		
+		BasicBlock[][][] transpose = new BasicBlock[4][2][3];
+		for(int i = 0; i < 2; i++) {
+			for(int j = 0; j < 3; j++) {
+				for(int k = 0; k < 4; k++) {
+					transpose[k][i][j] = bumper[k][j][i];
+				}
+			}
+		}
+		
+		primitives.add(
+		new SimpleBox(
+			position.translate( new Point( 0, 0, (size.getZ() - 3) / 2) ),
+			new Point( 2, 4, 3 ),
+			new RepeationPattern( transpose ),
+			Orientation.NearY ) );
+	}
 	
 	/**
 	 * In {@link Themes#RAILWAY} theme signs are oriented the same way in a default {@link Garden}.
 	 */
 	@Override
 	protected void prepareSigns() {
-		primitives.add(new SignPost(position.getX(), position.getY(), position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
-		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY(), position.getZ() + size.getZ() / 2, SignPost.Orientation.EAST, innerBuildable.getName()));
+		primitives.add(new SignPost(position.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
 		
 	}
 

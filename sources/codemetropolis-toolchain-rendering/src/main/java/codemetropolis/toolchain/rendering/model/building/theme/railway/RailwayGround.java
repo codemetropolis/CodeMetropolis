@@ -7,8 +7,8 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Ground;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
+import codemetropolis.toolchain.rendering.model.primitive.SignPost;
 import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
-import codemetropolis.toolchain.rendering.model.primitive.WallSign;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
@@ -28,12 +28,12 @@ public class RailwayGround extends Ground {
 	 */
 	@Override
 	protected void prepareBase( ) {
-		BasicBlock[][][] section = new BasicBlock[1][1][size.getY()];
+		BasicBlock[][][] section = new BasicBlock[1][1][size.getZ()];
 		for(int i = 0; i < section[0][0].length; i++) {
 			section[0][0][i] = RailwayBlocks.EMPTY_BLOCK;
 		}
-		section[0][0][0] = RailwayBlocks.EMPTY_BLOCK;
-		section[0][0][size.getY() - 1] = RailwayBlocks.GATE;
+		section[0][0][0] = RailwayBlocks.GATE;
+		section[0][0][size.getZ() - 1] = RailwayBlocks.GATE;
 		
 		primitives.add(
 				new SimpleBox(
@@ -55,7 +55,7 @@ public class RailwayGround extends Ground {
 	 */
 	@Override
 	protected void prepareSigns( ) {
-		primitives.add(new WallSign(position.getX(), position.getY() + size.getY(), position.getZ() + size.getZ() / 2, WallSign.Orientation.EAST, innerBuildable.getName()));
+		primitives.add(new SignPost(position.getX(), position.getY() + size.getY() + 1, position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
 	}
 
 }

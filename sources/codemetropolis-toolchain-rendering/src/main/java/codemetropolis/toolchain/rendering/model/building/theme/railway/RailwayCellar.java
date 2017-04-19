@@ -7,10 +7,8 @@ import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchExcepti
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Cellar;
-import codemetropolis.toolchain.rendering.model.building.Floor;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
-import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.model.primitive.WallSign;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
@@ -76,10 +74,7 @@ public class RailwayCellar extends Cellar {
 	 * 
 	 * @return The requested layer.
 	 */
-	private BasicBlock[][][] createWagonBase() {
-		BasicBlock O = RailwayBlocks.RAIL_IRON;
-		BasicBlock X = RailwayBlocks.EMPTY_BLOCK;
-		
+	private BasicBlock[][][] createWagonBase() {		
 		BasicBlock[][][] base = new BasicBlock[2][size.getZ()][size.getX() + 2];
 		
 		for(int k = 0; k < base.length; k++) {
