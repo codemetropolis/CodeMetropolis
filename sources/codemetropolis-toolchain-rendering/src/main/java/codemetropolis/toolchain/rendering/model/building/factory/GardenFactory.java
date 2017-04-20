@@ -6,6 +6,7 @@ import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Garden;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistGarden;
 import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayGarden;
+import codemetropolis.toolchain.rendering.model.building.theme.town.TownGarden;
 
 /**
  * Create the proper {@link Garden} subclass depending on the {@link Themes}.
@@ -28,6 +29,8 @@ public class GardenFactory {
 				return new MinimalistGarden(buildable);
 			case RAILWAY:
 				return new RailwayGarden(buildable);
+			case TOWN:
+				return new TownGarden(buildable);
 			case BASIC:
 			default:
 				return new Garden(buildable);

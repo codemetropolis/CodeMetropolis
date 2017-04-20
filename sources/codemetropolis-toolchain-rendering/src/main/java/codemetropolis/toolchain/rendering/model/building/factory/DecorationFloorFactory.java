@@ -6,6 +6,7 @@ import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.DecorationFloor;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistDecorationFloor;
 import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayDecorationFloor;
+import codemetropolis.toolchain.rendering.model.building.theme.town.TownDecorationFloor;
 
 /**
  * Create the proper {@link DecorationFloor} subclass depending on the {@link Themes}.
@@ -28,6 +29,8 @@ public class DecorationFloorFactory {
 				return new MinimalistDecorationFloor(buildable);
 			case RAILWAY:
 				return new RailwayDecorationFloor(buildable);
+			case TOWN:
+				return new TownDecorationFloor(buildable);
 			case BASIC:
 			default:
 				return new DecorationFloor(buildable);

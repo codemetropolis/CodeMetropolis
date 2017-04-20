@@ -6,6 +6,7 @@ import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Ground;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistGround;
 import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayGround;
+import codemetropolis.toolchain.rendering.model.building.theme.town.TownGround;
 
 /**
  * Create the proper {@link Ground} subclass depending on the {@link Themes}.
@@ -28,6 +29,8 @@ public class GroundFactory {
 				return new MinimalistGround(buildable);
 			case RAILWAY:
 				return new RailwayGround(buildable);
+			case TOWN:
+				return new TownGround(buildable);
 			case BASIC:
 			default:
 				return new Ground(buildable);

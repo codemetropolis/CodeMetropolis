@@ -6,6 +6,7 @@ import codemetropolis.toolchain.rendering.model.Themes;
 import codemetropolis.toolchain.rendering.model.building.Cellar;
 import codemetropolis.toolchain.rendering.model.building.theme.minimalist.MinimalistCellar;
 import codemetropolis.toolchain.rendering.model.building.theme.railway.RailwayCellar;
+import codemetropolis.toolchain.rendering.model.building.theme.town.TownCellar;
 
 /**
  * Create the proper {@link Cellar} subclass depending on the {@link Themes}.
@@ -28,6 +29,8 @@ public class CellarFactory {
 				return new MinimalistCellar(buildable);
 			case RAILWAY:
 				return new RailwayCellar(buildable);
+			case TOWN:
+				return new TownCellar(buildable);
 			case BASIC:
 			default:
 				return new Cellar(buildable);
