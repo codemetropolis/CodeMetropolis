@@ -6,6 +6,7 @@ import codemetropolis.toolchain.placing.exceptions.NonExistentLayoutException;
 import codemetropolis.toolchain.placing.layout.pack.PackLayout;
 import codemetropolis.toolchain.placing.layout.railway.RailwayLayout;
 //import codemetropolis.toolchain.placing.layout.tetris.TetrisLayout;
+import codemetropolis.toolchain.placing.layout.town.TownLayout;
 
 public abstract class Layout {
 
@@ -20,6 +21,8 @@ public abstract class Layout {
 					return new PackLayout();
 				case RAILWAY:
 					return new RailwayLayout();
+				case TOWN:
+					return new TownLayout();
 				//TODO tetris layout is out of date and needs to be updated
 				//case TETRIS:
 				//	return new TetrisLayout();

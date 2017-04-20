@@ -8,16 +8,16 @@ import codemetropolis.toolchain.placing.exceptions.LayoutException;
 
 public class House {
 	
-	private final int minHeight;
-	private final int maxHeight;
+	protected final int minHeight;
+	protected final int maxHeight;
 
-	private Buildable parent;
-	private List<Buildable> floors = new ArrayList<Buildable>();
-	private List<Buildable> cellars = new ArrayList<Buildable>();
-	private Buildable topFloor;
-	private Buildable bottomFloor;
-	private Buildable topCellar;
-	private Buildable bottomCellar;
+	protected Buildable parent;
+	protected List<Buildable> floors = new ArrayList<Buildable>();
+	protected List<Buildable> cellars = new ArrayList<Buildable>();
+	protected Buildable topFloor;
+	protected Buildable bottomFloor;
+	protected Buildable topCellar;
+	protected Buildable bottomCellar;
 	
 	public House(int minHeight, int maxHeight) {
 		this.minHeight = minHeight;
@@ -59,10 +59,6 @@ public class House {
 		topFloor = floor;
 		
 		return true;
-	}
-	
-	public Buildable getTopFloor() {
-		return this.topFloor;
 	}
 	
 	public boolean addCellar(Buildable cellar) throws LayoutException {
@@ -152,6 +148,10 @@ public class House {
 		}
 	}
 
+	public Buildable getTopFloor() {
+		return this.topFloor;
+	}
+
 	public Buildable getParent() {
 		return parent;
 	}
@@ -159,5 +159,5 @@ public class House {
 	public void setParent(Buildable parent) {
 		this.parent = parent;
 	}
-	
+
 }
