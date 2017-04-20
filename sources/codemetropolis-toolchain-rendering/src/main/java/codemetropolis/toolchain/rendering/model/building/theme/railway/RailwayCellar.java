@@ -2,7 +2,6 @@ package codemetropolis.toolchain.rendering.model.building.theme.railway;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.Themes;
@@ -20,11 +19,14 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  */
 public class RailwayCellar extends Cellar {
 
+	/**
+	 * Runs all the parent's functions.
+	 * 
+	 * @param innerBuildable The buildable of which cellar type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public RailwayCellar(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
-		
-		if ( innerBuildable.getType() != Type.CELLAR )
-			throw new BuildingTypeMismatchException(innerBuildable.getType(), getClass());
 	}
 	
 	/**

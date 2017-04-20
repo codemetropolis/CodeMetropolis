@@ -18,6 +18,12 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  */
 public class MinimalistGround extends Ground {
 
+	/**
+	 * Runs all the parent's functions.
+	 * 
+	 * @param innerBuildable The buildable of which ground type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public MinimalistGround(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}

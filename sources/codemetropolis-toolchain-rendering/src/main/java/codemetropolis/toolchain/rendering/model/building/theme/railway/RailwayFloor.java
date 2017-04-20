@@ -20,6 +20,12 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  */
 public class RailwayFloor extends Floor {
 
+	/**
+	 * Runs all the parent's functions.
+	 * 
+	 * @param innerBuildable The buildable of which floor type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public RailwayFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);		
 	}

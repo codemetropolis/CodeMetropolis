@@ -33,6 +33,7 @@ public class RailwayLayout extends Layout {
 		createTrains(buildables);
 		preparePackages(buildables.getRoot(), buildables.getRoot());
 		removeEmptyPackages(buildables.getRoot());
+		prepareGardens(buildables.getRoot());
 		findGardens(buildables.getRoot(), 0);
 	}
 	
@@ -75,21 +76,39 @@ public class RailwayLayout extends Layout {
 	}
 	
 	/**
+	 * Collecting gardens to the same level in {@link BuildableTree} hierarchy.
+	 * 
+	 * @param node The current node.
+	 */
+	private void prepareGardens(Buildable node) {
+		List<Buildable> children = node.getChildrenList();
+		for(int i = 0; i < children.size(); i++) {
+			Buildable c = children.get(i);
+			if(c.getType() == Buildable.Type.GARDEN  && c.getParent().getType() == Buildable.Type.GARDEN) {
+				c.setName(c.getParent().getName() + "#" + c.getName());
+				children.remove(c);
+				c.setParent(c.getParent().getParent());
+				c.getParent().addChild(c);
+				i--;
+			}
+			prepareGardens(c);
+		}
+	}
+	
+	/**
 	 * A recursive function for discovering all of the gardens in {@link BuildableTree}.
 	 * Whenever a garden is found a rail is laid down, and all the houses are laid on them like wagons.
 	 * The next garden is laid next to the previous one.
 	 * 
-	 * @param node The current {@link Buildable}, which can even be a {@link Buildable.Type#CONTAINER},
-	 * 		{@link Buildable.Type#GROUND} or a {@link Buildable.Type#GARDEN}.
+	 * @param node The current {@link Buildable}.
 	 * @param position For setting the position of each rail.
 	 * @return With the {@code position}, so next rail will be next to the previous one.
 	 */
 	private int findGardens(Buildable node, int position) {
 		if(node.getType() == Buildable.Type.CONTAINER || node.getType() == Buildable.Type.GROUND) {
-			int sizeZ = (int)node.getDescendants().stream().filter(groundChildren -> groundChildren.getType() == Buildable.Type.GARDEN).count();
 			node.setSizeX(1);
 			node.setSizeY(11);
-			node.setSizeZ(11 * sizeZ + 5 * (sizeZ - 1));
+			node.setSizeZ(11 * node.getChildrenList().size() + 5 * (node.getChildrenList().size() - 1));
 			node.setPositionX(-1);
 			node.setPositionY(GROUND_LEVEL);
 			node.setPositionZ(position * 16);
@@ -138,7 +157,7 @@ public class RailwayLayout extends Layout {
 	 * a {@link Buildable.Type#CELLAR} or a {@link Buildable.Type#DECORATION_FLOOR}.
 	 * 
 	 * @param buildables All the elements of the city.
-	 * @return A list of of the wagons of one train.
+	 * @return A list of the wagons of one train.
 	 */
 	private List<Buildable> getTrains(BuildableTree buildables) {
 		List<Buildable> result = new ArrayList<Buildable>();

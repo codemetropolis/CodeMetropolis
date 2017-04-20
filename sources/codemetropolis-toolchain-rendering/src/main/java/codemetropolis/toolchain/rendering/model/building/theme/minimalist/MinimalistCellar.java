@@ -19,7 +19,14 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class MinimalistCellar extends Cellar {
-
+	
+	/**
+	 * Creates a simple cellar, without stairs.
+	 * It creates an instance of {@link MinimalistFloor}, then in this one stairs are removed. 
+	 * 
+	 * @param innerBuildable The buildable of which cellar type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public MinimalistCellar(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 		

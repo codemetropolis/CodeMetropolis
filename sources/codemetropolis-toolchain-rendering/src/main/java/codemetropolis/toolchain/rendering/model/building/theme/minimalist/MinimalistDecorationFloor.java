@@ -18,6 +18,12 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  */
 public class MinimalistDecorationFloor extends DecorationFloor {
 
+	/**
+	 * Runs all the parent's functions.
+	 * 
+	 * @param innerBuildable The buildable of which decoration floor type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public MinimalistDecorationFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}

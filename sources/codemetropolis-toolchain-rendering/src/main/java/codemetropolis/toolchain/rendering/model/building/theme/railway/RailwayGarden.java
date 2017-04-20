@@ -20,6 +20,12 @@ import codemetropolis.toolchain.rendering.util.Orientation;
  */
 public class RailwayGarden extends Garden {
 
+	/**
+	 * Runs all the parent's functions.
+	 * 
+	 * @param innerBuildable The buildable of which garden type is created.
+	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
+	 */
 	public RailwayGarden(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
