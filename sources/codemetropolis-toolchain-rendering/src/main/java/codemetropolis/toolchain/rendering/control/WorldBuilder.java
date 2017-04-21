@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.StopWatch;
 
-import codemetropolis.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
@@ -34,7 +33,7 @@ public class WorldBuilder {
 	private int total = 0;
 	
 	public WorldBuilder(String worldPath) {
-		world = new World(worldPath, GROUND_LEVEL);
+		world = new World(worldPath, GROUND_LEVEL, (byte)11);
 	}
 	
 	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{

@@ -63,11 +63,6 @@
       <artifactId>graphlib</artifactId>
       <version>1.0</version>
     </dependency>
-    <dependency>
-      <groupId>codemetropolis</groupId>
-      <artifactId>cmblockmodifier</artifactId>
-      <version>1.0.1</version>
-    </dependency>
 	<dependency>
 	  <groupId>org.apache.commons</groupId>
 	  <artifactId>commons-lang3</artifactId>
