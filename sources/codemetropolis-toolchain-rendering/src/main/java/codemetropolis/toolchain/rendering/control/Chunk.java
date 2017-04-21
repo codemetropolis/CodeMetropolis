@@ -130,6 +130,23 @@ public class Chunk {
 		tileEntities.addTag(tileEntityTag);
 		
 	}
+
+	public void setMob(int x, int y, int z, String name) {
+
+		NBTTag entities = tag.getSubtagByName("Level").getSubtagByName("Entities");
+
+		NBTTag xTag = new NBTTag(NBTTag.Type.TAG_Double, "x", x);
+		NBTTag yTag = new NBTTag(NBTTag.Type.TAG_Double, "y", y);
+		NBTTag zTag = new NBTTag(NBTTag.Type.TAG_Double, "z", z);
+        NBTTag pos = new NBTTag(NBTTag.Type.TAG_List, "Pos", new NBTTag[]{xTag, yTag, zTag});
+		NBTTag idTag = new NBTTag(NBTTag.Type.TAG_String, "id", name);
+		NBTTag noAiTag = new NBTTag(NBTTag.Type.TAG_Byte, "NoAI", 1);
+		NBTTag[] tagList = new NBTTag[] {pos, idTag, noAiTag, new NBTTag(NBTTag.Type.TAG_End, null, null)};
+		NBTTag entityTag = new NBTTag(NBTTag.Type.TAG_Compound, "", tagList);
+
+		entities.addTag(entityTag);
+
+	}
 	
 	public void setBannerColor(int x, int y, int z, int color) {
 		

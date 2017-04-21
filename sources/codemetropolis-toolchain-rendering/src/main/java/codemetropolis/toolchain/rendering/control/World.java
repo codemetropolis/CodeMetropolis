@@ -1,5 +1,7 @@
 package codemetropolis.toolchain.rendering.control;
 
+import codemetropolis.toolchain.rendering.model.primitive.Mob;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -72,7 +74,13 @@ public class World {
 		} else {
 			chunk.clearTileEntitiesAt(x, y, z);
 		}
-		
+
+		for(String s : Mob.SupportedMobs){
+			if(s.equals((String)other)){
+				chunk.setMob(x, y, z, (String) other);
+			}
+		}
+
 	}
 	
 	public void setBlock(int x, int y, int z, int type, int data) {
@@ -110,6 +118,8 @@ public class World {
 	public void setChest(int x, int y, int z, int[] items) {
 		setChest(x, y, z, 0, items);	
 	}
+
+	public void setMob(int x, int y, int z, String name){ setBlock(x, y, z, 0, 0, name); }
 	
 	public void setBanner(int x, int y, int z, int data, BannerColor color) {
 		setBlock(x, y, z, 176, data, color.ordinal());	

@@ -8,6 +8,7 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.pattern.YSplitPattern;
+import codemetropolis.toolchain.rendering.model.primitive.Mob;
 import codemetropolis.toolchain.rendering.model.primitive.SignPost;
 import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
@@ -23,6 +24,7 @@ public class Garden extends Building {
 		prepareBase();
 		prepareDoor();
 		prepareSigns();
+		prepareMobs();
 	}
 	
 	private void prepareBase( ) {
@@ -143,6 +145,9 @@ public class Garden extends Building {
 		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHEAST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX(), position.getY() + 2, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHWEST, innerBuildable.getName()));
 		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 2, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHEAST, innerBuildable.getName()));
+	}
+	private void prepareMobs(){
+		primitives.add(new Mob(position.getX() + size.getX()/2, position.getY() + 2, position.getZ() + size.getZ()/2, innerBuildable.getName()));
 	}
 
 }
