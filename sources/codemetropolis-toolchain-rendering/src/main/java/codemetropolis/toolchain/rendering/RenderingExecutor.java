@@ -64,7 +64,7 @@ public class RenderingExecutor extends AbstractExecutor {
 			return false;
 		}
 		
-		WorldBuilder worldBuilder = new WorldBuilder(renderingArgs.getWorldPath());
+		WorldBuilder worldBuilder = new WorldBuilder(renderingArgs.getWorldPath(), renderingArgs.getInputFile());
 		for(EventListener listener : listeners) {
 			worldBuilder.addEventListener((ProgressEventListener) listener);
 		}

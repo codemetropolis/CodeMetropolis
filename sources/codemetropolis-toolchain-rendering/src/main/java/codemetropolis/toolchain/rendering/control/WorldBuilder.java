@@ -31,9 +31,37 @@ public class WorldBuilder {
 
 	private int count = 0;
 	private int total = 0;
+	private int biomeID;
 	
-	public WorldBuilder(String worldPath) {
-		world = new World(worldPath, GROUND_LEVEL, (byte)11);
+	public WorldBuilder(String worldPath, String inputPath) {
+		BuildableTree buildables = new BuildableTree();
+		try {
+			buildables.loadFromFile(inputPath);
+		} catch (CmxmlReaderException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		List<Ground> grounds = new ArrayList<Ground>();
+		for(Buildable b : buildables.getBuildables()) {
+			switch(b.getType()) {
+			case FLOOR: 
+				break;
+			case CELLAR: 
+				break;
+			case GARDEN: 
+				break;
+			case GROUND:
+				if (b.hasAttribute("biome-id")) {
+					biomeID = Integer.parseInt(b.getAttributeValue("biome-id"));
+				}
+				break;
+			case CONTAINER:
+				break;
+			}
+		
+		}
+		world = new World(worldPath, GROUND_LEVEL, (byte)biomeID);
 	}
 	
 	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{
