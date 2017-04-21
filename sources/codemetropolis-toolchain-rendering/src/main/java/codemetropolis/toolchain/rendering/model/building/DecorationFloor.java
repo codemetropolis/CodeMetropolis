@@ -2,6 +2,7 @@ package codemetropolis.toolchain.rendering.model.building;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
@@ -19,6 +20,9 @@ public class DecorationFloor extends Building {
 
 	public DecorationFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
+		
+		if ( innerBuildable.getType()!= Type.DECORATION_FLOOR )
+			throw new BuildingTypeMismatchException(innerBuildable.getType(), getClass());
 		
 		prepareCeiling();
 		prepareRoof();

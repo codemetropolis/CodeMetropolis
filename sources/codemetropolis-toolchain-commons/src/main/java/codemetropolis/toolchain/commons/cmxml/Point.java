@@ -49,4 +49,16 @@ public class Point {
 		this.z = z;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Point) {
+			Point point = (Point) obj;
+			return (this.x == point.getX() &&
+					this.y == point.getY() &&
+					this.z == point.getZ());
+		} else {
+			return false;
+		}		
+	}
+	
 }
