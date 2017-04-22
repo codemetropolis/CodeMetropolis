@@ -15,3 +15,4 @@
 *.bak
 *.swp
 *~.nib
+/bin/

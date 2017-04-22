@@ -188,22 +188,22 @@ public class Floor extends Building {
 		BasicBlock _sideBlock;
 		BasicBlock _strcBlock;
 		
-		if(innerBuildable.hasAttribute( "character" ))
+		if(innerBuildable.hasAttribute( "character" ) && BasicBlock.humanReadableNameToId.containsKey(innerBuildable.getAttributeValue("character").toLowerCase()))
 		{
-			Character character = Character.parse(innerBuildable.getAttributeValue("character"));
-			_sideBlock = character.getBlock();
-			_topFill = new RepeationPattern( new BasicBlock[][][] { { { character.getTopBlock() } } } );
+			String str = innerBuildable.getAttributeValue("character").toLowerCase();
+			_sideBlock = Character.getBlock(str);
+			_topFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getTopBlock(str) } } } );
 		} else {
 			_sideBlock = new BasicBlock( "minecraft:wool", 2 );
 			_topFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
 		}
 		
-		if(innerBuildable.hasAttribute( "external_character" ))
+		if(innerBuildable.hasAttribute( "external_character" ) && BasicBlock.humanReadableNameToId.containsKey(innerBuildable.getAttributeValue("external_character").toLowerCase()))
 		{
-			Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
-			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );
-			_strcBlock = externalCharacter.getBlock();
-			_stroke = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );
+			String str = innerBuildable.getAttributeValue("external_character").toLowerCase();
+			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
+			_strcBlock = Character.getBlock(str);
+			_stroke = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
 		} else {
 			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
 			_strcBlock = new BasicBlock( "minecraft:wool", 10 );

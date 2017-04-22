@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.RenderingExecutor;
 
 public class BasicBlock {
@@ -32,10 +33,12 @@ public class BasicBlock {
 				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
 				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
 				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));
+				humanReadableNameToId.put(blockInfo[2].toLowerCase(), Short.parseShort(blockInfo[0]));
 			}
+			Character.init(humanReadableNameToId);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 	
 	private short id;
