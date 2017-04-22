@@ -44,13 +44,7 @@ public class WorldBuilder {
 		List<Ground> grounds = new ArrayList<Ground>();
 		int biomeID=1;
 		for(Buildable b : buildables.getBuildables()) {
-			switch(b.getType()) {
-			case FLOOR: 
-				break;
-			case CELLAR: 
-				break;
-			case GARDEN: 
-				break;
+			switch (b.getType()) {
 			case GROUND:
 				if (b.hasAttribute("biome-id")) {
 					if(Integer.parseInt(b.getAttributeValue("biome-id"))>-1 && Integer.parseInt(b.getAttributeValue("biome-id"))<40){
@@ -64,9 +58,8 @@ public class WorldBuilder {
 					}
 				}
 				break;
-			case CONTAINER:
-				break;
 			}
+			
 		
 		}
 		world = new World(worldPath, GROUND_LEVEL, (byte)biomeID);
