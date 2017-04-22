@@ -71,7 +71,7 @@
 	</linking>
     <linking>
 		<source name="Class" from="bugs" />
-		<target name="garden" to="pigs" />
+		<target name="garden" to="pig" />
         <conversions>
             <conversion type="quantization">
                 <parameter name="level0" value="1" />

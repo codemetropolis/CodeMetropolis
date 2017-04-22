@@ -12,7 +12,7 @@
 		</binding>
 	</linking>
 	<linking source="prj" target="garden"/>
-	<binding from="bugs" to="pigs">
+	<binding from="bugs" to="pig">
 			<conversions>
 				<conversion type="quantization">
 					<parameter name="level0" value="1"/>

@@ -21,7 +21,7 @@
 				<conversion type="normalize"/>
 			</conversions>
 		</binding>
-		<binding from="WarningBlocker" to="pigs">
+		<binding from="WarningBlocker" to="pig">
 			<conversions>
 				<conversion type="quantization">
 					<parameter name="level0" value="1"/>
