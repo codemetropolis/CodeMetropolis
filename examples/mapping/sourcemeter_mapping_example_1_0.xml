@@ -10,8 +10,8 @@
 				<conversion type="quantization">
 					<parameter name="level0" value="12"/>
 					<parameter name="level1" value="5"/>
-					<parameter name="level0" value="1"/>
-					<parameter name="level0" value="2"/>
+					<parameter name="level2" value="1"/>
+					<parameter name="level3" value="2"/>
 				</conversion>
 			</conversions>
 	</linking>
