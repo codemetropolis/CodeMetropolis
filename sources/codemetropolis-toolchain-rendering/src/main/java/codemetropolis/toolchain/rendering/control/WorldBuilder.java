@@ -31,7 +31,6 @@ public class WorldBuilder {
 
 	private int count = 0;
 	private int total = 0;
-	private int biomeID;
 	
 	public WorldBuilder(String worldPath, String inputPath) {
 		BuildableTree buildables = new BuildableTree();
@@ -43,6 +42,7 @@ public class WorldBuilder {
 		}
 		
 		List<Ground> grounds = new ArrayList<Ground>();
+		int biomeID=1;
 		for(Buildable b : buildables.getBuildables()) {
 			switch(b.getType()) {
 			case FLOOR: 
@@ -53,7 +53,15 @@ public class WorldBuilder {
 				break;
 			case GROUND:
 				if (b.hasAttribute("biome-id")) {
-					biomeID = Integer.parseInt(b.getAttributeValue("biome-id"));
+					if(Integer.parseInt(b.getAttributeValue("biome-id"))>-1 && Integer.parseInt(b.getAttributeValue("biome-id"))<40){
+						biomeID = Integer.parseInt(b.getAttributeValue("biome-id"));
+					}else{
+						try {
+							throw new NBTException("Biome ID must be between 0 and 39");
+						} catch (NBTException e) {
+								e.printStackTrace();
+						}
+					}
 				}
 				break;
 			case CONTAINER:

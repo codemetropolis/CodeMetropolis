@@ -1,9 +1,31 @@
 <mapping version="2.0">
 	<linking source="prj" target="ground"/>
+		<binding from="directories" to="biome-id">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="12"/>
+					<parameter name="level1" value="5"/>
+					<parameter name="level0" value="1"/>
+					<parameter name="level0" value="2"/>
+				</conversion>
+			</conversions>
+		</binding>
+	</linking>
 	<linking source="dir" target="garden">
 		<binding from="complexity" to="flower-ratio">
 			<conversions>
 				<conversion type="normalize"/>
+			</conversions>
+		</binding>
+		<binding from="bugs" to="pigs" default="1">
+		<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="1"/>
+					<parameter name="level1" value="2"/>
+					<parameter name="level2" value="3"/>
+					<parameter name="level3" value="4"/>
+					<parameter name="level4" value="5"/>
+				</conversion>
 			</conversions>
 		</binding>
 	</linking>
