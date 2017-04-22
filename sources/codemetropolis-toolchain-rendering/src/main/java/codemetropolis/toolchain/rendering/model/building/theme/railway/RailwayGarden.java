@@ -13,8 +13,7 @@ import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link Garden} subclass for the {@link Themes#RAILWAY} theme.
- * Instead of a garden it creates a rail for the trains.
+ * A {@link Garden} subclass for the {@link Themes#RAILWAY} theme. Instead of a garden it creates a rail for the trains.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -29,91 +28,83 @@ public class RailwayGarden extends Garden {
 	public RailwayGarden(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Instead of a garden it creates a rail for the trains.
 	 */
 	@Override
-	protected void prepareBase() {		
-		BasicBlock[][][] iron = new BasicBlock[1][1][size.getZ()];
-		BasicBlock[][][] sand = new BasicBlock[3][1][size.getZ()];
-		for(int i = 0; i < sand[0][0].length; i++) {
-			sand[0][0][i] = RailwayBlocks.RAIL_STONE;
-			sand[1][0][i] = RailwayBlocks.RAIL_WOOD;
-			sand[2][0][i] = RailwayBlocks.RAIL_STONE;
-			iron[0][0][i] = RailwayBlocks.EMPTY_BLOCK;
+	protected void prepareBase() {
+		BasicBlock[][][] rail = new BasicBlock[1][1][size.getZ()];
+		BasicBlock[][][] railBase = new BasicBlock[3][1][size.getZ()];
+
+		for (int i = 0; i < size.getZ(); i++) {
+			railBase[0][0][i] = RailwayBlocks.RAIL_DIRT;
+			railBase[1][0][i] = RailwayBlocks.RAIL_WOOD;
+			railBase[2][0][i] = RailwayBlocks.RAIL_DIRT;
+			rail[0][0][i] = RailwayBlocks.EMPTY_BLOCK;
 		}
-		iron[0][0][1] = RailwayBlocks.RAIL_IRON;
-		iron[0][0][size.getZ() - 2] = RailwayBlocks.RAIL_IRON;
-		
+
+		rail[0][0][1] = RailwayBlocks.RAIL_IRON;
+		rail[0][0][size.getZ() - 2] = RailwayBlocks.RAIL_IRON;
+
 		primitives.add(
-				new SimpleBox(
-						position, new Point( size.getX(), 2, size.getZ() ),
-						new YSplitPattern(
-							0,
-							new RepeationPattern( sand ),
-							new RepeationPattern( iron ) ),
-						Orientation.NearX ) );
+			new SimpleBox(
+				position, new Point(size.getX(), 2, size.getZ()),
+				new YSplitPattern(
+					0,
+					new RepeationPattern(railBase),
+					new RepeationPattern(rail)),
+				Orientation.NearX));
 	}
-	
+
 	/**
 	 * Representing doors as bumpers.
 	 */
 	@Override
 	protected void prepareDoor() {
-		BasicBlock I = RailwayBlocks.EMPTY_BLOCK;
-		BasicBlock O = RailwayBlocks.RAIL_IRON;
-		BasicBlock S = RailwayBlocks.RAIL_STONE;
+		BasicBlock E = RailwayBlocks.EMPTY_BLOCK;
+		BasicBlock I = RailwayBlocks.RAIL_IRON;
+		BasicBlock D = RailwayBlocks.RAIL_DIRT;
 		BasicBlock W = RailwayBlocks.RAIL_WOOD;
-		BasicBlock[][][] bumper = new BasicBlock[][][]
-				{
-					{
-						{ O, I },
-						{ I, I },
-						{ O, I }
-					},
-					{
-						{ O, O },
-						{ I, O },
-						{ O, O }						
-					},
-					{
-						{ I, O },
-						{ I, I },
-						{ I, O }						
-					},
-					{
-						{ W, O },
-						{ W, S },
-						{ W, O }
-					}
-				};
-		
-		
-		BasicBlock[][][] transpose = new BasicBlock[4][2][3];
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 3; j++) {
-				for(int k = 0; k < 4; k++) {
-					transpose[k][i][j] = bumper[k][j][i];
-				}
+
+		BasicBlock[][][] bumper = new BasicBlock[][][] {
+			{
+				{ I, E },
+				{ E, E },
+				{ I, E }
+			},
+			{
+				{ I, I },
+				{ E, I },
+				{ I, I }
+			},
+			{
+				{ E, I },
+				{ E, E },
+				{ E, I }
+			},
+			{
+				{ W, I },
+				{ W, D },
+				{ W, I }
 			}
-		}
-		
+		};
+
 		primitives.add(
-		new SimpleBox(
-			position.translate( new Point( 0, 0, (size.getZ() - 3) / 2) ),
-			new Point( 2, 4, 3 ),
-			new RepeationPattern( transpose ),
-			Orientation.NearY ) );
+			new SimpleBox(
+				position.translate(new Point(0, 0, (size.getZ() - 3) / 2)),
+				new Point(2, 4, 3),
+				new RepeationPattern(RailwayUtils.transpose(bumper)),
+				Orientation.NearY));
 	}
-	
+
 	/**
 	 * In {@link Themes#RAILWAY} theme signs are oriented the same way in a default {@link Garden}.
 	 */
 	@Override
 	protected void prepareSigns() {
-		primitives.add(new SignPost(position.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
-		
+		primitives.add(new SignPost(position.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2,
+			SignPost.Orientation.WEST, innerBuildable.getName()));
 	}
 
 }

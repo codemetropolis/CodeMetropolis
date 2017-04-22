@@ -11,8 +11,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link Ground} subclass for the {@link Themes#MINIMALIST} theme.
- * Creates a simple base for the buildings, using a simple block type.
+ * A {@link Ground} subclass for the {@link Themes#MINIMALIST} theme. Creates a simple base for the buildings, using a
+ * simple block type.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -27,24 +27,26 @@ public class MinimalistGround extends Ground {
 	public MinimalistGround(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Creates a simple base for the buildings, using a simple block type.
 	 */
 	@Override
-	protected void prepareBase( ) {		
+	protected void prepareBase() {
 		primitives.add(
 			new SimpleBox(
 				position,
-				new Point( size.getX(), 1, size.getZ() ),
-				new RepeationPattern( new BasicBlock[][][]{ { { MinimalistBlocks.BASE } } } ),
-				Orientation.NearX ) );
+				new Point(size.getX(), 1, size.getZ()),
+				new RepeationPattern(new BasicBlock[][][] { { { MinimalistBlocks.BASE } } }),
+				Orientation.NearX));
 	}
-	
+
 	/**
 	 * According to {@link Themes#MINIMALIST} theme there are no signs.
 	 */
 	@Override
-	protected void prepareSigns( ) {}
+	protected void prepareSigns() {
+
+	}
 
 }

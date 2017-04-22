@@ -21,11 +21,11 @@ public abstract class Layout {
 					return new PackLayout();
 				case RAILWAY:
 					return new RailwayLayout();
-				case TOWN:
-					return new TownLayout();
 				//TODO tetris layout is out of date and needs to be updated
 				//case TETRIS:
 				//	return new TetrisLayout();
+				case TOWN:
+					return new TownLayout();
 			}	
 		} catch (IllegalArgumentException e) {
 			throw new NonExistentLayoutException(algorithm);

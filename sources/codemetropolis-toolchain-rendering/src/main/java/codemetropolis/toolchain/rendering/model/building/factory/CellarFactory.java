@@ -14,7 +14,7 @@ import codemetropolis.toolchain.rendering.model.building.theme.town.TownCellar;
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class CellarFactory {
-	
+
 	/**
 	 * Depending on the {@link Themes} parameter create a proper {@link Cellar} subclass.
 	 * 
@@ -24,7 +24,7 @@ public class CellarFactory {
 	 * @throws BuildingTypeMismatchException If type of {@code buildable} is incorrect.
 	 */
 	public static Cellar createCellar(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
-		switch(theme) {
+		switch (theme) {
 			case MINIMALIST:
 				return new MinimalistCellar(buildable);
 			case RAILWAY:
@@ -36,5 +36,5 @@ public class CellarFactory {
 				return new Cellar(buildable);
 		}
 	}
-	
+
 }

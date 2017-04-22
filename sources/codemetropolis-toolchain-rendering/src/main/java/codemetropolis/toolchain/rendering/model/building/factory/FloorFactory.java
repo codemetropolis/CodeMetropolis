@@ -14,7 +14,7 @@ import codemetropolis.toolchain.rendering.model.building.theme.town.TownFloor;
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class FloorFactory {
-	
+
 	/**
 	 * Depending on the {@link Themes} parameter create a proper {@link Floor} subclass.
 	 * 
@@ -22,9 +22,9 @@ public class FloorFactory {
 	 * @param theme The requested style, defined as {@link Themes}.
 	 * @return The proper {@link Floor} subclass.
 	 * @throws BuildingTypeMismatchException If type of {@code buildable} is incorrect.
-	 */	
+	 */
 	public static Floor createFloor(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
-		switch(theme) {
+		switch (theme) {
 			case MINIMALIST:
 				return new MinimalistFloor(buildable);
 			case RAILWAY:
@@ -36,5 +36,5 @@ public class FloorFactory {
 				return new Floor(buildable);
 		}
 	}
-	
+
 }

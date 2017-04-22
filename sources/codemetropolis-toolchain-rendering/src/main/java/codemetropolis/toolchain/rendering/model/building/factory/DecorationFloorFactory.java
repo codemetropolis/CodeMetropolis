@@ -14,7 +14,7 @@ import codemetropolis.toolchain.rendering.model.building.theme.town.TownDecorati
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class DecorationFloorFactory {
-	
+
 	/**
 	 * Depending on the {@link Themes} parameter create a proper {@link DecorationFloor} subclass.
 	 * 
@@ -22,9 +22,11 @@ public class DecorationFloorFactory {
 	 * @param theme The requested style, defined as {@link Themes}.
 	 * @return The proper {@link DecorationFloor} subclass.
 	 * @throws BuildingTypeMismatchException If type of {@code buildable} is incorrect.
-	 */	
-	public static DecorationFloor createDecorationFloor(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
-		switch(theme) {
+	 */
+	public static DecorationFloor createDecorationFloor(Buildable buildable, Themes theme)
+		throws BuildingTypeMismatchException {
+
+		switch (theme) {
 			case MINIMALIST:
 				return new MinimalistDecorationFloor(buildable);
 			case RAILWAY:

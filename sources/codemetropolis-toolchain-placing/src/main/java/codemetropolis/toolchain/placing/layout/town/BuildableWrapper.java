@@ -15,7 +15,7 @@ import codemetropolis.toolchain.placing.layout.town.TownHouse;
  */
 public class BuildableWrapper implements Comparable<BuildableWrapper> {
 
-	Object buildable;
+	private Object buildable;
 
 	/**
 	 * Creates a {@link BuildableWrapper} of a {@link Buildable}.
@@ -25,7 +25,7 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	public BuildableWrapper(Buildable buildable) {
 		this.buildable = buildable;
 	}
-	
+
 	/**
 	 * Creates a {@link BuildableWrapper} of a {@link TownHouse}.
 	 * 
@@ -34,7 +34,7 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	public BuildableWrapper(TownHouse buildable) {
 		this.buildable = buildable;
 	}
-	
+
 	/**
 	 * Gets a {@link Buildable} object of a wrapper.
 	 * 
@@ -50,8 +50,8 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 * @return The x dimensional position as an integer.
 	 */
 	public int getPositionX() {
-		if(buildable instanceof Buildable) return ((Buildable)buildable).getPositionX();
-		if(buildable instanceof TownHouse) return ((TownHouse)buildable).getPositionX();
+		if (buildable instanceof Buildable) return ((Buildable) buildable).getPositionX();
+		if (buildable instanceof TownHouse) return ((TownHouse) buildable).getPositionX();
 		return 0;
 	}
 
@@ -61,8 +61,8 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 * @return The z dimensional position as an integer.
 	 */
 	public int getPositionZ() {
-		if(buildable instanceof Buildable) return ((Buildable)buildable).getPositionZ();
-		if(buildable instanceof TownHouse) return ((TownHouse)buildable).getPositionZ();
+		if (buildable instanceof Buildable) return ((Buildable) buildable).getPositionZ();
+		if (buildable instanceof TownHouse) return ((TownHouse) buildable).getPositionZ();
 		return 0;
 	}
 
@@ -72,8 +72,8 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 * @return The x dimensional size as an integer.
 	 */
 	public int getSizeX() {
-		if(buildable instanceof Buildable) return ((Buildable)buildable).getSizeX();
-		if(buildable instanceof TownHouse) return ((TownHouse)buildable).getSizeX();
+		if (buildable instanceof Buildable) return ((Buildable) buildable).getSizeX();
+		if (buildable instanceof TownHouse) return ((TownHouse) buildable).getSizeX();
 		return 0;
 	}
 
@@ -83,19 +83,19 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 * @return The z dimensional size as an integer.
 	 */
 	public int getSizeZ() {
-		if(buildable instanceof Buildable) return ((Buildable)buildable).getSizeZ();
-		if(buildable instanceof TownHouse) return ((TownHouse)buildable).getSizeZ();
+		if (buildable instanceof Buildable) return ((Buildable) buildable).getSizeZ();
+		if (buildable instanceof TownHouse) return ((TownHouse) buildable).getSizeZ();
 		return 0;
 	}
-	
+
 	/**
 	 * Set the x dimensional position depending on the type of the {@link Buildable}.
 	 * 
 	 * @param x The x dimensional position.
 	 */
 	public void setPositionX(int x) {
-		if(buildable instanceof Buildable) ((Buildable)buildable).setPositionXR(x);
-		if(buildable instanceof TownHouse) ((TownHouse)buildable).setPositionXR(x);
+		if (buildable instanceof Buildable) ((Buildable) buildable).setPositionXR(x);
+		if (buildable instanceof TownHouse) ((TownHouse) buildable).setPositionXR(x);
 	}
 
 	/**
@@ -104,21 +104,21 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 * @param z The z dimensional position.
 	 */
 	public void setPositionZ(int z) {
-		if(buildable instanceof Buildable) ((Buildable)buildable).setPositionZR(z);
-		if(buildable instanceof TownHouse) ((TownHouse)buildable).setPositionZR(z);
+		if (buildable instanceof Buildable) ((Buildable) buildable).setPositionZR(z);
+		if (buildable instanceof TownHouse) ((TownHouse) buildable).setPositionZR(z);
 	}
-	
+
 	/**
 	 * Gets the parent of a {@link Buildable} depending on the type of the the {@link Buildable}.
 	 * 
 	 * @return The desired parent.
 	 */
 	public Buildable getParent() {
-		if(buildable instanceof Buildable) return ((Buildable)buildable).getParent();
-		if(buildable instanceof TownHouse) return ((TownHouse)buildable).getParent();
+		if (buildable instanceof Buildable) return ((Buildable) buildable).getParent();
+		if (buildable instanceof TownHouse) return ((TownHouse) buildable).getParent();
 		return null;
 	}
-	
+
 	/**
 	 * Collect all the children of a garden as a list.
 	 * 
@@ -127,16 +127,27 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 	 */
 	public List<BuildableWrapper> getTownChildren(Map<Buildable, List<TownHouse>> houses) {
 		List<BuildableWrapper> result = new ArrayList<BuildableWrapper>();
-		if(buildable instanceof TownHouse) return result;
-		for(Buildable c : ((Buildable)buildable).getChildren()) {
-			if(c.getType() == Buildable.Type.FLOOR || c.getType() == Buildable.Type.DECORATION_FLOOR || c.getType() == Buildable.Type.CELLAR) continue;
-			result.add(new BuildableWrapper(c));
+		if (buildable instanceof TownHouse) {
+			return result;
 		}
-		if(houses.get((Buildable)buildable) != null) {
-			for(TownHouse h : houses.get((Buildable)buildable)) {
+		
+		for (Buildable child : ((Buildable) buildable).getChildren()) {
+			if (child.getType() == Buildable.Type.FLOOR ||
+				child.getType() == Buildable.Type.DECORATION_FLOOR ||
+				child.getType() == Buildable.Type.CELLAR) {
+				
+				continue;
+			}
+			
+			result.add(new BuildableWrapper(child));
+		}
+		
+		if (houses.get((Buildable) buildable) != null) {
+			for (TownHouse h : houses.get((Buildable) buildable)) {
 				result.add(new BuildableWrapper(h));
 			}
 		}
+		
 		return result;
 	}
 
@@ -148,7 +159,7 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((buildable == null) ? 0 : buildable.hashCode());
+			+ ((buildable == null) ? 0 : buildable.hashCode());
 		return result;
 	}
 

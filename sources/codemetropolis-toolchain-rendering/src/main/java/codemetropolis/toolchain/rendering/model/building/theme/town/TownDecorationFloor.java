@@ -12,8 +12,8 @@ import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link DecorationFloor} subclass for the {@link Themes#TOWN} theme.
- * Closing the top of the building with a horizontal layer, then a nice, classical, red roof.
+ * A {@link DecorationFloor} subclass for the {@link Themes#TOWN} theme. Closing the top of the building with a
+ * horizontal layer, then a nice, classical, red roof.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -28,71 +28,65 @@ public class TownDecorationFloor extends DecorationFloor {
 	public TownDecorationFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Closing the top of the building with only a horizontal layer.
 	 */
 	@Override
 	protected void prepareCeiling() {
-		BasicBlock houseBlock;
-		if(innerBuildable.hasAttribute("external_character")) {
-			Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
-			houseBlock = externalCharacter.getBlock();
-		} else {
-			houseBlock = TownBlocks.ROOF;
-		}
-		
+		BasicBlock houseBlock = innerBuildable.hasAttribute("external_character")
+			? Character.parse(innerBuildable.getAttributeValue("external_character")).getBlock()
+			: TownBlocks.ROOF;
+
 		primitives.add(
 			new SimpleBox(
 				position,
-				new Point( size.getX(), 1, size.getZ() ),
-				new RepeationPattern( new BasicBlock[][][] { { { houseBlock } } } ),
-				Orientation.NearY ) );
+				new Point(size.getX(), 1, size.getZ()),
+				new RepeationPattern(new BasicBlock[][][] { { { houseBlock } } }),
+				Orientation.NearY));
 	}
-	
+
 	/**
 	 * According to {@link Themes#TOWN} theme on the top there is a classical, red roof.
 	 */
 	@Override
 	protected void prepareRoof() {
-		BasicBlock top;
-		if(innerBuildable.hasAttribute("external_character")) {
-			Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
-			top = externalCharacter.getBlock();
-		} else {
-			top = TownBlocks.ROOF;
+		BasicBlock houseBlock = innerBuildable.hasAttribute("external_character")
+			? Character.parse(innerBuildable.getAttributeValue("external_character")).getBlock()
+			: TownBlocks.ROOF;
+
+		for (int i = 0; i < (size.getZ() + 1) / 2; i++) {
+			primitives.add(
+				new SimpleBox(
+					position.translate(new Point(0, i, i)),
+					new Point(size.getX(), 1, size.getZ() - (i * 2)),
+					new RepeationPattern(new BasicBlock[][][] { { { houseBlock } } }),
+					Orientation.NearX));
 		}
-		
-		for(int i = 0; i < (size.getZ() + 1) / 2; i++) {
+
+		for (int i = 0; i < ((size.getZ() + 1) / 2) + 1; i++) {
 			primitives.add(
-					new SimpleBox(
-						position.translate( new Point(0, i, i) ),
-						new Point( size.getX(), 1, size.getZ() - (i * 2) ),
-						new RepeationPattern( new BasicBlock[][][] { { { top } } } ),
-						Orientation.NearX ) );
+				new SimpleBox(
+					position.translate(new Point(-1, i, i - 1)),
+					new Point(size.getX() + 2, 1, 1),
+					new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.ROOF_LEFT } } }),
+					Orientation.NearX));
+
+			primitives.add(
+				new SimpleBox(
+					position.translate(new Point(-1, i, size.getZ() - i)),
+					new Point(size.getX() + 2, 1, 1),
+					new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.ROOF_RIGHT } } }),
+					Orientation.NearX));
 		}
-		
-		for(int i = 0; i < ((size.getZ() + 1) / 2) + 1; i++) {
+
+		if (size.getZ() % 2 != 0) {
 			primitives.add(
-					new SimpleBox(
-						position.translate( new Point(-1, i, i - 1) ),
-						new Point( size.getX() + 2, 1, 1 ),
-						new RepeationPattern( new BasicBlock[][][] { { { TownBlocks.ROOF_LEFT } } } ),
-						Orientation.NearX ) );
-			primitives.add(
-					new SimpleBox(
-						position.translate( new Point(-1, i, size.getZ() - i) ),
-						new Point( size.getX() + 2, 1, 1 ),
-						new RepeationPattern( new BasicBlock[][][] { { { TownBlocks.ROOF_RIGHT } } } ),
-						Orientation.NearX ) );
-		}
-		if(size.getZ() % 2 != 0) {
-			primitives.add(
-					new SimpleBox(
-						position.translate( new Point(-1, (size.getZ() / 2) + 1, size.getZ() / 2) ),
-						new Point( size.getX() + 2, 1, 1 ),
-						new RepeationPattern( new BasicBlock[][][] { { { TownBlocks.ROOF } } } ),
-						Orientation.NearX ) );
+				new SimpleBox(
+					position.translate(new Point(-1, (size.getZ() / 2) + 1, size.getZ() / 2)),
+					new Point(size.getX() + 2, 1, 1),
+					new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.ROOF } } }),
+					Orientation.NearX));
 		}
 	}
 

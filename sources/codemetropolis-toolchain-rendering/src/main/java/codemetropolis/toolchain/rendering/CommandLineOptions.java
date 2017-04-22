@@ -32,13 +32,13 @@ public class CommandLineOptions {
 	public String getWorld() {
 		return world;
 	}
-	
-	public Themes getTheme() {
-		return theme;
-	}
 
 	public boolean overwriteSilently() {
 		return overwriteSilently;
+	}
+	
+	public Themes getTheme() {
+		return theme;
 	}
 
 }

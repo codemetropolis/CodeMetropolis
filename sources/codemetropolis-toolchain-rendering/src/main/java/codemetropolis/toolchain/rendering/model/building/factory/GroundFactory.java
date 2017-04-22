@@ -14,7 +14,7 @@ import codemetropolis.toolchain.rendering.model.building.theme.town.TownGround;
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class GroundFactory {
-	
+
 	/**
 	 * Depending on the {@link Themes} parameter create a proper {@link Ground} subclass.
 	 * 
@@ -24,7 +24,7 @@ public class GroundFactory {
 	 * @throws BuildingTypeMismatchException If type of {@code buildable} is incorrect.
 	 */
 	public static Ground createGround(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
-		switch(theme) {
+		switch (theme) {
 			case MINIMALIST:
 				return new MinimalistGround(buildable);
 			case RAILWAY:
@@ -36,5 +36,5 @@ public class GroundFactory {
 				return new Ground(buildable);
 		}
 	}
-	
+
 }

@@ -12,8 +12,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link Ground} subclass for the {@link Themes#TOWN} theme.
- * Creates a simple base for the buildings, using a simple block type.
+ * A {@link Ground} subclass for the {@link Themes#TOWN} theme. Creates a simple base for the buildings, using a simple
+ * block type.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -28,43 +28,51 @@ public class TownGround extends Ground {
 	public TownGround(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Pattern is determined depending on which side of the street we're building.
 	 */
 	@Override
-	protected void prepareBase( ) {
+	protected void prepareBase() {
 		primitives.add(
-				new SimpleBox(
-					position,
-					new Point( size.getX(), 1, 2 ),
-					new RepeationPattern( new BasicBlock[][][]{ { { TownBlocks.PATH } } } ),
-					Orientation.NearX ) );
+			new SimpleBox(
+				position,
+				new Point(size.getX(), 1, 2),
+				new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.PATH } } }),
+				Orientation.NearX));
+
 		primitives.add(
-				new SimpleBox(
-					position.translate( new Point(0, 0, 2) ),
-					new Point( size.getX(), 1, 6 ),
-					new RepeationPattern( new BasicBlock[][][]{ { { TownBlocks.ROAD } } } ),
-					Orientation.NearX ) );
+			new SimpleBox(
+				position.translate(new Point(0, 0, 2)),
+				new Point(size.getX(), 1, 6),
+				new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.ROAD } } }),
+				Orientation.NearX));
+
 		primitives.add(
-				new SimpleBox(
-					position.translate( new Point(0, 0, 8) ),
-					new Point( size.getX(), 1, 2 ),
-					new RepeationPattern( new BasicBlock[][][]{ { { TownBlocks.PATH } } } ),
-					Orientation.NearX ) );	
+			new SimpleBox(
+				position.translate(new Point(0, 0, 8)),
+				new Point(size.getX(), 1, 2),
+				new RepeationPattern(new BasicBlock[][][] { { { TownBlocks.PATH } } }),
+				Orientation.NearX));
 	}
-	
+
 	/**
 	 * Signs are oriented along the sides of the road, facing the road.
 	 */
 	@Override
-	protected void prepareSigns( ) {
-		if(innerBuildable.hasAttribute("left") && innerBuildable.getAttributeValue("left").equals("true")) { // left side
-			primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ() + 1, SignPost.Orientation.SOUTH, innerBuildable.getName()));
-			primitives.add(new SignPost(position.getX() + size.getX() - 7, position.getY() + 1, position.getZ() + 1, SignPost.Orientation.SOUTH, innerBuildable.getName()));
-		} else { // right side
-			primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ() + size.getZ() - 2, SignPost.Orientation.NORTH, innerBuildable.getName()));
-			primitives.add(new SignPost(position.getX() + size.getX() - 7, position.getY() + 1, position.getZ() + size.getZ() - 2, SignPost.Orientation.NORTH, innerBuildable.getName()));
+	protected void prepareSigns() {
+		if (innerBuildable.hasAttribute("left") && innerBuildable.getAttributeValue("left").equals("true")) {
+			// left side
+			primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ() + 1,
+				SignPost.Orientation.SOUTH, innerBuildable.getName()));
+			primitives.add(new SignPost(position.getX() + size.getX() - 5, position.getY() + 1, position.getZ() + 1,
+				SignPost.Orientation.SOUTH, innerBuildable.getName()));
+		} else {
+			// right side
+			primitives.add(new SignPost(position.getX(), position.getY() + 1, position.getZ() + size.getZ() - 2,
+				SignPost.Orientation.NORTH, innerBuildable.getName()));
+			primitives.add(new SignPost(position.getX() + size.getX() - 5, position.getY() + 1,
+				position.getZ() + size.getZ() - 2, SignPost.Orientation.NORTH, innerBuildable.getName()));
 		}
 	}
 

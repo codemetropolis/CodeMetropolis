@@ -11,8 +11,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link Floor} subclass for the {@link Themes#MINIMALIST} theme.
- * Transparent floors, for a simple look-and-feel, with only pillars, without stairs.
+ * A {@link Floor} subclass for the {@link Themes#MINIMALIST} theme. Transparent floors, for a simple look-and-feel,
+ * with only pillars, without stairs.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -25,56 +25,64 @@ public class MinimalistFloor extends Floor {
 	 * @throws BuildingTypeMismatchException Throws exception if type of {@code innerBuildable} is incorrect.
 	 */
 	public MinimalistFloor(Buildable innerBuildable) throws BuildingTypeMismatchException {
-		super(innerBuildable);		
+		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Transparent glass walls, with a simple stone frame, without floor bases.
 	 */
 	@Override
-	protected void prepareWalls() {		
-		BasicBlock[][][] section = createSection(MinimalistBlocks.WALL);
+	protected void prepareWalls() {
+		BasicBlock[][][] sideWallSection = createSection(MinimalistBlocks.WALL);
 		BasicBlock[][][] bottomSection = createSection(MinimalistBlocks.PILLAR);
+
+		primitives.add(
+			new SimpleBox(
+				position,
+				new Point(size.getX(), size.getY() - 1, size.getZ()),
+				new RepeationPattern(sideWallSection),
+				Orientation.NearX));
 		
 		primitives.add(
-				new SimpleBox(
-					position,
-					new Point( size.getX(), 1, size.getZ()),
-					new RepeationPattern( bottomSection ),
-					Orientation.NearX ) );
-		
-		primitives.add(
-				new SimpleBox(
-					position.translate( new Point( 0, 1, 0) ),
-					new Point( size.getX(), size.getY() - 1, size.getZ()),
-					new RepeationPattern( section ),
-					Orientation.NearX) );		
+			new SimpleBox(
+				position.translate(new Point(0, size.getY() - 1, 0)),
+				new Point(size.getX(), 1, size.getZ()),
+				new RepeationPattern(bottomSection),
+				Orientation.NearX));
 	}
-	
+
 	/**
 	 * According to {@link Themes#MINIMALIST} theme there are no stairs.
 	 */
 	@Override
-	protected void prepareStairs() {}
-	
+	protected void prepareStairs() {
+
+	}
+
 	/**
 	 * According to {@link Themes#MINIMALIST} theme there are no doors.
 	 */
 	@Override
-	protected void prepareDoor() {}
-	
+	protected void prepareDoor() {
+
+	}
+
 	/**
 	 * According to {@link Themes#MINIMALIST} theme there are no signs.
 	 */
 	@Override
-	protected void prepareSigns() {}
-	
+	protected void prepareSigns() {
+
+	}
+
 	/**
 	 * According to {@link Themes#MINIMALIST} theme there are no torches.
 	 */
 	@Override
-	protected void prepareTorches() {}
-	
+	protected void prepareTorches() {
+
+	}
+
 	/**
 	 * Create a layer of the current floor according to the type, so it can be a middle or a bottom layer.
 	 * 
@@ -83,24 +91,30 @@ public class MinimalistFloor extends Floor {
 	 */
 	private BasicBlock[][][] createSection(BasicBlock type) {
 		BasicBlock[][][] section = new BasicBlock[size.getX()][1][size.getZ()];
-		for(int i = 0; i < section.length; i++) {
-			for(int j = 0; j < section[0][0].length; j++) {
+
+		// Initialize the matrix
+		for (int i = 0; i < section.length; i++) {
+			for (int j = 0; j < section[0][0].length; j++) {
 				section[i][0][j] = MinimalistBlocks.EMPTY_BLOCK;
 			}
 		}
-		for(int i = 0; i < section.length; i++) {
+
+		// Add sides based on the type (sidewall-section or bottom section)
+		for (int i = 0; i < section.length; i++) {
 			section[i][0][0] = type;
 			section[i][0][size.getZ() - 1] = type;
 		}
-		for(int j = 0; j < section[0][0].length; j++) {
+		for (int j = 0; j < section[0][0].length; j++) {
 			section[0][0][j] = type;
 			section[size.getX() - 1][0][j] = type;
 		}
+
+		// Add pillars to the corners
 		section[0][0][0] = MinimalistBlocks.PILLAR;
 		section[0][0][size.getZ() - 1] = MinimalistBlocks.PILLAR;
 		section[size.getX() - 1][0][0] = MinimalistBlocks.PILLAR;
 		section[size.getX() - 1][0][size.getZ() - 1] = MinimalistBlocks.PILLAR;
-		
+
 		return section;
 	}
 

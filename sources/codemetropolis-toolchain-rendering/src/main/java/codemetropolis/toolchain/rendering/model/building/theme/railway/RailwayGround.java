@@ -12,8 +12,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SimpleBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 /**
- * A {@link Ground} subclass for the {@link Themes#RAILWAY} theme.
- * Representing grounds as gates in front of the gardens..
+ * A {@link Ground} subclass for the {@link Themes#RAILWAY} theme. Representing grounds as gates in front of the
+ * gardens.
  * 
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
@@ -28,40 +28,41 @@ public class RailwayGround extends Ground {
 	public RailwayGround(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
 	}
-	
+
 	/**
 	 * Creates a gate as a representation of packages.
 	 */
 	@Override
-	protected void prepareBase( ) {
+	protected void prepareBase() {
 		BasicBlock[][][] section = new BasicBlock[1][1][size.getZ()];
-		for(int i = 0; i < section[0][0].length; i++) {
+		for (int i = 0; i < size.getZ(); i++) {
 			section[0][0][i] = RailwayBlocks.EMPTY_BLOCK;
 		}
 		section[0][0][0] = RailwayBlocks.GATE;
 		section[0][0][size.getZ() - 1] = RailwayBlocks.GATE;
-		
+
 		primitives.add(
-				new SimpleBox(
-					position.translate( new Point(0, size.getY(), 0) ),
-					new Point( 1, 1, size.getZ() ),
-					new RepeationPattern( new BasicBlock[][][]{ { { RailwayBlocks.GATE } } } ),
-					Orientation.NearX ) );
-		
+			new SimpleBox(
+				position.translate(new Point(0, size.getY(), 0)),
+				new Point(1, 1, size.getZ()),
+				new RepeationPattern(new BasicBlock[][][] { { { RailwayBlocks.GATE } } }),
+				Orientation.NearX));
+
 		primitives.add(
 			new SimpleBox(
 				position,
-				new Point( 1, size.getY(), size.getZ() ),
-				new RepeationPattern( section ),
-				Orientation.NearX ) );
+				new Point(1, size.getY(), size.getZ()),
+				new RepeationPattern(section),
+				Orientation.NearX));
 	}
-	
+
 	/**
 	 * Signs are on the top of the gates.
 	 */
 	@Override
-	protected void prepareSigns( ) {
-		primitives.add(new SignPost(position.getX(), position.getY() + size.getY() + 1, position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
+	protected void prepareSigns() {
+		primitives.add(new SignPost(position.getX(), position.getY() + size.getY() + 1,
+			position.getZ() + size.getZ() / 2, SignPost.Orientation.WEST, innerBuildable.getName()));
 	}
 
 }

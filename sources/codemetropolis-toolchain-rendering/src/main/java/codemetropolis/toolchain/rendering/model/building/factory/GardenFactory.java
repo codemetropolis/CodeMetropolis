@@ -14,7 +14,7 @@ import codemetropolis.toolchain.rendering.model.building.theme.town.TownGarden;
  * @author Abigel Mester {@literal <MEAWABT.SZE>}
  */
 public class GardenFactory {
-	
+
 	/**
 	 * Depending on the {@link Themes} parameter create a proper {@link Garden} subclass.
 	 * 
@@ -22,9 +22,9 @@ public class GardenFactory {
 	 * @param theme The requested style, defined as {@link Themes}.
 	 * @return The proper {@link Garden} subclass.
 	 * @throws BuildingTypeMismatchException If type of {@code buildable} is incorrect.
-	 */	
+	 */
 	public static Garden createGarden(Buildable buildable, Themes theme) throws BuildingTypeMismatchException {
-		switch(theme) {
+		switch (theme) {
 			case MINIMALIST:
 				return new MinimalistGarden(buildable);
 			case RAILWAY:
