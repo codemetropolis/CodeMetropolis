@@ -27,8 +27,8 @@ public class Ground extends Building {
 			new SolidBox(
 				position,
 				new Point( size.getX(), 1, size.getZ() ),
-				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:stone" ) } } } ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:stonebrick" ) } } } ),
+				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock("minecraft:stone") } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock("minecraft:stonebrick") } } } ),
 				Orientation.NearX ) );
 	}
 	

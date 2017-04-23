@@ -13,6 +13,7 @@ import codemetropolis.toolchain.rendering.model.primitive.Row;
 import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.model.primitive.WallSign;
 import codemetropolis.toolchain.rendering.util.Character;
+import codemetropolis.toolchain.rendering.util.Colour;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 public class Floor extends Building {
@@ -33,10 +34,10 @@ public class Floor extends Building {
 	protected void prepareDoor() {
 		BasicBlock _red = new BasicBlock( "minecraft:redstone_block" );
 		BasicBlock _lgt = new BasicBlock( "minecraft:lit_redstone_lamp" );
-		BasicBlock _rwl = new BasicBlock( "minecraft:wool", 14 );
-		BasicBlock _gwl = new BasicBlock( "minecraft:wool", 5 );
-		BasicBlock _bwl = new BasicBlock( "minecraft:wool", 3 );
-		BasicBlock _ywl = new BasicBlock( "minecraft:wool", 4 );
+		BasicBlock _rwl = new BasicBlock( "minecraft:wool", Colour.RED);
+		BasicBlock _gwl = new BasicBlock( "minecraft:wool", Colour.LIME);
+		BasicBlock _bwl = new BasicBlock( "minecraft:wool", Colour.LIGHT_BLUE);
+		BasicBlock _ywl = new BasicBlock( "minecraft:wool", Colour.YELLOW);
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( center.getX() - 1, 0, 0 ) ), new Point( 3, 4, 1 ),
@@ -188,26 +189,26 @@ public class Floor extends Building {
 		BasicBlock _sideBlock;
 		BasicBlock _strcBlock;
 		
-		if(innerBuildable.hasAttribute( "character" ) && BasicBlock.humanReadableNameToId.containsKey(innerBuildable.getAttributeValue("character").toLowerCase()))
+		if(innerBuildable.hasAttribute( "character" ) && BasicBlock.humanReadableNameToBlock.containsKey(innerBuildable.getAttributeValue("character").toLowerCase()))
 		{
 			String str = innerBuildable.getAttributeValue("character").toLowerCase();
 			_sideBlock = Character.getBlock(str);
 			_topFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getTopBlock(str) } } } );
 		} else {
-			_sideBlock = new BasicBlock( "minecraft:wool", 2 );
-			_topFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
+			_sideBlock = new BasicBlock( "minecraft:wool", Colour.MAGENTA);
+			_topFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", Colour.MAGENTA) } } } );
 		}
 		
-		if(innerBuildable.hasAttribute( "external_character" ) && BasicBlock.humanReadableNameToId.containsKey(innerBuildable.getAttributeValue("external_character").toLowerCase()))
+		if(innerBuildable.hasAttribute( "external_character" ) && BasicBlock.humanReadableNameToBlock.containsKey(innerBuildable.getAttributeValue("external_character").toLowerCase()))
 		{
 			String str = innerBuildable.getAttributeValue("external_character").toLowerCase();
 			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
 			_strcBlock = Character.getBlock(str);
 			_stroke = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
 		} else {
-			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
+			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", Colour.MAGENTA ) } } } );
 			_strcBlock = new BasicBlock( "minecraft:wool", 10 );
-			_stroke = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 15 ) } } } );
+			_stroke = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", Colour.BLACK ) } } } );
 		}
 		
 		RandomPattern _fallbackPattern = new RandomPattern( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.NonBlock } } } ) );

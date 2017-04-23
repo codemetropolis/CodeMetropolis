@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import codemetropolis.toolchain.rendering.util.Block;
 import codemetropolis.toolchain.rendering.util.Character;
+import codemetropolis.toolchain.rendering.util.Colour;
 import codemetropolis.toolchain.rendering.RenderingExecutor;
 
 public class BasicBlock {
@@ -17,6 +19,7 @@ public class BasicBlock {
 	public static final Map<Short, String> idToHumanReadableName;
 	public static final Map<String, Short> nameToId;
 	public static final Map<String, Short> humanReadableNameToId;
+	public static final Map<String, Block> humanReadableNameToBlock;
 	
 	static {
 		NonBlock = new BasicBlock((short)-1 );
@@ -24,18 +27,29 @@ public class BasicBlock {
 		idToHumanReadableName = new HashMap<Short,String>();
 		nameToId = new HashMap<String,Short>();
 		humanReadableNameToId = new HashMap<String,Short>();
+		humanReadableNameToBlock = new HashMap<String, Block>();
 		
 		InputStream csvStream = RenderingExecutor.class.getClassLoader().getResourceAsStream("blocks.csv");
 		try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, "UTF-8"))) {
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				String[] blockInfo = line.split(",");
-				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
-				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
-				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));
-				humanReadableNameToId.put(blockInfo[2].toLowerCase(), Short.parseShort(blockInfo[0]));
+				if (!idToName.containsKey(Short.parseShort(blockInfo[0]))){
+					idToName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
+					idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[3]);
+					nameToId.put(blockInfo[2], Short.parseShort(blockInfo[0]));
+				}
+				humanReadableNameToBlock.put(blockInfo[3].toLowerCase(),
+						new Block(
+							Short.parseShort(blockInfo[0]),
+							Short.parseShort(blockInfo[1]),
+							blockInfo[2],
+							blockInfo[3],
+							Short.parseShort(blockInfo[4])
+						)
+				);
 			}
-			Character.init(humanReadableNameToId);
+			Character.init(humanReadableNameToBlock);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,12 +67,21 @@ public class BasicBlock {
 		this.data = data;
 	}
 	
+	public BasicBlock(short id, Colour clr){
+		this.id = id;
+		this.data = clr.getValue();
+	}
+	
 	public BasicBlock(String name) {
 		this(nameToId.get(name), 0);
 	}
 	
 	public BasicBlock(String name, int data) {
 		this(nameToId.get(name), data);
+	}
+	
+	public BasicBlock(String name, Colour clr){
+		this(nameToId.get(name), clr.getValue());
 	}
 	
 	public BasicBlock(BasicBlock original) {
