@@ -20,9 +20,9 @@ public abstract class Character {
 		}
 		else{
 			System.out.println("Couldn't find block \"" + str + "\", using magenta wool instead.");
-			block = blocks.get("wool");
+			block = blocks.get("magenta wool");
 		}
-		return new BasicBlock(block.getId(), Colour.MAGENTA);
+		return new BasicBlock(block.getId(), block.getData());
 	}
 	
 	public static BasicBlock getTopBlock(String str){
