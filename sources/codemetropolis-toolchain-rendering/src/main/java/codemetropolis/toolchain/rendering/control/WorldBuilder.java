@@ -21,6 +21,7 @@ import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
 import codemetropolis.toolchain.rendering.model.building.*;
 import codemetropolis.toolchain.rendering.model.primitive.Boxel;
+import codemetropolis.toolchain.rendering.util.BlockCsvWriterHolder;
 
 public class WorldBuilder {
 
@@ -98,6 +99,9 @@ public class WorldBuilder {
 			raiseProgressEvent(BuildPhase.GENERATING_BLOCKS, count, total, timeElapsed);
 		}
 		stopWatch.stop();
+		
+		// Close all PrintWriters after every single block has been written
+		BlockCsvWriterHolder.closeWriters();
 	}
 	
 	public void build(File sourceDirectory) throws RenderingException {
