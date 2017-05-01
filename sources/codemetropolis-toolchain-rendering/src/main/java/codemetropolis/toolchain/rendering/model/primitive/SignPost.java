@@ -41,7 +41,7 @@ public class SignPost implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 63, orientation.getValue()), position, text).toCSVFile(directory);
+		new Boxel(BasicBlock.get((short) 63, orientation.getValue()), position, text).toCSVFile(directory);
 		return 1;
 	}
 	@Override
