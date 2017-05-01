@@ -35,8 +35,8 @@ public class Door implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 64, orientation.getValue()), position).toCSVFile(directory);
-		new Boxel(new BasicBlock((short) 64, 8), new Point(position.getX(), position.getY() + 1, position.getZ())).toCSVFile(directory);
+		new Boxel(BasicBlock.get((short) 64, orientation.getValue()), position).toCSVFile(directory);
+		new Boxel(BasicBlock.get((short) 64, 8), new Point(position.getX(), position.getY() + 1, position.getZ())).toCSVFile(directory);
 		return 2;
 	}
 	@Override
