@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 
+import codemetropolis.toolchain.rendering.model.primitive.Mob;
 import org.apache.commons.lang3.time.StopWatch;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
@@ -43,26 +44,33 @@ public class WorldBuilder {
 		
 		List<Ground> grounds = new ArrayList<Ground>();
 		int biomeID=1;
+		boolean hasMob = false;
+		List<Mob> mobs = new ArrayList<Mob>();
 		for(Buildable b : buildables.getBuildables()) {
 			switch (b.getType()) {
-			case GROUND:
-				if (b.hasAttribute("biome-id")) {
-					if(Integer.parseInt(b.getAttributeValue("biome-id"))>-1 && Integer.parseInt(b.getAttributeValue("biome-id"))<40){
-						biomeID = Integer.parseInt(b.getAttributeValue("biome-id"));
-					}else{
-						try {
-							throw new NBTException("Biome ID must be between 0 and 39");
-						} catch (NBTException e) {
-								e.printStackTrace();
+				case GROUND:
+					if (b.hasAttribute("biome-id")) {
+						if(Integer.parseInt(b.getAttributeValue("biome-id"))>-1 && Integer.parseInt(b.getAttributeValue("biome-id"))<40){
+							biomeID = Integer.parseInt(b.getAttributeValue("biome-id"));
+						}else{
+							try {
+								throw new NBTException("Biome ID must be between 0 and 39");
+							} catch (NBTException e) {
+									e.printStackTrace();
+							}
 						}
 					}
-				}
-				break;
+					break;
+				case GARDEN:
+					if(b.hasAttribute("pig")){
+						hasMob = true;
+					}
+					break;
 			}
 			
 		
 		}
-		world = new World(worldPath, GROUND_LEVEL, (byte)biomeID);
+		world = new World(worldPath, GROUND_LEVEL, (byte)biomeID, hasMob);
 	}
 	
 	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{

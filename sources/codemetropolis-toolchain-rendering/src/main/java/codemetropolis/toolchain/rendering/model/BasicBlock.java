@@ -12,6 +12,7 @@ import codemetropolis.toolchain.rendering.RenderingExecutor;
 public class BasicBlock {
 
 	public static final BasicBlock NonBlock;
+	public static final BasicBlock Mob;
 	public static final Map<Short, String> idToName;
 	public static final Map<Short, String> idToHumanReadableName;
 	public static final Map<String, Short> nameToId;
@@ -19,6 +20,7 @@ public class BasicBlock {
 	
 	static {
 		NonBlock = new BasicBlock((short)-1 );
+		Mob = new BasicBlock((short)-2 );
 		idToName = new HashMap<Short,String>();
 		idToHumanReadableName = new HashMap<Short,String>();
 		nameToId = new HashMap<String,Short>();

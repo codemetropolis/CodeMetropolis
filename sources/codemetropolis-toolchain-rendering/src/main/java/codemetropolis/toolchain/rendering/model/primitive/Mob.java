@@ -8,7 +8,7 @@ import java.io.File;
 
 public class Mob implements Primitive{
 
-    public static String[] SupportedMobs = {"Pig", "Cow", "Rabbit", "Chicken", "Sheep"};
+    public static final String[] SupportedMobs = {"pig", "cow", "rabbit", "chicken", "sheep"};
 
     private Point position;
     private String name;
@@ -21,7 +21,7 @@ public class Mob implements Primitive{
 
     @Override
     public int toCSVFile(File directory){
-        new Boxel(new BasicBlock(BasicBlock.NonBlock), position,  name).toCSVFile(directory);
+        new Boxel(new BasicBlock(BasicBlock.Mob), position,  name).toCSVFile(directory);
         return 1;
     }
 

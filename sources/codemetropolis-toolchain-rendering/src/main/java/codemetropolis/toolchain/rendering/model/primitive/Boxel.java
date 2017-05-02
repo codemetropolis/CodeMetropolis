@@ -41,9 +41,12 @@ public class Boxel implements Primitive {
 			case 176:
 				world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(), World.BannerColor.valueOf(info.toUpperCase()));
 				break;
+			case -2:
+				world.setMob(position.getX(), position.getY(), position.getZ(), block.getName());
 			default:
 				world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());	
 		}
+
 	}
 	
 	public String toCSV() {

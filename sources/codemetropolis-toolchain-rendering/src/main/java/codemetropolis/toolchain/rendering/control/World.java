@@ -13,16 +13,20 @@ public class World {
 	public final String PATH;
 	public final String NAME;
 	public final int GROUNDLEVEL;
+	public final boolean HASMOB;
 	public final byte BIOMEID;
 	private boolean groundBuilding = true;
 	private int maxLoadedRegions = 1;
+	private int mobCounter = 0;
+	public final long mobLimit = 100;
 	private LinkedList<Region> loadedRegions = new LinkedList<Region>();
 	
-	public World(String path, int groundLevel, byte id) {
+	public World(String path, int groundLevel, byte id, boolean hasMob) {
 		
 		this.PATH = path;
 		this.GROUNDLEVEL = groundLevel;
 		this.BIOMEID = id;
+		this.HASMOB = hasMob;
 		String[] splitPath = path.split("[/\\\\]");
 		this.NAME = splitPath[splitPath.length - 1];
 		Level level = new Level(this);
@@ -75,11 +79,14 @@ public class World {
 			chunk.clearTileEntitiesAt(x, y, z);
 		}
 
-		for(String s : Mob.SupportedMobs){
-			if(s.equals((String)other)){
-				chunk.setMob(x, y, z, (String) other);
-			}
+		
+		
+		if(HASMOB && type == -1 && mobCounter < mobLimit){
+			chunk.setMob(x, y, z, "Pig");
+			mobCounter++;
 		}
+		
+	
 
 	}
 	
@@ -119,7 +126,7 @@ public class World {
 		setChest(x, y, z, 0, items);	
 	}
 
-	public void setMob(int x, int y, int z, String name){ setBlock(x, y, z, 0, 0, name); }
+	public void setMob(int x, int y, int z, String name){ setBlock(x, y, z, -1, 0, name); }
 	
 	public void setBanner(int x, int y, int z, int data, BannerColor color) {
 		setBlock(x, y, z, 176, data, color.ordinal());	

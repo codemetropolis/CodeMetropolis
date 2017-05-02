@@ -131,7 +131,7 @@ public class Chunk {
 		
 	}
 
-	public void setMob(int x, int y, int z, String name) {
+	public void setMob(double  x, double y, double z, String name) {
 
 		NBTTag entities = tag.getSubtagByName("Level").getSubtagByName("Entities");
 
@@ -140,7 +140,7 @@ public class Chunk {
 		NBTTag zTag = new NBTTag(NBTTag.Type.TAG_Double, "z", z);
         NBTTag pos = new NBTTag(NBTTag.Type.TAG_List, "Pos", new NBTTag[]{xTag, yTag, zTag});
 		NBTTag idTag = new NBTTag(NBTTag.Type.TAG_String, "id", name);
-		NBTTag noAiTag = new NBTTag(NBTTag.Type.TAG_Byte, "NoAI", 1);
+		NBTTag noAiTag = new NBTTag(NBTTag.Type.TAG_Byte, "NoAI", (byte)1);
 		NBTTag[] tagList = new NBTTag[] {pos, idTag, noAiTag, new NBTTag(NBTTag.Type.TAG_End, null, null)};
 		NBTTag entityTag = new NBTTag(NBTTag.Type.TAG_Compound, "", tagList);
 
