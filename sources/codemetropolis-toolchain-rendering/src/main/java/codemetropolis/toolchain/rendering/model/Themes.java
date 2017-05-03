@@ -7,19 +7,9 @@ package codemetropolis.toolchain.rendering.model;
  */
 public enum Themes {
 
-	BASIC("basic"),
-	MINIMALIST("minimalist"),
-	RAILWAY("railway"),
-	TOWN("town");
-
-	private final String theme;
-
-	private Themes(String theme) {
-		this.theme = theme;
-	}
-
-	public String toString() {
-		return this.theme;
-	}
+	BASIC,
+	MINIMALIST,
+	RAILWAY,
+	TOWN,
 
 }

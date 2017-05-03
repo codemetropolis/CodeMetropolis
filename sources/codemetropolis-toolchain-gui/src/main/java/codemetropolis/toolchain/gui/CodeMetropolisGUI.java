@@ -33,6 +33,7 @@ import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+import codemetropolis.toolchain.rendering.model.Themes;
 
 /**
  * GUI window for the CodeMetropolis toolchain.
@@ -56,7 +57,7 @@ public class CodeMetropolisGUI extends JFrame {
   private CMCheckBox showMap;
   private CMCheckBox validateStructure;
   private CMSpinner scaleSpinner;
-  private CMComboBox<LayoutAlgorithm> layoutSelector;
+  private CMComboBox<Themes> layoutSelector;
 
   /**
    * Instantiates the CodeMetropolis GUI.
@@ -225,7 +226,7 @@ public class CodeMetropolisGUI extends JFrame {
    */
   private final void addPlacingOptions(JPanel panel) {
     CMLabel layoutLabel = new CMLabel(Translations.t("gui_l_layout"), 15, 625, 120, 30);
-    layoutSelector = new CMComboBox<LayoutAlgorithm>(LayoutAlgorithm.values());
+    layoutSelector = new CMComboBox<Themes>(Themes.values());
     layoutSelector.setBounds(145, 625, 120, 30);
 
     showMap = new CMCheckBox(275, 625, 20, 30);
@@ -306,12 +307,17 @@ public class CodeMetropolisGUI extends JFrame {
    */
   private final void fillOptions(ExecutionOptions executionOptions) {
     Double scale = (Double) scaleSpinner.getValue();
+	String selectedItemS = layoutSelector.getSelectedItem().toString();
+    String layout = (selectedItemS.equals("BASIC") || selectedItemS.equals("MINIMALIST")) ? 
+			"PACK" :
+			selectedItemS;
     executionOptions.setProjectName(projectName.getText());
     executionOptions.setMappingXml(new File(mappingPath.getText()));
     executionOptions.setScale(scale.floatValue());
     executionOptions.setValidate(validateStructure.isSelected());
-    executionOptions.setLayoutAlgorithm((LayoutAlgorithm) layoutSelector.getSelectedItem());
-    executionOptions.setShowMap(showMap.isSelected());
+    executionOptions.setLayoutAlgorithm(LayoutAlgorithm.valueOf(layout));
+    executionOptions.setThemes(Themes.valueOf(selectedItemS));
+	executionOptions.setShowMap(showMap.isSelected());
     executionOptions.setMinecraftRoot(new File(mcRootPath.getText()));
   }
 

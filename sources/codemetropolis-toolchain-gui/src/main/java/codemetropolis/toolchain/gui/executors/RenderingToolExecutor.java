@@ -48,7 +48,8 @@ public class RenderingToolExecutor implements ToolchainExecutor {
       cmRoot.getAbsolutePath() + File.separator + "placing-results.xml",
       executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + "saves" + File.separator
         + executionOptions.getProjectName().replace(" +;\\/\"?", ""),
-      true);
+      true,
+      executionOptions.getTheme());
   }
   
 }
