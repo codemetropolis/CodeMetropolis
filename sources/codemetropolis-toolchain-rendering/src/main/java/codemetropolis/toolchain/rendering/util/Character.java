@@ -8,8 +8,8 @@ public abstract class Character {
 	protected static BasicBlock _topFallback;
 	
 	static{
-		_fallback = new BasicBlock( (short)35, Colour.MAGENTA.getValue(), "minecraft:wool", "Magenta Wool", (short)0);
-		_topFallback = new BasicBlock( (short)85, 0, "minecraft:fence", "Fence", (short)0);
+		_fallback = BasicBlock.get((short)35, Colour.MAGENTA.getValue());
+		_topFallback = BasicBlock.get((short)85, 0);
 	}
 	
 	public static BasicBlock getBlock(String str, BasicBlock fallback){
