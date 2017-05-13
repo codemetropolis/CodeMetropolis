@@ -18,7 +18,7 @@ public class BasicBlock{
 	protected static final HashMap<String, Boolean>							used;
 	
 	static{
-		NonBlock = new BasicBlock((short)-1, 0, "NonBlock", "A non-existant block", (short)2);
+		NonBlock = new BasicBlock((short) -1, 0, "NonBlock", "A non-existant block", (short) 2);
 		idToBlock = new HashMap<Short, HashMap<Integer, BasicBlock>>();
 		nameToBlock = new HashMap<String, HashMap<Integer, BasicBlock>>();
 		humanReadableNameToBlock = new HashMap<String, BasicBlock>();
@@ -37,29 +37,8 @@ public class BasicBlock{
 						Short.parseShort(blockInfo[4])
 				);
 				
-				/*
-				 * In the next two cases, if the the id/name and the data combo
-				 * is already present, it'll overwrite the previous data This is
-				 * intended behaviour, because there are sometimes simplified
-				 * human readable block names if there are too many variations,
-				 * so user doesn't have to specify.
-				 */
-				
-				// Adding to idToBlock
-				HashMap<Integer, BasicBlock> idBlock = idToBlock.get(block.id);
-				if (idBlock == null){
-					idBlock = new HashMap<Integer, BasicBlock>();
-					idToBlock.put(block.id, idBlock);
-				}
-				idBlock.put(block.data, block);
-				
-				// Adding to nameToBlock
-				HashMap<Integer, BasicBlock> nameBlock = nameToBlock.get(block.name);
-				if (nameBlock == null){
-					nameBlock = new HashMap<Integer, BasicBlock>();
-					nameToBlock.put(block.name, nameBlock);
-				}
-				nameBlock.put(block.data, block);
+				add(idToBlock, block.id, block);
+				add(nameToBlock, block.name, block);
 				
 				humanReadableNameToBlock.put(block.getHumanReadableName().toLowerCase(), block);
 				// System.out.println(block);
@@ -75,7 +54,6 @@ public class BasicBlock{
 	private String	name;
 	private String	humanReadableName;
 	private short	hazardous;
-	
 	
 	public BasicBlock(BasicBlock original){
 		this.id = original.id;
@@ -93,6 +71,20 @@ public class BasicBlock{
 		this.hazardous = hazardous;
 	}
 	
+	protected static <K> void add(HashMap<K, HashMap<Integer, BasicBlock>> map, K key, BasicBlock block){
+		/*
+		 * This method overwrites previous key-BasicBlock pairs in the HashMap
+		 * This is intentional behaviour, since .csv may contain
+		 * "simplifications"
+		 */
+		HashMap<Integer, BasicBlock> blocks = map.get(key);
+		if (blocks == null){
+			blocks = new HashMap<Integer, BasicBlock>();
+			map.put(key, blocks);
+		}
+		blocks.put(block.data, block);
+	}
+	
 	// Return block
 	// String is the human readable name
 	// This method is used on user-inputed strings and it checks if it's allowed
@@ -106,15 +98,15 @@ public class BasicBlock{
 			}
 			else{
 				switch (block.getHazardous()){
-					case 2:
-						System.out.println("ILLEGAL\tUse of \"" + block.getHumanReadableName() + "\" is restricted!");
-						System.out.println("\tFalling back to \"" + fallback.getHumanReadableName() + "\".");
+					case 0:
+						System.out.println("SUCCESS\tUsing \"" + block.getHumanReadableName() + "\" block.");
 						break;
 					case 1:
 						System.out.println("WARNING\tUsing \"" + block.getHumanReadableName() + "\" DANGEROUS block.");
 						break;
-					case 0:
-						System.out.println("SUCCESS\tUsing \"" + block.getHumanReadableName() + "\" block.");
+					default:
+						System.out.println("ILLEGAL\tUse of \"" + block.getHumanReadableName() + "\" is restricted!");
+						System.out.println("\tFalling back to \"" + fallback.getHumanReadableName() + "\".");
 						break;
 				}
 			}
@@ -203,8 +195,21 @@ public class BasicBlock{
 	
 	@Override
 	public String toString(){
-		return "Block object: \"" + getHumanReadableName() + "\" (id: " + id + ", name: " + getName() + ", data: " + data + ")";
-		// return getHumanReadableName() + (data != 0 ? data : "");
+		String str = "Block object: \"" + getHumanReadableName() + "\"";
+		str += " (id: " + id + ", name: " + name + ", data: " + data + ", hazard: ";
+		switch (hazardous){
+			case 0:
+				str += "safe";
+				break;
+			case 1:
+				str += "warn";
+				break;
+			default:
+				str += "forbidden";
+				break;
+		}
+		str += ")";
+		return str;
 	}
 	
 }
