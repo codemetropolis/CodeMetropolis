@@ -361,22 +361,22 @@
 159,14,minecraft:stained_hardened_clay,Red Hardened Clay,0
 159,15,minecraft:stained_hardened_clay,Black Hardened Clay,0
 160,0,minecraft:stained_glass_pane,Stained Glass Pane,0
-160,0,minecraft:stained_glass_pane,White Stained Glass Pane,1
-160,1,minecraft:stained_glass_pane,Orange Stained Glass Pane,2
-160,2,minecraft:stained_glass_pane,Magenta Stained Glass Pane,3
-160,3,minecraft:stained_glass_pane,Light Blue Stained Glass Pane,4
-160,4,minecraft:stained_glass_pane,Yellow Stained Glass Pane,5
-160,5,minecraft:stained_glass_pane,Lime Stained Glass Pane,6
-160,6,minecraft:stained_glass_pane,Pink Stained Glass Pane,7
-160,7,minecraft:stained_glass_pane,Gray Stained Glass Pane,8
-160,8,minecraft:stained_glass_pane,Light Gray Stained Glass Pane,9
-160,9,minecraft:stained_glass_pane,Cyan Stained Glass Pane,10
-160,10,minecraft:stained_glass_pane,Purple Stained Glass Pane,11
-160,11,minecraft:stained_glass_pane,Blue Stained Glass Pane,12
-160,12,minecraft:stained_glass_pane,Brown Stained Glass Pane,13
-160,13,minecraft:stained_glass_pane,Green Stained Glass Pane,14
-160,14,minecraft:stained_glass_pane,Red Stained Glass Pane,15
-160,15,minecraft:stained_glass_pane,Black Stained Glass Pane,16
+160,0,minecraft:stained_glass_pane,White Stained Glass Pane,0
+160,1,minecraft:stained_glass_pane,Orange Stained Glass Pane,0
+160,2,minecraft:stained_glass_pane,Magenta Stained Glass Pane,0
+160,3,minecraft:stained_glass_pane,Light Blue Stained Glass Pane,0
+160,4,minecraft:stained_glass_pane,Yellow Stained Glass Pane,0
+160,5,minecraft:stained_glass_pane,Lime Stained Glass Pane,0
+160,6,minecraft:stained_glass_pane,Pink Stained Glass Pane,0
+160,7,minecraft:stained_glass_pane,Gray Stained Glass Pane,0
+160,8,minecraft:stained_glass_pane,Light Gray Stained Glass Pane,0
+160,9,minecraft:stained_glass_pane,Cyan Stained Glass Pane,0
+160,10,minecraft:stained_glass_pane,Purple Stained Glass Pane,0
+160,11,minecraft:stained_glass_pane,Blue Stained Glass Pane,0
+160,12,minecraft:stained_glass_pane,Brown Stained Glass Pane,0
+160,13,minecraft:stained_glass_pane,Green Stained Glass Pane,0
+160,14,minecraft:stained_glass_pane,Red Stained Glass Pane,0
+160,15,minecraft:stained_glass_pane,Black Stained Glass Pane,0
 161,0,minecraft:leaves2,Acacia Leaves,0
 161,1,minecraft:leaves3,Dark Oak Leaves,0
 162,0,minecraft:log2,Acacia Wood Slab,0
