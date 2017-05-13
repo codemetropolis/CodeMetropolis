@@ -13,6 +13,7 @@ import codemetropolis.toolchain.rendering.model.primitive.Row;
 import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.model.primitive.WallSign;
 import codemetropolis.toolchain.rendering.util.Character;
+import codemetropolis.toolchain.rendering.util.Colour;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 public class Floor extends Building {
@@ -31,16 +32,16 @@ public class Floor extends Building {
 	}
 	
 	protected void prepareDoor() {
-		BasicBlock _red = new BasicBlock( "minecraft:redstone_block" );
-		BasicBlock _lgt = new BasicBlock( "minecraft:lit_redstone_lamp" );
-		BasicBlock _rwl = new BasicBlock( "minecraft:wool", 14 );
-		BasicBlock _gwl = new BasicBlock( "minecraft:wool", 5 );
-		BasicBlock _bwl = new BasicBlock( "minecraft:wool", 3 );
-		BasicBlock _ywl = new BasicBlock( "minecraft:wool", 4 );
+		BasicBlock _red = BasicBlock.get( "minecraft:redstone_block" );
+		BasicBlock _lgt = BasicBlock.get( "minecraft:lit_redstone_lamp" );
+		BasicBlock _rwl = BasicBlock.get( "minecraft:wool", Colour.RED);
+		BasicBlock _gwl = BasicBlock.get( "minecraft:wool", Colour.LIME);
+		BasicBlock _bwl = BasicBlock.get( "minecraft:wool", Colour.LIGHT_BLUE);
+		BasicBlock _ywl = BasicBlock.get( "minecraft:wool", Colour.YELLOW);
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( center.getX() - 1, 0, 0 ) ), new Point( 3, 4, 1 ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air", 2 ) } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air") } } } ),
 				new RepeationPattern(
 					new BasicBlock[][][]
 					{
@@ -56,7 +57,7 @@ public class Floor extends Building {
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( center.getX() - 1, 0, size.getZ() - 1 ) ), new Point( 3, 4, 1 ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air", 2 ) } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air") } } } ),
 				new RepeationPattern(
 					new BasicBlock[][][]
 					{
@@ -72,7 +73,7 @@ public class Floor extends Building {
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( 0, 0, center.getZ()-1 ) ), new Point( 1, 4, 3 ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air", 2 ) } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air") } } } ),
 				new RepeationPattern(
 					new BasicBlock[][][]
 					{
@@ -88,7 +89,7 @@ public class Floor extends Building {
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( size.getX()-1, 0, center.getZ() - 1 ) ), new Point( 1, 4, 3 ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air", 2 ) } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air") } } } ),
 				new RepeationPattern(
 					new BasicBlock[][][]
 					{
@@ -109,9 +110,14 @@ public class Floor extends Building {
 	}
 	
 	protected void prepareStairs() {
-		BasicBlock _air = new BasicBlock( (short) 0 );
-		BasicBlock _str = new BasicBlock( (short) 1 );
-		BasicBlock _cre = new BasicBlock( (short) 85 );
+		BasicBlock _air = BasicBlock.get( (short)  0);
+		BasicBlock _str = BasicBlock.get( (short)  1);
+		BasicBlock _cre = BasicBlock.get( (short) 85);
+
+		// Use the topBlock, since that's (usually) a fence too
+		if(innerBuildable.hasAttribute("external_character"))
+			_cre = Character.getTopBlock(innerBuildable.getAttributeValue("external_character").toLowerCase(), _cre);
+		
 		primitives.add(
 			new SolidBox(
 				position.translate( new Point( center.getX() - 2, 0, center.getZ() - 2 ) ),
@@ -176,7 +182,7 @@ public class Floor extends Building {
 							{ _air, _air, _air, _air, _air }
 						}
 					} ),
-				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:fence" ) } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { _cre } } } ),
 				Orientation.NearY ) );
 	}
 	
@@ -188,30 +194,28 @@ public class Floor extends Building {
 		BasicBlock _sideBlock;
 		BasicBlock _strcBlock;
 		
-		if(innerBuildable.hasAttribute( "character" ))
-		{
-			Character character = Character.parse(innerBuildable.getAttributeValue("character"));
-			_sideBlock = character.getBlock();
-			_topFill = new RepeationPattern( new BasicBlock[][][] { { { character.getTopBlock() } } } );
+		if(innerBuildable.hasAttribute( "character" )){
+			String str = innerBuildable.getAttributeValue("character").toLowerCase();
+			_sideBlock = Character.getBlock(str);
 		} else {
-			_sideBlock = new BasicBlock( "minecraft:wool", 2 );
-			_topFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
+			_sideBlock = BasicBlock.get( "minecraft:wool", Colour.MAGENTA);
 		}
 		
-		if(innerBuildable.hasAttribute( "external_character" ))
-		{
-			Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
-			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );
-			_strcBlock = externalCharacter.getBlock();
-			_stroke = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );
+		if(innerBuildable.hasAttribute( "external_character" )){
+			String str = innerBuildable.getAttributeValue("external_character").toLowerCase();
+			_strcBlock = Character.getBlock(str);
+			_topFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getTopBlock(str) } } } );
+			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
+			_stroke = new RepeationPattern( new BasicBlock[][][] { { { Character.getBlock(str) } } } );
 		} else {
-			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 2 ) } } } );
-			_strcBlock = new BasicBlock( "minecraft:wool", 10 );
-			_stroke = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 15 ) } } } );
+			_strcBlock = BasicBlock.get( "minecraft:wool", 10 );
+			_topFill = new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:wool", Colour.MAGENTA) } } } );
+			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:wool", Colour.MAGENTA ) } } } );
+			_stroke = new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:wool", Colour.BLACK ) } } } );
 		}
 		
 		RandomPattern _fallbackPattern = new RandomPattern( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.NonBlock } } } ) );
-		_fallbackPattern.add( new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:fence" ) } } } ), .5 );
+		_fallbackPattern.add( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:fence" ) } } } ), .5 );
 		_sideFill = new RandomPattern( _fallbackPattern );
 		_sideFill.add(
 			new RepeationPattern(
@@ -317,7 +321,7 @@ public class Floor extends Building {
 	
 	private BasicBlock[] createTorchPattern(int number, int data) {
 		BasicBlock[] pattern = null;
-		BasicBlock torch = new BasicBlock((short) 50, data);
+		BasicBlock torch = BasicBlock.get((short) 50, data);
 		BasicBlock space = BasicBlock.NonBlock;
 		
 		switch(number) {

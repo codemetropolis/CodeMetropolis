@@ -41,7 +41,7 @@ public class WallSign implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 68, orientation.getValue()), position, text).toCSVFile(directory);
+		new Boxel(BasicBlock.get((short) 68, orientation.getValue()), position, text).toCSVFile(directory);
 		return 1;
 	}
 	@Override
