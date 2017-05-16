@@ -29,6 +29,7 @@
     <module>codemetropolis-toolchain-mapping</module>
     <module>codemetropolis-toolchain-placing</module>
     <module>codemetropolis-toolchain-rendering</module>
+    <module>codemetropolis-toolchain-metrics</module>
     <module>codemetropolis-toolchain-commons</module>
     <module>codemetropolis-toolchain-converter</module>
     <module>codemetropolis-toolchain-gui</module>

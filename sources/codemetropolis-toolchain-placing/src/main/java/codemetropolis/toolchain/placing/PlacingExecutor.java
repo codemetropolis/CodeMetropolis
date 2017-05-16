@@ -47,7 +47,7 @@ public class PlacingExecutor extends AbstractExecutor {
 		print(Resources.get("calculating_size_and_pos"));
 		try {
 			String layoutString = placingArgs.getLayout();
-			if(layoutString.equals("BASIC") && layoutString.equals("MINIMALIST")) {
+			if("BASIC".equals(layoutString) && "MINIMALIST".equals(layoutString)) {
 				placingArgs.setLayout("PACK");
 			}
 			Layout layout = Layout.parse(layoutString);

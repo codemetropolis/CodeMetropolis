@@ -307,8 +307,8 @@ public class CodeMetropolisGUI extends JFrame {
    */
   private final void fillOptions(ExecutionOptions executionOptions) {
     Double scale = (Double) scaleSpinner.getValue();
-	String selectedItemS = layoutSelector.getSelectedItem().toString();
-    String layout = (selectedItemS.equals("BASIC") || selectedItemS.equals("MINIMALIST")) ? 
+    String selectedItemS = layoutSelector.getSelectedItem().toString();
+    String layout = ("BASIC".equals(selectedItemS) || "MINIMALIST".equals(selectedItemS)) ?
 			"PACK" :
 			selectedItemS;
     executionOptions.setProjectName(projectName.getText());
@@ -317,7 +317,7 @@ public class CodeMetropolisGUI extends JFrame {
     executionOptions.setValidate(validateStructure.isSelected());
     executionOptions.setLayoutAlgorithm(LayoutAlgorithm.valueOf(layout));
     executionOptions.setThemes(Themes.valueOf(selectedItemS));
-	executionOptions.setShowMap(showMap.isSelected());
+    executionOptions.setShowMap(showMap.isSelected());
     executionOptions.setMinecraftRoot(new File(mcRootPath.getText()));
   }
 

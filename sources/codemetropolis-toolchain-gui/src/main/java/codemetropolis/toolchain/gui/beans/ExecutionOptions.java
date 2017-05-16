@@ -44,7 +44,7 @@ public class ExecutionOptions {
     this.scale = 1.0f;
     this.validate = false;
     this.layoutAlgorithm = LayoutAlgorithm.PACK;
-	this.theme = Themes.BASIC;
+    this.theme = Themes.BASIC;
     this.showMap = false;
   }
 
