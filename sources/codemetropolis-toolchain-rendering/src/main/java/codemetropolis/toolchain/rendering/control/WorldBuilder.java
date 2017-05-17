@@ -45,7 +45,6 @@ public class WorldBuilder {
 		List<Ground> grounds = new ArrayList<Ground>();
 		int biomeID=1;
 		boolean hasMob = false;
-		List<Mob> mobs = new ArrayList<Mob>();
 		for(Buildable b : buildables.getBuildables()) {
 			switch (b.getType()) {
 				case GROUND:

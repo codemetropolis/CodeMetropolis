@@ -11,7 +11,7 @@ public class Region {
 	private int x;
 	private int z;
 	RegionFile regionFile;
-	private Chunk[] chunks = new Chunk[1024];
+	public Chunk[] chunks = new Chunk[1024];
 	
 	public Region(int x, int z, World world) {
 

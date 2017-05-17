@@ -1,6 +1,5 @@
 package codemetropolis.toolchain.rendering.control;
 
-import codemetropolis.toolchain.rendering.model.primitive.Mob;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +17,7 @@ public class World {
 	private boolean groundBuilding = true;
 	private int maxLoadedRegions = 1;
 	private int mobCounter = 0;
-	public final long mobLimit = 100;
+	public final long mobLimit = 300;
 	private LinkedList<Region> loadedRegions = new LinkedList<Region>();
 	
 	public World(String path, int groundLevel, byte id, boolean hasMob) {
@@ -59,7 +58,7 @@ public class World {
 		Region region = getRegion(regionX, regionZ);
 		Chunk chunk = region.getChunk(chunkIndexX, chunkIndexZ);
 		if(chunk == null) {
-			chunk = new Chunk(chunkX, chunkZ, BIOMEID);
+			chunk = new Chunk(chunkX, chunkZ);
 			if(groundBuilding)
 				chunk.fill(GROUNDLEVEL, (byte) 2);
 			region.setChunk(chunkIndexX, chunkIndexZ, chunk);
@@ -163,9 +162,18 @@ public class World {
 
 	public void finish() {
 		for(Region r : loadedRegions) {
+			setBiomeForRegion(r);
 			r.writeToFile();
 		}
 		loadedRegions.clear();
+	}
+	
+	public void setBiomeForRegion(Region r){
+		for(Chunk c : r.chunks){
+			if(c != null){				
+				c.setBiome(BIOMEID);
+			}
+		}
 	}
 
 	@Override

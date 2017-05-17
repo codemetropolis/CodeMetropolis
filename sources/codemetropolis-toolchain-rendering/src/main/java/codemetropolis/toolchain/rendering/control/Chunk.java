@@ -23,7 +23,7 @@ public class Chunk {
 	
 
 	
-	public Chunk(int x, int z, byte biomId) {
+	public Chunk(int x, int z) {
 		
 		byte terrainPopulated = 1;
 		long inhabitedTime = 0L;
@@ -32,21 +32,18 @@ public class Chunk {
 		int[] heightMap = new int[256];
 		Arrays.fill(heightMap, 0);
 		
-		byte[] biomes = new byte[256];
-		Arrays.fill(biomes, (byte)biomId);
 		
 		NBTTag terrainPopulatedTag = new NBTTag(NBTTag.Type.TAG_Byte, "TerrainPopulated", terrainPopulated);
 		NBTTag xPosTag = new NBTTag(NBTTag.Type.TAG_Int, "xPos", x);
 		NBTTag zPosTag = new NBTTag(NBTTag.Type.TAG_Int, "zPos", z);
 		NBTTag inhabitedTimeTag = new NBTTag(NBTTag.Type.TAG_Long, "InhabitedTime", inhabitedTime);
 		NBTTag lastUpdateTag = new NBTTag(NBTTag.Type.TAG_Long, "LastUpdate", lastUpdate);
-		NBTTag biomesTag = new NBTTag(NBTTag.Type.TAG_Byte_Array, "Biomes", biomes);
 		NBTTag entitiesTag = new NBTTag(NBTTag.Type.TAG_List, "Entities", NBTTag.Type.TAG_Byte);
 		NBTTag tileEntitiesTag = new NBTTag(NBTTag.Type.TAG_List, "TileEntities", NBTTag.Type.TAG_Byte);
 		NBTTag heightMapTag = new NBTTag(NBTTag.Type.TAG_Int_Array, "HeightMap", heightMap);
 		NBTTag sectionsTag = new NBTTag("Sections", NBTTag.Type.TAG_List);
 		
-		NBTTag[] tagList = new NBTTag[] {terrainPopulatedTag, xPosTag, zPosTag, inhabitedTimeTag, biomesTag, lastUpdateTag, sectionsTag, entitiesTag, tileEntitiesTag, heightMapTag, new NBTTag(NBTTag.Type.TAG_End, null, null)};
+		NBTTag[] tagList = new NBTTag[] {terrainPopulatedTag, xPosTag, zPosTag, inhabitedTimeTag, lastUpdateTag, sectionsTag, entitiesTag, tileEntitiesTag, heightMapTag, new NBTTag(NBTTag.Type.TAG_End, null, null)};
 		NBTTag levelTag = new NBTTag(NBTTag.Type.TAG_Compound, "Level", tagList);
 		this.tag = new NBTTag(NBTTag.Type.TAG_Compound, "", new NBTTag[]{ levelTag, new NBTTag(NBTTag.Type.TAG_End, null, null) });
 		
@@ -58,6 +55,13 @@ public class Chunk {
 	
 	public NBTTag toNBT() {
 		return tag;
+	}
+	
+	public void setBiome(byte biomeId){
+		byte[] biomes = new byte[256];
+		Arrays.fill(biomes, (byte)biomeId);
+		NBTTag biomesTag = new NBTTag(NBTTag.Type.TAG_Byte_Array, "Biomes", biomes);
+		tag.getSubtagByName("Level").addTag(biomesTag);
 	}
 	
 	public void setBlock(int x, int y, int z, byte type, byte data) {
@@ -140,7 +144,7 @@ public class Chunk {
 		NBTTag zTag = new NBTTag(NBTTag.Type.TAG_Double, "z", z);
         NBTTag pos = new NBTTag(NBTTag.Type.TAG_List, "Pos", new NBTTag[]{xTag, yTag, zTag});
 		NBTTag idTag = new NBTTag(NBTTag.Type.TAG_String, "id", name);
-		NBTTag noAiTag = new NBTTag(NBTTag.Type.TAG_Byte, "NoAI", (byte)1);
+		NBTTag noAiTag = new NBTTag(NBTTag.Type.TAG_Byte, "NoAI", (byte)0);
 		NBTTag[] tagList = new NBTTag[] {pos, idTag, noAiTag, new NBTTag(NBTTag.Type.TAG_End, null, null)};
 		NBTTag entityTag = new NBTTag(NBTTag.Type.TAG_Compound, "", tagList);
 

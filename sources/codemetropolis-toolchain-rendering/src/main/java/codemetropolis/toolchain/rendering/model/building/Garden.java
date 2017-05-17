@@ -22,7 +22,16 @@ public class Garden extends Building {
 			throw new BuildingTypeMismatchException(innerBuildable.getType(), getClass());
 
 		prepareBase();
-		prepareDoor();
+		/*
+		 * Removed the gates on the 
+		 * sides of the gardens
+		 * at the request of the 
+		 * project owner, so the 
+		 * mobs do not wonder around. 
+		 * To re-enable just uncomment 
+		 * this.
+		 */
+		//prepareDoor();
 		prepareSigns();
 		prepareMobs();
 	}
