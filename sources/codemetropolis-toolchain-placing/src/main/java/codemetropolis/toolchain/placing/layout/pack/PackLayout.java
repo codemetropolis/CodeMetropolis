@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import codemetropolis.toolchain.commons.cmxml.Attribute;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.Point;
@@ -17,15 +19,197 @@ import codemetropolis.toolchain.placing.layout.pack.RectanglePacker.Rectangle;
 
 public class PackLayout extends Layout {
 	
+	public static final int TUNNEL_WIDTH = 2;
+	public static final int TUNNEL_HEIGHT = 5;
+	public static final String TUNNEL_ATTRIBUTE_TARGET = "target";
+	
 	private final int SPACE = 3;
-
+	private int maxDepth = 1000;
+	
 	@Override
 	public void apply(BuildableTree buildables) throws LayoutException {
 		prepareBuildables(buildables);
 		Map<Buildable, List<House>> houses = createHouses(buildables);
 		BuildableWrapper root = new BuildableWrapper(buildables.getRoot());
 		packRecursive(root, houses);
+		
+		makeTunnels(buildables);
 	}
+	
+	private void makeTunnels(BuildableTree buildables) {
+		
+		List<Buildable> extendedBuildables = new ArrayList<Buildable>();
+		
+		for(Buildable b : buildables.getBuildables()) {
+			if(b.getType() != Buildable.Type.TUNNEL) {
+				continue;
+			}
+			
+			Buildable parent = b.getParent();
+			String id = b.getAttributeValue(TUNNEL_ATTRIBUTE_TARGET);
+			
+			if(id == null) {
+				continue;
+			}
+			
+			Buildable target = buildables.getBuildable(id);
+			
+			if(target == null) {
+				continue;
+			}
+			
+			// SAMPLE
+			b.setPositionY(parent.getPositionY() + 1);
+			b.setSizeY(1);
+
+			
+			if(parent.getPositionX() == target.getPositionX()) {
+				
+				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
+				b.setSizeX(TUNNEL_WIDTH);
+				
+				int distance = target.getPositionZ() - parent.getPositionZ();
+				
+				if(parent.getPositionZ() < target.getPositionZ()) {
+					// P - parent, T - target, X - undefined
+					// Position:
+					// X X X
+					// X P X
+					// X T X
+					// X X X
+					
+					b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+					b.setSizeZ(distance);
+					
+				} else {
+					// Position:
+					// X X X
+					// X T X
+					// X P X
+					// X X X
+					
+					b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
+					b.setSizeZ(-distance);
+					
+				}
+			} else if (parent.getPositionZ() == target.getPositionZ()) {
+				
+				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+				b.setSizeZ(2);
+				
+				int distance = target.getPositionX() - parent.getPositionX();
+				
+				if(parent.getPositionX() < target.getPositionX()) {
+					// Position:
+					// X X X X
+					// X P T X
+					// X X X X
+					
+					b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
+					b.setSizeX(distance);
+					
+				} else {
+					// Position:
+					// X X X X
+					// X T P X
+					// X X X X
+					
+					b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+					b.setSizeX(-distance);
+				}
+			} else if(parent.getPositionX() > target.getPositionX()) {
+				
+				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+				b.setSizeZ(TUNNEL_WIDTH);
+				
+				b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				b.setSizeX(parent.getPositionX() - target.getPositionX());
+				
+				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				new_b.setSizeX(TUNNEL_WIDTH);
+				
+				int distance = parent.getPositionZ() - target.getPositionZ();
+				
+				if(parent.getPositionZ() > target.getPositionZ()) {
+					// Position:
+					// X X X X
+					// X T X X
+					// X X P X
+					// X X X X
+					
+					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
+					new_b.setSizeZ(distance);
+					
+				} else {
+					// Position:
+					// X X X X
+					// X X P X
+					// X T X X
+					// X X X X
+					
+					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+					new_b.setSizeZ(-distance);
+				}
+				
+				// SAMPLE
+				new_b.setPositionY(parent.getPositionY() + 1);
+				new_b.setSizeY(TUNNEL_HEIGHT);
+				
+				extendedBuildables.add(new_b);
+				
+				target.addAttribute(new Attribute("target", ""));
+				target.addChild(new_b);
+				
+			} else {
+				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+				b.setSizeZ(TUNNEL_WIDTH);
+				
+				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
+				b.setSizeX(target.getPositionX() - parent.getPositionX());
+				
+				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				
+				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				new_b.setSizeX(TUNNEL_WIDTH);
+				
+				int distance = target.getPositionZ() - parent.getPositionZ();
+				
+				if(parent.getPositionZ() > target.getPositionZ()) {
+					// Position:
+					// X X X X
+					// X X T X
+					// X P X X
+					// X X X X
+					
+					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
+					new_b.setSizeZ(-distance);
+
+				} else {
+					// Position:
+					// X X X X
+					// X P X X
+					// X X T X
+					// X X X X
+					
+					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+					new_b.setSizeZ(distance);
+					
+				}
+				
+				// SAMPLE
+				new_b.setSizeY(TUNNEL_HEIGHT);
+				new_b.setPositionY(parent.getPositionY() + 1);
+				
+				extendedBuildables.add(new_b);
+				
+				target.addAttribute(new Attribute("target", ""));
+				target.addChild(new_b);
+			}
+		}
+		buildables.getBuildables().addAll(extendedBuildables);
+	}
+	
 	
 	private void prepareBuildables(BuildableTree buildables) {
 		for(Buildable b : buildables.getBuildables()) {
@@ -46,8 +230,18 @@ public class PackLayout extends Layout {
 	}
 	
 	public void packRecursive(BuildableWrapper root, Map<Buildable, List<House>> houses) {
-		List<BuildableWrapper> children = root.getChildren(houses);
+		List<BuildableWrapper> tempChildren = root.getChildren(houses);
+		List<BuildableWrapper> children = new ArrayList<BuildableWrapper>();
+		
+		for(BuildableWrapper c : tempChildren) {
+			if(c.buildable instanceof Buildable && ((Buildable)c.buildable).getType() == Buildable.Type.TUNNEL) {
+				continue;
+			}
+			children.add(c);
+		}
+		
 		for(BuildableWrapper c : children) {
+			
 			if(!c.getChildren(houses).isEmpty()) {
 				packRecursive(c, houses);
 			}
@@ -66,6 +260,11 @@ public class PackLayout extends Layout {
 		RectanglePacker<BuildableWrapper> packer = new RectanglePacker<BuildableWrapper>(sizeX, sizeZ, space);
 		
 		for(BuildableWrapper b : buildables) {
+			
+			if(b.getPositionZ() < maxDepth) {
+				maxDepth = b.getPositionZ();
+			}
+			
 			if(packer.insert(b.getSizeX(), b.getSizeZ(), b) == null) {
 				if(sizeX > sizeZ) {
 					sizeZ++;
@@ -76,7 +275,7 @@ public class PackLayout extends Layout {
 				return;
 			};
 		}
-		
+
 		for(BuildableWrapper b : buildables) {
 			Rectangle r = packer.findRectangle(b);
 			b.setPositionX(r.x + space);

@@ -50,6 +50,7 @@ public class WorldBuilder {
 		List<Cellar> cellars = new ArrayList<Cellar>();
 		List<Garden> gardens = new ArrayList<Garden>();
 		List<Ground> grounds = new ArrayList<Ground>();
+		List<Tunnel> tunnels = new ArrayList<Tunnel>();
 
 		for(Buildable b : buildables.getBuildables()) {
 			switch(b.getType()) {
@@ -75,6 +76,11 @@ public class WorldBuilder {
 					break;
 				case CONTAINER:
 					break;
+				case TUNNEL:
+					Tunnel tunnel = new Tunnel(b);
+					tunnels.add(tunnel);
+					total += tunnel.getNumberOfBlocks();
+					break;
 			}
 		}
 		
@@ -82,6 +88,7 @@ public class WorldBuilder {
 		buildings.addAll(gardens);
 		buildings.addAll(cellars);
 		buildings.addAll(floors);
+		buildings.addAll(tunnels);
 		
 		raiseProgressEvent(BuildPhase.READING_INPUT_FILE, 1, 1, -1);
 	}

@@ -16,7 +16,8 @@ public class Buildable implements Comparable<Buildable> {
 		GARDEN,
 		FLOOR,
 		CELLAR,
-		CONTAINER;
+		CONTAINER,
+		TUNNEL;
 	}
 	
 	private String id;
