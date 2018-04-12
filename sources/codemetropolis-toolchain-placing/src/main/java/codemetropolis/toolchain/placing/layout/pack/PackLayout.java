@@ -20,11 +20,10 @@ import codemetropolis.toolchain.placing.layout.pack.RectanglePacker.Rectangle;
 public class PackLayout extends Layout {
 	
 	public static final int TUNNEL_WIDTH = 2;
-	public static final int TUNNEL_HEIGHT = 5;
+	public static final int TUNNEL_HEIGHT = 4;
 	public static final String TUNNEL_ATTRIBUTE_TARGET = "target";
 	
 	private final int SPACE = 3;
-	private int maxDepth = 1000;
 	
 	@Override
 	public void apply(BuildableTree buildables) throws LayoutException {
@@ -58,19 +57,16 @@ public class PackLayout extends Layout {
 				continue;
 			}
 			
-			// SAMPLE
-			b.setPositionY(parent.getPositionY() + 1);
-			b.setSizeY(1);
+			b.setSizeY(TUNNEL_HEIGHT);
 
-			
-			if(parent.getPositionX() == target.getPositionX()) {
+			if(parent.getPositionX()/2 == target.getPositionX()/2) {
 				
-				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
+				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2 - TUNNEL_WIDTH/2);
 				b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ();
+				int distance = target.getPositionZ() - parent.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ());
 				
-				if(parent.getPositionZ() < target.getPositionZ()) {
+				if(parent.getPositionZ()/2 < target.getPositionZ()/2) {
 					// P - parent, T - target, X - undefined
 					// Position:
 					// X X X
@@ -80,6 +76,10 @@ public class PackLayout extends Layout {
 					
 					b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
 					b.setSizeZ(distance);
+					
+					//b.addAttribute(new Attribute("orientation", "south"));
+					b.addAttribute(new Attribute("standalone", "true"));
+					
 					
 				} else {
 					// Position:
@@ -91,13 +91,16 @@ public class PackLayout extends Layout {
 					b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
 					b.setSizeZ(-distance);
 					
+					//b.addAttribute(new Attribute("orientation", "north"));
+					b.addAttribute(new Attribute("standalone", "true"));
+					
 				}
-			} else if (parent.getPositionZ() == target.getPositionZ()) {
+			} else if (parent.getPositionZ()/2 == target.getPositionZ()/2) {
 				
-				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
-				b.setSizeZ(2);
+				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
+				b.setSizeZ(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionX() - parent.getPositionX();
+				int distance = target.getPositionX() - parent.getPositionX() + Math.abs(parent.getSizeX() - target.getSizeX());
 				
 				if(parent.getPositionX() < target.getPositionX()) {
 					// Position:
@@ -108,6 +111,8 @@ public class PackLayout extends Layout {
 					b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
 					b.setSizeX(distance);
 					
+					//b.addAttribute(new Attribute("orientation", "east"));
+					
 				} else {
 					// Position:
 					// X X X X
@@ -116,22 +121,26 @@ public class PackLayout extends Layout {
 					
 					b.setPositionX(target.getPositionX() + target.getSizeX()/2);
 					b.setSizeX(-distance);
+					
+					//b.addAttribute(new Attribute("orientation", "west"));
 				}
-			} else if(parent.getPositionX() > target.getPositionX()) {
+			} else if(parent.getPositionX()/2 > target.getPositionX()/2) {
 				
 				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
 				b.setSizeX(parent.getPositionX() - target.getPositionX());
 				
+				//b.addAttribute(new Attribute("orientation", "west"));
+				
 				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
-				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = parent.getPositionZ() - target.getPositionZ();
+				int distance = parent.getPositionZ() - target.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ());
 				
-				if(parent.getPositionZ() > target.getPositionZ()) {
+				if(parent.getPositionZ()/2 > target.getPositionZ()/2) {
 					// Position:
 					// X X X X
 					// X T X X
@@ -140,6 +149,8 @@ public class PackLayout extends Layout {
 					
 					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
 					new_b.setSizeZ(distance);
+					
+					//new_b.addAttribute(new Attribute("orientation", "north"));
 					
 				} else {
 					// Position:
@@ -150,10 +161,12 @@ public class PackLayout extends Layout {
 					
 					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
 					new_b.setSizeZ(-distance);
+					
+					//new_b.addAttribute(new Attribute("orientation", "south"));
 				}
 				
 				// SAMPLE
-				new_b.setPositionY(parent.getPositionY() + 1);
+				new_b.setPositionY(0);
 				new_b.setSizeY(TUNNEL_HEIGHT);
 				
 				extendedBuildables.add(new_b);
@@ -162,28 +175,31 @@ public class PackLayout extends Layout {
 				target.addChild(new_b);
 				
 			} else {
-				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
+				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2 - TUNNEL_WIDTH/2);
 				b.setSizeX(target.getPositionX() - parent.getPositionX());
 				
-				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				b.addAttribute(new Attribute("orientation", "east"));
 				
-				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2);
+				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ();
+				int distance = target.getPositionZ() - parent.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ()) - TUNNEL_WIDTH/2;
 				
-				if(parent.getPositionZ() > target.getPositionZ()) {
+				if(parent.getPositionZ()/2 > target.getPositionZ()/2) {
 					// Position:
 					// X X X X
 					// X X T X
 					// X P X X
 					// X X X X
 					
-					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
+					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2 - TUNNEL_WIDTH/2);
 					new_b.setSizeZ(-distance);
+					
+					//new_b.addAttribute(new Attribute("orientation", "north"));
 
 				} else {
 					// Position:
@@ -192,18 +208,17 @@ public class PackLayout extends Layout {
 					// X X T X
 					// X X X X
 					
-					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
 					new_b.setSizeZ(distance);
+					
+					//new_b.addAttribute(new Attribute("orientation", "south"));
 					
 				}
 				
-				// SAMPLE
 				new_b.setSizeY(TUNNEL_HEIGHT);
-				new_b.setPositionY(parent.getPositionY() + 1);
 				
 				extendedBuildables.add(new_b);
 				
-				target.addAttribute(new Attribute("target", ""));
 				target.addChild(new_b);
 			}
 		}
@@ -234,9 +249,9 @@ public class PackLayout extends Layout {
 		List<BuildableWrapper> children = new ArrayList<BuildableWrapper>();
 		
 		for(BuildableWrapper c : tempChildren) {
-			if(c.buildable instanceof Buildable && ((Buildable)c.buildable).getType() == Buildable.Type.TUNNEL) {
+			if (c.buildable instanceof Buildable && ((Buildable)c.buildable).getType() == Buildable.Type.TUNNEL) {
 				continue;
-			}
+			} 
 			children.add(c);
 		}
 		
@@ -260,11 +275,6 @@ public class PackLayout extends Layout {
 		RectanglePacker<BuildableWrapper> packer = new RectanglePacker<BuildableWrapper>(sizeX, sizeZ, space);
 		
 		for(BuildableWrapper b : buildables) {
-			
-			if(b.getPositionZ() < maxDepth) {
-				maxDepth = b.getPositionZ();
-			}
-			
 			if(packer.insert(b.getSizeX(), b.getSizeZ(), b) == null) {
 				if(sizeX > sizeZ) {
 					sizeZ++;

@@ -24,7 +24,9 @@ import codemetropolis.toolchain.rendering.model.primitive.Boxel;
 
 public class WorldBuilder {
 
-	private static final int GROUND_LEVEL = 60;
+	public static final int GROUND_LEVEL = 60;
+	public static int TUNNEL_LEVEL = GROUND_LEVEL;
+	public static int BRIDGE_LEVEL = GROUND_LEVEL;
 	
 	private World world;
 	private List<Building> buildings = new ArrayList<Building>();
@@ -45,6 +47,8 @@ public class WorldBuilder {
 			e.printStackTrace();
 			return;
 		}
+		
+		calculateMaxDepthAndHeight(buildables);
 		
 		List<Floor> floors = new ArrayList<Floor>();
 		List<Cellar> cellars = new ArrayList<Cellar>();
@@ -172,5 +176,18 @@ public class WorldBuilder {
 		}
     }
 	//endregion
+	
+	private void calculateMaxDepthAndHeight(BuildableTree buildables) {
+		for(Buildable b : buildables.getBuildables()) {
+			if(b.getType() == Buildable.Type.CELLAR && b.getPositionY() < TUNNEL_LEVEL) {
+				TUNNEL_LEVEL = b.getPositionY();
+				continue;
+			}
+			if(b.getType() == Buildable.Type.FLOOR && b.getPositionY() > BRIDGE_LEVEL) {
+				BRIDGE_LEVEL = b.getPositionY();
+				continue;
+			}
+		}
+	}
 	
 }
