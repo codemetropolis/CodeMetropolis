@@ -40,33 +40,40 @@ public class PackLayout extends Layout {
 		List<Buildable> extendedBuildables = new ArrayList<Buildable>();
 		
 		for(Buildable b : buildables.getBuildables()) {
-			if(b.getType() != Buildable.Type.TUNNEL) {
+			if (b.getType() != Buildable.Type.TUNNEL) {
 				continue;
 			}
 			
 			Buildable parent = b.getParent();
 			String id = b.getAttributeValue(TUNNEL_ATTRIBUTE_TARGET);
 			
-			if(id == null) {
+			if (id == null) {
 				continue;
 			}
 			
 			Buildable target = buildables.getBuildable(id);
 			
-			if(target == null) {
+			if (target == null) {
 				continue;
+			}
+			
+			if(target.getId() == parent.getId()) {
+				buildables.getBuildables().remove(b);
 			}
 			
 			b.setSizeY(TUNNEL_HEIGHT);
 
-			if(parent.getPositionX()/2 == target.getPositionX()/2) {
+			Point parentCenter = new Point(parent.getPositionX() + parent.getSizeX()/2, 0, parent.getPositionZ() + parent.getSizeZ()/2);
+			Point targetCenter = new Point(target.getPositionX() + target.getSizeX()/2, 0, target.getPositionZ() + target.getSizeZ()/2);
+			
+			if (parentCenter.getX() == targetCenter.getX()) {
 				
-				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2 - TUNNEL_WIDTH/2);
+				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
 				b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ());
+				int distance = target.getPositionZ() - parent.getPositionZ();
 				
-				if(parent.getPositionZ()/2 < target.getPositionZ()/2) {
+				if (parentCenter.getZ() < targetCenter.getZ()) {
 					// P - parent, T - target, X - undefined
 					// Position:
 					// X X X
@@ -74,12 +81,10 @@ public class PackLayout extends Layout {
 					// X T X
 					// X X X
 					
-					b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
-					b.setSizeZ(distance);
+					b.setPositionZ(parentCenter.getZ());
+					b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2);
 					
-					//b.addAttribute(new Attribute("orientation", "south"));
 					b.addAttribute(new Attribute("standalone", "true"));
-					
 					
 				} else {
 					// Position:
@@ -88,30 +93,29 @@ public class PackLayout extends Layout {
 					// X P X
 					// X X X
 					
-					b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
-					b.setSizeZ(-distance);
+					b.setPositionZ(targetCenter.getZ());
+					b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2);
 					
-					//b.addAttribute(new Attribute("orientation", "north"));
 					b.addAttribute(new Attribute("standalone", "true"));
 					
 				}
-			} else if (parent.getPositionZ()/2 == target.getPositionZ()/2) {
+			} else if (parentCenter.getZ() == targetCenter.getZ()) {
 				
-				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
+				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionX() - parent.getPositionX() + Math.abs(parent.getSizeX() - target.getSizeX());
+				int distance = target.getPositionX() - parent.getPositionX();
 				
-				if(parent.getPositionX() < target.getPositionX()) {
+				if (parent.getPositionX() < target.getPositionX()) {
 					// Position:
 					// X X X X
 					// X P T X
 					// X X X X
 					
-					b.setPositionX(parent.getPositionX() + parent.getSizeX()/2);
-					b.setSizeX(distance);
+					b.setPositionX(parentCenter.getX());
+					b.setSizeX(distance + Math.abs(parent.getSizeX() - target.getSizeX())/2);
 					
-					//b.addAttribute(new Attribute("orientation", "east"));
+					b.addAttribute(new Attribute("standalone", "true"));
 					
 				} else {
 					// Position:
@@ -119,38 +123,37 @@ public class PackLayout extends Layout {
 					// X T P X
 					// X X X X
 					
-					b.setPositionX(target.getPositionX() + target.getSizeX()/2);
-					b.setSizeX(-distance);
+					b.setPositionX(targetCenter.getX());
+					b.setSizeX(-distance + Math.abs(parent.getSizeX() - target.getSizeX())/2);
 					
-					//b.addAttribute(new Attribute("orientation", "west"));
+					b.addAttribute(new Attribute("standalone", "true"));
+					
 				}
-			} else if(parent.getPositionX()/2 > target.getPositionX()/2) {
+			} else if (parentCenter.getX() > targetCenter.getX()) {
 				
-				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
+				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
-				b.setSizeX(parent.getPositionX() - target.getPositionX());
+				b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
+				b.setSizeX(parent.getPositionX() - target.getPositionX() + Math.abs(parent.getSizeX() - target.getSizeX())/2 + TUNNEL_WIDTH/2);
 				
-				//b.addAttribute(new Attribute("orientation", "west"));
+				b.addAttribute(new Attribute("standalone", "false"));
 				
 				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
-				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
+				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = parent.getPositionZ() - target.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ());
+				int distance = parent.getPositionZ() - target.getPositionZ();
 				
-				if(parent.getPositionZ()/2 > target.getPositionZ()/2) {
+				if(parentCenter.getZ() > targetCenter.getZ()) {
 					// Position:
 					// X X X X
 					// X T X X
 					// X X P X
 					// X X X X
 					
-					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2);
-					new_b.setSizeZ(distance);
-					
-					//new_b.addAttribute(new Attribute("orientation", "north"));
+					new_b.setPositionZ(targetCenter.getZ() - TUNNEL_WIDTH/2);
+					new_b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
 					
 				} else {
 					// Position:
@@ -159,35 +162,33 @@ public class PackLayout extends Layout {
 					// X T X X
 					// X X X X
 					
-					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2);
-					new_b.setSizeZ(-distance);
-					
-					//new_b.addAttribute(new Attribute("orientation", "south"));
+					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
+					new_b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+
 				}
 				
-				// SAMPLE
-				new_b.setPositionY(0);
-				new_b.setSizeY(TUNNEL_HEIGHT);
+				new_b.addAttribute(new Attribute("standalone", "false"));
 				
+				new_b.setSizeY(TUNNEL_HEIGHT);
+
 				extendedBuildables.add(new_b);
 				
-				target.addAttribute(new Attribute("target", ""));
 				target.addChild(new_b);
 				
 			} else {
-				b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
+				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				b.setPositionX(parent.getPositionX() + parent.getSizeX()/2 - TUNNEL_WIDTH/2);
-				b.setSizeX(target.getPositionX() - parent.getPositionX());
+				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
+				b.setSizeX(target.getPositionX() - parent.getPositionX() + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
 				
-				b.addAttribute(new Attribute("orientation", "east"));
+				b.addAttribute(new Attribute("standalone", "false"));
 				
 				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
-				new_b.setPositionX(target.getPositionX() + target.getSizeX()/2 - TUNNEL_WIDTH/2);
+				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ() + Math.abs(parent.getSizeZ() - target.getSizeZ()) - TUNNEL_WIDTH/2;
+				int distance = target.getPositionZ() - parent.getPositionZ();
 				
 				if(parent.getPositionZ()/2 > target.getPositionZ()/2) {
 					// Position:
@@ -196,10 +197,8 @@ public class PackLayout extends Layout {
 					// X P X X
 					// X X X X
 					
-					new_b.setPositionZ(target.getPositionZ() + target.getSizeZ()/2 - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(-distance);
-					
-					//new_b.addAttribute(new Attribute("orientation", "north"));
+					new_b.setPositionZ(targetCenter.getZ() - TUNNEL_WIDTH/2);
+					new_b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
 
 				} else {
 					// Position:
@@ -208,12 +207,12 @@ public class PackLayout extends Layout {
 					// X X T X
 					// X X X X
 					
-					new_b.setPositionZ(parent.getPositionZ() + parent.getSizeZ()/2 - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(distance);
-					
-					//new_b.addAttribute(new Attribute("orientation", "south"));
+					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
+					new_b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
 					
 				}
+				
+				new_b.addAttribute(new Attribute("standalone", "false"));
 				
 				new_b.setSizeY(TUNNEL_HEIGHT);
 				
