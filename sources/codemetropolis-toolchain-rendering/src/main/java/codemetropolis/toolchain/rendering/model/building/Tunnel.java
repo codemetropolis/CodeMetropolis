@@ -7,7 +7,6 @@ import codemetropolis.toolchain.rendering.control.WorldBuilder;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
-import codemetropolis.toolchain.rendering.model.primitive.Row;
 import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
@@ -17,8 +16,8 @@ public class Tunnel extends Building {
 	private static final int TUNNEL_WIDTH = 2;
 	private static final int TUNNEL_HEIGHT = 4;
 	private static final String TUNNEL_ATTRIBUTE_TARGET = "target";
+	private static final String TUNNEL_ATTRIBUTE_STANDALONE = "standalone";
 	
-	private Orientation orientation;
 	
 	public Tunnel(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		
@@ -46,7 +45,10 @@ public class Tunnel extends Building {
 				);
 		
 		prepareTunnel();
-		prepareStairs();
+		if (!this.innerBuildable.getParent().hasStairs()) {
+			this.innerBuildable.getParent().setHasStairs(true);
+			prepareStairs();
+		}
 		// prepareTorches(); ?
 	}
 	
@@ -111,23 +113,61 @@ public class Tunnel extends Building {
 						{ _air, _air, _air }
 					}
 				};
-		
-
-				Point pos = calculateStepPosition();
-				
+						
 		primitives.add(
 			new SolidBox(
-				pos,
-				new Point( 3, calculateHeight(), 3 ),
+				calculateStepPosition(this.innerBuildable),
+				new Point( 3, calculateHeight(this.innerBuildable.getParent()), 3 ),
 				new RepeationPattern( steps ),
 				new RepeationPattern( steps ),
 				Orientation.NearY ) );
+		
+		if(this.innerBuildable.hasAttribute(TUNNEL_ATTRIBUTE_STANDALONE) && Boolean.parseBoolean(this.innerBuildable.getAttributeValue(TUNNEL_ATTRIBUTE_STANDALONE))) {
+			
+			String id = this.innerBuildable.getAttributeValue(TUNNEL_ATTRIBUTE_TARGET);
+			
+			if (id == null) { return; }
+			
+			Buildable root = this.innerBuildable.getParent();
+			while(!root.isRoot()) {
+				root = root.getParent();
+			}
+			
+			Buildable target = getTarget(root, id);
+			if (target == null || target.hasStairs()) { return; }
+			
+			primitives.add(
+					new SolidBox(
+						calculateStepPosition(target),
+						new Point( 3, calculateHeight(target), 3 ),
+						new RepeationPattern( steps ),
+						new RepeationPattern( steps ),
+						Orientation.NearY ) );
+		}
+		
 	}
+	
+	private Buildable getTarget(Buildable buildable, String id) {
+		Buildable b = null;
+		
+		if (id.equals(buildable.getId())) {
+			return buildable;
+		} else if (buildable.getNumberOfChildren() == 0) {
+			return null;
+		} else {
+			for(Buildable child : buildable.getChildren()) {
+				b = getTarget(child, id);
+				
+				if (b != null) { break; }
+			}
+		}
+		return b;
+	} 
 
 	
-	private int calculateHeight() {
+	private int calculateHeight(Buildable buildable) {
 		int height = WorldBuilder.GROUND_LEVEL - WorldBuilder.TUNNEL_LEVEL + TUNNEL_HEIGHT + 1;
-		for(Buildable b : this.innerBuildable.getParent().getChildren()) {
+		for(Buildable b : buildable.getChildren()) {
 			if(b.getType() == Buildable.Type.CELLAR && height > b.getPositionY() - WorldBuilder.TUNNEL_LEVEL + TUNNEL_HEIGHT) {
 				height = b.getPositionY() - WorldBuilder.TUNNEL_LEVEL + TUNNEL_HEIGHT;
 			}
@@ -136,9 +176,10 @@ public class Tunnel extends Building {
 		return height;
 	}
 	
-	private Point calculateStepPosition() {
+	private Point calculateStepPosition(Buildable buildable) {
 		Point stepPosition;
-		if(this.innerBuildable.hasAttribute(TUNNEL_ATTRIBUTE_TARGET)) {
+		
+		if(buildable.hasAttribute(TUNNEL_ATTRIBUTE_TARGET)) {
 			stepPosition = new Point(position.getX(), WorldBuilder.TUNNEL_LEVEL, position.getZ());
 		} else {
 			if(size.getX() == adjustSize(TUNNEL_WIDTH, MIN_SIZE)) {
