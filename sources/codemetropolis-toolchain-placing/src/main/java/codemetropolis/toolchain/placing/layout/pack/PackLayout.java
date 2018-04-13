@@ -71,7 +71,7 @@ public class PackLayout extends Layout {
 				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
 				b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ();
+				int distance = targetCenter.getZ() - parentCenter.getZ();
 				
 				if (parentCenter.getZ() < targetCenter.getZ()) {
 					// P - parent, T - target, X - undefined
@@ -82,7 +82,7 @@ public class PackLayout extends Layout {
 					// X X X
 					
 					b.setPositionZ(parentCenter.getZ());
-					b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2);
+					b.setSizeZ(distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
 					
@@ -94,7 +94,7 @@ public class PackLayout extends Layout {
 					// X X X
 					
 					b.setPositionZ(targetCenter.getZ());
-					b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2);
+					b.setSizeZ(-distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
 					
@@ -104,7 +104,7 @@ public class PackLayout extends Layout {
 				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
 				b.setSizeZ(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionX() - parent.getPositionX();
+				int distance = targetCenter.getX() - parentCenter.getX();
 				
 				if (parent.getPositionX() < target.getPositionX()) {
 					// Position:
@@ -113,7 +113,7 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					b.setPositionX(parentCenter.getX());
-					b.setSizeX(distance + Math.abs(parent.getSizeX() - target.getSizeX())/2);
+					b.setSizeX(distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
 					
@@ -124,7 +124,7 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					b.setPositionX(targetCenter.getX());
-					b.setSizeX(-distance + Math.abs(parent.getSizeX() - target.getSizeX())/2);
+					b.setSizeX(-distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
 					
@@ -135,7 +135,7 @@ public class PackLayout extends Layout {
 				b.setSizeZ(TUNNEL_WIDTH);
 				
 				b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
-				b.setSizeX(parent.getPositionX() - target.getPositionX() + Math.abs(parent.getSizeX() - target.getSizeX())/2 + TUNNEL_WIDTH/2);
+				b.setSizeX(parentCenter.getX() - targetCenter.getX() + TUNNEL_WIDTH);
 				
 				b.addAttribute(new Attribute("standalone", "false"));
 				
@@ -143,7 +143,7 @@ public class PackLayout extends Layout {
 				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = parent.getPositionZ() - target.getPositionZ();
+				int distance = parentCenter.getZ() - targetCenter.getZ();
 				
 				if(parentCenter.getZ() > targetCenter.getZ()) {
 					// Position:
@@ -152,8 +152,8 @@ public class PackLayout extends Layout {
 					// X X P X
 					// X X X X
 					
-					new_b.setPositionZ(targetCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+					new_b.setPositionZ(targetCenter.getZ());
+					new_b.setSizeZ(distance + TUNNEL_WIDTH/2);
 					
 				} else {
 					// Position:
@@ -163,7 +163,7 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+					new_b.setSizeZ(-distance + TUNNEL_WIDTH/2);
 
 				}
 				
@@ -180,7 +180,7 @@ public class PackLayout extends Layout {
 				b.setSizeZ(TUNNEL_WIDTH);
 				
 				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
-				b.setSizeX(target.getPositionX() - parent.getPositionX() + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+				b.setSizeX(targetCenter.getX() - parentCenter.getX() + TUNNEL_WIDTH);
 				
 				b.addAttribute(new Attribute("standalone", "false"));
 				
@@ -188,17 +188,17 @@ public class PackLayout extends Layout {
 				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
 				new_b.setSizeX(TUNNEL_WIDTH);
 				
-				int distance = target.getPositionZ() - parent.getPositionZ();
+				int distance = targetCenter.getZ() - parentCenter.getZ();
 				
-				if(parent.getPositionZ()/2 > target.getPositionZ()/2) {
+				if (parentCenter.getZ() > targetCenter.getZ()) {
 					// Position:
 					// X X X X
 					// X X T X
 					// X P X X
 					// X X X X
 					
-					new_b.setPositionZ(targetCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(-distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+					new_b.setPositionZ(targetCenter.getZ());
+					new_b.setSizeZ(-distance + TUNNEL_WIDTH/2);
 
 				} else {
 					// Position:
@@ -208,7 +208,7 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(distance + (target.getSizeX() - parent.getSizeX())/2 + TUNNEL_WIDTH/2);
+					new_b.setSizeZ(distance + TUNNEL_WIDTH/2);
 					
 				}
 				
