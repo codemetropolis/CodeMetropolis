@@ -27,6 +27,15 @@
                                             <attribute name="flower-ratio" value="0.25"/>
                                         </attributes>
                                         <children>
+											<buildable id="zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
+												<position x="0" y="0" z="0"/>
+												<size x="10" y="10" z="10"/>
+												<attributes>
+													<attribute name="target" value="b4fe74b8-5b18-44df-b410-3716d56ee125"/>
+													<attribute name="torches" value="6"/>
+												</attributes>
+												<children/>
+											</buildable>
                                             <buildable id="b3385d36-037a-4863-9fa6-96aa9d55339a" name="void main(String[] args)" type="floor">
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="13" z="11"/>
@@ -94,6 +103,15 @@
                                     <attribute name="flower-ratio" value="0.25"/>
                                 </attributes>
                                 <children>
+									<buildable id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE1" type="tunnel">
+										<position x="0" y="0" z="0"/>
+										<size x="10" y="10" z="10"/>
+										<attributes>
+											<attribute name="target" value="fd21461f-2eb4-4dfd-826f-67907b0bd011"/>
+											<attribute name="torches" value="6"/>
+										</attributes>
+										<children/>
+									</buildable>
                                     <buildable id="12e1152c-459a-4175-a0fb-2e96d771efb7" name="isbn" type="cellar">
                                         <position x="0" y="0" z="0"/>
                                         <size x="9" y="9" z="9"/>
@@ -181,7 +199,15 @@
                                     <attribute name="flower-ratio" value="0.25"/>
                                 </attributes>
                                 <children>
-								
+									<buildable id="yxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
+										<position x="0" y="0" z="0"/>
+										<size x="10" y="10" z="10"/>
+										<attributes>
+											<attribute name="target" value="2d17e5e8-8dfc-43f3-9435-b0babcd6401f"/>
+											<attribute name="torches" value="6"/>
+										</attributes>
+										<children/>
+									</buildable>
                                     <buildable id="7642a944-4b0e-4c02-a8f7-3619ead84796" name="runlength" type="cellar">
                                         <position x="0" y="0" z="0"/>
                                         <size x="9" y="9" z="9"/>
@@ -327,13 +353,11 @@
                                     <attribute name="flower-ratio" value="0.0"/>
                                 </attributes>
                                 <children>
-									<buildable id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE" type="tunnel">
+									<buildable id="zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
 										<position x="0" y="0" z="0"/>
 										<size x="10" y="10" z="10"/>
 										<attributes>
-											<attribute name="target" value="ff523220-6c62-424b-abcd-a8e6775652ac"/>
-											<attribute name="character" value="wood"/>
-											<attribute name="external_character" value="metal"/>
+											<attribute name="target" value="fd21461f-2eb4-4dfd-826f-67907b0bd011"/>
 											<attribute name="torches" value="6"/>
 										</attributes>
 										<children/>
@@ -425,6 +449,7 @@
                                     <attribute name="flower-ratio" value="1.0"/>
                                 </attributes>
                                 <children>
+									
                                     <buildable id="0a5b2a06-932c-4b96-a74f-7c76e9aa9927" name="void main(String[] args)" type="floor">
                                         <position x="0" y="0" z="0"/>
                                         <size x="9" y="21" z="17"/>
