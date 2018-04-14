@@ -28,6 +28,7 @@ import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMSpinner;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.components.listeners.MappingEditorListener;
 import codemetropolis.toolchain.gui.utils.ExecutionWorker;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
@@ -52,6 +53,7 @@ public class CodeMetropolisGUI extends JFrame {
   private CMTextField projectName;
   private JTabbedPane metricTabbedPane;
   private CMTextField mappingPath;
+  private CMTextField mappingEditorCdfPath;
   private CMTextField mcRootPath;
   private CMCheckBox showMap;
   private CMCheckBox validateStructure;
@@ -107,7 +109,7 @@ public class CodeMetropolisGUI extends JFrame {
     panel.setBackground(Color.WHITE);
     panel.setBounds(0, 0, 500, 700);
 
-    Dimension size = new Dimension(500, 750);
+    Dimension size = new Dimension(500, 800);
     panel.setMinimumSize(size);
     panel.setPreferredSize(size);
     panel.setMaximumSize(size);
@@ -202,16 +204,29 @@ public class CodeMetropolisGUI extends JFrame {
     mappingPath = new CMTextField(145, 555, 235, 30);
     CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 100, 30);
     mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));
+    
+    //Mapping file editor GUI components
+    CMLabel mappingEditorLabel = new CMLabel(Translations.t("gui_l_source_cdf"), 15, 590, 120, 30);
+    mappingEditorCdfPath = new CMTextField(145, 590, 235, 30);
+    CMButton mappingEditorBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 590, 100, 30);
+    mappingEditorBrowse.addActionListener(new BrowseListener(mappingEditorCdfPath, JFileChooser.FILES_ONLY, XML_FILTER));
+    CMButton mappingEditorButton = new CMButton(Translations.t("gui_b_mapping_file_editor"), 300, 625, 185, 30);
+    //A mappingEditorCdfPath.getText() paramétert ki kell cserélni egy cdf fájlt reprezentáló útvonallal (string).
+    mappingEditorButton.addActionListener(new MappingEditorListener(mappingEditorCdfPath.getText(), this));
+    
+    CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 660, 120, 30);
+    scaleSpinner = new CMSpinner(145, 660, 120, 30);
 
-    CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 590, 120, 30);
-    scaleSpinner = new CMSpinner(145, 590, 120, 30);
-
-    validateStructure = new CMCheckBox(275, 590, 20, 30);
-    CMLabel validateStructureLabel = new CMLabel(Translations.t("gui_l_validate_structure"), 300, 590, 185, 30);
+    validateStructure = new CMCheckBox(275, 660, 20, 30);
+    CMLabel validateStructureLabel = new CMLabel(Translations.t("gui_l_validate_structure"), 300, 660, 185, 30);
 
     panel.add(mappingLabel);
     panel.add(mappingPath);
     panel.add(mappingBrowse);
+    panel.add(mappingEditorLabel);
+    panel.add(mappingEditorCdfPath);
+    panel.add(mappingEditorBrowse);
+    panel.add(mappingEditorButton);
     panel.add(scaleLabel);
     panel.add(scaleSpinner);
     panel.add(validateStructure);
@@ -224,12 +239,12 @@ public class CodeMetropolisGUI extends JFrame {
    * @param panel The {@link JPanel} to add the components to.
    */
   private final void addPlacingOptions(JPanel panel) {
-    CMLabel layoutLabel = new CMLabel(Translations.t("gui_l_layout"), 15, 625, 120, 30);
+    CMLabel layoutLabel = new CMLabel(Translations.t("gui_l_layout"), 15, 695, 120, 30);
     layoutSelector = new CMComboBox<LayoutAlgorithm>(LayoutAlgorithm.values());
-    layoutSelector.setBounds(145, 625, 120, 30);
+    layoutSelector.setBounds(145, 695, 120, 30);
 
-    showMap = new CMCheckBox(275, 625, 20, 30);
-    CMLabel showMapLabel = new CMLabel(Translations.t("gui_l_show_map"), 300, 625, 185, 30);
+    showMap = new CMCheckBox(275, 695, 20, 30);
+    CMLabel showMapLabel = new CMLabel(Translations.t("gui_l_show_map"), 300, 695, 185, 30);
 
     panel.add(layoutLabel);
     panel.add(layoutSelector);
@@ -244,9 +259,9 @@ public class CodeMetropolisGUI extends JFrame {
    * @param panel The {@link JPanel} to add the components to.
    */
   private final void addMinecraftRootBrowser(JPanel panel) {
-    CMLabel mcRootLabel = new CMLabel(Translations.t("gui_l_mcroot"), 15, 660, 120, 30);
-    mcRootPath = new CMTextField(145, 660, 235, 30);
-    CMButton mcRootBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 660, 100, 30);
+    CMLabel mcRootLabel = new CMLabel(Translations.t("gui_l_mcroot"), 15, 730, 120, 30);
+    mcRootPath = new CMTextField(145, 730, 235, 30);
+    CMButton mcRootBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 730, 100, 30);
     mcRootBrowse.addActionListener(new BrowseListener(mcRootPath, JFileChooser.DIRECTORIES_ONLY, null));
 
     panel.add(mcRootLabel);
@@ -261,7 +276,7 @@ public class CodeMetropolisGUI extends JFrame {
    */
   private final void addStartButton(JPanel panel) {
     CodeMetropolisGUI self = this;
-    CMButton start = new CMButton(Translations.t("gui_b_generate"), 190, 705, 120, 30);
+    CMButton start = new CMButton(Translations.t("gui_b_generate"), 190, 765, 120, 30);
     start.addActionListener(new ActionListener() {
 
       @Override

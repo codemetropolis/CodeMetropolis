@@ -13,15 +13,14 @@ import java.util.Map;
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
 
 public class BuildableSettings {
+	//Map, which contains the default settings of what properties to display to the individual buildable types.
+	public static final Map<String, String[]> DEFAULT_SETTINGS = new HashMap<>();
 	
 	//Path of the file containing the settings.
 	private static final String CFG_FILEPATH ="./src/main/resources/buildableProperties.cmcfg";
 	
 	//Map, serves containing the buildable types and its assigned properties.
 	private static Map<String, String[]> DISPLAYED_PROPERTIES = new HashMap<String, String[]>();
-	
-	//Map, which contains the default settings of what properties to display to the individual buildable types.
-	public static final Map<String, String[]> DEFAULT_SETTINGS = new HashMap<>();
 
     static {
         DEFAULT_SETTINGS.put("FLOOR", new String[]{"width", "height", "length", "character", "external_character", "torches"});
