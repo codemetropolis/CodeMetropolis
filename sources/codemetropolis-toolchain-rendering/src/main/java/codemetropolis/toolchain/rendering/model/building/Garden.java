@@ -14,6 +14,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 public class Garden extends Building {
+	
+	int monster_count;
 
 	public Garden(Buildable innerBuildable) throws BuildingTypeMismatchException {
 		super(innerBuildable);
@@ -30,6 +32,11 @@ public class Garden extends Building {
 	private void prepareBase( ) {
 		BasicBlock _fnc = new BasicBlock( "minecraft:fence" );
 		BasicBlock _sns = new BasicBlock( "minecraft:sandstone" );
+		
+		monster_count = innerBuildable.hasAttribute("monster-count") 
+				? Integer.parseInt( innerBuildable.getAttributeValue ("monster-count") )
+				: 0;
+		
 		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NonBlock } } } ) );
 		
 		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { new BasicBlock( "minecraft:yellow_flower" ) } } } ) );
@@ -148,10 +155,10 @@ public class Garden extends Building {
 	}
 	
 	private void prepareSpawners( ) {
-		primitives.add(new Spawner(position.getX() + size.getX() / 2, position.getY(), position.getZ() - 3));
-		primitives.add(new Spawner(position.getX() + size.getX() / 2, position.getY(), position.getZ() + size.getZ() + 2));
-		primitives.add(new Spawner(position.getX() - 3, position.getY(), position.getZ() + size.getZ() / 2));
-		primitives.add(new Spawner(position.getX() + size.getX() + 2, position.getY(), position.getZ() + size.getZ() / 2));
+		if (monster_count > 0) primitives.add(new Spawner(position.getX() + size.getX() / 2, position.getY(), position.getZ() - 3));
+		if (monster_count > 1) primitives.add(new Spawner(position.getX() + size.getX() / 2, position.getY(), position.getZ() + size.getZ() + 2));
+		if (monster_count > 2) primitives.add(new Spawner(position.getX() - 3, position.getY(), position.getZ() + size.getZ() / 2));
+		if (monster_count > 3) primitives.add(new Spawner(position.getX() + size.getX() + 2, position.getY(), position.getZ() + size.getZ() / 2));
 	}
 
 }
