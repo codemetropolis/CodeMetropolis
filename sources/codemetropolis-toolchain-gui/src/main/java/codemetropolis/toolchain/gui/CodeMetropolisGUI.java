@@ -221,8 +221,8 @@ public class CodeMetropolisGUI extends JFrame {
     		if(!cdfXmlFile.exists()) {
     			JOptionPane.showMessageDialog(
     					self,
-    					"There is no file existing on the path specified!",
-    					"Error",
+    					Translations.t("gui_err_missing_cdf_file"),
+    					Translations.t("gui_err_title"),
     					JOptionPane.ERROR_MESSAGE);
     		}
     		else {
