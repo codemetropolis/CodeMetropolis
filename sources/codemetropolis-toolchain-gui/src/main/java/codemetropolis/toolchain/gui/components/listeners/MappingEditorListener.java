@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import codemetropolis.toolchain.gui.CodeMetropolisGUI;
 import codemetropolis.toolchain.gui.MappingFileEditorDialog;
 
+//This class is not used (temporary or forever is not decided yet).
 public class MappingEditorListener implements ActionListener {
 	String cdfXmlFilePath;
 	CodeMetropolisGUI cmGui;

@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
@@ -28,7 +29,6 @@ import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.components.CMSpinner;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
-import codemetropolis.toolchain.gui.components.listeners.MappingEditorListener;
 import codemetropolis.toolchain.gui.utils.ExecutionWorker;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
@@ -200,6 +200,8 @@ public class CodeMetropolisGUI extends JFrame {
    * @param panel The {@link JPanel} to add the components to.
    */
   private final void addMappingOptions(JPanel panel) {
+	CodeMetropolisGUI self = this;
+	
     CMLabel mappingLabel = new CMLabel(Translations.t("gui_l_mapping"), 15, 555, 120, 30);
     mappingPath = new CMTextField(145, 555, 235, 30);
     CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 100, 30);
@@ -211,8 +213,24 @@ public class CodeMetropolisGUI extends JFrame {
     CMButton mappingEditorBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 590, 100, 30);
     mappingEditorBrowse.addActionListener(new BrowseListener(mappingEditorCdfPath, JFileChooser.FILES_ONLY, XML_FILTER));
     CMButton mappingEditorButton = new CMButton(Translations.t("gui_b_mapping_file_editor"), 300, 625, 185, 30);
-    //A mappingEditorCdfPath.getText() paramétert ki kell cserélni egy cdf fájlt reprezentáló útvonallal (string).
-    mappingEditorButton.addActionListener(new MappingEditorListener(mappingEditorCdfPath.getText(), this));
+    mappingEditorButton.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+        	File cdfXmlFile = new File(mappingEditorCdfPath.getText());
+    		if(!cdfXmlFile.exists()) {
+    			JOptionPane.showMessageDialog(
+    					self,
+    					"There is no file existing on the path specified!",
+    					"Error",
+    					JOptionPane.ERROR_MESSAGE);
+    		}
+    		else {
+    			MappingFileEditorDialog dialog = new MappingFileEditorDialog(mappingEditorCdfPath.getText(), self);
+    			dialog.setVisible(true);
+    		}
+        }
+    });
     
     CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 660, 120, 30);
     scaleSpinner = new CMSpinner(145, 660, 120, 30);
