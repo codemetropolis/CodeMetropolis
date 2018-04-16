@@ -2,19 +2,27 @@ package codemetropolis.toolchain.gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
 import codemetropolis.toolchain.gui.components.CMButton;
@@ -22,14 +30,18 @@ import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMScrollPane;
 import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.BuildableSettings;
 import codemetropolis.toolchain.gui.utils.Property;
 import codemetropolis.toolchain.gui.utils.PropertyCollector;
 import codemetropolis.toolchain.gui.utils.Translations;
+import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 
 public class MappingFileEditorDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static final FileFilter XML_FILTER = new XmlFileFilter();
 	
 	private Map<String, String[]> displayedBuildableAttributes;
 	private Map<String, List<Property>> sourceCodeElementProperties;
@@ -128,7 +140,56 @@ public class MappingFileEditorDialog extends JDialog {
 		CMScrollPane resourcesScrollPane = new CMScrollPane(resourcesList, 10, 35, 240, 120);
 		
 		CMButton resourcesAddButton = new CMButton(Translations.t("gui_b_add"), 265, 35, 120, 30);
+		resourcesAddButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JTextField nameField = new JTextField();
+				JTextField valueField = new JTextField();
+				
+				JPanel addResourcePanel = new JPanel();
+				addResourcePanel.setLayout(new GridLayout(4, 2));
+				addResourcePanel.add(new JLabel("Resource name:"));
+				addResourcePanel.add(nameField);
+				addResourcePanel.add(new JLabel("Resource value:"));
+				addResourcePanel.add(valueField);
+				
+				int result = JOptionPane.showConfirmDialog(null, addResourcePanel, Translations.t("gui_add_resource_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				if(result == JOptionPane.OK_OPTION) {
+					//Produce the resource string from the text fields...
+					String resourceToAdd = nameField.getText() + ": " + valueField.getText();
+					//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
+					List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
+					for(JList<String> list : lists) {
+						DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
+						listModel.addElement(resourceToAdd);
+					}
+				}
+			}
+		});
 		CMButton resourcesRemoveButton = new CMButton(Translations.t("gui_b_remove"), 265, 80, 120, 30);
+		resourcesRemoveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int indexToRemove = resourcesList.getSelectedIndex();
+				if(indexToRemove == -1) {
+					JOptionPane.showMessageDialog(
+							null,
+							Translations.t("gui_err_resources_empty_no_selected"),
+							Translations.t("gui_err_title"),
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					String resoureToRemove = resourcesList.getModel().getElementAt(indexToRemove);
+					List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
+					for(JList<String> list : lists) {
+						DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
+						listModel.removeElement(resoureToRemove);
+					}
+				}				
+			}
+		});
 		
 		panel.add(resourcesLabel);
 		panel.add(resourcesScrollPane);
@@ -145,6 +206,7 @@ public class MappingFileEditorDialog extends JDialog {
 		useMappingCheckBox = new CMCheckBox(550, 80, 30, 30);
 		CMLabel useMappingLabel = new CMLabel(Translations.t("gui_l_use_mapping_file"),575, 80, 180, 30);
 		CMButton saveMappingFileButton = new CMButton(Translations.t("gui_b_save_mapping_file"), 415, 120, 165, 30);
+		specifyPathButton.addActionListener(new BrowseListener(pathField, JFileChooser.FILES_ONLY, XML_FILTER));
 		
 		panel.add(saveSettingsLabel);
 		panel.add(pathLabel);
@@ -192,7 +254,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    cellarTable = setUpBuildableTable("CELLAR");
 	    
 	    cellarListmodel = initializeListModel("attribute");
-	    cellarList = new JList<String>(cellarListmodel);
+	    cellarList = new JList<String>();
+	    cellarList.setModel(cellarListmodel);
 	    cellarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    cellarList.setLayoutOrientation(JList.VERTICAL);
 	    cellarList.setVisibleRowCount(-1);
@@ -223,7 +286,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    floorTable = setUpBuildableTable("FLOOR");
 	    
 	    floorListmodel = initializeListModel("method");
-	    floorList = new JList<String>(floorListmodel);
+	    floorList = new JList<String>();
+	    floorList.setModel(floorListmodel);
 	    floorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    floorList.setLayoutOrientation(JList.VERTICAL);
 	    floorList.setVisibleRowCount(-1);
@@ -254,7 +318,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    gardenTable = setUpBuildableTable("GARDEN");
 	    
 	    gardenListmodel = initializeListModel("class");
-	    gardenList = new JList<String>(gardenListmodel);
+	    gardenList = new JList<String>();
+	    gardenList.setModel(gardenListmodel);
 	    gardenList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    gardenList.setLayoutOrientation(JList.VERTICAL);
 	    gardenList.setVisibleRowCount(-1);
