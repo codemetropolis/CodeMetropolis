@@ -12,11 +12,11 @@ import codemetropolis.toolchain.rendering.util.Orientation;
 
 public class Tunnel extends Building {
 	
-	private static final int MIN_SIZE = 2;
+	public static final int MIN_SIZE = 2;
 	private static final int TUNNEL_WIDTH = 2;
 	private static final int TUNNEL_HEIGHT = 4;
-	private static final String TUNNEL_ATTRIBUTE_TARGET = "target";
-	private static final String TUNNEL_ATTRIBUTE_STANDALONE = "standalone";
+	public static final String TUNNEL_ATTRIBUTE_TARGET = "target";
+	public static final String TUNNEL_ATTRIBUTE_STANDALONE = "standalone";
 	
 	
 	public Tunnel(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -147,7 +147,7 @@ public class Tunnel extends Building {
 		
 	}
 	
-	private Buildable getTarget(Buildable buildable, String id) {
+	public Buildable getTarget(Buildable buildable, String id) {
 		Buildable b = null;
 		
 		if (id.equals(buildable.getId())) {
@@ -165,7 +165,7 @@ public class Tunnel extends Building {
 	} 
 
 	
-	private int calculateHeight(Buildable buildable) {
+	public int calculateHeight(Buildable buildable) {
 		int height = WorldBuilder.GROUND_LEVEL - WorldBuilder.TUNNEL_LEVEL + TUNNEL_HEIGHT + 1;
 		for(Buildable b : buildable.getChildren()) {
 			if(b.getType() == Buildable.Type.CELLAR && height > b.getPositionY() - WorldBuilder.TUNNEL_LEVEL + TUNNEL_HEIGHT) {
@@ -176,7 +176,7 @@ public class Tunnel extends Building {
 		return height;
 	}
 	
-	private Point calculateStepPosition(Buildable buildable) {
+	public Point calculateStepPosition(Buildable buildable) {
 		Point stepPosition;
 		
 		if(buildable.hasAttribute(TUNNEL_ATTRIBUTE_TARGET)) {
