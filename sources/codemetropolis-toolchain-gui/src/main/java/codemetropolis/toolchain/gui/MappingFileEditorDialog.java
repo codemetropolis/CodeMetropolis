@@ -37,6 +37,10 @@ import codemetropolis.toolchain.gui.utils.PropertyCollector;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 
+/**
+ * Dialog for the mapping file editor.
+ *
+ */
 public class MappingFileEditorDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
@@ -70,6 +74,11 @@ public class MappingFileEditorDialog extends JDialog {
 	private CMCheckBox useMappingCheckBox;
 	private CMTextField pathField;
 	
+	/**
+	 * Loads the list of the buildable attributes which are desired to display on the GUI from the configuration file.
+	 * Loads the list of the source code element from the given input cdf xml file.
+	 * @param cdfFilePath The path of the input cdf xml file.
+	 */
 	private void loadDisplayedInfo(String cdfFilePath) {
 		try {
 			displayedBuildableAttributes = BuildableSettings.readSettings();
@@ -99,6 +108,12 @@ public class MappingFileEditorDialog extends JDialog {
 		}
 	}
 	
+	 /**
+	  * Instantiates the Mapping file editor dialog.
+	  *
+	  * @param cdfFilePath The path of the input cdf xml file.
+	  * @param cmGui The parent window of the dialog.
+	  */
 	public MappingFileEditorDialog(String cdfFilePath, CodeMetropolisGUI cmGui) {
 		super(cmGui, Translations.t("gui_mapping_editor_title") ,true);
 		loadDisplayedInfo(cdfFilePath);
@@ -116,6 +131,11 @@ public class MappingFileEditorDialog extends JDialog {
 	    this.setLocationRelativeTo(cmGui);
 	}
 	
+	/**
+	 * Creates the base panel for the Mapping file editor dialog.
+	 * 
+	 * @return The created {@link JPanel}.
+	 */
 	private JPanel createBasePanel() {
 		JPanel panel = new JPanel();
 	    panel.setLayout(null);
@@ -129,6 +149,10 @@ public class MappingFileEditorDialog extends JDialog {
 	    return panel;
 	}
 	
+	/**
+	 * Adds the resource options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the components will be added to.
+	 */
 	private void addResourceOptions(JPanel panel) {
 		CMLabel resourcesLabel = new CMLabel(Translations.t("gui_l_resources"), 10, 0, 120, 30);
 		
@@ -197,7 +221,10 @@ public class MappingFileEditorDialog extends JDialog {
 		panel.add(resourcesRemoveButton);
 	}
 	
-	
+	/**
+	 * Adds the saving options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the components will be added to.
+	 */
 	private void addSaveOptions(JPanel panel) {
 		CMLabel saveSettingsLabel = new CMLabel(Translations.t("gui_l_save_settings"), 415, 0, 120, 30);
 		CMLabel pathLabel = new CMLabel(Translations.t("gui_l_path"), 415, 35, 60, 30);
@@ -217,6 +244,10 @@ public class MappingFileEditorDialog extends JDialog {
 		panel.add(saveMappingFileButton);
 	}
 	
+	/**
+	 * Adds the the tabs of the buildables to the {@code buildableTabbedPane} {@link JTabbedPane}.
+	 * @param panel The {@link JPanel} to which the {@code buildableTabbedPane} will be added to.
+	 */
 	private void addBuildableTabs(JPanel panel) {
 		buildableTabbedPane = new JTabbedPane();
 		
@@ -237,6 +268,9 @@ public class MappingFileEditorDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * Creates the tab to the buildable type cellar, where the buildable attributes and their desired values can be paired.
+	 */
 	private void createCellarTab() {
 		cellarPanel = new JPanel();
 		cellarPanel.setLayout(null);
@@ -269,6 +303,9 @@ public class MappingFileEditorDialog extends JDialog {
 	    cellarPanel.add(cellarScrollPane);	    
 	}
 	
+	/**
+	 * Creates the tab to the buildable type floor, where the buildable attributes and their desired values can be paired.
+	 */
 	private void createFloorTab() {
 		floorPanel = new JPanel();
 		floorPanel.setLayout(null);
@@ -301,6 +338,9 @@ public class MappingFileEditorDialog extends JDialog {
 	    floorPanel.add(floorScrollPane);
 	}
 	
+	/**
+	 * Creates the tab to the buildable type garden, where the buildable attributes and their desired values can be paired.
+	 */
 	private void createGardenTab() {
 		gardenPanel = new JPanel();
 		gardenPanel.setLayout(null);
@@ -333,6 +373,9 @@ public class MappingFileEditorDialog extends JDialog {
 	    gardenPanel.add(gardenScrollPane);
 	}
 	
+	/**
+	 * Creates the tab to the buildable type ground.
+	 */
 	private void createGroundTab() {
 		groundPanel = new JPanel();
 		groundPanel.setLayout(null);
@@ -352,6 +395,11 @@ public class MappingFileEditorDialog extends JDialog {
 	    groundPanel.add(noAttrsLabel);
 	}
 	
+	/**
+	 * Sets up the table of a buildable type which contains the attributes of the buildable (height, character, etc.) and provides a second column for their values.
+	 * @param buildableType The type of the buildable (method, attribute, etc.).
+	 * @return The JTable contains the buildable attributes.
+	 */
 	private JTable setUpBuildableTable(String buildableType) {
 		String[] displayedProperties = displayedBuildableAttributes.get(buildableType);
 	    
@@ -370,6 +418,11 @@ public class MappingFileEditorDialog extends JDialog {
 	    return table;
 	}
 	
+	/**
+	 * Fills up the list model of the given source code element type with its own properties/metrics.
+	 * @param sourceCodeElementType Type of the source code element (method, attribute, etc.).
+	 * @return The {@link ListModel} contains all of the properties/metrics.
+	 */
 	private ListModel<String> initializeListModel(String sourceCodeElementType) {
 		List<Property> propertyList = sourceCodeElementProperties.get(sourceCodeElementType);
 		
@@ -382,6 +435,10 @@ public class MappingFileEditorDialog extends JDialog {
 		return model;
 	}
 	
+	/**
+	 * Adds the conversion options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the options will be added to.
+	 */
 	private void addConversionOptions(JPanel panel) {
 		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 460, 150, 30);
 		panel.add(conversionButton);
