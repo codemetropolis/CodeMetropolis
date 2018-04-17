@@ -49,7 +49,7 @@ public class Tunnel extends Building {
 			this.innerBuildable.getParent().setHasStairs(true);
 			prepareStairs();
 		}
-		// prepareTorches(); ?
+		prepareLighting();
 	}
 	
 	protected void prepareTunnel() {
@@ -147,6 +147,44 @@ public class Tunnel extends Building {
 		
 	}
 	
+	protected void prepareLighting() {
+		// NOTE (wyvick) For now there is a redstone lamp line
+		// in each tunnel with redstone blocks below them.
+		
+		// TODO (wyvick) Since it is a SolidBox implementation,
+		// both the length and the width of the lamp line
+		// are cut by one block (to ensure that it is only a single line).
+		// Row implementation may work better as we would not need to cut
+		// and we could specify pattern with it as well,
+		// but orientation may cause a problem.
+		// (One possible solution is that we check whether the tunnel has
+		// North-South or West-East orientation,
+		// maybe by using width and length values.)
+		
+		// redstone lamps (single line in the middle of the tunnel floor)
+		primitives.add(
+			new SolidBox(
+				new Point(position.getX() + 1, WorldBuilder.TUNNEL_LEVEL - 1, position.getZ() + 1),
+				new Point(size.getX() - 2, 1, size.getZ() - 2),
+				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:lit_redstone_lamp" ), } } } ),
+				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:lit_redstone_lamp" ), } } } ),
+				Orientation.NearX
+			)
+		);
+		
+		// redstone blocks under lamps
+		primitives.add(
+				new SolidBox(
+					new Point(position.getX() + 1, WorldBuilder.TUNNEL_LEVEL - 2, position.getZ() + 1),
+					new Point(size.getX() - 2, 1, size.getZ() - 2),
+					new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:redstone_block" ), } } } ),
+					new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:redstone_block" ), } } } ),
+					Orientation.NearX
+				)
+			);
+		
+	}
+
 	public Buildable getTarget(Buildable buildable, String id) {
 		Buildable b = null;
 		
