@@ -49,7 +49,7 @@ public class Tunnel extends Building {
 			this.innerBuildable.getParent().setHasStairs(true);
 			prepareStairs();
 		}
-		// prepareTorches(); ?
+		prepareLighting();
 	}
 	
 	protected void prepareTunnel() {
@@ -147,6 +147,18 @@ public class Tunnel extends Building {
 		
 	}
 	
+	protected void prepareLighting() {
+		primitives.add(
+			new SolidBox(
+				new Point(position.getX(), WorldBuilder.TUNNEL_LEVEL - 1, position.getZ()),
+				new Point(size.getX(), 1, size.getZ()),
+				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:glowstone" ), } } } ),
+				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:glowstone" ), } } } ),
+				Orientation.NearX
+			)
+		);
+	}
+
 	public Buildable getTarget(Buildable buildable, String id) {
 		Buildable b = null;
 		
