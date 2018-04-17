@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class CMScrollPane extends JScrollPane {
 
@@ -17,6 +18,12 @@ public class CMScrollPane extends JScrollPane {
 	
 	public CMScrollPane(JList<String> list, int x, int y, int width, int height) {
 		super(list);
+		setFont(SCROLL_PANE_FONT);
+		setBounds(x, y, width, height);
+	}
+	
+	public CMScrollPane(JTable table, int x, int y, int width, int height) {
+		super(table);
 		setFont(SCROLL_PANE_FONT);
 		setBounds(x, y, width, height);
 	}

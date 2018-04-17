@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -139,9 +140,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private JPanel createBasePanel() {
 		JPanel panel = new JPanel();
 	    panel.setLayout(null);
-	    panel.setBounds(0, 0, 800, 500);
+	    panel.setBounds(0, 0, 800, 550);
 
-	    Dimension size = new Dimension(800, 500);
+	    Dimension size = new Dimension(800, 550);
 	    panel.setMinimumSize(size);
 	    panel.setPreferredSize(size);
 	    panel.setMaximumSize(size);
@@ -262,7 +263,7 @@ public class MappingFileEditorDialog extends JDialog {
 		buildableTabbedPane.add(Translations.t("gui_tab_ground"), groundPanel);
 		
 		buildableTabbedPane.setFont(new Font("Source Sans Pro", Font.PLAIN, 16));
-		buildableTabbedPane.setBounds(10, 175, 780, 270);
+		buildableTabbedPane.setBounds(10, 175, 780, 300);
 		
 		panel.add(buildableTabbedPane);
 		
@@ -274,9 +275,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private void createCellarTab() {
 		cellarPanel = new JPanel();
 		cellarPanel.setLayout(null);
-	    cellarPanel.setBounds(0, 0, 780, 255);
+	    cellarPanel.setBounds(0, 0, 780, 285);
 
-	    Dimension size = new Dimension(780, 255);
+	    Dimension size = new Dimension(780, 285);
 	    cellarPanel.setMinimumSize(size);
 	    cellarPanel.setPreferredSize(size);
 	    cellarPanel.setMaximumSize(size);
@@ -286,6 +287,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);
 	    
 	    cellarTable = setUpBuildableTable("CELLAR");
+	    Rectangle bounds = cellarTable.getBounds();
+	    CMScrollPane scrollPane = new CMScrollPane(cellarTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
 	    cellarListmodel = initializeListModel("attribute");
 	    cellarList = new JList<String>();
@@ -299,7 +302,7 @@ public class MappingFileEditorDialog extends JDialog {
 	    cellarPanel.add(assignedLabel);
 	    cellarPanel.add(attributeLabel);
 	    cellarPanel.add(propertiesLabel);
-	    cellarPanel.add(cellarTable);
+	    cellarPanel.add(scrollPane);
 	    cellarPanel.add(cellarScrollPane);	    
 	}
 	
@@ -309,9 +312,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private void createFloorTab() {
 		floorPanel = new JPanel();
 		floorPanel.setLayout(null);
-	    floorPanel.setBounds(0, 0, 780, 255);
+	    floorPanel.setBounds(0, 0, 780, 285);
 
-	    Dimension size = new Dimension(780, 255);
+	    Dimension size = new Dimension(780, 285);
 	    floorPanel.setMinimumSize(size);
 	    floorPanel.setPreferredSize(size);
 	    floorPanel.setMaximumSize(size);
@@ -321,6 +324,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);		
 	    
 	    floorTable = setUpBuildableTable("FLOOR");
+	    Rectangle bounds = floorTable.getBounds();
+	    CMScrollPane scrollPane = new CMScrollPane(floorTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
 	    floorListmodel = initializeListModel("method");
 	    floorList = new JList<String>();
@@ -334,7 +339,7 @@ public class MappingFileEditorDialog extends JDialog {
 	    floorPanel.add(assignedLabel);
 	    floorPanel.add(methodLabel);
 	    floorPanel.add(propertiesLabel);
-	    floorPanel.add(floorTable);
+	    floorPanel.add(scrollPane);
 	    floorPanel.add(floorScrollPane);
 	}
 	
@@ -344,18 +349,20 @@ public class MappingFileEditorDialog extends JDialog {
 	private void createGardenTab() {
 		gardenPanel = new JPanel();
 		gardenPanel.setLayout(null);
-	    gardenPanel.setBounds(0, 0, 780, 255);
+	    gardenPanel.setBounds(0, 0, 780, 285);
 
-	    Dimension size = new Dimension(780, 255);
+	    Dimension size = new Dimension(780, 285);
 	    gardenPanel.setMinimumSize(size);
 	    gardenPanel.setPreferredSize(size);
 	    gardenPanel.setMaximumSize(size);
 	    
 	    CMLabel assignedLabel = new CMLabel(Translations.t("gui_l_assigned_to"), 15, 15, 270, 30);
 	    CMLabel classLabel = new CMLabel(Translations.t("gui_l_class"), 270, 15, 60, 30);
-	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);	
+	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);
 	    
 	    gardenTable = setUpBuildableTable("GARDEN");
+	    Rectangle bounds = gardenTable.getBounds();
+	    CMScrollPane scrollPane = new CMScrollPane(gardenTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
 	    gardenListmodel = initializeListModel("class");
 	    gardenList = new JList<String>();
@@ -369,7 +376,7 @@ public class MappingFileEditorDialog extends JDialog {
 	    gardenPanel.add(assignedLabel);
 	    gardenPanel.add(classLabel);
 	    gardenPanel.add(propertiesLabel);
-	    gardenPanel.add(gardenTable);
+	    gardenPanel.add(scrollPane);
 	    gardenPanel.add(gardenScrollPane);
 	}
 	
@@ -379,9 +386,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private void createGroundTab() {
 		groundPanel = new JPanel();
 		groundPanel.setLayout(null);
-	    groundPanel.setBounds(0, 0, 780, 255);
+	    groundPanel.setBounds(0, 0, 780, 285);
 
-	    Dimension size = new Dimension(780, 255);
+	    Dimension size = new Dimension(780, 285);
 	    groundPanel.setMinimumSize(size);
 	    groundPanel.setPreferredSize(size);
 	    groundPanel.setMaximumSize(size);
@@ -403,7 +410,7 @@ public class MappingFileEditorDialog extends JDialog {
 	private JTable setUpBuildableTable(String buildableType) {
 		String[] displayedProperties = displayedBuildableAttributes.get(buildableType);
 	    
-	    Object[] columnNames = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_property")};
+		Object[] columnNames = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_propery")};
 	    Object[][] initData = new Object[displayedProperties.length][2];
 	    
 	    for(int i = 0; i < displayedProperties.length; i++) {
@@ -440,7 +447,7 @@ public class MappingFileEditorDialog extends JDialog {
 	 * @param panel The {@link JPanel} to which the options will be added to.
 	 */
 	private void addConversionOptions(JPanel panel) {
-		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 460, 150, 30);
+		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
 		panel.add(conversionButton);
 	}
 }
