@@ -76,7 +76,7 @@ public class GitInspectorConverter extends CdfConverter {
 		return new CdfTree(rootElement);
 	}
 
-	private CdfElement createRootelement(Document doc) {
+	public CdfElement createRootelement(Document doc) {
 		StringBuilder rootName = new StringBuilder(doc.getElementsByTagName(REPOSITORY_TAG).item(0).getTextContent());
 		rootName.append(" ");
 		rootName.append(doc.getElementsByTagName(DATE_TAG).item(0).getTextContent());

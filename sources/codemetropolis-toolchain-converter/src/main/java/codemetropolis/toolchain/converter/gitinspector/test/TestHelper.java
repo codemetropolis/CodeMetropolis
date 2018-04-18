@@ -3,11 +3,14 @@ package codemetropolis.toolchain.converter.gitinspector.test;
 import java.util.List;
 import java.util.Map;
 
+import org.w3c.dom.Document;
+
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
 public class TestHelper {
+    private static String XML_SRC_PATH = "src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\GitInspectorOutput.xml";
 
 	public static boolean equals(CdfProperty p1, CdfProperty p2) {
 		return p1.getName() == p2.getName() &&
@@ -36,5 +39,11 @@ public class TestHelper {
 	public static GitInspectorConverter newGitInspectorConverter() {
 	       Map<String, String> params = null;
 	       return new GitInspectorConverter(params);
+	}
+
+	public static Document newDocument() throws Exception {
+	    GitInspectorConverter conv = TestHelper.newGitInspectorConverter();
+        Document doc = conv.createDocumentFromSource(XML_SRC_PATH);
+        return doc;
 	}
 }
