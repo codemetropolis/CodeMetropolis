@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,6 @@ import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 
 /**
  * Dialog for the mapping file editor.
- *
  */
 public class MappingFileEditorDialog extends JDialog {
 	
@@ -48,6 +48,38 @@ public class MappingFileEditorDialog extends JDialog {
 	
 	private static final FileFilter XML_FILTER = new XmlFileFilter();
 	
+	/**
+	 * Contains the possible results of assigning a metric to a property of a buildable type.
+	 */
+	private enum AssignResult {CANNOT_ASSIGN, NO_CONVERSION, TO_INT, TO_DOUBLE, NORMALIZE, QUANTIZATON};
+	
+	private static final Map<String, Map<String, AssignResult>> ASSIGN_RESULT_MATRIX;
+	
+	static {
+		ASSIGN_RESULT_MATRIX = new HashMap<String, Map<String, AssignResult>>();
+		
+		ASSIGN_RESULT_MATRIX.put("int", new HashMap<String, AssignResult>());
+		ASSIGN_RESULT_MATRIX.put("int(0 to 5)", new HashMap<String, AssignResult>());
+		ASSIGN_RESULT_MATRIX.put("string", new HashMap<String, AssignResult>());
+		ASSIGN_RESULT_MATRIX.put("float(0 to 1)", new HashMap<String, AssignResult>());
+		//First row of the "matrix"
+		ASSIGN_RESULT_MATRIX.get("int").put("int", AssignResult.NO_CONVERSION);
+		ASSIGN_RESULT_MATRIX.get("int").put("float", AssignResult.TO_INT);
+		ASSIGN_RESULT_MATRIX.get("int").put("string", AssignResult.CANNOT_ASSIGN);
+		//Second row of the "matrix"
+		ASSIGN_RESULT_MATRIX.get("int(0 to 5)").put("int", AssignResult.QUANTIZATON);
+		ASSIGN_RESULT_MATRIX.get("int(0 to 5)").put("float", AssignResult.QUANTIZATON);
+		ASSIGN_RESULT_MATRIX.get("int(0 to 5)").put("string", AssignResult.CANNOT_ASSIGN);
+		//Third row of the "matrix"
+		ASSIGN_RESULT_MATRIX.get("string").put("int", AssignResult.QUANTIZATON);
+		ASSIGN_RESULT_MATRIX.get("string").put("float", AssignResult.QUANTIZATON);
+		ASSIGN_RESULT_MATRIX.get("string").put("string", AssignResult.NO_CONVERSION);
+		//Fourth row of the "matrix"
+		ASSIGN_RESULT_MATRIX.get("float(0 to 1)").put("int", AssignResult.NORMALIZE);
+		ASSIGN_RESULT_MATRIX.get("float(0 to 1)").put("float", AssignResult.NORMALIZE);
+		ASSIGN_RESULT_MATRIX.get("float(0 to 1)").put("string", AssignResult.CANNOT_ASSIGN);
+	}
+		
 	private Map<String, String[]> displayedBuildableAttributes;
 	private Map<String, List<Property>> sourceCodeElementProperties;
 	
@@ -101,7 +133,7 @@ public class MappingFileEditorDialog extends JDialog {
 		catch(FileNotFoundException e) {
 			JOptionPane.showMessageDialog(
 					null,
-					Translations.t("gui_err_invaild_config_file_format"),
+					Translations.t("gui_err_config_file_not_found"),
 					Translations.t("gui_err_title"),
 					JOptionPane.ERROR_MESSAGE);
 			
@@ -181,13 +213,22 @@ public class MappingFileEditorDialog extends JDialog {
 				
 				int result = JOptionPane.showConfirmDialog(null, addResourcePanel, Translations.t("gui_add_resource_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(result == JOptionPane.OK_OPTION) {
-					//Produce the resource string from the text fields...
-					String resourceToAdd = nameField.getText() + ": " + valueField.getText();
-					//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
-					List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
-					for(JList<String> list : lists) {
-						DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
-						listModel.addElement(resourceToAdd);
+					if (!(nameField.getText().isEmpty() || valueField.getText().isEmpty())) {
+						//Produce the resource string from the text fields...
+						String resourceToAdd = nameField.getText() + ": " + valueField.getText();
+						//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
+						List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
+						for (JList<String> list : lists) {
+							DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
+							listModel.addElement(resourceToAdd);
+						} 
+					}
+					else {
+						JOptionPane.showMessageDialog(
+								null,
+								Translations.t("gui_err_name_value_empty"),
+								Translations.t("gui_err_title"),
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

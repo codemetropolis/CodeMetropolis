@@ -12,14 +12,23 @@ import java.util.Map;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
 
+/**
+ * This class is responsible for providing information which buildable attributes are desired by the user to display on the GUI.
+ */
 public class BuildableSettings {
-	//Map, which contains the default settings of what properties to display to the individual buildable types.
+	/**
+	 * {@link Map}, which contains the default settings of what properties to display to the individual buildable types.
+	 */
 	public static final Map<String, String[]> DEFAULT_SETTINGS = new HashMap<>();
 	
-	//Path of the file containing the settings.
+	/**
+	 * Path of the file containing the settings.
+	 */
 	private static final String CFG_FILEPATH ="./src/main/resources/buildableProperties.cmcfg";
 	
-	//Map, serves containing the buildable types and its assigned properties.
+	/**
+	 * {@link Map}, serves containing the buildable types(floor, garden, ...) and its assigned properties(height, character, ...).
+	 */
 	private static Map<String, String[]> DISPLAYED_PROPERTIES = new HashMap<String, String[]>();
 
     static {
@@ -34,7 +43,12 @@ public class BuildableSettings {
         DISPLAYED_PROPERTIES.put("GROUND", new String[] {});
 	}
 	
-    //Reads the user's display settings from the configuration file.
+    /**
+     * Reads the user's display settings from the configuration file.
+     * @return A {@link Map} which contains the possible buildable types as keys and its attributes, which are desired to be displayed.
+     * @throws BadConfigFileFomatException If the format of the configuration file is not appropriate.
+     * @throws FileNotFoundException If the configuration file cannot be found.
+     */
 	public static Map<String, String[]> readSettings() throws BadConfigFileFomatException, FileNotFoundException{
 		BufferedReader cfgFileReader = null;
 		
@@ -79,10 +93,15 @@ public class BuildableSettings {
 		return DISPLAYED_PROPERTIES;		
 	}
 	
-	//Validates, if all assigned properties of the specified buildable type are valid or not.
-	private static boolean validateProperties(String buildableName, String[] buildabeProperties) {
-		List<String> validProperties = new ArrayList<String>(Arrays.asList(DEFAULT_SETTINGS.get(buildableName)));
-		for(String property : buildabeProperties) {
+	/**
+	 * Validates, if all assigned attributes of the specified buildable type are valid or not.
+	 * @param buildableType The type of the buildable (floor, garden, ...)
+	 * @param buildabeAttributes The array of the attributes which are examined if they are valid or not.
+	 * @return All of the specified buildable attributes are valid or not.
+	 */
+	private static boolean validateProperties(String buildableType, String[] buildabeAttributes) {
+		List<String> validProperties = new ArrayList<String>(Arrays.asList(DEFAULT_SETTINGS.get(buildableType)));
+		for(String property : buildabeAttributes) {
 			if(!validProperties.contains(property)) {
 				return false;
 			}
@@ -90,7 +109,9 @@ public class BuildableSettings {
 		return true;
 	}
 	
-	//Writes to the console, what display settings will be provided to the Mapping file editor GUI.
+	/**
+	 * Writes to the console, what display settings will be provided to the Mapping file editor GUI.
+	 */
 	public static void displaySettings() {
 		try {
 			Map<String, String[]> returnedSettings = readSettings();
