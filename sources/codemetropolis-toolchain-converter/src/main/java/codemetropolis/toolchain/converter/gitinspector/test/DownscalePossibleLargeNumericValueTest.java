@@ -8,11 +8,11 @@ import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
 public class DownscalePossibleLargeNumericValueTest {
 
-	String[] squareNumbers = {"0", "1", "4", "16", "81", "100", "256", "3481", "7569", "16129", "205234276"};
-	String[] nonSquareNumbers = {"0", "2", "7", "20", "82", "107", "270", "3490", "7583", "16142", "205234385"};
-	String[] expectedResults = {"0", "1", "2", "4", "9", "10", "16", "59", "87", "127", "14326"};
-	String[] negativeNumbers = {"-0", "-2", "-7", "-20", "-82", "-107", "-270", "-3490", "-7583", "-16142", "-205234385"};
-	String[] nonNumbers = {"", "A", "AB", "CodeMetropolis", "GitConverter", "1234asdfg234"};
+	private static String[] squareNumbers = {"0", "1", "4", "16", "81", "100", "256", "3481", "7569", "16129", "205234276"};
+	private static String[] nonSquareNumbers = {"0", "2", "7", "20", "82", "107", "270", "3490", "7583", "16142", "205234385"};
+	private static String[] expectedResults = {"0", "1", "2", "4", "9", "10", "16", "59", "87", "127", "14326"};
+	private static String[] negativeNumbers = {"-0", "-2", "-7", "-20", "-82", "-107", "-270", "-3490", "-7583", "-16142", "-205234385"};
+	private static String[] nonNumbers = {"", "A", "AB", "CodeMetropolis", "GitConverter", "1234asdfg234"};
 
 	@Test
 	public void testWithSuqareNumbers() {
