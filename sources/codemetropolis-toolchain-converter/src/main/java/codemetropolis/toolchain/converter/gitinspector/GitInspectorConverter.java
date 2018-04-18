@@ -1,17 +1,13 @@
 package codemetropolis.toolchain.converter.gitinspector;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
@@ -160,9 +156,6 @@ public class GitInspectorConverter extends CdfConverter {
 	public static String downscalePossibleLargeNumericValue(String numberString) {
 		long number = Long.parseLong(numberString);
 		long newValue = (long) Math.floor(Math.sqrt(number));
-		if (newValue < 0) {
-			newValue = 0;
-		}
 		return Long.toString(newValue);
 	}
 
