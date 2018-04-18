@@ -83,7 +83,7 @@ public class GitInspectorConverter extends CdfConverter {
 		return new CdfElement(rootName.toString(), "root");
 	}
 
-	private Document createDocumentFromSource(String sourcePath) throws CodeMetropolisException {
+	public Document createDocumentFromSource(String sourcePath) throws CodeMetropolisException {
 		try {
 			File inputFile = new File(sourcePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
