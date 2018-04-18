@@ -145,10 +145,13 @@ public class GitInspectorConverter extends CdfConverter {
 		return authorMetrics;
 	}
 
-	private String downscalePossibleLargeNumericValue(String numberString) {
-		int number = Integer.parseInt(numberString);
-		int newValue = (int) Math.floor(Math.sqrt(number));
-		return Integer.toString(newValue);
+	public static String downscalePossibleLargeNumericValue(String numberString) {
+		long number = Long.parseLong(numberString);
+		long newValue = (long) Math.floor(Math.sqrt(number));
+		if (newValue < 0) {
+			newValue = 0;
+		}
+		return Long.toString(newValue);
 	}
 
 	private void updateMetrics(Element authorElement, String readTag,
