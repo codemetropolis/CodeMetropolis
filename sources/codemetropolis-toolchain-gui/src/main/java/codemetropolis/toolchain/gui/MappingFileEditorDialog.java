@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -36,6 +37,7 @@ import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.BuildableSettings;
 import codemetropolis.toolchain.gui.utils.Property;
 import codemetropolis.toolchain.gui.utils.PropertyCollector;
+import codemetropolis.toolchain.gui.utils.TransferHelper;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 
@@ -337,6 +339,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    cellarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    cellarList.setLayoutOrientation(JList.VERTICAL);
 	    cellarList.setVisibleRowCount(-1);
+	    cellarList.setDragEnabled(true);
+	    cellarList.setDropMode(DropMode.INSERT);
 
 	    CMScrollPane cellarScrollPane = new CMScrollPane(cellarList, 525, 50, 240, 180);
 	    
@@ -374,6 +378,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    floorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    floorList.setLayoutOrientation(JList.VERTICAL);
 	    floorList.setVisibleRowCount(-1);
+	    floorList.setDragEnabled(true);
+	    floorList.setDropMode(DropMode.INSERT);
 	    
 	    CMScrollPane floorScrollPane = new CMScrollPane(floorList, 525, 50, 240, 180);
 	    
@@ -411,6 +417,9 @@ public class MappingFileEditorDialog extends JDialog {
 	    gardenList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    gardenList.setLayoutOrientation(JList.VERTICAL);
 	    gardenList.setVisibleRowCount(-1);
+	    gardenList.setDragEnabled(true);
+	    gardenList.setDropMode(DropMode.INSERT);
+//	    gardenList.setTransferHandler(new ListTransferHandler());
 	    
 	    CMScrollPane gardenScrollPane = new CMScrollPane(gardenList, 525, 50, 240, 180);
 	    
@@ -463,6 +472,12 @@ public class MappingFileEditorDialog extends JDialog {
 	    table.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
 	    table.setRowHeight(30);
 	    table.setBounds(15, 50, 480, displayedProperties.length * 30);
+        table.setDragEnabled(true);
+        table.setDropMode(DropMode.USE_SELECTION);
+        table.setTransferHandler(new TransferHelper());
+        table.setRowSelectionAllowed(false);
+        table.setCellSelectionEnabled(true);
+
 	    return table;
 	}
 	
@@ -490,5 +505,26 @@ public class MappingFileEditorDialog extends JDialog {
 	private void addConversionOptions(JPanel panel) {
 		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
 		panel.add(conversionButton);
+	}
+
+	/**
+	 * @return floorTable
+	 */
+	public JTable getFloorTable() {
+		return floorTable;
+	}
+
+	/**
+	 * @return gardenTable
+	 */
+	public JTable getGardenTable() {
+		return gardenTable;
+	}
+
+	/**
+	 * @return cellarTable
+	 */
+	public JTable getCellarTable() {
+		return cellarTable;
 	}
 }
