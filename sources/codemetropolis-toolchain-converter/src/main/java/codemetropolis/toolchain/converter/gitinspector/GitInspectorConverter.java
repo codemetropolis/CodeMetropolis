@@ -43,8 +43,20 @@ public class GitInspectorConverter extends CdfConverter {
 	private static final String DATE_TAG = "report-date";
 
 	private HashMap<String, CdfElement> cdfElements;
-	CdfElement authorMetrics;
-	CdfElement floorMetrics;
+	private CdfElement authorMetrics;
+	private CdfElement floorMetrics;
+
+	public HashMap<String, CdfElement> getCdfElements() {
+		return cdfElements;
+	}
+
+	public CdfElement getAuthorMetrics() {
+		return authorMetrics;
+	}
+
+	public CdfElement getFloorMetrics() {
+		return floorMetrics;
+	}
 
 	public GitInspectorConverter(Map<String, String> params) {
 		super(params);
