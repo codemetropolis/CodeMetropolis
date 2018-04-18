@@ -176,7 +176,7 @@ public class GitInspectorConverter extends CdfConverter {
 		floorMetrics.addProperty(writeTag, metricValue, type);
 	}
 
-	private void resetMetrics(String name) {
+	public void resetMetrics(String name) {
 		authorMetrics = new CdfElement(name, AUTHOR_TAG);
 		floorMetrics = new CdfElement(name, FLOOR_TAG);
 	}
