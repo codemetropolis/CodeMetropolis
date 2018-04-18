@@ -1,9 +1,11 @@
 package codemetropolis.toolchain.converter.gitinspector.test;
 
 import java.util.List;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
 public class TestHelper {
 
@@ -29,5 +31,10 @@ public class TestHelper {
 			equals |= equals(elements1.get(i), elements2.get(i));
 		}
 		return equals;
+	}
+
+	public static GitInspectorConverter newGitInspectorConverter() {
+	       Map<String, String> params = null;
+	       return new GitInspectorConverter(params);
 	}
 }
