@@ -125,7 +125,7 @@ public class GitInspectorConverter extends CdfConverter {
 		}
 	}
 
-	private CdfElement getMetricsFromFirstAuthorElementNode(Element authorElement) {
+	public CdfElement getMetricsFromFirstAuthorElementNode(Element authorElement) {
 		String name = authorElement.getElementsByTagName(NAME_TAG).item(0).getTextContent();
 		resetMetrics(name);
 
