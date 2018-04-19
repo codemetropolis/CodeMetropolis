@@ -82,6 +82,9 @@ public class GitInspectorConverter extends CdfConverter {
 	public Document createDocumentFromSource(String sourcePath) throws CodeMetropolisException {
 		try {
 			File inputFile = new File(sourcePath);
+			if (!inputFile.getName().endsWith(".xml")) {
+			    throw new CodeMetropolisException("The supplied file must have XML extension.");
+			}
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(inputFile);
