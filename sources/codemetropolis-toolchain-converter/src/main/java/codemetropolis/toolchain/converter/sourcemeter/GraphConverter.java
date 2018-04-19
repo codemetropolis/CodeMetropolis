@@ -57,8 +57,20 @@ public class GraphConverter extends CdfConverter {
 			if (relations.getRelationsMap().get(root.getUID()) != null) {
 				String classId = relations.getRelationsMap().get(root.getUID()).toString();
 				element.addProperty("ChildClasses", classId, CdfProperty.Type.STRING);
+				System.out.println(element.getProperty("ChildClasses"));
 			} else  {
 				element.addProperty("ChildClasses", "", CdfProperty.Type.STRING);
+			}
+			
+			// check for attributes
+			if (relations.getAttributesMap().get(root.getUID()) != null) {
+				System.out.println("hello " + relations.getAttributesMap());
+				String classId = relations.getAttributesMap().get(root.getUID()).toString();
+				element.addProperty("AttributeClasses", classId, CdfProperty.Type.STRING);
+				System.out.println(element.getProperty("AttributeClasses"));
+
+			} else  {
+				element.addProperty("AttributeClasses", "", CdfProperty.Type.STRING);
 			}
 
 		} else {

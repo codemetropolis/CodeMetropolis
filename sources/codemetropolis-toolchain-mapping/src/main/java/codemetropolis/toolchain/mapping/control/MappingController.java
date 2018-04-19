@@ -2,7 +2,6 @@ package codemetropolis.toolchain.mapping.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.AccessibleObject;
 import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -25,7 +24,6 @@ import codemetropolis.toolchain.mapping.model.Binding;
 import codemetropolis.toolchain.mapping.model.Limit;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
-import sun.util.BuddhistCalendar;
 
 public class MappingController {
 	
@@ -253,7 +251,8 @@ public class MappingController {
 
 		System.out.println("MEGJOBB: " + element.getAttribute("name"));
 
-		Buildable tunel = null;
+		Buildable tunnel = null;
+		Buildable bridge = null;
 
 		if ("class".equals(element.getAttribute("type"))) {
 			System.out.println("DEBUG2");
@@ -269,17 +268,36 @@ public class MappingController {
 					List<String> childrenList = Arrays.asList(children.split(", "));
 
 					for (String s : childrenList) {
-						tunel = new Buildable (
+						tunnel = new Buildable (
 								"zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-								"Sample_Tune",
-								Type.TUNEL,
+								"Sample_Tunnel",
+								Type.TUNNEL,
 								new Point(0,0,0),
 								new Point(0,0,0)
 						);
-						tunel.addAttribute("target", s);
-						tunel.addAttribute("torches", "6");
-						temp.addChild(tunel);
+						tunnel.addAttribute("target", s);
+						tunnel.addAttribute("torches", "6");
+						temp.addChild(tunnel);
 					}
+				} else if (n instanceof Element && "AttributeClasses".equals(((Element)n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value"))) {
+					System.out.println("Attribútum:" + ((Element) n).getAttribute("value"));
+					
+					String attributes = ((Element) n).getAttribute("value");
+					attributes =  attributes.replaceAll("\\[", "").replaceAll("\\]", "" );
+					List<String> attributeList = Arrays.asList(attributes.split(", "));
+					for (String s : attributeList) {
+						bridge = new Buildable (
+								"yxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+								"Sample_Bridge",
+								Type.BRIDGE,
+								new Point(0,0,0),
+								new Point(0,0,0)
+						);
+						bridge.addAttribute("target", s);
+						bridge.addAttribute("torches", "6");
+						temp.addChild(bridge);
+					}
+
 				}
 			}
 		}
@@ -361,6 +379,7 @@ public class MappingController {
 			if(build.getParent() != null){
 				Type buildableParentType = build.getParent().getType();
 				if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
+					// only temporarily
 					//throw new NotValidBuildableStructure(build.getCdfNames());
 				}
 			} else if(!Type.CONTAINER.equals(build.getType())) {
