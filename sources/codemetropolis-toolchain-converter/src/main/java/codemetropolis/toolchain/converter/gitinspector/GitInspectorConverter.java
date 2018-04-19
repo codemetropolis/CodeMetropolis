@@ -159,7 +159,7 @@ public class GitInspectorConverter extends CdfConverter {
 		return Long.toString(newValue);
 	}
 
-	private void updateMetrics(Element authorElement, String readTag,
+	public void updateMetrics(Element authorElement, String readTag,
 			String writeTag, CdfProperty.Type type, boolean remapNumeric) {
 		String metricValue = authorElement.getElementsByTagName(readTag).item(0).getTextContent();
 		if (remapNumeric) {
