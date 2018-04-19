@@ -13,9 +13,9 @@ public class TestHelper {
     private static String XML_SRC_PATH = "src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\GitInspectorOutput.xml";
 
 	public static boolean equals(CdfProperty p1, CdfProperty p2) {
-		return p1.getName() == p2.getName() &&
-			p1.getValue() == p2.getValue() &&
-			p1.getType() == p2.getType();
+		return p1.getName().equals(p2.getName()) &&
+			p1.getValue().equals(p2.getValue()) &&
+			p1.getType().equals(p2.getType());
 	}
 
 	public static boolean equals(CdfElement e1, CdfElement e2) {
