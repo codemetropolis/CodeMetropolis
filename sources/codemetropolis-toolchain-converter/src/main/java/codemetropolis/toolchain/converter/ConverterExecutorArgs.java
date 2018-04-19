@@ -13,17 +13,19 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	private String source;
 	private String outputFile;
 	private Map<String, String> params;
-	
-	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
-		this(type, source, outputFile, new HashMap<String, String>());
+	private String relationFile;
+
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, String relationFile) {
+		this(type, source, outputFile, null, relationFile);
 	}
 	
-	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map<String, String> params) {
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map<String, String> params, String relationFile) {
 		super();
 		this.type = type;
 		this.source = source;
 		this.outputFile = outputFile;
 		this.params = params;
+		this.relationFile = relationFile;
 	}
 
 	public ConverterType getType() {
@@ -44,6 +46,14 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	
 	public String getParameter(String key) {
 		return params.get(key);
+	}
+
+	public String getRelationFile() {
+		return relationFile;
+	}
+
+	public void setRelationFile(String relationFile) {
+		this.relationFile = relationFile;
 	}
 
 }

@@ -2,16 +2,13 @@ package codemetropolis.toolchain.mapping.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.UUID;
+import java.lang.reflect.AccessibleObject;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import codemetropolis.toolchain.commons.cmxml.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,6 +25,7 @@ import codemetropolis.toolchain.mapping.model.Binding;
 import codemetropolis.toolchain.mapping.model.Limit;
 import codemetropolis.toolchain.mapping.model.Linking;
 import codemetropolis.toolchain.mapping.model.Mapping;
+import sun.util.BuddhistCalendar;
 
 public class MappingController {
 	
@@ -65,8 +63,13 @@ public class MappingController {
 			doc.getDocumentElement().normalize();
 			Element rootElement = (Element) doc.getChildNodes().item(0);
 			Buildable container = new Buildable(UUID.randomUUID().toString(), "", Type.CONTAINER);
-				
+
+			System.out.println("JO LESZ EZ: " + rootElement.getAttribute("name"));
+
 			Buildable actualBuildable = createBuildable(rootElement);
+			if (actualBuildable != null) {
+				System.out.println("PLS: " + actualBuildable.getId());
+			}
 			if(actualBuildable == null){
 				attributesByBuildables.put(container, new HashMap<>());
 				setChildren(container, rootElement);
@@ -90,6 +93,15 @@ public class MappingController {
 		for(Map.Entry<Buildable, Map<String, String>> entry : attributesByBuildables.entrySet()) {
 			
 			Buildable b = entry.getKey();
+
+			System.out.println("PLS2: " + b.getId());
+			System.out.println("Ennyi kolyke van2: " + b.getChildren().length);
+
+			if (b.getChildren().length == 1) {
+				Buildable c = b.getChildren()[0];
+				System.out.println(c.getId());
+			}
+
 			Map<String, String> attributes = entry.getValue();
 			
 			Linking linking = null;
@@ -181,6 +193,16 @@ public class MappingController {
 			if(childrenNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
 				Element childElement = (Element) childrenNodes.item(i);
 				Buildable childBuildable = createBuildable(childElement);
+				if (childBuildable != null) {
+					System.out.println("PLS: " + childBuildable.getId());
+					System.out.println("Ennyi kolyke van: " + childBuildable.getChildren().length);
+
+					if (childBuildable.getChildren().length == 1) {
+						Buildable c = childBuildable.getChildren()[0];
+						System.out.println(c.getId());
+					}
+
+				}
 				if(childBuildable != null){
 					buildableStack.peek().addChild(childBuildable);
 					setAttributes(childBuildable, childElement);
@@ -206,16 +228,63 @@ public class MappingController {
 	}
 	
 	private Buildable createBuildable(Element element) {
-		String id = UUID.randomUUID().toString();
+		String id = null;
+		NodeList nodeList = element.getElementsByTagName("property");
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node n = nodeList.item(i);
+			if (n instanceof Element && "source_id".equals(((Element) n).getAttribute("name"))) {
+				id = ((Element) n).getAttribute("value");
+			}
+		}
+
+//		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
 		String typeStr = mapping.getTargetTypeOf(element.getAttribute("type"));
-		
+
+		System.out.println("BUILDABLE ID: -------->" + id);
+
 		if (typeStr == null){			
 			return null;
 		}
-		
+
 		Type type = Type.valueOf(typeStr);
-		return new Buildable(id, name, type);
+
+		Buildable temp = new Buildable(id, name, type);
+
+		System.out.println("MEGJOBB: " + element.getAttribute("name"));
+
+		Buildable tunel = null;
+
+		if ("class".equals(element.getAttribute("type"))) {
+			System.out.println("DEBUG2");
+
+			NodeList classNodeList = element.getElementsByTagName("property");
+			for (int i = 0; i < classNodeList.getLength(); i++) {
+				Node n = classNodeList.item(i);
+				if (n instanceof Element && "ChildClasses".equals(((Element) n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value"))) {
+					System.out.println("Gyerek:" + ((Element) n).getAttribute("value"));
+
+					String children = ((Element) n).getAttribute("value");
+					children =  children.replaceAll("\\[", "").replaceAll("\\]", "" );
+					List<String> childrenList = Arrays.asList(children.split(", "));
+
+					for (String s : childrenList) {
+						tunel = new Buildable (
+								"zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+								"Sample_Tune",
+								Type.TUNEL,
+								new Point(0,0,0),
+								new Point(0,0,0)
+						);
+						tunel.addAttribute("target", s);
+						tunel.addAttribute("torches", "6");
+						temp.addChild(tunel);
+					}
+				}
+			}
+		}
+
+		return temp;
 	}
 	
 	private Map<String, String> createAttributeMap(Element element) {
@@ -292,7 +361,7 @@ public class MappingController {
 			if(build.getParent() != null){
 				Type buildableParentType = build.getParent().getType();
 				if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
-					throw new NotValidBuildableStructure(build.getCdfNames());
+					//throw new NotValidBuildableStructure(build.getCdfNames());
 				}
 			} else if(!Type.CONTAINER.equals(build.getType())) {
 				throw new NotValidBuildableStructure(build.getCdfNames());

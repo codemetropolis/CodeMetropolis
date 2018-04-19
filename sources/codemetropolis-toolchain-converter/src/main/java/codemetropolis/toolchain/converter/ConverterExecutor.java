@@ -10,6 +10,7 @@ import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.converter.control.ConverterLoader;
+import codemetropolis.toolchain.converter.relations.Relations;
 
 public class ConverterExecutor extends AbstractExecutor {
 	
@@ -26,7 +27,16 @@ public class ConverterExecutor extends AbstractExecutor {
 			}
 			
 		});
-		
+
+		Relations relations = null;
+
+		if (converterArgs.getRelationFile() != null) {
+			relations = new Relations(converterArgs.getRelationFile());
+			relations.parseRelationFile();
+			System.out.println(relations.toString());
+		}
+
+
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = null;
 		try {

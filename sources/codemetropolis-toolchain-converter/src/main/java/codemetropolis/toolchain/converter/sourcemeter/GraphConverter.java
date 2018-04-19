@@ -8,6 +8,7 @@ import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.converter.relations.Relations;
 import graphlib.Attribute;
 import graphlib.Attribute.AttributeIterator;
 import graphlib.AttributeFloat;
@@ -26,9 +27,18 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private static final String ROOT_NODE_ID = "L100";
-	
+	private boolean isRelationsNeeded = false;
+	private Relations relations = null;
+
 	@Override
 	public CdfTree createElements(String graphPath) {
+		if (getParameter("relationFile") != null) {
+			isRelationsNeeded = true;
+			relations = new Relations(getParameter("relationFile"));
+			relations.parseRelationFile();
+			System.out.println(relations.toString());
+		}
+
 		Graph graph = new Graph();
 		graph.loadBinary(graphPath);
 		Node root = graph.findNode(ROOT_NODE_ID);
@@ -40,6 +50,20 @@ public class GraphConverter extends CdfConverter {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
 		CdfElement element = new CdfElement(name, type);
+		if ("Class".equals(type)) {
+			// if the element is a class, check for subclasses from relationFile
+			System.out.println("I find a \"class\" id: " + root.getUID());
+
+			if (relations.getRelationsMap().get(root.getUID()) != null) {
+				String classId = relations.getRelationsMap().get(root.getUID()).toString();
+				element.addProperty("ChildClasses", classId, CdfProperty.Type.STRING);
+			} else  {
+				element.addProperty("ChildClasses", "", CdfProperty.Type.STRING);
+			}
+
+		} else {
+			System.out.println("Not a \"class\" id: " + root.getUID());
+		}
 		element.setSourceId(root.getUID());
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {

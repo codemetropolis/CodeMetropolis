@@ -113,7 +113,9 @@ public class BuildableTree {
 			Document doc = dBuilder.parse(xmlFile);
 			doc.getDocumentElement().normalize();
 			NodeList nList = doc.getElementsByTagName("buildable");
-	 
+
+
+
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -169,12 +171,20 @@ public class BuildableTree {
 							);
 					
 					NodeList attributeNodes = eElement.getElementsByTagName("attributes").item(0).getChildNodes();
-					
+					System.out.println("DEBUG");
 					for(int i = 1; attributeNodes.item(i) != null; i += 2) {
 						b.addAttribute(
 								((Element)attributeNodes.item(i)).getAttribute("name"),
 								((Element)attributeNodes.item(i)).getAttribute("value")
 						);
+
+						System.out.println(b.getAttributeValue("name") + " - >" + b.getAttributeValue("value"));
+
+						if ("ChildClasses".equals(b.getAttributeValue("name"))) {
+							// A bridge can be build
+							System.out.println("BUILD A BRIDGE");
+
+						}
 					}
 					
 					if(!nNode.getParentNode().getNodeName().equals("buildables")) {
