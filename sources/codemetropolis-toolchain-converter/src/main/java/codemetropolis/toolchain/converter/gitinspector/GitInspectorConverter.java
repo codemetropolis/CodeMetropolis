@@ -139,7 +139,7 @@ public class GitInspectorConverter extends CdfConverter {
 		return authorMetrics;
 	}
 
-	private CdfElement updateMetricsFromSecondAuthorElementNode(Element authorElement, CdfElement element) {
+	public CdfElement updateMetricsFromSecondAuthorElementNode(Element authorElement, CdfElement element) {
 		authorMetrics = element;
 		floorMetrics = authorMetrics.getChildElements().get(0);
 		authorMetrics.removeChildElement(floorMetrics);
