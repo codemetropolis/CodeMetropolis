@@ -3,7 +3,6 @@ package codemetropolis.toolchain.converter.gitinspector.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

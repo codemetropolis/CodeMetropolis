@@ -3,7 +3,6 @@ package codemetropolis.toolchain.converter.gitinspector.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
@@ -40,7 +39,7 @@ public class CreateDocumentFromSourceTest {
     public void validPath() {
         GitInspectorConverter conv = TestHelper.newGitInspectorConverter();
         try {
-            Document d = conv.createDocumentFromSource(XML_SRC_PATH);
+            conv.createDocumentFromSource(XML_SRC_PATH);
         } catch (Exception e) {
             fail(e.getMessage());
         }
