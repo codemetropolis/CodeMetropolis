@@ -72,7 +72,7 @@ public class RenderingExecutor extends AbstractExecutor {
 		print(Resources.get("rendering_reading_input"));
 		try {
 			worldBuilder.createBuildings(renderingArgs.getInputFile());
-		} catch (BuildingTypeMismatchException e) {
+		} catch (RenderingException e) {
 			printError(e, Resources.get("building_creation_failed_error"));
 			return false;
 		}

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
+import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 
 
 /** Test class for {@link Tunnel} for basic functions.
@@ -40,7 +40,7 @@ public class TunnelTest {
 				new Point(0, 0, 0),
 				new Point(10, TUNNEL_HEIGHT, TUNNEL_WIDTH));
 		
-		b.addAttribute(Tunnel.TUNNEL_ATTRIBUTE_TARGET, "TARGET_UNIQUE_ID");
+		b.addAttribute(Linking.LINKING_ATTRIBUTE_TARGET, "TARGET_UNIQUE_ID");
 		
 		parent = new Buildable( 
 				"UNIQUE_ID2",
@@ -54,7 +54,7 @@ public class TunnelTest {
 		
 		try {
 			tunnel = new Tunnel( b );
-		} catch (BuildingTypeMismatchException e) {
+		} catch (RenderingException e) {
 			fail("Shouldn't throw exception.");
 			e.printStackTrace();
 		}
@@ -94,7 +94,7 @@ public class TunnelTest {
 	
 	@Test
 	public void testCalculatStepPosition() {
-		assertTrue( tunnel.calculateStepPosition(tunnel.innerBuildable).getX() == tunnel.innerBuildable.getPositionX() ||
-					tunnel.calculateStepPosition(tunnel.innerBuildable).getZ() == tunnel.innerBuildable.getPositionZ());
+		assertTrue( tunnel.calculateStepPosition(true).getX() == tunnel.innerBuildable.getPositionX() ||
+					tunnel.calculateStepPosition(true).getZ() == tunnel.innerBuildable.getPositionZ());
 	}
 }

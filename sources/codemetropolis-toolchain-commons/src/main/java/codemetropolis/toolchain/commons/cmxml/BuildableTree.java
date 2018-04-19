@@ -134,6 +134,8 @@ public class BuildableTree {
 						break;
 						case "tunnel": type = Type.TUNNEL;
 						break;
+						case "bridge": type = Type.BRIDGE;
+						break;
 					}
 					
 					Point position;

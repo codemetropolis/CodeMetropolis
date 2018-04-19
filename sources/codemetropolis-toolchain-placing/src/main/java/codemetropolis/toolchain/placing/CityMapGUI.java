@@ -93,6 +93,9 @@ public class CityMapGUI extends Frame {
 	        		case TUNNEL :
 	        			g2d.setColor(new Color(122, 122, 122)); //grey
 	        			break;
+	        		case BRIDGE :
+	        			g2d.setColor(new Color(164, 66, 244)); //purple
+	        			break;
 	        		default:
 	        			break;
 	        	}

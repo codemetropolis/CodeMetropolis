@@ -19,9 +19,8 @@ import codemetropolis.toolchain.placing.layout.pack.RectanglePacker.Rectangle;
 
 public class PackLayout extends Layout {
 	
-	public static final int TUNNEL_WIDTH = 2;
-	public static final int TUNNEL_HEIGHT = 4;
-	public static final String TUNNEL_ATTRIBUTE_TARGET = "target";
+	public static final int LINKING_WIDTH = 2;
+	public static final String LINKING_ATTRIBUTE_TARGET = "target";
 	
 	private final int SPACE = 3;
 	
@@ -32,20 +31,21 @@ public class PackLayout extends Layout {
 		BuildableWrapper root = new BuildableWrapper(buildables.getRoot());
 		packRecursive(root, houses);
 		
-		makeTunnels(buildables);
+		makeLinkings(buildables);
 	}
 	
-	private void makeTunnels(BuildableTree buildables) {
+	private void makeLinkings(BuildableTree buildables) {
 		
 		List<Buildable> extendedBuildables = new ArrayList<Buildable>();
 		
 		for(Buildable b : buildables.getBuildables()) {
-			if (b.getType() != Buildable.Type.TUNNEL) {
+			
+			if (b.getType() != Buildable.Type.TUNNEL && b.getType() != Buildable.Type.BRIDGE) {
 				continue;
 			}
 			
 			Buildable parent = b.getParent();
-			String id = b.getAttributeValue(TUNNEL_ATTRIBUTE_TARGET);
+			String id = b.getAttributeValue(LINKING_ATTRIBUTE_TARGET);
 			
 			if (id == null) {
 				continue;
@@ -60,16 +60,14 @@ public class PackLayout extends Layout {
 			if(target.getId() == parent.getId()) {
 				buildables.getBuildables().remove(b);
 			}
-			
-			b.setSizeY(TUNNEL_HEIGHT);
 
 			Point parentCenter = new Point(parent.getPositionX() + parent.getSizeX()/2, 0, parent.getPositionZ() + parent.getSizeZ()/2);
 			Point targetCenter = new Point(target.getPositionX() + target.getSizeX()/2, 0, target.getPositionZ() + target.getSizeZ()/2);
 			
 			if (parentCenter.getX() == targetCenter.getX()) {
 				
-				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
-				b.setSizeX(TUNNEL_WIDTH);
+				b.setPositionX(parentCenter.getX() - LINKING_WIDTH/2);
+				b.setSizeX(LINKING_WIDTH);
 				
 				int distance = targetCenter.getZ() - parentCenter.getZ();
 				
@@ -85,6 +83,7 @@ public class PackLayout extends Layout {
 					b.setSizeZ(distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
+					b.addAttribute(new Attribute("orientation", "SOUTH"));
 					
 				} else {
 					// Position:
@@ -97,12 +96,13 @@ public class PackLayout extends Layout {
 					b.setSizeZ(-distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
+					b.addAttribute(new Attribute("orientation", "NORTH"));
 					
 				}
 			} else if (parentCenter.getZ() == targetCenter.getZ()) {
 				
-				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-				b.setSizeZ(TUNNEL_WIDTH);
+				b.setPositionZ(parentCenter.getZ() - LINKING_WIDTH/2);
+				b.setSizeZ(LINKING_WIDTH);
 				
 				int distance = targetCenter.getX() - parentCenter.getX();
 				
@@ -116,6 +116,7 @@ public class PackLayout extends Layout {
 					b.setSizeX(distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
+					b.addAttribute(new Attribute("orientation", "EAST"));
 					
 				} else {
 					// Position:
@@ -127,21 +128,29 @@ public class PackLayout extends Layout {
 					b.setSizeX(-distance);
 					
 					b.addAttribute(new Attribute("standalone", "true"));
+					b.addAttribute(new Attribute("orientation", "WEST"));
 					
 				}
 			} else if (parentCenter.getX() > targetCenter.getX()) {
 				
-				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-				b.setSizeZ(TUNNEL_WIDTH);
+				b.setPositionZ(parentCenter.getZ() - LINKING_WIDTH/2);
+				b.setSizeZ(LINKING_WIDTH);
 				
-				b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
-				b.setSizeX(parentCenter.getX() - targetCenter.getX() + TUNNEL_WIDTH);
+				b.setPositionX(targetCenter.getX() - LINKING_WIDTH/2);
+				b.setSizeX(parentCenter.getX() - targetCenter.getX() + LINKING_WIDTH);
 				
 				b.addAttribute(new Attribute("standalone", "false"));
+				b.addAttribute(new Attribute("orientation", "WEST"));
 				
-				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
-				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
-				new_b.setSizeX(TUNNEL_WIDTH);
+				Buildable new_b;
+				if (b.getType() == Buildable.Type.TUNNEL) {
+					new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				} else {
+					new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.BRIDGE);
+				}
+				
+				new_b.setPositionX(targetCenter.getX() - LINKING_WIDTH/2);
+				new_b.setSizeX(LINKING_WIDTH);
 				
 				int distance = parentCenter.getZ() - targetCenter.getZ();
 				
@@ -153,7 +162,8 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					new_b.setPositionZ(targetCenter.getZ());
-					new_b.setSizeZ(distance + TUNNEL_WIDTH/2);
+					new_b.setSizeZ(distance + LINKING_WIDTH/2);
+					new_b.addAttribute(new Attribute("orientation", "SOUTH"));
 					
 				} else {
 					// Position:
@@ -162,31 +172,37 @@ public class PackLayout extends Layout {
 					// X T X X
 					// X X X X
 					
-					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(-distance + TUNNEL_WIDTH/2);
+					new_b.setPositionZ(parentCenter.getZ() - LINKING_WIDTH/2);
+					new_b.setSizeZ(-distance + LINKING_WIDTH/2);
+					new_b.addAttribute(new Attribute("orientation", "NORTH"));
 
 				}
 				
 				new_b.addAttribute(new Attribute("standalone", "false"));
 				
-				new_b.setSizeY(TUNNEL_HEIGHT);
-
 				extendedBuildables.add(new_b);
 				
 				target.addChild(new_b);
 				
 			} else {
-				b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-				b.setSizeZ(TUNNEL_WIDTH);
+				b.setPositionZ(parentCenter.getZ() - LINKING_WIDTH/2);
+				b.setSizeZ(LINKING_WIDTH);
 				
-				b.setPositionX(parentCenter.getX() - TUNNEL_WIDTH/2);
-				b.setSizeX(targetCenter.getX() - parentCenter.getX() + TUNNEL_WIDTH);
+				b.setPositionX(parentCenter.getX() - LINKING_WIDTH/2);
+				b.setSizeX(targetCenter.getX() - parentCenter.getX() + LINKING_WIDTH);
 				
 				b.addAttribute(new Attribute("standalone", "false"));
+				b.addAttribute(new Attribute("orientation", "EAST"));
 				
-				Buildable new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
-				new_b.setPositionX(targetCenter.getX() - TUNNEL_WIDTH/2);
-				new_b.setSizeX(TUNNEL_WIDTH);
+				Buildable new_b;
+				if (b.getType() == Buildable.Type.TUNNEL) {
+					new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.TUNNEL);
+				} else {
+					new_b = new Buildable(UUID.randomUUID().toString(), "", Buildable.Type.BRIDGE);
+				}
+				
+				new_b.setPositionX(targetCenter.getX() - LINKING_WIDTH/2);
+				new_b.setSizeX(LINKING_WIDTH);
 				
 				int distance = targetCenter.getZ() - parentCenter.getZ();
 				
@@ -198,7 +214,8 @@ public class PackLayout extends Layout {
 					// X X X X
 					
 					new_b.setPositionZ(targetCenter.getZ());
-					new_b.setSizeZ(-distance + TUNNEL_WIDTH/2);
+					new_b.setSizeZ(-distance + LINKING_WIDTH/2);
+					new_b.addAttribute(new Attribute("orientation", "SOUTH"));
 
 				} else {
 					// Position:
@@ -207,14 +224,13 @@ public class PackLayout extends Layout {
 					// X X T X
 					// X X X X
 					
-					new_b.setPositionZ(parentCenter.getZ() - TUNNEL_WIDTH/2);
-					new_b.setSizeZ(distance + TUNNEL_WIDTH/2);
+					new_b.setPositionZ(parentCenter.getZ() - LINKING_WIDTH/2);
+					new_b.setSizeZ(distance + LINKING_WIDTH/2);
+					new_b.addAttribute(new Attribute("orientation", "NORTH"));
 					
 				}
 				
 				new_b.addAttribute(new Attribute("standalone", "false"));
-				
-				new_b.setSizeY(TUNNEL_HEIGHT);
 				
 				extendedBuildables.add(new_b);
 				
@@ -248,7 +264,7 @@ public class PackLayout extends Layout {
 		List<BuildableWrapper> children = new ArrayList<BuildableWrapper>();
 		
 		for(BuildableWrapper c : tempChildren) {
-			if (c.buildable instanceof Buildable && ((Buildable)c.buildable).getType() == Buildable.Type.TUNNEL) {
+			if (c.buildable instanceof Buildable && (((Buildable)c.buildable).getType() == Buildable.Type.TUNNEL || ((Buildable)c.buildable).getType() == Buildable.Type.BRIDGE)) {
 				continue;
 			} 
 			children.add(c);
