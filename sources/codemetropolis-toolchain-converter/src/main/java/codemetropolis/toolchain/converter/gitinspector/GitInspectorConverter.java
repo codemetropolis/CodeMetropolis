@@ -91,7 +91,7 @@ public class GitInspectorConverter extends CdfConverter {
 		}
 	}
 
-	private void traverseNodesFromDocument(Document doc) {
+	public void traverseNodesFromDocument(Document doc) {
 		Node changesNode = doc.getElementsByTagName(CHANGES_TAG).item(0);
 		Node authorsNode = changesNode.getChildNodes().item(3);
 		NodeList authorNodes = authorsNode.getChildNodes();
