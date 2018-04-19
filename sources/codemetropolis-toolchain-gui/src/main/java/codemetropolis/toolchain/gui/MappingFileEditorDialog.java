@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +29,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
+import codemetropolis.toolchain.gui.beans.QuantizationInformation;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMScrollPane;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.conversions.Conversion;
+import codemetropolis.toolchain.gui.conversions.QuantizationConversion;
 import codemetropolis.toolchain.gui.utils.BuildableSettings;
 import codemetropolis.toolchain.gui.utils.Property;
 import codemetropolis.toolchain.gui.utils.PropertyCollector;
@@ -48,16 +52,34 @@ public class MappingFileEditorDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final FileFilter XML_FILTER = new XmlFileFilter();
+	private static final FileFilter XML_FILTER;
+
+	static public List<Conversion> cellarConversion;
+	static public List<Conversion> gardenConversion;
+	static public List<Conversion> floorConversion;
+
+	static public Map<QuantizationInformation, QuantizationConversion> cellarQuant;
+	static public Map<QuantizationInformation, QuantizationConversion> gardenQuant;
+	static public Map<QuantizationInformation, QuantizationConversion> floorQuant;
 	
 	/**
 	 * Contains the possible results of assigning a metric to a property of a buildable type.
 	 */
-	private enum AssignResult {CANNOT_ASSIGN, NO_CONVERSION, TO_INT, TO_DOUBLE, NORMALIZE, QUANTIZATON};
+	public enum AssignResult {CANNOT_ASSIGN, NO_CONVERSION, TO_INT, TO_DOUBLE, NORMALIZE, QUANTIZATON};
 	
-	private static final Map<String, Map<String, AssignResult>> ASSIGN_RESULT_MATRIX;
+	public static final Map<String, Map<String, AssignResult>> ASSIGN_RESULT_MATRIX;
 	
 	static {
+		XML_FILTER = new XmlFileFilter();
+
+		cellarConversion = new ArrayList<Conversion>();
+		gardenConversion = new ArrayList<Conversion>();
+		floorConversion = new ArrayList<Conversion>();
+
+		cellarQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
+		gardenQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
+		floorQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
+
 		ASSIGN_RESULT_MATRIX = new HashMap<String, Map<String, AssignResult>>();
 		
 		ASSIGN_RESULT_MATRIX.put("int", new HashMap<String, AssignResult>());
@@ -90,9 +112,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private JPanel floorPanel;
 	private JPanel gardenPanel;
 	private JPanel groundPanel;
-	private JTable cellarTable;
-	private JTable floorTable;
-	private JTable gardenTable;
+	private static JTable cellarTable;
+	private static JTable floorTable;
+	private static JTable gardenTable;
 	
 	//ListModel and JList for the buildables: cellar, floor, garden
 	private ListModel<String> cellarListmodel;
@@ -469,7 +491,7 @@ public class MappingFileEditorDialog extends JDialog {
 	    	initData[i][0] = displayedProperties[i] + ": " + BuildableSettings.BUILDABLE_ATTRIBUTE_TYPES.get(displayedProperties[i]);
 	    	initData[i][1] = null;
 	    }
-	    
+
 	    JTable table = new JTable(initData, columnNames);
 	    table.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
 	    table.setRowHeight(30);
@@ -482,7 +504,7 @@ public class MappingFileEditorDialog extends JDialog {
 
 	    return table;
 	}
-	
+
 	/**
 	 * Fills up the list model of the given source code element type with its own properties/metrics.
 	 * @param sourceCodeElementType Type of the source code element (method, attribute, etc.).
@@ -490,7 +512,7 @@ public class MappingFileEditorDialog extends JDialog {
 	 */
 	private ListModel<String> initializeListModel(String sourceCodeElementType) {
 		List<Property> propertyList = sourceCodeElementProperties.get(sourceCodeElementType);
-		
+
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		
 		for(Property p : propertyList) {
@@ -507,26 +529,81 @@ public class MappingFileEditorDialog extends JDialog {
 	private void addConversionOptions(JPanel panel) {
 		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
 		panel.add(conversionButton);
+
+		conversionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int index;
+				String buildableAttribute;
+				String metric;
+
+				for (Conversion element :  cellarConversion) {
+					if ( element instanceof QuantizationConversion ) {
+						QuantizationInformation cellar = new QuantizationInformation();
+
+						index = cellarConversion.indexOf(element);
+						buildableAttribute = (String) cellarTable.getModel().getValueAt(index, 0);
+						metric = (String) cellarTable.getModel().getValueAt(index, 1);
+
+						cellar.setIndex(index);
+						cellar.setBuildableAttribute(buildableAttribute);
+						cellar.setMetric(metric);
+
+						cellarQuant.put(cellar, new QuantizationConversion());
+					}
+				}
+				for (Conversion element :  gardenConversion) {
+					if ( element instanceof QuantizationConversion ) {
+						QuantizationInformation garden = new QuantizationInformation();
+
+						index = gardenConversion.indexOf(element);
+						buildableAttribute = (String) gardenTable.getModel().getValueAt(index, 0);
+						metric = (String) gardenTable.getModel().getValueAt(index, 1);
+
+						garden.setIndex(index);
+						garden.setBuildableAttribute(buildableAttribute);
+						garden.setMetric(metric);
+
+						cellarQuant.put(garden, new QuantizationConversion());
+					}
+				}
+				for (Conversion element :  floorConversion) {
+					if ( element instanceof QuantizationConversion ) {
+						QuantizationInformation floor = new QuantizationInformation();
+
+						index = floorConversion.indexOf(element);
+						buildableAttribute = (String) floorTable.getModel().getValueAt(index, 0);
+						metric = (String) floorTable.getModel().getValueAt(index, 1);
+
+						floor.setIndex(index);
+						floor.setBuildableAttribute(buildableAttribute);
+						floor.setMetric(metric);
+
+						cellarQuant.put(floor, new QuantizationConversion());
+					}
+				}
+			}
+		});
 	}
 
-	/**
-	 * @return floorTable
-	 */
-	public JTable getFloorTable() {
-		return floorTable;
-	}
+    /**
+     * @return floorTable
+     */
+    public static JTable getFloorTable() {
+    	return floorTable;
+    }
 
-	/**
-	 * @return gardenTable
-	 */
-	public JTable getGardenTable() {
-		return gardenTable;
-	}
+    /**
+     * @return gardenTable
+     */
+    public static JTable getGardenTable() {
+        return gardenTable;
+    }
 
-	/**
-	 * @return cellarTable
-	 */
-	public JTable getCellarTable() {
-		return cellarTable;
+    /**
+     * @return cellarTable
+     */
+    public static JTable getCellarTable() {
+        return cellarTable;
 	}
 }

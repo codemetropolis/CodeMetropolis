@@ -4,11 +4,16 @@ import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.Point;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
+
+import codemetropolis.toolchain.gui.MappingFileEditorDialog;
+import codemetropolis.toolchain.gui.conversions.*;
 
 
 public class TransferHelper extends TransferHandler {
@@ -16,6 +21,65 @@ public class TransferHelper extends TransferHandler {
 	private static final long serialVersionUID = 1L;
 
     public TransferHelper() {
+    }
+
+    public boolean typeChecker (Object obj, JTable target, int row, int col) {
+    	int currCol = col -1;
+
+    	if (col == 0) {	return false; }
+
+    	Object value = target.getModel().getValueAt(row, currCol);
+    	String dragValue = obj.toString();
+    	String dropValue = value.toString();
+
+    	JTable currGardenTable = MappingFileEditorDialog.getGardenTable();
+    	JTable currFloorTable = MappingFileEditorDialog.getFloorTable();
+    	JTable currCellarTable = MappingFileEditorDialog.getCellarTable();
+
+    	List<Conversion> conversionList = null;
+
+    	if (target == currGardenTable) {
+    		conversionList = MappingFileEditorDialog.gardenConversion;
+    	}
+
+    	if (target == currFloorTable) {
+    		conversionList = MappingFileEditorDialog.floorConversion;
+    	}
+
+		if (target == currCellarTable) {
+			conversionList = MappingFileEditorDialog.cellarConversion;
+		}
+
+    	dragValue = dragValue.split(": ")[1];
+    	dropValue = dropValue.split(": ")[1];
+
+    	switch (MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue)) {
+    	case CANNOT_ASSIGN:
+    		return false;
+
+    	case NO_CONVERSION:
+    		conversionList.add(row, new EmptyConversion());
+    		return true;
+
+    	case TO_INT:
+    		conversionList.add(row, new ToIntConversion());
+    		return true;
+
+    	case TO_DOUBLE:
+    		conversionList.add(row, new ToDoubleConversion());
+    		return true;
+
+    	case NORMALIZE:
+    		conversionList.add(row, new NormalizeConversion());
+    		return true;
+
+    	case QUANTIZATON:
+    		conversionList.add(row, new QuantizationConversion());
+    		return true;
+
+    	default:
+    		return true;
+    	}
     }
 
     @Override
@@ -34,13 +98,19 @@ public class TransferHelper extends TransferHandler {
         // Can only import into another JTable
         Component comp = support.getComponent();
         if (comp instanceof JTable) {
+        	JTable target = (JTable) comp;
+        	DropLocation dl = support.getDropLocation();
+            Point dp = dl.getDropPoint();
+            int dropCol = target.columnAtPoint(dp);
+            int dropRow = target.rowAtPoint(dp);
+
             try {
                 // Get the Transferable, we need to check
                 // the constraints
                 Transferable t = support.getTransferable();
                 Object obj = t.getTransferData(DataFlavor.stringFlavor);
                 if (obj != null) {
-                    canImport = true;
+                	canImport = typeChecker(obj, target, dropRow, dropCol);
                 }
             } catch (UnsupportedFlavorException | IOException ex) {
                 ex.printStackTrace();
@@ -59,7 +129,7 @@ public class TransferHelper extends TransferHandler {
             JTable target = (JTable) comp;
             // Need to know where we are importing to...
             DropLocation dl = support.getDropLocation();
-            java.awt.Point dp = dl.getDropPoint();
+            Point dp = dl.getDropPoint();
             int dropCol = target.columnAtPoint(dp);
             int dropRow = target.rowAtPoint(dp);
             try {
@@ -70,7 +140,6 @@ public class TransferHelper extends TransferHandler {
                 target.setValueAt(obj, dropRow, dropCol);
 
                 imported = true;
-
             } catch (UnsupportedFlavorException | IOException ex) {
                 ex.printStackTrace();
             }
