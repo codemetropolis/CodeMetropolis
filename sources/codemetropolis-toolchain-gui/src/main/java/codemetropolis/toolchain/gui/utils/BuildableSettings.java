@@ -3,12 +3,15 @@ package codemetropolis.toolchain.gui.utils;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.net.URL;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
 
@@ -36,10 +39,11 @@ public class BuildableSettings {
 			"glass", "gold", "diamond"	
 	}));
 	
-	/**
-	 * Path of the file containing the settings.
-	 */
-	private static final String CFG_FILEPATH ="./src/main/resources/buildableProperties.cmcfg";
+	private URL urlToDictionary;
+	
+	public BuildableSettings() {
+		urlToDictionary = this.getClass().getResource("/" + "buildableProperties.cmcfg");
+	}
 	
 	/**
 	 * {@link Map}, serves containing the buildable types(floor, garden, ...) and its assigned properties(height, character, ...).
@@ -74,12 +78,16 @@ public class BuildableSettings {
      * @throws BadConfigFileFomatException If the format of the configuration file is not appropriate.
      * @throws FileNotFoundException If the configuration file cannot be found.
      */
-	public static Map<String, String[]> readSettings() throws BadConfigFileFomatException, FileNotFoundException{
-		BufferedReader cfgFileReader = null;
+	public Map<String, String[]> readSettings() throws BadConfigFileFomatException, FileNotFoundException{
 		
-		cfgFileReader = new BufferedReader(new FileReader(CFG_FILEPATH));
+		BufferedReader cfgFileReader = null; 
+		//new BufferedReader(new FileReader(CFG_FILEPATH));
 		
-		try{			
+		try {
+			InputStream stream = urlToDictionary.openStream();
+			
+			cfgFileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+			
 			String actLine;
 			//A regular line: buildable name is followed by an '=' sign, that follows the list of attributes separated by commas. 
 			while((actLine = cfgFileReader.readLine()).split("=").length == 2) {				
@@ -137,7 +145,7 @@ public class BuildableSettings {
 	/**
 	 * Writes to the console, what display settings will be provided to the Mapping file editor GUI.
 	 */
-	public static void displaySettings() {
+	public void displaySettings() {
 		try {
 			Map<String, String[]> returnedSettings = readSettings();
 			

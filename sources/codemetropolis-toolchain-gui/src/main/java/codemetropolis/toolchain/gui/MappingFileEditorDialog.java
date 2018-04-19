@@ -116,8 +116,9 @@ public class MappingFileEditorDialog extends JDialog {
 	 */
 	private void loadDisplayedInfo(String cdfFilePath) {
 		try {
-			displayedBuildableAttributes = BuildableSettings.readSettings();
-			BuildableSettings.displaySettings();
+			BuildableSettings settings = new BuildableSettings();
+			displayedBuildableAttributes = settings.readSettings();
+			settings.displaySettings();
 			
 			PropertyCollector pc = new PropertyCollector();
 			sourceCodeElementProperties = pc.getFromCdf(cdfFilePath);
