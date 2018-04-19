@@ -22,6 +22,21 @@ public class BuildableSettings {
 	public static final Map<String, String[]> DEFAULT_SETTINGS = new HashMap<>();
 	
 	/**
+	 * {@Map}, which contains the types (int, float(0 to 1),...) of the possible buildable attributes.
+	 */
+	public static final Map<String, String> BUILDABLE_ATTRIBUTE_TYPES = new HashMap<String, String>();
+	
+	/**
+	 * Stores the possible values, which can be applied to the buildable attributes "character" and "external_character".
+	 */
+	public static final List<String> VALID_CHARACTER_TYPES = new ArrayList<String>(Arrays.asList(new String[] {
+			"stone", "cobblestone", "mossy_stone", "sandstone", "obsidian", 
+			"wood", "dark_wood", "birch_wood", "planks", "dark_planks", "metal",
+			"dirt", "sand", "red_sand", "brick", "stone_brick", "dark_brick",
+			"glass", "gold", "diamond"	
+	}));
+	
+	/**
 	 * Path of the file containing the settings.
 	 */
 	private static final String CFG_FILEPATH ="./src/main/resources/buildableProperties.cmcfg";
@@ -41,6 +56,16 @@ public class BuildableSettings {
         DISPLAYED_PROPERTIES.put("CELLAR", new String[] {});
         DISPLAYED_PROPERTIES.put("GARDEN", new String[] {});
         DISPLAYED_PROPERTIES.put("GROUND", new String[] {});
+        
+        BUILDABLE_ATTRIBUTE_TYPES.put("width", "int");
+        BUILDABLE_ATTRIBUTE_TYPES.put("height", "int");
+        BUILDABLE_ATTRIBUTE_TYPES.put("length", "int");
+        BUILDABLE_ATTRIBUTE_TYPES.put("character", "string");
+        BUILDABLE_ATTRIBUTE_TYPES.put("external_character", "string");
+        BUILDABLE_ATTRIBUTE_TYPES.put("torches", "int(0 to 5)");
+        BUILDABLE_ATTRIBUTE_TYPES.put("tree-ratio", "float(0 to 1)");
+        BUILDABLE_ATTRIBUTE_TYPES.put("mushroom-ratio", "float(0 to 1)");
+        BUILDABLE_ATTRIBUTE_TYPES.put("flower-ratio", "float(0 to 1)");
 	}
 	
     /**

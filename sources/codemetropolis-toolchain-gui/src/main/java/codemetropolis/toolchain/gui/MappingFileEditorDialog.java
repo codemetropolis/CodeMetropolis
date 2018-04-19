@@ -215,7 +215,8 @@ public class MappingFileEditorDialog extends JDialog {
 				
 				int result = JOptionPane.showConfirmDialog(null, addResourcePanel, Translations.t("gui_add_resource_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(result == JOptionPane.OK_OPTION) {
-					if (!(nameField.getText().isEmpty() || valueField.getText().isEmpty())) {
+					if (nameField.getText().matches("[a-zA-Z0-9]+") &&
+						(valueField.getText().matches("[0-9]+(.[0-9]+)?")) ||  BuildableSettings.VALID_CHARACTER_TYPES.contains(valueField.getText())) {
 						//Produce the resource string from the text fields...
 						String resourceToAdd = nameField.getText() + ": " + valueField.getText();
 						//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
@@ -228,7 +229,7 @@ public class MappingFileEditorDialog extends JDialog {
 					else {
 						JOptionPane.showMessageDialog(
 								null,
-								Translations.t("gui_err_name_value_empty"),
+								Translations.t("gui_err_name_value_not_valid"),
 								Translations.t("gui_err_title"),
 								JOptionPane.ERROR_MESSAGE);
 					}
@@ -464,7 +465,7 @@ public class MappingFileEditorDialog extends JDialog {
 	    Object[][] initData = new Object[displayedProperties.length][2];
 	    
 	    for(int i = 0; i < displayedProperties.length; i++) {
-	    	initData[i][0] = displayedProperties[i];
+	    	initData[i][0] = displayedProperties[i] + ": " + BuildableSettings.BUILDABLE_ATTRIBUTE_TYPES.get(displayedProperties[i]);
 	    	initData[i][1] = null;
 	    }
 	    
