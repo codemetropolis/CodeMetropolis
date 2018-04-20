@@ -11,11 +11,17 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
+import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.MappingFileEditorDialog;
 import codemetropolis.toolchain.gui.conversions.*;
 
-
+/**
+ * This class is used to handle the transfer of
+ * a Transferable to and from Swing components.
+ *
+ * @author Tamas Keri {@literal <KETWAAT.SZE>}
+ */
 public class TransferHelper extends TransferHandler {
 
 	private static final long serialVersionUID = 1L;
@@ -23,6 +29,15 @@ public class TransferHelper extends TransferHandler {
     public TransferHelper() {
     }
 
+    /**
+     * Checking dropping available
+     *
+     * @param obj dragged object
+     * @param target the target table
+     * @param row row of target table
+     * @param col column of target table
+     * @return boolean available dropping
+     */
     public boolean typeChecker (Object obj, JTable target, int row, int col) {
     	int currCol = col -1;
 

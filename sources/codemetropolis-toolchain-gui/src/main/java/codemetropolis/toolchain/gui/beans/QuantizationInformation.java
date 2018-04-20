@@ -1,5 +1,10 @@
 package codemetropolis.toolchain.gui.beans;
 
+/**
+ * Contains the quantization information.
+ *
+ * @author Tamas Keri {@literal <KETWAAT.SZE>}
+ */
 public class QuantizationInformation {
 	private int index;
 	private String buildableAttribute;

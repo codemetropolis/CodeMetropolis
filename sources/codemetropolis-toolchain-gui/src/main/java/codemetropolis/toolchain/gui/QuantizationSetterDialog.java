@@ -7,10 +7,13 @@ import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMComboBox;
 import codemetropolis.toolchain.gui.components.CMTextField;
 
+/**
+ * This class is define the view of
+ * quantization dialog.
+ *
+ * @author Tamas Keri {@literal <KETWAAT.SZE>}
+ */
 public class QuantizationSetterDialog extends JDialog {
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	MappingFileEditorDialog parent;

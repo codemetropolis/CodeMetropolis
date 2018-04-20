@@ -132,7 +132,7 @@ public class BuildableSettings {
 	 * @param buildabeAttributes The array of the attributes which are examined if they are valid or not.
 	 * @return All of the specified buildable attributes are valid or not.
 	 */
-	private static boolean validateProperties(String buildableType, String[] buildabeAttributes) {
+	static boolean validateProperties(String buildableType, String[] buildabeAttributes) {
 		List<String> validProperties = new ArrayList<String>(Arrays.asList(DEFAULT_SETTINGS.get(buildableType)));
 		for(String property : buildabeAttributes) {
 			if(!validProperties.contains(property)) {
