@@ -159,11 +159,13 @@ public class Relations {
                         									if ("TypeFormerType_RefersTo".equals(typeFormerTypeChild.getNodeName())) {
                                     							System.out.println("TypeFormerType_RefersTo child found");
                         										String classRef = typeFormerTypeChild.getAttributes().getNamedItem("ref").getNodeValue();
+                        										System.out.println("classref: " + classRef);
                         										
                         										// search for classes with obtained id (may not need, but builtins are excluded this way for sure)
                         										for (int jClass = 0; jClass < classList.getLength(); ++jClass) {
                         											Node klass = classList.item(jClass);
                         											String classId = klass.getAttributes().getNamedItem("id").getNodeValue();
+                        											System.out.println(classId);
                         											if (classRef.equals(classId)) {
                                                             			System.out.println("classId found " + classId);
                         												
