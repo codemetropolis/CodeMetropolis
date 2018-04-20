@@ -63,16 +63,36 @@ public class BrowsingHistoryConverter extends CdfConverter {
 	public CdfElement createElementsRecursively(Node root) {
 		
 		CdfElement cdfElement = addNameAndTypeOfElement(root);
+		
 		if (cdfElement != null) {
-			
-			addProperties(cdfElement, root);
-			NodeList children = root.getChildNodes();
-			
-			if(children != null) {
-				for (int c = 0; c < children.getLength(); c++) {
-					cdfElement.addChildElement(createElementsRecursively(children.item(c)));
+				NodeList children = root.getChildNodes();
+				
+				if(children != null) {
+					for (int c = 0; c < children.getLength(); c++) {
+						
+						if(cdfElement.getName() == ROOT_NODE || cdfElement.getName() == "#document") {
+							
+							cdfElement.addChildElement(createElementsRecursively(children.item(c)));
+							
+						}else if(cdfElement.getName() == ITEM_NODE) {
+							
+							String value = "";
+							
+							for(int k = 0; k < children.getLength(); k++) {
+								
+								if(children.item(k).getFirstChild() != null) {
+									value = children.item(k).getFirstChild().getNodeValue();
+								}
+								
+								if(children.item(k).getNodeName() != "#text") {
+									cdfElement.addProperty(children.item(k).getNodeName(), value, 
+											typeFromNodeValue(value));
+								}
+
+							}
+						}
+					}
 				}
-			}
 		}
 		
 		return cdfElement;
@@ -87,14 +107,15 @@ public class BrowsingHistoryConverter extends CdfConverter {
 		return cdfElement;
 	}
 	
-	public void addProperties(CdfElement cdfElement, Node node) {
+	public CdfElement addProperties(CdfElement cdfElement, Node node) {
 		String nodeName = node.getNodeName();
 		
 		if (nodeName == URL_NODE || nodeName == TITLE_NODE || nodeName == VISIT_ID_NODE || nodeName == VISIT_COUNT_NODE ||
 			nodeName == TYPED_COUNT_NODE|| nodeName == PROFILE_NODE || nodeName == URL_LENGTH_NODE || 
 			nodeName == TRANSITION_TYPE_NODE || nodeName == TRANSITION_QUALIFIERS_NODE) {
-				cdfElement.addProperty(node.getNodeName(), node.getFirstChild().getNodeValue(), typeFromNodeValue(node.getFirstChild().getNodeValue()));
+			cdfElement.addProperty(node.getNodeName(), node.getFirstChild().getNodeValue(), typeFromNodeValue(node.getFirstChild().getNodeValue()));
 		}
+		return cdfElement;
 	}
 	
 	public CdfProperty.Type typeFromNodeValue(String nodeValue){
