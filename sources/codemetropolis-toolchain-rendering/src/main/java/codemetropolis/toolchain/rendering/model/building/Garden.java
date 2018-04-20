@@ -27,6 +27,7 @@ public class Garden extends Building {
 		prepareDoor();
 		prepareSigns();
 		prepareSpawners();
+		prepareSignsForSpawners();
 	}
 	
 	private void prepareBase( ) {
@@ -159,6 +160,25 @@ public class Garden extends Building {
 		if (monster_count > 1) primitives.add(new Spawner(position.getX() + size.getX() / 2, position.getY(), position.getZ() + size.getZ() + 2));
 		if (monster_count > 2) primitives.add(new Spawner(position.getX() - 3, position.getY(), position.getZ() + size.getZ() / 2));
 		if (monster_count > 3) primitives.add(new Spawner(position.getX() + size.getX() + 2, position.getY(), position.getZ() + size.getZ() / 2));
+	}
+	
+	private void prepareSignsForSpawners() {
+		String signName = innerBuildable.hasAttribute("monster-label") ? (innerBuildable.getAttributeValue("monster-label")) : "";
+		
+		switch (monster_count) {
+			case 4:
+				primitives.add(new SignPost(position.getX() + size.getX() + 2, position.getY(), position.getZ() + size.getZ() / 2 + 1, SignPost.Orientation.EAST, signName));
+				primitives.add(new SignPost(position.getX() + size.getX() + 2, position.getY(), position.getZ() + size.getZ() / 2 - 1, SignPost.Orientation.EAST, signName));
+			case 3:
+				primitives.add(new SignPost(position.getX() - 3, position.getY(), position.getZ() + size.getZ() / 2 + 1, SignPost.Orientation.WEST, signName));
+				primitives.add(new SignPost(position.getX() - 3, position.getY(), position.getZ() + size.getZ() / 2 - 1, SignPost.Orientation.WEST, signName));
+			case 2:
+				primitives.add(new SignPost(position.getX() + size.getX() / 2 - 1, position.getY(), position.getZ() + size.getZ() + 2, SignPost.Orientation.SOUTH, signName));
+				primitives.add(new SignPost(position.getX() + size.getX() / 2 + 1, position.getY(), position.getZ() + size.getZ() + 2, SignPost.Orientation.SOUTH, signName));
+			case 1:
+				primitives.add(new SignPost(position.getX() + size.getX() / 2 - 1, position.getY(), position.getZ() - 3, SignPost.Orientation.NORTH, signName));
+				primitives.add(new SignPost(position.getX() + size.getX() / 2 + 1, position.getY(), position.getZ() - 3, SignPost.Orientation.NORTH, signName));
+		}
 	}
 
 }
