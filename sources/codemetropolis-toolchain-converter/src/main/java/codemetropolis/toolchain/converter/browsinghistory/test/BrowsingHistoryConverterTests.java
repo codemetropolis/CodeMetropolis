@@ -79,9 +79,28 @@ public class BrowsingHistoryConverterTests {
 		
 		converter.addProperties(resultElement, document);
 		
-		System.out.println(resultElement.getProperty(ITEM_NODE));
-		
 		assertEquals(resultElement.getProperties(), expectedProperties);
 	}
 	
+	@Test
+	public void testCreateElementsRecursivelyWithCheckChildElements() throws Exception {
+
+	    documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		document = documentBuilder.parse(TEST_INPUT_FILE);
+		
+		CdfElement resultElement = converter.createElementsRecursively(document);
+		
+		assertEquals(resultElement.getNumberOfChildren(), 1);
+	}
+	
+	@Test
+	public void testCreateElementsRecursivelyWithCheckChildElements2() throws Exception {
+
+	    documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		document = documentBuilder.parse(TEST_INPUT_FILE);
+		
+		CdfElement resultElement = converter.createElementsRecursively(document);
+		
+		assertEquals(resultElement.getChildElements().get(0).getChildElements().size(), 3);
+	}
 }
