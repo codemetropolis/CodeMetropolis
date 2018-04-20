@@ -41,7 +41,19 @@ public class BrowsingHistoryConverter extends CdfConverter {
 	@Override
 	public CdfTree createElements(String source) throws CodeMetropolisException {
 		
-		Document document = createDocumentFromXmlFile(source);
+		File inputXml = null;
+		try {
+			inputXml = readFile(source);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		Document document = null;
+		try {
+			document = createDocumentFromXmlFile(inputXml);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		CdfElement rootElement = createElementsRecursively(document);
 
@@ -93,9 +105,17 @@ public class BrowsingHistoryConverter extends CdfConverter {
 		}
 	}
 	
-	public Document createDocumentFromXmlFile(String source) {
-		
+	public File readFile(String source) throws Exception {
 		File inputXml = new File(source);
+		
+		if(!inputXml.getName().toLowerCase().endsWith(".xml")) {
+			throw new Exception("The file isn't an xml file.");
+		}
+		
+		return inputXml;
+	}
+	
+	public Document createDocumentFromXmlFile(File inputXml){
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;

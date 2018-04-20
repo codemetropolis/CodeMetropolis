@@ -2,8 +2,9 @@ package codemetropolis.toolchain.converter.browsinghistory.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,5 +103,27 @@ public class BrowsingHistoryConverterTests {
 		CdfElement resultElement = converter.createElementsRecursively(document);
 		
 		assertEquals(resultElement.getChildElements().get(0).getChildElements().size(), 3);
+	}
+	
+	@Test
+	public void testReadFileWithCorrectFile() throws Exception  {
+		File expectedFile = new File(TEST_INPUT_FILE);
+		File resultFile = converter.readFile(TEST_INPUT_FILE);
+		
+		assertEquals(resultFile, expectedFile);
+	}
+	
+	@Test
+	public void testReadFileWithIncorrectFile() throws Exception  {
+		
+		boolean isThrown = false;
+		
+		try {
+			File resultFile = converter.readFile("inCorrect.txt");
+		}catch(Exception e) {
+			isThrown = true;
+		}
+		
+		assertTrue(isThrown);
 	}
 }
