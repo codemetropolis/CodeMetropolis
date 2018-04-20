@@ -14,6 +14,7 @@ import javax.xml.bind.Unmarshaller;
 import org.junit.Test;
 
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
+import codemetropolis.toolchain.mapping.model.Binding;
 import codemetropolis.toolchain.mapping.model.Limit;
 import codemetropolis.toolchain.mapping.model.Mapping;
 
@@ -55,4 +56,18 @@ public class MappingModelTests {
 		
 		assertTrue(isThrown);
 	}
+	
+	@Test
+	public void testGetVariableIdShouldReturnNull() {
+
+		String expected = null;
+		
+		Binding binding = new Binding();
+		binding.from = "";
+		
+		String result = binding.getVariableId();
+		
+		assertEquals(result, expected);
+	}
+	
 }
