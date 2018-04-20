@@ -21,6 +21,17 @@
 				</conversion>
 			</conversions>
 		</binding>
+		<binding from="WarningMajor" to="monster-label">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="No errors" />
+					<parameter name="level1" value="Few major warnings" />
+					<parameter name="level2" value="More major warnings" />
+					<parameter name="level3" value="Lots of major warnings" />
+					<parameter name="level4" value="A large number of major warnings" />
+				</conversion>
+			</conversions>
+		</binding>
 	</linking>
     <linking source="method" target="floor">
 		<binding from="LLOC" to="height"/>
