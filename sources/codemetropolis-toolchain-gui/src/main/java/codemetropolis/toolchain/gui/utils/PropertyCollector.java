@@ -17,6 +17,7 @@ import java.util.Set;
 
 /**
  * This class is responsible for providing information what properties/metrics belong to the individual source code element types.
+ *  @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class PropertyCollector {
 	/**
@@ -42,10 +43,11 @@ public class PropertyCollector {
 	 * Initialize the property map.
 	 */
 	private void initializePropertyMap() {
-		propertyMap = new HashMap<String, List<Property>>();
+		Map<String, List<Property>> tmpPropertyMap = new HashMap<String, List<Property>>();
 		for(String type : acceptedTypes) {
-			propertyMap.put(type, null);
+			tmpPropertyMap.put(type, null);
 		}
+		propertyMap = tmpPropertyMap;
 	}
 	
 	/**
@@ -94,7 +96,7 @@ public class PropertyCollector {
 	 * @param element The {@link Element} which will be examined.
 	 * @return The examined element is a valid 'element' tag or not.
 	 */
-	private boolean isValidElement(Element element) {
+	public boolean isValidElement(Element element) {
 		return element.getTagName().equals("element") &&
 			element.hasAttribute("type") &&
 			acceptedTypes.contains(element.getAttribute("type"));
@@ -127,7 +129,7 @@ public class PropertyCollector {
 	 * @param element The 'properties' tag of the 'element' tag.
 	 * @return The list of the gathered properties/metrics.
 	 */
-	private List<Property> getPropertyList(Element element) {
+	public List<Property> getPropertyList(Element element) {
 		List<Property> result = new ArrayList<Property>();
 		
 		NodeList properties = element.getElementsByTagName("property");

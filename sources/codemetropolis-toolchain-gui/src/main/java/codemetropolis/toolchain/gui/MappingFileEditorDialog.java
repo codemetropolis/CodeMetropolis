@@ -47,6 +47,7 @@ import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 
 /**
  * Dialog for the mapping file editor.
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class MappingFileEditorDialog extends JDialog {
 	
@@ -140,11 +141,9 @@ public class MappingFileEditorDialog extends JDialog {
 		try {
 			BuildableSettings settings = new BuildableSettings();
 			displayedBuildableAttributes = settings.readSettings();
-			settings.displaySettings();
 			
 			PropertyCollector pc = new PropertyCollector();
 			sourceCodeElementProperties = pc.getFromCdf(cdfFilePath);
-			pc.displayProperties();
 		}
 		catch(BadConfigFileFomatException e) {
 			JOptionPane.showMessageDialog(
@@ -443,7 +442,6 @@ public class MappingFileEditorDialog extends JDialog {
 	    gardenList.setVisibleRowCount(-1);
 	    gardenList.setDragEnabled(true);
 	    gardenList.setDropMode(DropMode.INSERT);
-//	    gardenList.setTransferHandler(new ListTransferHandler());
 	    
 	    CMScrollPane gardenScrollPane = new CMScrollPane(gardenList, 525, 50, 240, 180);
 	    
@@ -510,7 +508,7 @@ public class MappingFileEditorDialog extends JDialog {
 	 * @param sourceCodeElementType Type of the source code element (method, attribute, etc.).
 	 * @return The {@link ListModel} contains all of the properties/metrics.
 	 */
-	private ListModel<String> initializeListModel(String sourceCodeElementType) {
+	public ListModel<String> initializeListModel(String sourceCodeElementType) {
 		List<Property> propertyList = sourceCodeElementProperties.get(sourceCodeElementType);
 
 		DefaultListModel<String> model = new DefaultListModel<String>();
@@ -529,7 +527,8 @@ public class MappingFileEditorDialog extends JDialog {
 	private void addConversionOptions(JPanel panel) {
 		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
 		panel.add(conversionButton);
-
+		
+		MappingFileEditorDialog self = this;
 		conversionButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -564,7 +563,7 @@ public class MappingFileEditorDialog extends JDialog {
 						garden.setBuildableAttribute(buildableAttribute);
 						garden.setMetric(metric);
 
-						cellarQuant.put(garden, new QuantizationConversion());
+						gardenQuant.put(garden, new QuantizationConversion());
 					}
 				}
 				for (Conversion element :  floorConversion) {
@@ -579,9 +578,12 @@ public class MappingFileEditorDialog extends JDialog {
 						floor.setBuildableAttribute(buildableAttribute);
 						floor.setMetric(metric);
 
-						cellarQuant.put(floor, new QuantizationConversion());
+						floorQuant.put(floor, new QuantizationConversion());
 					}
 				}
+				QuantizationSetterDialog dialog = new QuantizationSetterDialog(self);
+				dialog.setVisible(true);
+				
 			}
 		});
 	}

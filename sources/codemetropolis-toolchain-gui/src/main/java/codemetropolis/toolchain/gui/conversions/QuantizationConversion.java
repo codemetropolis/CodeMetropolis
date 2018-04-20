@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Class for representing a quantization conversion.
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class QuantizationConversion extends Conversion {
 	private List<String> levels;

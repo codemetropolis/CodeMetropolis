@@ -217,18 +217,17 @@ public class CodeMetropolisGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent event) {
-        	File cdfXmlFile = new File(mappingEditorCdfPath.getText());
-    		if(!cdfXmlFile.exists()) {
-    			JOptionPane.showMessageDialog(
+        	if(!checkInputCdfFile(mappingEditorCdfPath.getText())) {
+        		JOptionPane.showMessageDialog(
     					self,
     					Translations.t("gui_err_missing_cdf_file"),
     					Translations.t("gui_err_title"),
     					JOptionPane.ERROR_MESSAGE);
-    		}
-    		else {
-    			MappingFileEditorDialog dialog = new MappingFileEditorDialog(mappingEditorCdfPath.getText(), self);
+        	}
+        	else {
+        		MappingFileEditorDialog dialog = new MappingFileEditorDialog(mappingEditorCdfPath.getText(), self);
     			dialog.setVisible(true);
-    		}
+        	}
         }
     });
     
@@ -316,6 +315,21 @@ public class CodeMetropolisGUI extends JFrame {
     });
 
     panel.add(start);
+  }
+  
+  /**
+   * Chacks if the input cdf file does exist or not.
+   * @param cdfPath The path of the cdf file.
+   * @return The cdf file exists or not.
+   */
+  public boolean checkInputCdfFile(String cdfPath) {
+	  File cdfXmlFile = new File(cdfPath);
+		if(!cdfXmlFile.exists()) {
+			return false;
+		}
+		else {			
+			return true;
+		}
   }
 
   /**

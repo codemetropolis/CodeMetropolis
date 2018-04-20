@@ -8,6 +8,7 @@ import javax.swing.JTable;
 
 /**
  * Custom scroll pane class for setting custom defaults for the JComboBoxes we use.
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE}
  */
 public class CMScrollPane extends JScrollPane {
 

@@ -17,6 +17,7 @@ import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
 
 /**
  * This class is responsible for providing information which buildable attributes are desired by the user to display on the GUI.
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class BuildableSettings {
 	/**
@@ -81,7 +82,6 @@ public class BuildableSettings {
 	public Map<String, String[]> readSettings() throws BadConfigFileFomatException, FileNotFoundException{
 		
 		BufferedReader cfgFileReader = null; 
-		//new BufferedReader(new FileReader(CFG_FILEPATH));
 		
 		try {
 			InputStream stream = urlToDictionary.openStream();
@@ -145,7 +145,7 @@ public class BuildableSettings {
 	/**
 	 * Writes to the console, what display settings will be provided to the Mapping file editor GUI.
 	 */
-	public void displaySettings() {
+	public void displaySettings() throws BadConfigFileFomatException {
 		try {
 			Map<String, String[]> returnedSettings = readSettings();
 			
@@ -163,9 +163,6 @@ public class BuildableSettings {
 				System.out.println();
 			}
 		} 
-		catch (BadConfigFileFomatException e) {
-			e.printStackTrace();
-		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}		

@@ -3,6 +3,7 @@ package codemetropolis.toolchain.gui.beans;
 /**
  * Exception class for handling exceptions that occur because of
  * the bad format of the configuration file containing the buildable attributes desired to display.
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class BadConfigFileFomatException extends Exception {
 
