@@ -30,7 +30,8 @@ public class Buildable implements Comparable<Buildable> {
 	private List<Buildable> children;
 	private Buildable parent;
 	private String cdfNames;
-	private boolean hasStairs;
+	private boolean hasLowerStairs;
+	private boolean hasUpperStairs;
 	
 	public Buildable(String id, String name, Type type) {
 		this(id, name, type, new Point(), new Point());
@@ -44,7 +45,8 @@ public class Buildable implements Comparable<Buildable> {
 		this.size = size;
 		this.attributes = new ArrayList<Attribute>();
 		this.children = new ArrayList<Buildable>();
-		this.setHasStairs(false);
+		this.setHasLowerStairs(false);
+		this.setHasUpperStairs(false);
 	}
 	
 	public boolean isOverlapping(Buildable b) {
@@ -464,12 +466,21 @@ public class Buildable implements Comparable<Buildable> {
 		return buildable;
 	}
 
-	public boolean hasStairs() {
-		return hasStairs;
+	public boolean hasLowerStairs() {
+		return hasLowerStairs;
 	}
 
-	public void setHasStairs(boolean hasStairs) {
-		this.hasStairs = hasStairs;
+	public void setHasLowerStairs(boolean hasLowerStairs) {
+		this.hasLowerStairs = hasLowerStairs;
 	}
+
+	public boolean hasUpperStairs() {
+		return hasUpperStairs;
+	}
+
+	public void setHasUpperStairs(boolean hasUpperStairs) {
+		this.hasUpperStairs = hasUpperStairs;
+	}
+
 	
 }

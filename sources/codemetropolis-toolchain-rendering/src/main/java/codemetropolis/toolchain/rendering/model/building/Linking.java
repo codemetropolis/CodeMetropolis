@@ -2,6 +2,7 @@ package codemetropolis.toolchain.rendering.model.building;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
@@ -118,9 +119,15 @@ public abstract class Linking extends Building {
 					}
 				};
 		
-		if (!this.innerBuildable.getParent().hasStairs()) {
-			this.innerBuildable.getParent().setHasStairs(true);		
-		
+		if ((this.innerBuildable.getType() == Type.TUNNEL && !this.innerBuildable.getParent().hasLowerStairs()) ||
+				(!this.innerBuildable.getParent().hasUpperStairs() && this.innerBuildable.getType() == Type.BRIDGE)) {
+			
+			if(this.innerBuildable.getType() == Type.TUNNEL) {
+				this.innerBuildable.getParent().setHasLowerStairs(true);
+			} else {
+				this.innerBuildable.getParent().setHasUpperStairs(true);
+			}
+			
 			primitives.add(
 				new SolidBox(
 					calculateStepPosition(false),
@@ -142,8 +149,13 @@ public abstract class Linking extends Building {
 			}
 			
 			Buildable target = getTarget(root, id);
-			if (target == null || target.hasStairs()) { return; }
-			target.setHasStairs(true);
+			if (target == null || (this.innerBuildable.getType() == Type.TUNNEL && target.hasLowerStairs()) || (target.hasUpperStairs() && this.innerBuildable.getType() == Type.BRIDGE)) { return; }
+			
+			if (this.innerBuildable.getType() == Type.TUNNEL) {
+				target.setHasLowerStairs(true);
+			} else {
+				target.setHasUpperStairs(true);
+			}
 			
 			primitives.add(
 					new SolidBox(
