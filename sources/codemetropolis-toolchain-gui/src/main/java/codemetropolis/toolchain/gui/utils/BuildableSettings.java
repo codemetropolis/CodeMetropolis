@@ -83,33 +83,33 @@ public class BuildableSettings {
 		
 		BufferedReader cfgFileReader = null; 
 		
-		try {
-			InputStream stream = urlToDictionary.openStream();
-			
-			cfgFileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-			
-			String actLine;
-			//A regular line: buildable name is followed by an '=' sign, that follows the list of attributes separated by commas. 
-			while((actLine = cfgFileReader.readLine()).split("=").length == 2) {				
-				String buildableName = actLine.split("=")[0];
-				String[] buildableProperties = actLine.split("=")[1].split(",");
-				if(DISPLAYED_PROPERTIES.containsKey(buildableName)) {
-					//If there is no assigned attribute given to the actual buildable type...
-					if(buildableProperties.length == 1 && buildableProperties[0].isEmpty()) {
-						DISPLAYED_PROPERTIES.put(buildableName, new String[] {});
-					}
-					else {
-						if(validateProperties(buildableName, buildableProperties)) {
-							DISPLAYED_PROPERTIES.put(buildableName, buildableProperties);
+		try {			
+			if (urlToDictionary != null) {
+				InputStream stream = urlToDictionary.openStream();
+				cfgFileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+				String actLine;
+				//A regular line: buildable name is followed by an '=' sign, that follows the list of attributes separated by commas. 
+				while ((actLine = cfgFileReader.readLine()).split("=").length == 2) {
+					String buildableName = actLine.split("=")[0];
+					String[] buildableProperties = actLine.split("=")[1].split(",");
+					if (DISPLAYED_PROPERTIES.containsKey(buildableName)) {
+						//If there is no assigned attribute given to the actual buildable type...
+						if (buildableProperties.length == 1 && buildableProperties[0].isEmpty()) {
+							DISPLAYED_PROPERTIES.put(buildableName, new String[] {});
+						} else {
+							if (validateProperties(buildableName, buildableProperties)) {
+								DISPLAYED_PROPERTIES.put(buildableName, buildableProperties);
+							} else {
+								throw new BadConfigFileFomatException();
+							}
 						}
-						else {
-							throw new BadConfigFileFomatException();
-						}
+					} else {
+						throw new BadConfigFileFomatException();
 					}
-				}
-				else {
-					throw new BadConfigFileFomatException();
-				}
+				} 
+			}
+			else {
+				return DEFAULT_SETTINGS;
 			}
 		}
 		catch(IOException e) {
@@ -117,7 +117,9 @@ public class BuildableSettings {
 		}
 		finally {
 			try {
-				cfgFileReader.close();
+				if(cfgFileReader != null) {
+					cfgFileReader.close();
+				}
 			}
 			catch(IOException ioe) {
 				ioe.printStackTrace();

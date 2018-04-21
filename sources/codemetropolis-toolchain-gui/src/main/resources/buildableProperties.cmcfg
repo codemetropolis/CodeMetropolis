@@ -1,4 +1,4 @@
-FLOOR=width,height,length,character,external_character,torches
+FLOOR=width,height,length,character,external_character
 CELLAR=width,height,length,character,external_character
 GARDEN=tree-ratio,mushroom-ratio,flower-ratio
 GROUND=

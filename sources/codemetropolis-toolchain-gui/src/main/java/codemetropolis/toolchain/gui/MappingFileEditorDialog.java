@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.JDialog;
@@ -141,9 +140,7 @@ public class MappingFileEditorDialog extends JDialog {
 		try {
 			BuildableSettings settings = new BuildableSettings();
 			displayedBuildableAttributes = settings.readSettings();
-			
-			PropertyCollector pc = new PropertyCollector();
-			sourceCodeElementProperties = pc.getFromCdf(cdfFilePath);
+						
 		}
 		catch(BadConfigFileFomatException e) {
 			JOptionPane.showMessageDialog(
@@ -163,6 +160,14 @@ public class MappingFileEditorDialog extends JDialog {
 			
 			displayedBuildableAttributes = BuildableSettings.DEFAULT_SETTINGS;
 		}
+		try {
+			PropertyCollector pc = new PropertyCollector();
+			sourceCodeElementProperties = pc.getFromCdf(cdfFilePath);
+		}
+		catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	 /**
@@ -272,11 +277,23 @@ public class MappingFileEditorDialog extends JDialog {
 							JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					String resoureToRemove = resourcesList.getModel().getElementAt(indexToRemove);
+					String resourceToRemove = resourcesList.getModel().getElementAt(indexToRemove);
 					List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
+					List<JTable> tables = Arrays.asList(cellarTable, floorTable, gardenTable);
 					for(JList<String> list : lists) {
 						DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
-						listModel.removeElement(resoureToRemove);
+						listModel.removeElement(resourceToRemove);
+					}
+					for(JTable table : tables) {
+						int rows = table.getRowCount();
+						int columns = table.getColumnCount();
+						for(int i = 0; i < rows; i++)
+							for(int j = 0; j < columns; j++) {
+								String cellValue = (String) table.getValueAt(i, j);
+								if(resourceToRemove.equals(cellValue)) {
+									table.setValueAt(null, i, j);
+								}
+							}
 					}
 				}				
 			}

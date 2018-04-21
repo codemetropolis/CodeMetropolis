@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import codemetropolis.toolchain.gui.MappingFileEditorDialog;
+import codemetropolis.toolchain.gui.MappingFileEditorDialog.AssignResult;
 import codemetropolis.toolchain.gui.conversions.*;
 
 /**
@@ -20,6 +21,7 @@ import codemetropolis.toolchain.gui.conversions.*;
  * a Transferable to and from Swing components.
  *
  * @author Tamas Keri {@literal <KETWAAT.SZE>}
+ * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
 public class TransferHelper extends TransferHandler {
 
@@ -66,8 +68,19 @@ public class TransferHelper extends TransferHandler {
 
     	dragValue = dragValue.split(": ")[1];
     	dropValue = dropValue.split(": ")[1];
-
-    	switch (MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue)) {
+    	
+    	AssignResult cell = MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue);
+    	if(cell == null) {
+    		//We are trying to drag a resource... specify its type.
+    		if(dragValue.matches("[0-9]+")) dragValue = "int";
+    		else if(dragValue.matches("[0-9]+.[0-9]+")) dragValue = "float";
+    		else{
+    			dragValue = "string";
+    		}
+    		cell = MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue);
+    	}
+    	    	
+    	switch (cell) {
     	case CANNOT_ASSIGN:
     		return false;
 
