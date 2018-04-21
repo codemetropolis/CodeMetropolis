@@ -1,5 +1,8 @@
 package codemetropolis.toolchain.rendering.model.building;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.Point;
@@ -12,6 +15,8 @@ import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 public class Tunnel extends Linking {
+	
+	private List<SolidBox> lighting;
 	
 	public Tunnel(Buildable innerBuildable) throws RenderingException {
 
@@ -27,7 +32,8 @@ public class Tunnel extends Linking {
 		this.level = WorldBuilder.TUNNEL_LEVEL - this.getHeight();
 		
 		prepareLinking(new BasicBlock[][][] { { { new BasicBlock( "minecraft:air" ) } } });
-		prepareLighting();
+		
+		lighting = this.prepareLighting();
 	}
 
 	public int calculateHeight(Buildable buildable) {
@@ -69,11 +75,11 @@ public class Tunnel extends Linking {
 	}
 	
 	
-	protected void prepareLighting() {
+	protected List<SolidBox> prepareLighting() {
 		// NOTE (wyvick) For now there is a redstone lamp line
 		// in each tunnel with redstone blocks below them.
 		
-		// TODO (wyvick) Since it is a SolidBox implementation,
+		// TODO (wyvick) Since this is a SolidBox implementation,
 		// both the length and the width of the lamp line
 		// are cut by one block (to ensure that it is only a single line).
 		// Row implementation may work better as we would not need to cut
@@ -84,26 +90,30 @@ public class Tunnel extends Linking {
 		// maybe by using width and length values.)
 		
 		// redstone lamps (single line in the middle of the tunnel floor)
-		primitives.add(
-			new SolidBox(
+		
+		List<SolidBox> lighting = new ArrayList<SolidBox>();
+		lighting.add(new SolidBox(
 				new Point(position.getX() + 1, this.level - 1, position.getZ() + 1),
 				new Point(size.getX() - 2, 1, size.getZ() - 2),
 				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:lit_redstone_lamp" ), } } } ),
 				new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:lit_redstone_lamp" ), } } } ),
 				Orientation.NearX
-			)
-		);
+		));
 		
 		// redstone blocks under lamps
-		primitives.add(
-				new SolidBox(
+		lighting.add(new SolidBox(
 					new Point(position.getX() + 1, this.level - 2, position.getZ() + 1),
 					new Point(size.getX() - 2, 1, size.getZ() - 2),
 					new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:redstone_block" ), } } } ),
 					new RepeationPattern( new BasicBlock[][][]{ { { new BasicBlock( "minecraft:redstone_block" ), } } } ),
 					Orientation.NearX
-				)
-			);
-		
+		));
+		primitives.addAll(lighting);
+		return lighting;
 	}
+
+	public List<SolidBox> getLighting() {
+		return lighting;
+	}
+
 }
