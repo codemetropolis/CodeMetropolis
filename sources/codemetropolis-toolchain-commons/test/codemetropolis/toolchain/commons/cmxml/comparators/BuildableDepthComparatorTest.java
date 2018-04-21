@@ -18,7 +18,7 @@ import codemetropolis.toolchain.commons.cmxml.Point;
 public class BuildableDepthComparatorTest {
 	
 	@Test
-	public void compareTest() {
+	public void testCompare() {
 		BuildableDepthComparator c = new BuildableDepthComparator();
 		Buildable b1 = new Buildable("UNIQUE_ID_1", "SAMPLE_TUNNEL_1", Type.TUNNEL, new Point(0, 0, 0), new Point(10, 10, 10));
 		Buildable b2 = new Buildable("UNIQUE_ID_2", "SAMPLE_TUNNEL_2", Type.TUNNEL, new Point(0, 0, 0), new Point(10, 10, 10));

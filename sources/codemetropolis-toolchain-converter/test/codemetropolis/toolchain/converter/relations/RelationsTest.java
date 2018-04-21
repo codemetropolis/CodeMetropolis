@@ -34,23 +34,24 @@ public class RelationsTest {
     }
 
     @Test
-    public void relationsConstructorTest() throws Exception {
+    public void testRelationsConstructor() throws Exception {
         assertNotNull(relations);
     }
 
     @Test
-    public void getRelationsMapTest() throws Exception {;
+    public void testGetRelationsMap() throws Exception {
 
         assertTrue(relations.getRelationsMap().keySet().contains("L111"));
 
     }
 
     @Test
-    public void getAttributesMapTest() throws Exception {
+    public void testGetAttributesMap() throws Exception {
         assertNotNull(relations.getAttributesMap());
     }
 
-    @Test public void toStringTest() {
+    @Test
+    public void testToString() {
         assertTrue("Class: L111 -> SubClasses: [L122] | Class: L111 -> Attributes: [L119] | ".equals(relations.toString()));
     }
 
