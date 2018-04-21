@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding="utf-8"?>
+<Project name='' xmlns:base='columbus_lim_schema/base' xmlns:logical='columbus_lim_schema/logical' xmlns:physical='columbus_lim_schema/physical' xmlns:type='columbus_lim_schema/type'>
+<logical:Package id='id100' parent='id0' name='&lt;root_package&gt;' accessibility='ackPublic' commentLines='0' demangledName='&lt;root_package&gt;' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='&lt;root_package&gt;' LLOC='0' LOC='0' TLLOC='7' TLOC='15' isAnonymous='false' packageKind='pkPackage'>
+	<Member_BelongsTo ref='id103'/>
+	<Scope_HasMember ref='id104'/>
+	<logical:Package id='id104' parent='id0' name='unnamed package' accessibility='ackPublic' commentLines='0' demangledName='unnamed package' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='unnamed package' LLOC='7' LOC='15' TLLOC='7' TLOC='15' isAnonymous='false' packageKind='pkPackage'>
+		<Member_BelongsTo ref='id103'/>
+		<Member_IsContainedIn ref='id110'>
+			<SourcePosition realizationLevel='relDefines' line='1' column='1' endLine='15' endColumn='1'/>
+		</Member_IsContainedIn>
+		<Scope_HasMember ref='id111'/>
+		<logical:Class id='id111' parent='id0' name='Example' accessibility='ackPublic' commentLines='0' demangledName='Example' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='Example' LLOC='3' LOC='5' TLLOC='3' TLOC='5' isAnonymous='false' classKind='clkClass' isAbstract='false' objectSize='0'>
+			<Member_BelongsTo ref='id103'/>
+			<Member_IsContainedIn ref='id110'>
+				<SourcePosition realizationLevel='relDefines' line='1' column='1' endLine='5' endColumn='2'/>
+			</Member_IsContainedIn>
+			<Scope_HasMember ref='id118'/>
+			<logical:Attribute id='id118' parent='id0' name='a' accessibility='ackPackagePrivate' commentLines='0' demangledName='Example.a;LUsed;' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='Example.a;LUsed;'>
+				<Member_BelongsTo ref='id103'/>
+				<Member_IsContainedIn ref='id110'>
+					<SourcePosition realizationLevel='relDefines' line='3' column='2' endLine='3' endColumn='23'/>
+				</Member_IsContainedIn>
+				<Attribute_HasType ref='id121'/>
+			</logical:Attribute>
+			<Class_IsSubclass ref='id114'/>
+		</logical:Class>
+		<Scope_HasMember ref='id122'/>
+		<logical:Class id='id122' parent='id0' name='Child' accessibility='ackPackagePrivate' commentLines='0' demangledName='Child' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='Child' LLOC='2' LOC='4' TLLOC='2' TLOC='4' isAnonymous='false' classKind='clkClass' isAbstract='false' objectSize='0'>
+			<Member_BelongsTo ref='id103'/>
+			<Member_IsContainedIn ref='id110'>
+				<SourcePosition realizationLevel='relDefines' line='7' column='1' endLine='10' endColumn='2'/>
+			</Member_IsContainedIn>
+			<Class_IsSubclass ref='id124'/>
+		</logical:Class>
+		<Scope_HasMember ref='id119'/>
+		<logical:Class id='id119' parent='id0' name='Used' accessibility='ackPackagePrivate' commentLines='0' demangledName='Used' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='Used' LLOC='2' LOC='3' TLLOC='2' TLOC='3' isAnonymous='false' classKind='clkClass' isAbstract='false' objectSize='0'>
+			<Member_BelongsTo ref='id103'/>
+			<Member_IsContainedIn ref='id110'>
+				<SourcePosition realizationLevel='relDefines' line='12' column='1' endLine='14' endColumn='2'/>
+			</Member_IsContainedIn>
+			<Class_IsSubclass ref='id114'/>
+		</logical:Class>
+	</logical:Package>
+</logical:Package>
+<physical:FileSystem id='id101' parent='id0' name='FileSystem'>
+	<FileSystem_HasFSEntry>
+		<physical:Folder id='id105' parent='id101' name='C:'>
+			<Folder_Contains>
+				<physical:Folder id='id106' parent='id105' name='h644771'>
+					<Folder_Contains>
+						<physical:Folder id='id107' parent='id106' name='6szemeszter'>
+							<Folder_Contains>
+								<physical:Folder id='id108' parent='id107' name='example'>
+									<Folder_Contains>
+										<physical:Folder id='id109' parent='id108' name='ex1'>
+											<Folder_Contains>
+												<physical:File id='id110' parent='id109' name='Example.java' CLOC='0' LLOC='7' LOC='15' numberOfBranches='0'>
+												</physical:File>
+											</Folder_Contains>
+										</physical:Folder>
+									</Folder_Contains>
+								</physical:Folder>
+							</Folder_Contains>
+						</physical:Folder>
+					</Folder_Contains>
+				</physical:Folder>
+			</Folder_Contains>
+		</physical:Folder>
+	</FileSystem_HasFSEntry>
+</physical:FileSystem>
+<base:Component id='id102' parent='id0' name='&lt;System&gt;' TLLOC='7' TLOC='15' analysisTime='atkNow' changesetID='' shortName=''>
+	<Component_Contains ref='id103'/>
+</base:Component>
+<base:Component id='id103' parent='id0' name='Ex.ljsi' TLLOC='7' TLOC='15' analysisTime='atkNow' changesetID='' shortName='Ex'>
+</base:Component>
+<type:TypeFormerType id='id113' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id114' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id113'/>
+</type:Type>
+<logical:MethodCall id='id117' parent='id0' calls=''>
+</logical:MethodCall>
+<type:TypeFormerType id='id120' parent='id0'>
+	<TypeFormerType_RefersTo ref='id119'/>
+</type:TypeFormerType>
+<type:Type id='id121' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id120'/>
+</type:Type>
+<type:TypeFormerType id='id123' parent='id0'>
+	<TypeFormerType_RefersTo ref='id111'/>
+</type:TypeFormerType>
+<type:Type id='id124' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id123'/>
+</type:Type>
+<logical:MethodCall id='id126' parent='id0' calls=''>
+</logical:MethodCall>
+<type:SimpleType id='id131' parent='id0' simpleTypeKind='stkVoid'/>
+<type:TypeFormerType id='id132' parent='id0'>
+	<TypeFormerType_RefersTo ref='id131'/>
+</type:TypeFormerType>
+<type:Type id='id133' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id132'/>
+</type:Type>
+<logical:ClassGenericInstance id='id135' parent='id0' name='' accessibility='ackInternal' commentLines='0' demangledName='' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='' LLOC='0' LOC='0' TLLOC='0' TLOC='0' isAnonymous='false' classKind='clkAnnotation' isAbstract='false' objectSize='0' isRealInstance='true'>
+	<ClassGenericInstance_HasArguments ref='id114' value='tackUnbounded'/>
+</logical:ClassGenericInstance>
+<type:TypeFormerType id='id137' parent='id0'>
+	<TypeFormerType_RefersTo ref='id135'/>
+</type:TypeFormerType>
+<type:Type id='id138' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id137'/>
+</type:Type>
+<type:SimpleType id='id140' parent='id0' simpleTypeKind='stkInteger'/>
+<type:TypeFormerType id='id141' parent='id0'>
+	<TypeFormerType_RefersTo ref='id140'/>
+</type:TypeFormerType>
+<type:Type id='id142' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id141'/>
+</type:Type>
+<type:SimpleType id='id144' parent='id0' simpleTypeKind='stkBoolean'/>
+<type:TypeFormerType id='id145' parent='id0'>
+	<TypeFormerType_RefersTo ref='id144'/>
+</type:TypeFormerType>
+<type:Type id='id146' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id145'/>
+</type:Type>
+<type:TypeFormerType id='id150' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id151' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id150'/>
+</type:Type>
+<type:TypeFormerType id='id154' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id155' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id154'/>
+</type:Type>
+<type:TypeFormerType id='id160' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id161' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id160'/>
+</type:Type>
+<type:SimpleType id='id163' parent='id0' simpleTypeKind='stkLong'/>
+<type:TypeFormerType id='id164' parent='id0'>
+	<TypeFormerType_RefersTo ref='id163'/>
+</type:TypeFormerType>
+<type:Type id='id165' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id164'/>
+</type:Type>
+<type:TypeFormerType id='id172' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id173' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id172'/>
+</type:Type>
+<type:TypeFormerType id='id175' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id176' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id175'/>
+</type:Type>
+<type:TypeFormerType id='id178' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id179' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id178'/>
+</type:Type>
+<type:TypeFormerType id='id181' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id182' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id181'/>
+</type:Type>
+<type:TypeFormerType id='id184' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id185' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id184'/>
+</type:Type>
+<type:TypeFormerType id='id188' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id189' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id188'/>
+</type:Type>
+<logical:ClassGenericInstance id='id190' parent='id0' name='' accessibility='ackInternal' commentLines='0' demangledName='' isCompilerGenerated='false' isStatic='false' language='lnkJava' mangledName='' LLOC='0' LOC='0' TLLOC='0' TLOC='0' isAnonymous='false' classKind='clkAnnotation' isAbstract='false' objectSize='0' isRealInstance='true'>
+	<ClassGenericInstance_HasArguments ref='id155' value='tackNone'/>
+</logical:ClassGenericInstance>
+<type:TypeFormerType id='id192' parent='id0'>
+	<TypeFormerType_RefersTo ref='id190'/>
+</type:TypeFormerType>
+<type:Type id='id193' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id192'/>
+</type:Type>
+<type:TypeFormerType id='id195' parent='id0'>
+</type:TypeFormerType>
+<type:Type id='id196' parent='id0' refers=''>
+	<Type_HasTypeFormer ref='id195'/>
+</type:Type>
+<Filtered id='id1'/>
+</Project>
