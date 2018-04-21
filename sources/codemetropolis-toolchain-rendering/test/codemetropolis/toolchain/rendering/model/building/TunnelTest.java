@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.control.WorldBuilder;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 
 
@@ -41,6 +42,8 @@ public class TunnelTest {
 				new Point(10, TUNNEL_HEIGHT, TUNNEL_WIDTH));
 		
 		b.addAttribute(Linking.LINKING_ATTRIBUTE_TARGET, "TARGET_UNIQUE_ID");
+		b.addAttribute(Linking.LINKING_ATTRIBUTE_STANDALONE, "false");
+		b.addAttribute(Linking.LINKING_ATTRIBUTE_ORIENTATION, "south");
 		
 		parent = new Buildable( 
 				"UNIQUE_ID2",
@@ -72,7 +75,7 @@ public class TunnelTest {
 	public void testTunnelSize() {
 		assertEquals(tunnel.getSize().getX(), 11);
 		assertEquals(tunnel.getSize().getY(), 3);
-		assertEquals(tunnel.getSize().getY(), 3);
+		assertEquals(tunnel.getSize().getZ(), 3);
 	}
 	
 	@Test
@@ -89,7 +92,7 @@ public class TunnelTest {
 	
 	@Test
 	public void testCalculateHeight() {
-		assertTrue(tunnel.calculateHeight(tunnel.innerBuildable) > TUNNEL_HEIGHT);
+		assertTrue(tunnel.calculateHeight(tunnel.innerBuildable) <= WorldBuilder.TUNNEL_LEVEL - TUNNEL_HEIGHT);
 	}
 	
 	@Test

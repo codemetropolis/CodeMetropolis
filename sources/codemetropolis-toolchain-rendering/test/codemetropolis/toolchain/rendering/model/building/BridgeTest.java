@@ -37,6 +37,9 @@ public class BridgeTest {
 				new Point(10, BRIDGE_HEIGHT, BRIDGE_WIDTH));
 		
 		b.addAttribute(Linking.LINKING_ATTRIBUTE_TARGET, "TARGET_UNIQUE_ID");
+		b.addAttribute(Linking.LINKING_ATTRIBUTE_STANDALONE, "false");
+		b.addAttribute(Linking.LINKING_ATTRIBUTE_ORIENTATION, "south");
+		
 		
 		parent = new Buildable( 
 				"UNIQUE_ID2",
