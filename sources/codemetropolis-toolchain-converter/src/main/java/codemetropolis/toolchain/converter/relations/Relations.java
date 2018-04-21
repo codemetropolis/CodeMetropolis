@@ -196,8 +196,6 @@ public class Relations {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-
-        // TODO complete with attributes
         
         for (String key : relationsMap.keySet()) {
             s.append("Class: " + key +  " -> " + "SubClasses: " + relationsMap.get(key) + " | ");
