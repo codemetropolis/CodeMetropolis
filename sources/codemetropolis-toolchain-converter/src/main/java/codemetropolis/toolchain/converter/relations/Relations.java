@@ -207,4 +207,12 @@ public class Relations {
 
         return s.toString();
     }
+
+    public String getRelationFile() {
+        return relationFile;
+    }
+
+    public void setRelationFile(String relationFile) {
+        this.relationFile = relationFile;
+    }
 }
