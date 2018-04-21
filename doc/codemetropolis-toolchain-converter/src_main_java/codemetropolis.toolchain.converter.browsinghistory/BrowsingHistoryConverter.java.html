@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BrowsingHistoryConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.browsinghistory</a> &gt; <span class="el_source">BrowsingHistoryConverter.java</span></div><h1>BrowsingHistoryConverter.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.browsinghistory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+
+public class BrowsingHistoryConverter extends CdfConverter {
+	
+	public static final String ROOT_NODE = &quot;chrome_visited_sites&quot;;
+	public static final String ITEM_NODE = &quot;item&quot;;
+	public static final String URL_NODE = &quot;url&quot;;
+	public static final String TITLE_NODE = &quot;title&quot;;
+	public static final String VISIT_ID_NODE = &quot;visit_id&quot;;
+	public static final String VISIT_COUNT_NODE = &quot;visit_count&quot;;
+	public static final String TYPED_COUNT_NODE = &quot;typed_count&quot;;
+	public static final String PROFILE_NODE = &quot;profile&quot;;
+	public static final String URL_LENGTH_NODE = &quot;url_length&quot;;
+	public static final String TRANSITION_TYPE_NODE = &quot;transition_type&quot;;
+	public static final String TRANSITION_QUALIFIERS_NODE = &quot;transition_qualifiers&quot;;
+	
+	public BrowsingHistoryConverter(Map&lt;String, String&gt; params) {
+<span class="fc" id="L38">		super(params);</span>
+<span class="fc" id="L39">	}</span>
+
+	@Override
+	public CdfTree createElements(String source) throws CodeMetropolisException {
+		
+<span class="fc" id="L44">		File inputXml = null;</span>
+		try {
+<span class="fc" id="L46">			inputXml = readFile(source);</span>
+<span class="pc" id="L47">		} catch (Exception e1) {</span>
+<span class="nc" id="L48">			e1.printStackTrace();</span>
+		}
+		
+<span class="fc" id="L51">		Document document = null;</span>
+		try {
+<span class="fc" id="L53">			document = createDocumentFromXmlFile(inputXml);</span>
+<span class="pc" id="L54">		} catch (Exception e) {</span>
+<span class="nc" id="L55">			e.printStackTrace();</span>
+		}
+		
+<span class="fc" id="L58">		CdfElement rootElement = createElementsRecursively(document);</span>
+
+<span class="fc" id="L60">		return new CdfTree(rootElement);</span>
+	}
+	
+	public CdfElement createElementsRecursively(Node root) {
+		
+<span class="fc" id="L65">		CdfElement cdfElement = addNameAndTypeOfElement(root);</span>
+		
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">		if (cdfElement != null) {</span>
+<span class="fc" id="L68">				NodeList children = root.getChildNodes();</span>
+				
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">				if(children != null) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">					for (int c = 0; c &lt; children.getLength(); c++) {</span>
+						
+<span class="pc bpc" id="L73" title="1 of 4 branches missed.">						if(cdfElement.getName() == ROOT_NODE || cdfElement.getName() == &quot;#document&quot;) {</span>
+							
+<span class="fc" id="L75">							cdfElement.addChildElement(createElementsRecursively(children.item(c)));</span>
+							
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">						}else if(cdfElement.getName() == ITEM_NODE) {</span>
+							
+<span class="fc" id="L79">							String value = &quot;&quot;;</span>
+							
+<span class="fc bfc" id="L81" title="All 2 branches covered.">							for(int k = 0; k &lt; children.getLength(); k++) {</span>
+								
+<span class="fc bfc" id="L83" title="All 2 branches covered.">								if(children.item(k).getFirstChild() != null) {</span>
+<span class="fc" id="L84">									value = children.item(k).getFirstChild().getNodeValue();</span>
+								}
+								
+<span class="fc bfc" id="L87" title="All 2 branches covered.">								if(children.item(k).getNodeName() != &quot;#text&quot;) {</span>
+<span class="fc" id="L88">									cdfElement.addProperty(children.item(k).getNodeName(), value, </span>
+<span class="fc" id="L89">											typeFromNodeValue(value));</span>
+								}
+
+							}
+						}
+					}
+				}
+		}
+		
+<span class="fc" id="L98">		return cdfElement;</span>
+	}
+	
+	public CdfElement addNameAndTypeOfElement(Node root) {
+		
+<span class="fc" id="L103">		String nodeName = root.getNodeName();</span>
+
+<span class="fc" id="L105">		CdfElement cdfElement = new CdfElement(nodeName, nodeName);</span>
+			
+<span class="fc" id="L107">		return cdfElement;</span>
+	}
+	
+	public CdfElement addProperties(CdfElement cdfElement, Node node) {
+<span class="fc" id="L111">		String nodeName = node.getNodeName();</span>
+		
+<span class="pc bpc" id="L113" title="4 of 8 branches missed.">		if (nodeName == URL_NODE || nodeName == TITLE_NODE || nodeName == VISIT_ID_NODE || nodeName == VISIT_COUNT_NODE ||</span>
+<span class="pc bpc" id="L114" title="3 of 6 branches missed.">			nodeName == TYPED_COUNT_NODE|| nodeName == PROFILE_NODE || nodeName == URL_LENGTH_NODE || </span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">			nodeName == TRANSITION_TYPE_NODE || nodeName == TRANSITION_QUALIFIERS_NODE) {</span>
+<span class="nc" id="L116">			cdfElement.addProperty(node.getNodeName(), node.getFirstChild().getNodeValue(), typeFromNodeValue(node.getFirstChild().getNodeValue()));</span>
+		}
+<span class="fc" id="L118">		return cdfElement;</span>
+	}
+	
+	public CdfProperty.Type typeFromNodeValue(String nodeValue){
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if(Pattern.matches(&quot;\\-?\\d+&quot;, (CharSequence) nodeValue)) {</span>
+<span class="fc" id="L123">			return CdfProperty.Type.INT;</span>
+		}else {
+<span class="fc" id="L125">			return CdfProperty.Type.STRING;</span>
+		}
+	}
+	
+	public File readFile(String source) throws Exception {
+<span class="fc" id="L130">		File inputXml = new File(source);</span>
+		
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		if(!inputXml.getName().toLowerCase().endsWith(&quot;.xml&quot;)) {</span>
+<span class="fc" id="L133">			throw new Exception(&quot;The file isn't an xml file.&quot;);</span>
+		}
+		
+<span class="fc" id="L136">		return inputXml;</span>
+	}
+	
+	public Document createDocumentFromXmlFile(File inputXml){
+		
+<span class="fc" id="L141">		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L142">        DocumentBuilder documentBuilder = null;</span>
+<span class="fc" id="L143">        Document document = null;</span>
+        
+		try {
+<span class="fc" id="L146">			documentBuilder = documentBuilderFactory.newDocumentBuilder();</span>
+<span class="pc" id="L147">		} catch (ParserConfigurationException e) {</span>
+<span class="nc" id="L148">			e.printStackTrace();</span>
+		}
+        try {
+<span class="fc" id="L151">			document = documentBuilder.parse(inputXml);</span>
+<span class="pc" id="L152">		} catch (SAXException | IOException e) {</span>
+<span class="nc" id="L153">			e.printStackTrace();</span>
+		}
+        
+<span class="fc" id="L156">		return document;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

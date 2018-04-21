@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SonarResource.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.sonarqube</a> &gt; <span class="el_source">SonarResource.java</span></div><h1>SonarResource.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package codemetropolis.toolchain.converter.sonarqube;</span>
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+<span class="nc" id="L8">public class SonarResource {</span>
+
+	private int id;
+	private String name;
+	private String key;
+	private Scope scope;
+<span class="nc" id="L14">	private List&lt;SonarMetric&gt; metrics = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L15">	private List&lt;Integer&gt; childIdList = new ArrayList&lt;&gt;();</span>
+	
+	public int getId() {
+<span class="nc" id="L18">		return id;</span>
+	}
+
+	public void setId(int id) {
+<span class="nc" id="L22">		this.id = id;</span>
+<span class="nc" id="L23">	}</span>
+
+	public String getName() {
+<span class="nc" id="L26">		return name;</span>
+	}
+
+	public void setName(String name) {
+<span class="nc" id="L30">		this.name = name;</span>
+<span class="nc" id="L31">	}</span>
+
+	public String getKey() {
+<span class="nc" id="L34">		return key;</span>
+	}
+
+	public void setKey(String key) {
+<span class="nc" id="L38">		this.key = key;</span>
+<span class="nc" id="L39">	}</span>
+
+	public Scope getScope() {
+<span class="nc" id="L42">		return scope;</span>
+	}
+
+	public void setScope(Scope scope) {
+<span class="nc" id="L46">		this.scope = scope;</span>
+<span class="nc" id="L47">	}</span>
+
+	public List&lt;SonarMetric&gt; getMetrics() {
+<span class="nc" id="L50">		return Collections.unmodifiableList(metrics);</span>
+	}
+	
+	public void addMetrics(Collection&lt;SonarMetric&gt; metrics) {
+<span class="nc" id="L54">		this.metrics.addAll(metrics);</span>
+<span class="nc" id="L55">	}</span>
+	
+	public void addMetric(SonarMetric... metric) {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		for(SonarMetric m : metric) {</span>
+<span class="nc" id="L59">			metrics.add(m);</span>
+		}
+<span class="nc" id="L61">	}</span>
+	
+	public List&lt;Integer&gt; getChildIdList() {
+<span class="nc" id="L64">		return Collections.unmodifiableList(childIdList);</span>
+	}
+	
+	public void addChildren(Collection&lt;Integer&gt; idCollection) {
+<span class="nc" id="L68">		childIdList.addAll(idCollection);</span>
+<span class="nc" id="L69">	}</span>
+	
+	public void addChild(int... id) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		for(int c : id) {</span>
+<span class="nc" id="L73">			childIdList.add(c);</span>
+		}
+<span class="nc" id="L75">	}</span>
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L79">		final int prime = 31;</span>
+<span class="nc" id="L80">		int result = 1;</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">		result = prime * result + ((childIdList == null) ? 0 : childIdList.hashCode());</span>
+<span class="nc" id="L82">		result = prime * result + id;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		result = prime * result + ((metrics == null) ? 0 : metrics.hashCode());</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		result = prime * result + ((name == null) ? 0 : name.hashCode());</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">		result = prime * result + ((scope == null) ? 0 : scope.hashCode());</span>
+<span class="nc" id="L86">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L92">			return true;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L94">			return false;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L96">			return false;</span>
+<span class="nc" id="L97">		SonarResource other = (SonarResource) obj;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (childIdList == null) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (other.childIdList != null)</span>
+<span class="nc" id="L100">				return false;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		} else if (!childIdList.equals(other.childIdList))</span>
+<span class="nc" id="L102">			return false;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (id != other.id)</span>
+<span class="nc" id="L104">			return false;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (metrics == null) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">			if (other.metrics != null)</span>
+<span class="nc" id="L107">				return false;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		} else if (!metrics.equals(other.metrics))</span>
+<span class="nc" id="L109">			return false;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (name == null) {</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (other.name != null)</span>
+<span class="nc" id="L112">				return false;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		} else if (!name.equals(other.name))</span>
+<span class="nc" id="L114">			return false;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (scope != other.scope)</span>
+<span class="nc" id="L116">			return false;</span>
+<span class="nc" id="L117">		return true;</span>
+	}
+
+<span class="nc" id="L120">	public enum Scope{</span>
+<span class="nc" id="L121">		PRJ,</span>
+<span class="nc" id="L122">		DIR,</span>
+<span class="nc" id="L123">		FIL</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

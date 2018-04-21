@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BasicBlock.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model</a> &gt; <span class="el_source">BasicBlock.java</span></div><h1>BasicBlock.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+import codemetropolis.toolchain.rendering.RenderingExecutor;
+
+public class BasicBlock {
+
+	public static final BasicBlock NonBlock;
+	public static final Map&lt;Short, String&gt; idToName;
+	public static final Map&lt;Short, String&gt; idToHumanReadableName;
+	public static final Map&lt;String, Short&gt; nameToId;
+	public static final Map&lt;String, Short&gt; humanReadableNameToId;
+	
+	static {
+<span class="nc" id="L21">		NonBlock = new BasicBlock((short)-1 );</span>
+<span class="nc" id="L22">		idToName = new HashMap&lt;Short,String&gt;();</span>
+<span class="nc" id="L23">		idToHumanReadableName = new HashMap&lt;Short,String&gt;();</span>
+<span class="nc" id="L24">		nameToId = new HashMap&lt;String,Short&gt;();</span>
+<span class="nc" id="L25">		humanReadableNameToId = new HashMap&lt;String,Short&gt;();</span>
+		
+<span class="nc" id="L27">		InputStream csvStream = RenderingExecutor.class.getClassLoader().getResourceAsStream(&quot;blocks.csv&quot;);</span>
+<span class="nc" id="L28">		try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, &quot;UTF-8&quot;))) {</span>
+			String line;
+<span class="nc bnc" id="L30" title="All 2 branches missed.">			while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc" id="L31">				String[] blockInfo = line.split(&quot;,&quot;);</span>
+<span class="nc" id="L32">				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);</span>
+<span class="nc" id="L33">				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);</span>
+<span class="nc" id="L34">				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));</span>
+<span class="nc" id="L35">			}</span>
+<span class="nc bnc" id="L36" title="All 8 branches missed.">		} catch (IOException e) {</span>
+<span class="nc" id="L37">			e.printStackTrace();</span>
+<span class="nc" id="L38">		}	</span>
+<span class="nc" id="L39">	}</span>
+	
+	private short id;
+	private int data;
+	
+	public BasicBlock(short id) {
+<span class="nc" id="L45">		this(id, 0);</span>
+<span class="nc" id="L46">	}</span>
+
+<span class="nc" id="L48">	public BasicBlock(short id, int data) {</span>
+<span class="nc" id="L49">		this.id = id;</span>
+<span class="nc" id="L50">		this.data = data;</span>
+<span class="nc" id="L51">	}</span>
+	
+	public BasicBlock(String name) {
+<span class="nc" id="L54">		this(nameToId.get(name), 0);</span>
+<span class="nc" id="L55">	}</span>
+	
+	public BasicBlock(String name, int data) {
+<span class="nc" id="L58">		this(nameToId.get(name), data);</span>
+<span class="nc" id="L59">	}</span>
+	
+<span class="nc" id="L61">	public BasicBlock(BasicBlock original) {</span>
+<span class="nc" id="L62">		this.id = original.id;</span>
+<span class="nc" id="L63">		this.data = original.data;</span>
+<span class="nc" id="L64">	}</span>
+	
+	public String getName() {
+<span class="nc" id="L67">		return idToName.get(id);</span>
+	}
+	
+	public String getHumanReadableName() {
+<span class="nc" id="L71">		return idToHumanReadableName.get(id);</span>
+	}
+
+	public short getId() {
+<span class="nc" id="L75">		return id;</span>
+	}
+
+	public int getData() {
+<span class="nc" id="L79">		return data;</span>
+	}
+		
+	@Override
+	public int hashCode() {
+<span class="nc" id="L84">		final int prime = 31;</span>
+<span class="nc" id="L85">		int result = 1;</span>
+<span class="nc" id="L86">		result = prime * result + data;</span>
+<span class="nc" id="L87">		result = prime * result + id;</span>
+<span class="nc" id="L88">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L94">			return true;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L96">			return false;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L98">			return false;</span>
+<span class="nc" id="L99">		BasicBlock other = (BasicBlock) obj;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (data != other.data)</span>
+<span class="nc" id="L101">			return false;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (id != other.id)</span>
+<span class="nc" id="L103">			return false;</span>
+<span class="nc" id="L104">		return true;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		return getHumanReadableName() + (data != 0 ? data : &quot;&quot;);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

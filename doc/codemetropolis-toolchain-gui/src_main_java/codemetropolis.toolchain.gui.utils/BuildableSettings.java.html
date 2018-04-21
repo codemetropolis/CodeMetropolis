@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BuildableSettings.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.utils</a> &gt; <span class="el_source">BuildableSettings.java</span></div><h1>BuildableSettings.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.utils;
+
+import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.net.URL;
+
+import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
+
+/**
+ * This class is responsible for providing information which buildable attributes are desired by the user to display on the GUI.
+ * @author Viktor Meszaros {@literal &lt;MEVXAAT.SZE&gt;}
+ */
+public class BuildableSettings {
+	/**
+	 * {@link Map}, which contains the default settings of what properties to display to the individual buildable types.
+	 */
+<span class="fc" id="L26">	public static final Map&lt;String, String[]&gt; DEFAULT_SETTINGS = new HashMap&lt;&gt;();</span>
+	
+	/**
+	 * {@Map}, which contains the types (int, float(0 to 1),...) of the possible buildable attributes.
+	 */
+<span class="fc" id="L31">	public static final Map&lt;String, String&gt; BUILDABLE_ATTRIBUTE_TYPES = new HashMap&lt;String, String&gt;();</span>
+	
+	/**
+	 * Stores the possible values, which can be applied to the buildable attributes &quot;character&quot; and &quot;external_character&quot;.
+	 */
+<span class="fc" id="L36">	public static final List&lt;String&gt; VALID_CHARACTER_TYPES = new ArrayList&lt;String&gt;(Arrays.asList(new String[] {</span>
+<span class="fc" id="L37">			&quot;stone&quot;, &quot;cobblestone&quot;, &quot;mossy_stone&quot;, &quot;sandstone&quot;, &quot;obsidian&quot;, </span>
+<span class="fc" id="L38">			&quot;wood&quot;, &quot;dark_wood&quot;, &quot;birch_wood&quot;, &quot;planks&quot;, &quot;dark_planks&quot;, &quot;metal&quot;,</span>
+<span class="fc" id="L39">			&quot;dirt&quot;, &quot;sand&quot;, &quot;red_sand&quot;, &quot;brick&quot;, &quot;stone_brick&quot;, &quot;dark_brick&quot;,</span>
+<span class="fc" id="L40">			&quot;glass&quot;, &quot;gold&quot;, &quot;diamond&quot;	</span>
+	}));
+	
+	private URL urlToDictionary;
+	
+<span class="fc" id="L45">	public BuildableSettings() {</span>
+<span class="fc" id="L46">		urlToDictionary = this.getClass().getResource(&quot;/&quot; + &quot;buildableProperties.cmcfg&quot;);</span>
+<span class="fc" id="L47">	}</span>
+	
+	/**
+	 * {@link Map}, serves containing the buildable types(floor, garden, ...) and its assigned properties(height, character, ...).
+	 */
+<span class="fc" id="L52">	private static Map&lt;String, String[]&gt; DISPLAYED_PROPERTIES = new HashMap&lt;String, String[]&gt;();</span>
+
+    static {
+<span class="fc" id="L55">        DEFAULT_SETTINGS.put(&quot;FLOOR&quot;, new String[]{&quot;width&quot;, &quot;height&quot;, &quot;length&quot;, &quot;character&quot;, &quot;external_character&quot;, &quot;torches&quot;});</span>
+<span class="fc" id="L56">        DEFAULT_SETTINGS.put(&quot;CELLAR&quot;, new String[]{&quot;width&quot;, &quot;height&quot;, &quot;length&quot;, &quot;character&quot;, &quot;external_character&quot;, &quot;torches&quot;});</span>
+<span class="fc" id="L57">        DEFAULT_SETTINGS.put(&quot;GARDEN&quot;, new String[]{&quot;tree-ratio&quot;, &quot;mushroom-ratio&quot;, &quot;flower-ratio&quot;});</span>
+<span class="fc" id="L58">        DEFAULT_SETTINGS.put(&quot;GROUND&quot;, new String[]{});</span>
+        
+<span class="fc" id="L60">		DISPLAYED_PROPERTIES.put(&quot;FLOOR&quot;, new String[] {});</span>
+<span class="fc" id="L61">        DISPLAYED_PROPERTIES.put(&quot;CELLAR&quot;, new String[] {});</span>
+<span class="fc" id="L62">        DISPLAYED_PROPERTIES.put(&quot;GARDEN&quot;, new String[] {});</span>
+<span class="fc" id="L63">        DISPLAYED_PROPERTIES.put(&quot;GROUND&quot;, new String[] {});</span>
+        
+<span class="fc" id="L65">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;width&quot;, &quot;int&quot;);</span>
+<span class="fc" id="L66">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;height&quot;, &quot;int&quot;);</span>
+<span class="fc" id="L67">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;length&quot;, &quot;int&quot;);</span>
+<span class="fc" id="L68">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;character&quot;, &quot;string&quot;);</span>
+<span class="fc" id="L69">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;external_character&quot;, &quot;string&quot;);</span>
+<span class="fc" id="L70">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;torches&quot;, &quot;int(0 to 5)&quot;);</span>
+<span class="fc" id="L71">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;tree-ratio&quot;, &quot;float(0 to 1)&quot;);</span>
+<span class="fc" id="L72">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;mushroom-ratio&quot;, &quot;float(0 to 1)&quot;);</span>
+<span class="fc" id="L73">        BUILDABLE_ATTRIBUTE_TYPES.put(&quot;flower-ratio&quot;, &quot;float(0 to 1)&quot;);</span>
+<span class="fc" id="L74">	}</span>
+	
+    /**
+     * Reads the user's display settings from the configuration file.
+     * @return A {@link Map} which contains the possible buildable types as keys and its attributes, which are desired to be displayed.
+     * @throws BadConfigFileFomatException If the format of the configuration file is not appropriate.
+     * @throws FileNotFoundException If the configuration file cannot be found.
+     */
+	public Map&lt;String, String[]&gt; readSettings() throws BadConfigFileFomatException, FileNotFoundException{
+		
+<span class="fc" id="L84">		BufferedReader cfgFileReader = null; </span>
+		
+		try {			
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">			if (urlToDictionary != null) {</span>
+<span class="fc" id="L88">				InputStream stream = urlToDictionary.openStream();</span>
+<span class="fc" id="L89">				cfgFileReader = new BufferedReader(new InputStreamReader(stream, &quot;UTF-8&quot;));</span>
+				String actLine;
+				//A regular line: buildable name is followed by an '=' sign, that follows the list of attributes separated by commas. 
+<span class="fc bfc" id="L92" title="All 2 branches covered.">				while ((actLine = cfgFileReader.readLine()).split(&quot;=&quot;).length == 2) {</span>
+<span class="fc" id="L93">					String buildableName = actLine.split(&quot;=&quot;)[0];</span>
+<span class="fc" id="L94">					String[] buildableProperties = actLine.split(&quot;=&quot;)[1].split(&quot;,&quot;);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">					if (DISPLAYED_PROPERTIES.containsKey(buildableName)) {</span>
+						//If there is no assigned attribute given to the actual buildable type...
+<span class="pc bpc" id="L97" title="3 of 4 branches missed.">						if (buildableProperties.length == 1 &amp;&amp; buildableProperties[0].isEmpty()) {</span>
+<span class="nc" id="L98">							DISPLAYED_PROPERTIES.put(buildableName, new String[] {});</span>
+<span class="nc" id="L99">						} else {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">							if (validateProperties(buildableName, buildableProperties)) {</span>
+<span class="fc" id="L101">								DISPLAYED_PROPERTIES.put(buildableName, buildableProperties);</span>
+<span class="fc" id="L102">							} else {</span>
+<span class="nc" id="L103">								throw new BadConfigFileFomatException();</span>
+							}
+						}
+					} else {
+<span class="nc" id="L107">						throw new BadConfigFileFomatException();</span>
+					}
+				} 
+<span class="fc" id="L110">			}</span>
+			else {
+<span class="nc" id="L112">				return DEFAULT_SETTINGS;</span>
+			}
+		}
+<span class="nc" id="L115">		catch(IOException e) {</span>
+<span class="nc" id="L116">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L118">		finally {</span>
+			try {
+<span class="pc bpc" id="L120" title="7 of 8 branches missed.">				if(cfgFileReader != null) {</span>
+<span class="pc" id="L121">					cfgFileReader.close();</span>
+				}
+<span class="pc" id="L123">			}</span>
+<span class="nc" id="L124">			catch(IOException ioe) {</span>
+<span class="nc" id="L125">				ioe.printStackTrace();</span>
+			}
+<span class="nc" id="L127">		}</span>
+<span class="fc" id="L128">		return DISPLAYED_PROPERTIES;		</span>
+	}
+	
+	/**
+	 * Validates, if all assigned attributes of the specified buildable type are valid or not.
+	 * @param buildableType The type of the buildable (floor, garden, ...)
+	 * @param buildabeAttributes The array of the attributes which are examined if they are valid or not.
+	 * @return All of the specified buildable attributes are valid or not.
+	 */
+	static boolean validateProperties(String buildableType, String[] buildabeAttributes) {
+<span class="fc" id="L138">		List&lt;String&gt; validProperties = new ArrayList&lt;String&gt;(Arrays.asList(DEFAULT_SETTINGS.get(buildableType)));</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for(String property : buildabeAttributes) {</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			if(!validProperties.contains(property)) {</span>
+<span class="fc" id="L141">				return false;</span>
+			}
+		}
+<span class="fc" id="L144">		return true;</span>
+	}
+	
+	/**
+	 * Writes to the console, what display settings will be provided to the Mapping file editor GUI.
+	 */
+	public void displaySettings() throws BadConfigFileFomatException, FileNotFoundException {
+		
+<span class="fc" id="L152">		Map&lt;String, String[]&gt; returnedSettings = readSettings();</span>
+			
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for(String buildableType : returnedSettings.keySet()) {</span>
+				
+<span class="fc" id="L156">			String[] buildableProperties = returnedSettings.get(buildableType);</span>
+				
+<span class="fc" id="L158">			System.out.print(buildableType + &quot;=&quot;);</span>
+				
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			for(int i = 0; i &lt; buildableProperties.length; i++) {</span>
+					
+<span class="fc" id="L162">				System.out.print(buildableProperties[i] + &quot;;&quot;);</span>
+					
+			}
+<span class="fc" id="L165">			System.out.println();</span>
+		}
+<span class="fc" id="L167">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GitInspectorConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector</a> &gt; <span class="el_source">GitInspectorConverter.java</span></div><h1>GitInspectorConverter.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+
+public class GitInspectorConverter extends CdfConverter {
+
+	private static final String CHANGES_TAG = &quot;changes&quot;;
+	private static final String EMAIL_TAG = &quot;email&quot;;
+	private static final String BLAME_TAG = &quot;blame&quot;;
+	private static final String AUTHOR_TAG = &quot;author&quot;;
+	private static final String NAME_TAG = &quot;name&quot;;
+	private static final String COMMITS_TAG = &quot;commits&quot;;
+	private static final String INSERTIONS_TAG = &quot;insertions&quot;;
+	private static final String DELETIONS_TAG = &quot;deletions&quot;;
+	private static final String POC_TAG = &quot;percentage-of-changes&quot;;
+	private static final String POC_SHORT = &quot;POC&quot;;
+	private static final String ROWS_TAG = &quot;rows&quot;;
+	private static final String STABILITY_TAG = &quot;stability&quot;;
+	private static final String AGE_TAG = &quot;age&quot;;
+	private static final String PIC_TAG = &quot;percentage-in-comments&quot;;
+	private static final String PIC_SHORT = &quot;PIC&quot;;
+	private static final String FLOOR_TAG = &quot;floor-metrics&quot;;
+	private static final String REPOSITORY_TAG = &quot;repository&quot;;
+	private static final String DATE_TAG = &quot;report-date&quot;;
+
+	private HashMap&lt;String, CdfElement&gt; cdfElements;
+	private CdfElement authorMetrics;
+	private CdfElement floorMetrics;
+
+	public HashMap&lt;String, CdfElement&gt; getCdfElements() {
+<span class="fc" id="L46">		return cdfElements;</span>
+	}
+
+	public CdfElement getAuthorMetrics() {
+<span class="fc" id="L50">		return authorMetrics;</span>
+	}
+
+	public CdfElement getFloorMetrics() {
+<span class="fc" id="L54">		return floorMetrics;</span>
+	}
+
+	public GitInspectorConverter(Map&lt;String, String&gt; params) {
+<span class="fc" id="L58">		super(params);</span>
+<span class="fc" id="L59">		cdfElements = new HashMap&lt;String, CdfElement&gt;();</span>
+<span class="fc" id="L60">		authorMetrics = new CdfElement(&quot;&quot;, AUTHOR_TAG);</span>
+<span class="fc" id="L61">		floorMetrics = new CdfElement(&quot;&quot;, FLOOR_TAG);</span>
+<span class="fc" id="L62">	}</span>
+
+	@Override
+	public CdfTree createElements(String source) throws CodeMetropolisException {
+<span class="fc" id="L66">		Document doc = createDocumentFromSource(source);</span>
+<span class="fc" id="L67">		CdfElement rootElement = createRootelement(doc);</span>
+<span class="fc" id="L68">		traverseNodesFromDocument(doc);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		for (CdfElement element : cdfElements.values()) {</span>
+<span class="fc" id="L70">			rootElement.addChildElement(element);</span>
+		}
+<span class="fc" id="L72">		return new CdfTree(rootElement);</span>
+	}
+
+	public CdfElement createRootelement(Document doc) {
+<span class="fc" id="L76">		StringBuilder rootName = new StringBuilder(doc.getElementsByTagName(REPOSITORY_TAG).item(0).getTextContent());</span>
+<span class="fc" id="L77">		rootName.append(&quot; &quot;);</span>
+<span class="fc" id="L78">		rootName.append(doc.getElementsByTagName(DATE_TAG).item(0).getTextContent());</span>
+<span class="fc" id="L79">		return new CdfElement(rootName.toString(), &quot;root&quot;);</span>
+	}
+
+	public Document createDocumentFromSource(String sourcePath) throws CodeMetropolisException {
+		try {
+<span class="fc" id="L84">			File inputFile = new File(sourcePath);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">			if (!inputFile.getName().endsWith(&quot;.xml&quot;)) {</span>
+<span class="fc" id="L86">			    throw new CodeMetropolisException(&quot;The supplied file must have XML extension.&quot;);</span>
+			}
+<span class="fc" id="L88">			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L89">			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="fc" id="L90">			Document doc = dBuilder.parse(inputFile);</span>
+<span class="fc" id="L91">			return doc;</span>
+<span class="fc" id="L92">		} catch (Exception e) {</span>
+<span class="fc" id="L93">			throw new CodeMetropolisException(e.getMessage());</span>
+		}
+	}
+
+	public void traverseNodesFromDocument(Document doc) {
+<span class="fc" id="L98">		Node changesNode = doc.getElementsByTagName(CHANGES_TAG).item(0);</span>
+<span class="fc" id="L99">		Node authorsNode = changesNode.getChildNodes().item(3);</span>
+<span class="fc" id="L100">		NodeList authorNodes = authorsNode.getChildNodes();</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; authorNodes.getLength(); ++i) {</span>
+<span class="fc" id="L103">			Node authorNode = authorNodes.item(i);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">			if (authorNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+<span class="fc" id="L105">				Element authorElement = (Element) authorNode;</span>
+<span class="fc" id="L106">				CdfElement element = getMetricsFromFirstAuthorElementNode(authorElement);</span>
+<span class="fc" id="L107">				String name = authorElement.getElementsByTagName(NAME_TAG).item(0).getTextContent();</span>
+<span class="fc" id="L108">				cdfElements.put(name, element);</span>
+			}
+		}
+
+<span class="fc" id="L112">		Node blameNode = doc.getElementsByTagName(BLAME_TAG).item(0);</span>
+<span class="fc" id="L113">		authorsNode = blameNode.getChildNodes().item(3);</span>
+<span class="fc" id="L114">		authorNodes = authorsNode.getChildNodes();</span>
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; authorNodes.getLength(); ++i) {</span>
+<span class="fc" id="L117">			Node authorNode = authorNodes.item(i);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			if (authorNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+<span class="fc" id="L119">				Element authorElement = (Element) authorNode;</span>
+<span class="fc" id="L120">				String name = authorElement.getElementsByTagName(NAME_TAG).item(0).getTextContent();</span>
+
+<span class="fc" id="L122">				CdfElement element = cdfElements.get(name);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				if (element != null) {</span>
+<span class="fc" id="L124">					element = updateMetricsFromSecondAuthorElementNode(authorElement, element);</span>
+<span class="fc" id="L125">					cdfElements.put(name, element);</span>
+				}
+			}
+		}
+<span class="fc" id="L129">	}</span>
+
+	public CdfElement getMetricsFromFirstAuthorElementNode(Element authorElement) {
+<span class="fc" id="L132">		String name = authorElement.getElementsByTagName(NAME_TAG).item(0).getTextContent();</span>
+<span class="fc" id="L133">		resetMetrics(name);</span>
+
+<span class="fc" id="L135">		updateMetrics(authorElement, EMAIL_TAG, EMAIL_TAG, CdfProperty.Type.STRING, false);</span>
+<span class="fc" id="L136">		updateMetrics(authorElement, COMMITS_TAG, COMMITS_TAG, CdfProperty.Type.INT, false);</span>
+<span class="fc" id="L137">		updateMetrics(authorElement, INSERTIONS_TAG, INSERTIONS_TAG, CdfProperty.Type.INT, true);</span>
+<span class="fc" id="L138">		updateMetrics(authorElement, DELETIONS_TAG, DELETIONS_TAG, CdfProperty.Type.INT, true);</span>
+<span class="fc" id="L139">		updateMetrics(authorElement, POC_TAG, POC_SHORT, CdfProperty.Type.FLOAT, false);</span>
+
+<span class="fc" id="L141">		authorMetrics.addChildElement(floorMetrics);</span>
+<span class="fc" id="L142">		return authorMetrics;</span>
+	}
+
+	public CdfElement updateMetricsFromSecondAuthorElementNode(Element authorElement, CdfElement element) {
+<span class="fc" id="L146">		authorMetrics = element;</span>
+<span class="fc" id="L147">		floorMetrics = authorMetrics.getChildElements().get(0);</span>
+<span class="fc" id="L148">		authorMetrics.removeChildElement(floorMetrics);</span>
+
+<span class="fc" id="L150">		updateMetrics(authorElement, ROWS_TAG, ROWS_TAG, CdfProperty.Type.INT, true);</span>
+<span class="fc" id="L151">		updateMetrics(authorElement, STABILITY_TAG, STABILITY_TAG, CdfProperty.Type.FLOAT, false);</span>
+<span class="fc" id="L152">		updateMetrics(authorElement, AGE_TAG, AGE_TAG, CdfProperty.Type.FLOAT, false);</span>
+<span class="fc" id="L153">		updateMetrics(authorElement, PIC_TAG, PIC_SHORT, CdfProperty.Type.FLOAT, false);</span>
+
+<span class="fc" id="L155">		authorMetrics.addChildElement(floorMetrics);</span>
+<span class="fc" id="L156">		return authorMetrics;</span>
+	}
+
+	public static String downscalePossibleLargeNumericValue(String numberString) {
+<span class="fc" id="L160">		long number = Long.parseLong(numberString);</span>
+<span class="fc" id="L161">		long newValue = (long) Math.floor(Math.sqrt(number));</span>
+<span class="fc" id="L162">		return Long.toString(newValue);</span>
+	}
+
+	public void updateMetrics(Element authorElement, String readTag,
+			String writeTag, CdfProperty.Type type, boolean remapNumeric) {
+<span class="fc" id="L167">		String metricValue = authorElement.getElementsByTagName(readTag).item(0).getTextContent();</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		if (remapNumeric) {</span>
+<span class="fc" id="L169">			metricValue = downscalePossibleLargeNumericValue(metricValue);</span>
+		}
+<span class="fc" id="L171">		authorMetrics.addProperty(writeTag, metricValue, type);</span>
+<span class="fc" id="L172">		floorMetrics.addProperty(writeTag, metricValue, type);</span>
+<span class="fc" id="L173">	}</span>
+
+	public void resetMetrics(String name) {
+<span class="fc" id="L176">		authorMetrics = new CdfElement(name, AUTHOR_TAG);</span>
+<span class="fc" id="L177">		floorMetrics = new CdfElement(name, FLOOR_TAG);</span>
+<span class="fc" id="L178">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

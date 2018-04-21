@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Conversion.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-mapping</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.mapping.conversions</a> &gt; <span class="el_source">Conversion.java</span></div><h1>Conversion.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.mapping.conversions;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import codemetropolis.toolchain.mapping.model.Limit;
+import codemetropolis.toolchain.mapping.model.Parameter;
+
+@XmlJavaTypeAdapter(ConversionAdapter.class)
+<span class="fc" id="L13">public abstract class Conversion {</span>
+	
+<span class="fc" id="L15">	protected List&lt;Parameter&gt; parameters = new ArrayList&lt;Parameter&gt;();</span>
+	
+	public abstract Object apply(Object value, Limit limit);
+	
+	public void clearParameters() {
+<span class="nc" id="L20">		parameters.clear();</span>
+<span class="nc" id="L21">	}</span>
+	
+	public void addParameter(Parameter p) {
+<span class="nc" id="L24">		parameters.add(p);</span>
+<span class="nc" id="L25">	}</span>
+	
+	public void addParameters(Parameter... parameters) {
+<span class="nc bnc" id="L28" title="All 2 branches missed.">		for(Parameter p : parameters) {</span>
+<span class="nc" id="L29">			this.parameters.add(p);</span>
+		}
+<span class="nc" id="L31">	}</span>
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public List&lt;Parameter&gt; getParameters() {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">		if(parameters == null) {</span>
+<span class="nc" id="L36">			parameters = Collections.EMPTY_LIST;</span>
+		}
+<span class="nc" id="L38">		return Collections.unmodifiableList(parameters);</span>
+	}
+	
+	public static Conversion createFromName(String name) {	
+<span class="pc bpc" id="L42" title="12 of 19 branches missed.">		switch(name.toLowerCase()) {</span>
+			case ToIntConversion.NAME:
+<span class="nc" id="L44">				return new ToIntConversion();</span>
+			case ToDoubleConversion.NAME:
+<span class="nc" id="L46">				return new ToDoubleConversion();</span>
+			case MultiplyConversion.NAME:
+<span class="fc" id="L48">				return new MultiplyConversion();</span>
+			case QuantizationConversion.NAME:
+<span class="fc" id="L50">				return new QuantizationConversion();</span>
+			case NormalizeConversion.NAME:
+<span class="fc" id="L52">				return new NormalizeConversion();</span>
+			case SwitchConversion.NAME:
+<span class="nc" id="L54">				return new SwitchConversion();</span>
+		}
+<span class="fc" id="L56">		return null;</span>
+	}
+	
+	//region conversion helpers
+	public static double toDouble(Object value) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		if(value instanceof String) {</span>
+<span class="nc" id="L62">			return Double.parseDouble((String)value);</span>
+		}
+<span class="nc" id="L64">		return (double)value;</span>
+	}
+	
+	public static int toInt(Object value) {
+<span class="nc" id="L68">		return (int)toDouble(value);</span>
+	}
+	//endregion
+		
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

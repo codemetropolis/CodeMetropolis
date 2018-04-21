@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MappingExecutorArgs.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-mapping</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.mapping</a> &gt; <span class="el_source">MappingExecutorArgs.java</span></div><h1>MappingExecutorArgs.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.mapping;
+
+import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+
+public class MappingExecutorArgs extends ExecutorArgs {
+	
+	private String cdfFile;
+	private String outputFile;
+	private String mappingFile;
+	private double scale;
+	private boolean hierarchyValidation;
+	
+	public MappingExecutorArgs(String cdfFile, String outputFile, String mappingFile, double scale, boolean hierarchyValidation) {
+<span class="nc" id="L14">		super();</span>
+<span class="nc" id="L15">		this.cdfFile = cdfFile;</span>
+<span class="nc" id="L16">		this.outputFile = outputFile;</span>
+<span class="nc" id="L17">		this.mappingFile = mappingFile;</span>
+<span class="nc" id="L18">		this.scale = scale;</span>
+<span class="nc" id="L19">		this.hierarchyValidation = hierarchyValidation;</span>
+<span class="nc" id="L20">	}</span>
+
+	public String getCdfFile() {
+<span class="nc" id="L23">		return cdfFile;</span>
+	}
+	
+	public String getOutputFile() {
+<span class="nc" id="L27">		return outputFile;</span>
+	}
+	
+	public String getMappingFile() {
+<span class="nc" id="L31">		return mappingFile;</span>
+	}
+	
+	public double getScale() {
+<span class="nc" id="L35">		return scale;</span>
+	}
+	
+	public boolean isHierarchyValidationEnabled() {
+<span class="nc" id="L39">		return hierarchyValidation;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

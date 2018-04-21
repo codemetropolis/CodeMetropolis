@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MappingController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-mapping</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.mapping.control</a> &gt; <span class="el_source">MappingController.java</span></div><h1>MappingController.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.mapping.control;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.UUID;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfReaderException;
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.commons.cmxml.BuildableTree.Iterator;
+import codemetropolis.toolchain.mapping.conversions.Conversion;
+import codemetropolis.toolchain.mapping.exceptions.NotValidBuildableStructure;
+import codemetropolis.toolchain.mapping.model.Binding;
+import codemetropolis.toolchain.mapping.model.Limit;
+import codemetropolis.toolchain.mapping.model.Linking;
+import codemetropolis.toolchain.mapping.model.Mapping;
+
+public class MappingController {
+	
+	private static final int MIN_SIZE = 9;
+	
+<span class="fc" id="L36">	private final LimitController limitController = new LimitController();</span>
+<span class="fc" id="L37">	private Map&lt;Buildable, Map&lt;String, String&gt;&gt; attributesByBuildables = new HashMap&lt;&gt;();</span>
+	private double scale;
+	private boolean skipInvalidStructures;
+<span class="fc" id="L40">	private Stack&lt;Buildable&gt; buildableStack = new Stack&lt;&gt;();</span>
+	private Mapping mapping;
+	
+	public MappingController(Mapping mapping) {
+<span class="fc" id="L44">		this(mapping, 1.0, false);</span>
+<span class="fc" id="L45">	}</span>
+	
+<span class="fc" id="L47">	public MappingController(Mapping mapping, double scale, boolean skipInvalidStructures) {</span>
+<span class="fc" id="L48">		this.mapping = mapping;</span>
+<span class="fc" id="L49">		this.scale = scale;</span>
+<span class="fc" id="L50">		this.skipInvalidStructures = skipInvalidStructures;</span>
+<span class="fc" id="L51">	}</span>
+	
+	public void createBuildablesFromCdf(String filename) throws CdfReaderException {
+<span class="fc" id="L54">		attributesByBuildables.clear();</span>
+		
+		try {
+<span class="fc" id="L57">			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();;</span>
+<span class="fc" id="L58">			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="fc" id="L59">			File xmlFile = new File(filename);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">			if(!xmlFile.exists()) {</span>
+<span class="nc" id="L61">				throw new FileNotFoundException();</span>
+			}
+<span class="fc" id="L63">			Document doc = dBuilder.parse(xmlFile);</span>
+			
+<span class="fc" id="L65">			doc.getDocumentElement().normalize();</span>
+<span class="fc" id="L66">			Element rootElement = (Element) doc.getChildNodes().item(0);</span>
+<span class="fc" id="L67">			Buildable container = new Buildable(UUID.randomUUID().toString(), &quot;&quot;, Type.CONTAINER);</span>
+				
+<span class="fc" id="L69">			Buildable actualBuildable = createBuildable(rootElement);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">			if(actualBuildable == null){</span>
+<span class="nc" id="L71">				attributesByBuildables.put(container, new HashMap&lt;&gt;());</span>
+<span class="nc" id="L72">				setChildren(container, rootElement);</span>
+<span class="nc" id="L73">			} else {</span>
+<span class="fc" id="L74">				setAttributes(actualBuildable, rootElement);</span>
+<span class="fc" id="L75">				setChildren(actualBuildable, rootElement);	</span>
+<span class="fc" id="L76">				Buildable root = findRoot(attributesByBuildables.keySet());</span>
+<span class="fc" id="L77">				container.addChild(root);</span>
+<span class="fc" id="L78">				attributesByBuildables.put(container, new HashMap&lt;&gt;());</span>
+			}
+<span class="pc" id="L80">		} catch (Exception e){</span>
+<span class="nc" id="L81">			throw new CdfReaderException(e);</span>
+		}
+<span class="fc" id="L83">	}</span>
+	
+	public BuildableTree linkBuildablesToMetrics() {
+		
+<span class="nc" id="L87">		List&lt;Linking&gt; linkings = mapping.getLinkings();</span>
+<span class="nc" id="L88">		Map&lt;String, String&gt; resources = mapping.getResourceMap();</span>
+		
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		for(Map.Entry&lt;Buildable, Map&lt;String, String&gt;&gt; entry : attributesByBuildables.entrySet()) {</span>
+			
+<span class="nc" id="L92">			Buildable b = entry.getKey();</span>
+<span class="nc" id="L93">			Map&lt;String, String&gt; attributes = entry.getValue();</span>
+			
+<span class="nc" id="L95">			Linking linking = null;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">			for(Linking l : linkings) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">				if(l.getTarget().equalsIgnoreCase(b.getType().toString())) {</span>
+<span class="nc" id="L98">					linking = l;</span>
+<span class="nc" id="L99">					break;</span>
+				}
+			}
+			
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			if(linking == null) {</span>
+<span class="nc" id="L104">				continue;</span>
+			}
+				
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			for(Binding binding : linking.getBindings()) {</span>
+<span class="nc" id="L108">				String variableId = binding.getVariableId();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">				if(variableId != null) {</span>
+<span class="nc" id="L110">					String resource = resources.get(variableId);</span>
+<span class="nc" id="L111">					setProperty(b, binding.getTo(), resource, false);</span>
+<span class="nc" id="L112">					continue;</span>
+				}
+				
+<span class="nc" id="L115">				Object value = attributes.get(binding.getFrom());</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">				if(value == null) {</span>
+<span class="nc" id="L117">					String defaultValue = binding.getDefaultValue();</span>
+<span class="nc bnc" id="L118" title="All 4 branches missed.">					if(defaultValue == null || defaultValue.isEmpty()) continue;</span>
+<span class="nc" id="L119">					setProperty(b, binding.getTo(), defaultValue, true);</span>
+<span class="nc" id="L120">					continue;</span>
+				}
+				
+<span class="nc" id="L123">				Limit limit = limitController.getLimit(linking.getSource(), binding.getFrom());</span>
+				
+<span class="nc bnc" id="L125" title="All 2 branches missed.">				for(Conversion c : binding.getConversions()) {</span>
+<span class="nc" id="L126">					value = c.apply(value, limit);</span>
+				}
+				
+<span class="nc" id="L129">				setProperty(b, binding.getTo(), value, true);</span>
+			}
+			
+		}
+		
+<span class="nc" id="L134">		Buildable root = findRoot(attributesByBuildables.keySet());</span>
+<span class="nc" id="L135">		BuildableTree buildableTree = new BuildableTree(root);</span>
+<span class="nc" id="L136">		prepareBuildables(buildableTree);</span>
+<span class="nc" id="L137">		return buildableTree;</span>
+	}
+	
+	private void setProperty(Buildable b, String propertyName, Object value, boolean adjustSize) {
+
+<span class="nc bnc" id="L142" title="All 10 branches missed.">		switch(propertyName) {</span>
+			case &quot;height&quot;:
+			case &quot;width&quot;:
+			case &quot;length&quot;:
+<span class="nc" id="L146">				value = Conversion.toInt(value);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				if(adjustSize) value = Conversion.toInt(MIN_SIZE + (int)value * scale);</span>
+				break;
+		}
+		
+<span class="nc bnc" id="L151" title="All 10 branches missed.">		switch(propertyName) {</span>
+			case &quot;height&quot;:
+<span class="nc" id="L153">				b.setSizeY((int)value);</span>
+<span class="nc" id="L154">				break;</span>
+			case &quot;width&quot;:
+<span class="nc" id="L156">				b.setSizeX((int)value);</span>
+<span class="nc" id="L157">				break;</span>
+			case &quot;length&quot;:
+<span class="nc" id="L159">				b.setSizeZ((int)value);</span>
+<span class="nc" id="L160">				break;</span>
+			default:
+<span class="nc" id="L162">				b.addAttribute(propertyName, String.valueOf(value));</span>
+		}	
+<span class="nc" id="L164">	}</span>
+	
+	private void setChildren(Buildable buildable, Element element){
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if(buildableStack.isEmpty()){</span>
+<span class="fc" id="L168">			buildable.setCdfNames(buildable.getName());</span>
+<span class="fc" id="L169">		} else {</span>
+<span class="fc" id="L170">			Buildable top = buildableStack.peek();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			if(buildable.getCdfNames() == null){</span>
+<span class="fc" id="L172">				StringBuffer sb = new StringBuffer(top.getCdfNames());</span>
+<span class="fc" id="L173">				sb.append(&quot;.&quot;).append(buildable.getName());</span>
+<span class="fc" id="L174">				buildable.setCdfNames(sb.toString());</span>
+			}
+		}
+<span class="fc" id="L177">		buildableStack.add(buildable);</span>
+<span class="fc" id="L178">		Node children = element.getChildNodes().item(1);</span>
+<span class="fc" id="L179">		NodeList childrenNodes = children.getChildNodes();</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		for(int i = 0; i &lt; childrenNodes.getLength(); i++){</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			if(childrenNodes.item(i).getNodeType() == Node.ELEMENT_NODE){</span>
+<span class="fc" id="L182">				Element childElement = (Element) childrenNodes.item(i);</span>
+<span class="fc" id="L183">				Buildable childBuildable = createBuildable(childElement);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">				if(childBuildable != null){</span>
+<span class="fc" id="L185">					buildableStack.peek().addChild(childBuildable);</span>
+<span class="fc" id="L186">					setAttributes(childBuildable, childElement);</span>
+<span class="fc" id="L187">					setChildren(childBuildable, childElement);</span>
+<span class="fc" id="L188">				} else {</span>
+<span class="fc" id="L189">					setChildren(buildable, childElement);</span>
+				}
+			}
+		}
+<span class="fc" id="L193">		buildableStack.pop();</span>
+		
+<span class="fc" id="L195">	}</span>
+	
+	private void setAttributes(Buildable buildable, Element element){
+<span class="fc" id="L198">		Map&lt;String,String&gt; attributes = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L199">		Node properties = element.getChildNodes().item(3);</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if(properties.getNodeType() == Node.ELEMENT_NODE){</span>
+<span class="fc" id="L201">			Element propertiesElements = (Element) properties;</span>
+<span class="fc" id="L202">			attributes.putAll(createAttributeMap(propertiesElements));</span>
+<span class="fc" id="L203">			attributes.put(&quot;SourceType&quot;, element.getAttribute(&quot;type&quot;));				</span>
+		}
+<span class="fc" id="L205">		attributesByBuildables.put(buildable, attributes);</span>
+<span class="fc" id="L206">	}</span>
+	
+	private Buildable createBuildable(Element element) {
+<span class="fc" id="L209">		String id = UUID.randomUUID().toString();</span>
+<span class="fc" id="L210">		String name = element.getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L211">		String typeStr = mapping.getTargetTypeOf(element.getAttribute(&quot;type&quot;));</span>
+		
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (typeStr == null){			</span>
+<span class="fc" id="L214">			return null;</span>
+		}
+		
+<span class="fc" id="L217">		Type type = Type.valueOf(typeStr);</span>
+<span class="fc" id="L218">		return new Buildable(id, name, type);</span>
+	}
+	
+	private Map&lt;String, String&gt; createAttributeMap(Element element) {
+		
+<span class="fc" id="L223">		Map&lt;String, String&gt; attributes = new HashMap&lt;String, String&gt;();</span>
+<span class="fc" id="L224">		NodeList propNodes = element.getChildNodes();</span>
+		
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		for(int i = 0; i&lt; propNodes.getLength(); i++){</span>
+<span class="fc" id="L227">			Node propNode = propNodes.item(i);</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">			if(propNode.getNodeType() == Node.ELEMENT_NODE){</span>
+<span class="fc" id="L229">				Element propElement = (Element) propNode;</span>
+				Object value;
+<span class="fc" id="L231">				Double doubleValue = null;</span>
+<span class="pc bpc" id="L232" title="4 of 10 branches missed.">				switch(propElement.getAttribute(&quot;type&quot;)) {</span>
+					case &quot;string&quot;:
+<span class="fc" id="L234">						value = propElement.getAttribute(&quot;value&quot;);</span>
+<span class="fc" id="L235">						break;</span>
+					case &quot;int&quot;:
+<span class="fc" id="L237">						doubleValue = Double.valueOf(propElement.getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L238">						value = doubleValue;</span>
+<span class="fc" id="L239">						break;</span>
+					case &quot;float&quot;:
+<span class="fc" id="L241">						doubleValue = Double.valueOf(propElement.getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L242">						value = doubleValue;</span>
+<span class="fc" id="L243">						break;</span>
+					default:
+<span class="nc" id="L245">						value = &quot;&quot;;</span>
+				}
+				
+<span class="fc bfc" id="L248" title="All 2 branches covered.">				if(doubleValue != null){</span>
+<span class="fc" id="L249">					Element parentElement = (Element)element.getParentNode();</span>
+<span class="fc" id="L250">					limitController.add(parentElement.getAttribute(&quot;type&quot;).toLowerCase(), propElement.getAttribute(&quot;name&quot;), doubleValue);				</span>
+				}
+<span class="fc" id="L252">				String name = propElement.getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L253">				attributes.put(</span>
+<span class="fc" id="L254">						name,</span>
+<span class="fc" id="L255">						String.valueOf(value)</span>
+						);
+			}							
+		}
+<span class="fc" id="L259">		return attributes;</span>
+	}
+	
+	private Buildable findRoot(Collection&lt;Buildable&gt; buildables) {
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">		for(Buildable b : buildables)</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">			if(b.isRoot()) return b;</span>
+<span class="nc" id="L265">		return null;</span>
+	}
+	
+	private void prepareBuildables(BuildableTree buildables) {
+<span class="nc" id="L269">		Iterator it = buildables.iterator();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		while(it.hasNext()) {</span>
+<span class="nc" id="L271">			Buildable b = it.next();</span>
+			
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			if(b.getSizeX() % 2 == 0) b.setSizeX(b.getSizeX() + 1);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">			if(b.getSizeY() % 2 == 0) b.setSizeY(b.getSizeY() + 1);</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if(b.getSizeZ() % 2 == 0) b.setSizeZ(b.getSizeZ() + 1);</span>
+			
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if(b.getSizeX() &lt; MIN_SIZE) b.setSizeX(MIN_SIZE);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">			if(b.getSizeY() &lt; MIN_SIZE) b.setSizeY(MIN_SIZE);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">			if(b.getSizeZ() &lt; MIN_SIZE) b.setSizeZ(MIN_SIZE);</span>
+			
+<span class="nc bnc" id="L281" title="All 6 branches missed.">			if(skipInvalidStructures &amp;&amp; (b.getType() == Type.FLOOR || b.getType() == Type.CELLAR)) {</span>
+<span class="nc" id="L282">				b.clearChildren();</span>
+			}
+		}
+<span class="nc" id="L285">	}</span>
+	
+	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
+
+<span class="nc" id="L289">		BuildableTree.Iterator iterator = buildableTree.iterator();</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		while(iterator.hasNext()){</span>
+<span class="nc" id="L291">			Buildable build = iterator.next();</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			if(build.getParent() != null){</span>
+<span class="nc" id="L293">				Type buildableParentType = build.getParent().getType();</span>
+<span class="nc bnc" id="L294" title="All 6 branches missed.">				if(!Type.GARDEN.equals(buildableParentType) &amp;&amp; !Type.GROUND.equals(buildableParentType) &amp;&amp; !Type.CONTAINER.equals(buildableParentType)){</span>
+<span class="nc" id="L295">					throw new NotValidBuildableStructure(build.getCdfNames());</span>
+				}
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			} else if(!Type.CONTAINER.equals(build.getType())) {</span>
+<span class="nc" id="L298">				throw new NotValidBuildableStructure(build.getCdfNames());</span>
+			}
+			
+		}
+<span class="nc" id="L302">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

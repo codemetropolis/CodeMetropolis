@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BuildableWrapper.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout.pack</a> &gt; <span class="el_source">BuildableWrapper.java</span></div><h1>BuildableWrapper.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout.pack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+
+public class BuildableWrapper implements Comparable&lt;BuildableWrapper&gt; {
+
+	Object buildable;
+
+<span class="nc" id="L13">	public BuildableWrapper(Buildable buildable) {</span>
+<span class="nc" id="L14">		this.buildable = buildable;</span>
+<span class="nc" id="L15">	}</span>
+	
+<span class="nc" id="L17">	public BuildableWrapper(House buildable) {</span>
+<span class="nc" id="L18">		this.buildable = buildable;</span>
+<span class="nc" id="L19">	}</span>
+	
+	public Object getInnerBuildable() {
+<span class="nc" id="L22">		return buildable;</span>
+	}
+
+	public int getPositionX() {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		if(buildable instanceof Buildable) return ((Buildable)buildable).getPositionX();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if(buildable instanceof House) return ((House)buildable).getPositionX();</span>
+<span class="nc" id="L28">		return 0;</span>
+	}
+
+	public int getPositionZ() {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		if(buildable instanceof Buildable) return ((Buildable)buildable).getPositionZ();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		if(buildable instanceof House) return ((House)buildable).getPositionZ();</span>
+<span class="nc" id="L34">		return 0;</span>
+	}
+
+	public int getSizeX() {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		if(buildable instanceof Buildable) return ((Buildable)buildable).getSizeX();</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		if(buildable instanceof House) return ((House)buildable).getSizeX();</span>
+<span class="nc" id="L40">		return 0;</span>
+	}
+
+	public int getSizeZ() {
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		if(buildable instanceof Buildable) return ((Buildable)buildable).getSizeZ();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">		if(buildable instanceof House) return ((House)buildable).getSizeZ();</span>
+<span class="nc" id="L46">		return 0;</span>
+	}
+	
+	public void setPositionX(int x) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		if(buildable instanceof Buildable) ((Buildable)buildable).setPositionXR(x);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">		if(buildable instanceof House) ((House)buildable).setPositionXR(x);</span>
+<span class="nc" id="L52">	}</span>
+	
+	public void setPositionZ(int z) {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">		if(buildable instanceof Buildable) ((Buildable)buildable).setPositionZR(z);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		if(buildable instanceof House) ((House)buildable).setPositionZR(z);</span>
+<span class="nc" id="L57">	}</span>
+	
+	public Buildable getParent() {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">		if(buildable instanceof Buildable) return ((Buildable)buildable).getParent();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		if(buildable instanceof House) return ((House)buildable).getParent();</span>
+<span class="nc" id="L62">		return null;</span>
+	}
+	
+	public List&lt;BuildableWrapper&gt; getChildren(Map&lt;Buildable, List&lt;House&gt;&gt; houses) {
+<span class="nc" id="L66">		List&lt;BuildableWrapper&gt; result = new ArrayList&lt;BuildableWrapper&gt;();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		if(buildable instanceof House) return result;</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		for(Buildable c : ((Buildable)buildable).getChildren()) {</span>
+<span class="nc bnc" id="L69" title="All 4 branches missed.">			if(c.getType() == Buildable.Type.FLOOR || c.getType() == Buildable.Type.CELLAR) continue;</span>
+<span class="nc" id="L70">			result.add(new BuildableWrapper(c));</span>
+		}
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		if(houses.get((Buildable)buildable) != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			for(House h : houses.get((Buildable)buildable)) {</span>
+<span class="nc" id="L74">				result.add(new BuildableWrapper(h));</span>
+			}
+		}
+<span class="nc" id="L77">		return result;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L82">		final int prime = 31;</span>
+<span class="nc" id="L83">		int result = 1;</span>
+<span class="nc" id="L84">		result = prime * result</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">				+ ((buildable == null) ? 0 : buildable.hashCode());</span>
+<span class="nc" id="L86">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L92">			return true;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L94">			return false;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L96">			return false;</span>
+<span class="nc" id="L97">		BuildableWrapper other = (BuildableWrapper) obj;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (buildable == null) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (other.buildable != null)</span>
+<span class="nc" id="L100">				return false;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		} else if (!buildable.equals(other.buildable))</span>
+<span class="nc" id="L102">			return false;</span>
+<span class="nc" id="L103">		return true;</span>
+	}
+
+	@Override
+	public int compareTo(BuildableWrapper o) {
+<span class="nc" id="L108">		int result = this.getSizeX() - o.getSizeX();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		return result == 0 ? this.getSizeZ() - o.getSizeZ() : result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

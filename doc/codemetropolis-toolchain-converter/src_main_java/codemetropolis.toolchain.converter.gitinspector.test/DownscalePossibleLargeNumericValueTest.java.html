@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DownscalePossibleLargeNumericValueTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector.test</a> &gt; <span class="el_source">DownscalePossibleLargeNumericValueTest.java</span></div><h1>DownscalePossibleLargeNumericValueTest.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
+
+/**
+*
+* @author Zakor Gyula {@literal &lt;ZAGPAAG.SZE&gt;}
+*
+*/
+
+<span class="fc" id="L15">public class DownscalePossibleLargeNumericValueTest {</span>
+
+<span class="fc" id="L17">	private static String[] squareNumbers = {&quot;0&quot;, &quot;1&quot;, &quot;4&quot;, &quot;16&quot;, &quot;81&quot;, &quot;100&quot;, &quot;256&quot;, &quot;3481&quot;, &quot;7569&quot;, &quot;16129&quot;, &quot;205234276&quot;};</span>
+<span class="fc" id="L18">	private static String[] nonSquareNumbers = {&quot;0&quot;, &quot;2&quot;, &quot;7&quot;, &quot;20&quot;, &quot;82&quot;, &quot;107&quot;, &quot;270&quot;, &quot;3490&quot;, &quot;7583&quot;, &quot;16142&quot;, &quot;205234385&quot;};</span>
+<span class="fc" id="L19">	private static String[] expectedResults = {&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;4&quot;, &quot;9&quot;, &quot;10&quot;, &quot;16&quot;, &quot;59&quot;, &quot;87&quot;, &quot;127&quot;, &quot;14326&quot;};</span>
+<span class="fc" id="L20">	private static String[] negativeNumbers = {&quot;-0&quot;, &quot;-2&quot;, &quot;-7&quot;, &quot;-20&quot;, &quot;-82&quot;, &quot;-107&quot;, &quot;-270&quot;, &quot;-3490&quot;, &quot;-7583&quot;, &quot;-16142&quot;, &quot;-205234385&quot;};</span>
+<span class="fc" id="L21">	private static String[] nonNumbers = {&quot;&quot;, &quot;A&quot;, &quot;AB&quot;, &quot;CodeMetropolis&quot;, &quot;GitConverter&quot;, &quot;1234asdfg234&quot;};</span>
+
+	@Test
+	public void testWithSuqareNumbers() {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		for (int i = 0; i &lt; squareNumbers.length; ++i) {</span>
+<span class="fc" id="L26">			String result = GitInspectorConverter.downscalePossibleLargeNumericValue(squareNumbers[i]);</span>
+<span class="fc" id="L27">			assertEquals(expectedResults[i], result);</span>
+		}
+<span class="fc" id="L29">	}</span>
+
+	@Test
+	public void testWithNonSuqareNumbers() {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		for (int i = 1; i &lt; squareNumbers.length; ++i) {</span>
+<span class="fc" id="L34">			String result = GitInspectorConverter.downscalePossibleLargeNumericValue(nonSquareNumbers[i]);</span>
+<span class="fc" id="L35">			assertEquals(expectedResults[i], result);</span>
+		}
+<span class="fc" id="L37">	}</span>
+
+	@Test
+	public void testWithNegativeNumbers() {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		for (int i = 0; i &lt; negativeNumbers.length; ++i) {</span>
+<span class="fc" id="L42">			String result = GitInspectorConverter.downscalePossibleLargeNumericValue(negativeNumbers[i]);</span>
+<span class="fc" id="L43">			assertEquals(&quot;0&quot;, result);</span>
+		}
+<span class="fc" id="L45">	}</span>
+
+	@Test
+	public void testWithNonNumbers() {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		for (int i = 0; i &lt; negativeNumbers.length; ++i) {</span>
+			try {
+<span class="nc" id="L51">				GitInspectorConverter.downscalePossibleLargeNumericValue(nonNumbers[i]);</span>
+<span class="nc" id="L52">				fail(nonNumbers[i]);</span>
+<span class="pc" id="L53">			} catch (Exception e) {}</span>
+		}
+<span class="fc" id="L55">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

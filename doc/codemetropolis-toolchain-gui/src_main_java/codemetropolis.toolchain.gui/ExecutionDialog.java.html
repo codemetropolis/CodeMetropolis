@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExecutionDialog.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui</a> &gt; <span class="el_source">ExecutionDialog.java</span></div><h1>ExecutionDialog.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PipedOutputStream;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.text.DefaultCaret;
+
+import codemetropolis.toolchain.gui.components.CMButton;
+import codemetropolis.toolchain.gui.components.CMTextArea;
+import codemetropolis.toolchain.gui.utils.StreamReaderWorker;
+import codemetropolis.toolchain.gui.utils.Translations;
+
+/**
+ * A dialog window for showing displaying the standard output of the executors.
+ *
+ * @author Adam Bankeszi {@literal &lt;BAAVAGT.SZE&gt;}
+ */
+public class ExecutionDialog extends JDialog {
+
+  private static final long serialVersionUID = 1L;
+
+  private CMTextArea textArea;
+  private CMButton close;
+
+  /**
+   * Creates the dialog window and starts the reader process.
+   *
+   * @param parent The parent frame. Useful in case we might want to turn this into a modal window.
+   * @param out The {@link PipedOutputStream} used for the executors that we need to read.
+   */
+  public ExecutionDialog(JFrame parent, PipedOutputStream out) {
+<span class="nc" id="L39">    super(parent, Translations.t(&quot;gui_exec_title&quot;));</span>
+
+<span class="nc" id="L41">    JPanel panel = createDialogPanel();</span>
+<span class="nc" id="L42">    addTextArea(panel);</span>
+<span class="nc" id="L43">    addCloseButton(panel);</span>
+
+<span class="nc" id="L45">    this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);</span>
+<span class="nc" id="L46">    this.setContentPane(panel);</span>
+<span class="nc" id="L47">    this.pack();</span>
+<span class="nc" id="L48">    this.setLocationRelativeTo(null);</span>
+
+<span class="nc" id="L50">    startReaderThread(out);</span>
+<span class="nc" id="L51">  }</span>
+
+  /**
+   * Creates the base panel for this dialog.
+   *
+   * @return The assembled panel.
+   */
+  private JPanel createDialogPanel() {
+<span class="nc" id="L59">    JPanel panel = new JPanel(null);</span>
+<span class="nc" id="L60">    panel.setLayout(null);</span>
+<span class="nc" id="L61">    panel.setBounds(0, 0, 400, 300);</span>
+
+<span class="nc" id="L63">    Dimension size = new Dimension(400, 300);</span>
+<span class="nc" id="L64">    panel.setMinimumSize(size);</span>
+<span class="nc" id="L65">    panel.setPreferredSize(size);</span>
+<span class="nc" id="L66">    panel.setMaximumSize(size);</span>
+
+<span class="nc" id="L68">    return panel;</span>
+  }
+
+  /**
+   * Creates and adds an uneditable {@link CMTextArea} into which the executors' outputs will be fed.
+   *
+   * @param panel The dialog panel.
+   */
+  private void addTextArea(JPanel panel) {
+<span class="nc" id="L77">    textArea = new CMTextArea();</span>
+<span class="nc" id="L78">    textArea.setEditable(false);</span>
+
+    // Automatically scroll to the bottom
+<span class="nc" id="L81">    DefaultCaret caret = (DefaultCaret) textArea.getCaret();</span>
+<span class="nc" id="L82">    caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);</span>
+
+<span class="nc" id="L84">    JScrollPane pane = new JScrollPane(textArea);</span>
+<span class="nc" id="L85">    pane.setBounds(10, 10, 380, 240);</span>
+
+<span class="nc" id="L87">    panel.add(pane);</span>
+<span class="nc" id="L88">  }</span>
+
+  /**
+   * Creates and adds a close button for this dialog that is disabled by default. It will be enabled when the world
+   * generation is finished.
+   *
+   * @param panel The dialog panel.
+   */
+  private void addCloseButton(JPanel panel) {
+<span class="nc" id="L97">    close = new CMButton(Translations.t(&quot;gui_b_close&quot;), 140, 260, 120, 30);</span>
+<span class="nc" id="L98">    close.setEnabled(false);</span>
+<span class="nc" id="L99">    close.addActionListener(new ActionListener() {</span>
+      @Override
+      public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L102">        setVisible(false);</span>
+<span class="nc" id="L103">      }</span>
+    });
+
+<span class="nc" id="L106">    panel.add(close);</span>
+<span class="nc" id="L107">  }</span>
+
+  /**
+   * Starts a {@link javax.swing.SwingWorker} that will read from the specified {@link PipedOutputStream} by feeding it
+   * into a {@link java.io.PipedInputStream}. It appends the lines it reads to the textArea on the dialog frame.
+   *
+   * @param out The {@link PipedOutputStream} used by the executors.
+   */
+  private void startReaderThread(PipedOutputStream out) {
+    try {
+<span class="nc" id="L117">      StreamReaderWorker worker = new StreamReaderWorker(close, textArea, out);</span>
+<span class="nc" id="L118">      worker.execute();</span>
+<span class="nc" id="L119">    } catch (IOException e) {</span>
+      // Can't really do anything about this
+<span class="nc" id="L121">      e.printStackTrace();</span>
+<span class="nc" id="L122">    }</span>
+<span class="nc" id="L123">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

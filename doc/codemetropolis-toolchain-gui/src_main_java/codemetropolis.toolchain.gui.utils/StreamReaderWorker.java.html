@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StreamReaderWorker.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.utils</a> &gt; <span class="el_source">StreamReaderWorker.java</span></div><h1>StreamReaderWorker.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.utils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
+
+/**
+ * {@link SwingWorker} subclass that reads from a specified {@link PipedOutputStream} and feeds it into a
+ * {@link JTextArea}.
+ *
+ * @author Adam Bankeszi {@literal &lt;BAAVAGT.SZE&gt;}
+ */
+public class StreamReaderWorker extends SwingWorker&lt;Void, Integer&gt; {
+
+  private JButton close;
+  private JTextArea textArea;
+  private PipedInputStream in;
+
+  /**
+   * Instantiates the worker.
+   *
+   * @param close A {@link JButton} that will be enabled when the stream closes.
+   * @param textArea The {@link JTextArea} the stream will be fed into.
+   * @param out The {@link PipedOutputStream} the data will be read from by piping it into a {@link PipedInputStream}.
+   * @throws IOException if any I/O error occurs.
+   */
+<span class="nc" id="L33">  public StreamReaderWorker(JButton close, JTextArea textArea, PipedOutputStream out) throws IOException {</span>
+<span class="nc" id="L34">    this.close = close;</span>
+<span class="nc" id="L35">    this.textArea = textArea;</span>
+<span class="nc" id="L36">    this.in = new PipedInputStream(out);</span>
+<span class="nc" id="L37">  }</span>
+
+  @Override
+  protected Void doInBackground() throws Exception {
+    String line;
+<span class="nc" id="L42">    BufferedReader reader = new BufferedReader(new InputStreamReader(in));</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">    while ((line = reader.readLine()) != null) {</span>
+<span class="nc" id="L44">      textArea.append(line);</span>
+<span class="nc" id="L45">      textArea.append(&quot;\n&quot;);</span>
+    }
+
+<span class="nc" id="L48">    reader.close();</span>
+<span class="nc" id="L49">    in.close();</span>
+<span class="nc" id="L50">    return null;</span>
+  }
+
+  @Override
+  protected void done() {
+<span class="nc" id="L55">    close.setEnabled(true);</span>
+<span class="nc" id="L56">  };</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

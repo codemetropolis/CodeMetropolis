@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TransferHelper.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.utils</a> &gt; <span class="el_source">TransferHelper.java</span></div><h1>TransferHelper.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.utils;
+
+import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.Point;
+import java.io.IOException;
+import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.TransferHandler;
+
+import codemetropolis.toolchain.gui.MappingFileEditorDialog;
+import codemetropolis.toolchain.gui.MappingFileEditorDialog.AssignResult;
+import codemetropolis.toolchain.gui.conversions.*;
+
+/**
+ * This class is used to handle the transfer of
+ * a Transferable to and from Swing components.
+ *
+ * @author Tamas Keri {@literal &lt;KETWAAT.SZE&gt;}
+ * @author Viktor Meszaros {@literal &lt;MEVXAAT.SZE&gt;}
+ */
+public class TransferHelper extends TransferHandler {
+
+	private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L30">    public TransferHelper() {</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Checking dropping available
+     *
+     * @param obj dragged object
+     * @param target the target table
+     * @param row row of target table
+     * @param col column of target table
+     * @return boolean available dropping
+     */
+    public boolean typeChecker (Object obj, JTable target, int row, int col) {
+<span class="fc" id="L43">    	int currCol = col -1;</span>
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">    	if (col == 0) {	return false; }</span>
+
+<span class="fc" id="L47">    	Object value = target.getModel().getValueAt(row, currCol);</span>
+<span class="fc" id="L48">    	String dragValue = obj.toString();</span>
+<span class="fc" id="L49">    	String dropValue = value.toString();</span>
+
+<span class="fc" id="L51">    	JTable currGardenTable = MappingFileEditorDialog.getGardenTable();</span>
+<span class="fc" id="L52">    	JTable currFloorTable = MappingFileEditorDialog.getFloorTable();</span>
+<span class="fc" id="L53">    	JTable currCellarTable = MappingFileEditorDialog.getCellarTable();</span>
+
+<span class="fc" id="L55">    	List&lt;Conversion&gt; conversionList = MappingFileEditorDialog.gardenConversion;</span>
+
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">    	if (target == currGardenTable) {</span>
+<span class="nc" id="L58">    		conversionList = MappingFileEditorDialog.gardenConversion;</span>
+    	}
+
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">    	if (target == currFloorTable) {</span>
+<span class="nc" id="L62">    		conversionList = MappingFileEditorDialog.floorConversion;</span>
+    	}
+
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">		if (target == currCellarTable) {</span>
+<span class="nc" id="L66">			conversionList = MappingFileEditorDialog.cellarConversion;</span>
+		}
+
+<span class="fc" id="L69">    	dragValue = dragValue.split(&quot;: &quot;)[1];</span>
+<span class="fc" id="L70">    	dropValue = dropValue.split(&quot;: &quot;)[1];</span>
+    	
+<span class="fc" id="L72">    	AssignResult cell = MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">    	if(cell == null) {</span>
+    		//We are trying to drag a resource... specify its type.
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    		if(dragValue.matches(&quot;[0-9]+&quot;)) dragValue = &quot;int&quot;;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    		else if(dragValue.matches(&quot;[0-9]+.[0-9]+&quot;)) dragValue = &quot;float&quot;;</span>
+    		else{
+<span class="nc" id="L78">    			dragValue = &quot;string&quot;;</span>
+    		}
+<span class="nc" id="L80">    		cell = MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(dropValue).get(dragValue);</span>
+    	}
+    	    	
+<span class="pc bpc" id="L83" title="5 of 7 branches missed.">    	switch (cell) {</span>
+    	case CANNOT_ASSIGN:
+<span class="fc" id="L85">    		return false;</span>
+
+    	case NO_CONVERSION:
+<span class="fc" id="L88">    		conversionList.add(row, new EmptyConversion());</span>
+<span class="fc" id="L89">    		return true;</span>
+
+    	case TO_INT:
+<span class="nc" id="L92">    		conversionList.add(row, new ToIntConversion());</span>
+<span class="nc" id="L93">    		return true;</span>
+
+    	case TO_DOUBLE:
+<span class="nc" id="L96">    		conversionList.add(row, new ToDoubleConversion());</span>
+<span class="nc" id="L97">    		return true;</span>
+
+    	case NORMALIZE:
+<span class="nc" id="L100">    		conversionList.add(row, new NormalizeConversion());</span>
+<span class="nc" id="L101">    		return true;</span>
+
+    	case QUANTIZATON:
+<span class="nc" id="L104">    		conversionList.add(row, new QuantizationConversion());</span>
+<span class="nc" id="L105">    		return true;</span>
+
+    	default:
+<span class="nc" id="L108">    		return true;</span>
+    	}
+    }
+
+    @Override
+    public int getSourceActions(JComponent c) {
+<span class="nc" id="L114">        return MOVE;</span>
+    }
+
+    @Override
+    protected void exportDone(JComponent source, Transferable data, int action) {
+<span class="nc" id="L119">    }</span>
+
+    @Override
+    public boolean canImport(TransferSupport support) {
+        // Reject the import by default...
+<span class="nc" id="L124">        boolean canImport = false;</span>
+        // Can only import into another JTable
+<span class="nc" id="L126">        Component comp = support.getComponent();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (comp instanceof JTable) {</span>
+<span class="nc" id="L128">        	JTable target = (JTable) comp;</span>
+<span class="nc" id="L129">        	DropLocation dl = support.getDropLocation();</span>
+<span class="nc" id="L130">            Point dp = dl.getDropPoint();</span>
+<span class="nc" id="L131">            int dropCol = target.columnAtPoint(dp);</span>
+<span class="nc" id="L132">            int dropRow = target.rowAtPoint(dp);</span>
+
+            try {
+                // Get the Transferable, we need to check
+                // the constraints
+<span class="nc" id="L137">                Transferable t = support.getTransferable();</span>
+<span class="nc" id="L138">                Object obj = t.getTransferData(DataFlavor.stringFlavor);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">                if (obj != null) {</span>
+<span class="nc" id="L140">                	canImport = typeChecker(obj, target, dropRow, dropCol);</span>
+                }
+<span class="nc" id="L142">            } catch (UnsupportedFlavorException | IOException ex) {</span>
+<span class="nc" id="L143">                ex.printStackTrace();</span>
+            }
+        }
+<span class="nc" id="L146">        return canImport;</span>
+    }
+
+    @Override
+    public boolean importData(TransferSupport support) {
+        // Import failed for some reason...
+<span class="nc" id="L152">        boolean imported = false;</span>
+        // Only import into JTables...
+<span class="nc" id="L154">        Component comp = support.getComponent();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (comp instanceof JTable) {</span>
+<span class="nc" id="L156">            JTable target = (JTable) comp;</span>
+            // Need to know where we are importing to...
+<span class="nc" id="L158">            DropLocation dl = support.getDropLocation();</span>
+<span class="nc" id="L159">            Point dp = dl.getDropPoint();</span>
+<span class="nc" id="L160">            int dropCol = target.columnAtPoint(dp);</span>
+<span class="nc" id="L161">            int dropRow = target.rowAtPoint(dp);</span>
+            try {
+                // Get the Transferable at the heart of it all
+<span class="nc" id="L164">                Transferable t = support.getTransferable();</span>
+<span class="nc" id="L165">                Object obj = t.getTransferData(DataFlavor.stringFlavor);</span>
+
+<span class="nc" id="L167">                target.setValueAt(obj, dropRow, dropCol);</span>
+
+<span class="nc" id="L169">                imported = true;</span>
+<span class="nc" id="L170">            } catch (UnsupportedFlavorException | IOException ex) {</span>
+<span class="nc" id="L171">                ex.printStackTrace();</span>
+            }
+        }
+<span class="nc" id="L174">        return imported;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

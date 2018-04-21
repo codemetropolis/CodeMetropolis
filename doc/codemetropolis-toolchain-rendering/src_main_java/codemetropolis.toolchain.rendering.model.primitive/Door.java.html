@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Door.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.primitive</a> &gt; <span class="el_source">Door.java</span></div><h1>Door.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package codemetropolis.toolchain.rendering.model.primitive;</span>
+
+import java.io.File;
+
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+
+public class Door implements Primitive {
+	
+<span class="nc" id="L10">	public enum Orientation {</span>
+<span class="nc" id="L11">		NORTH(1),</span>
+<span class="nc" id="L12">		SOUTH(3),</span>
+<span class="nc" id="L13">		WEST(0),</span>
+<span class="nc" id="L14">		EAST(2);</span>
+		
+		private final int value;
+		
+<span class="nc" id="L18">		Orientation(int v) {</span>
+<span class="nc" id="L19">			value = v;</span>
+<span class="nc" id="L20">		}</span>
+		
+		public int getValue() {
+<span class="nc" id="L23">			return value;</span>
+		}
+	}
+	
+	private Point position;
+	private Orientation orientation;
+
+	public Door(int x, int y, int z, Orientation orientation) {
+<span class="nc" id="L31">		super();</span>
+<span class="nc" id="L32">		this.position = new Point(x, y, z);</span>
+<span class="nc" id="L33">		this.orientation = orientation;</span>
+<span class="nc" id="L34">	}</span>
+	
+	@Override
+	public int toCSVFile(File directory) {
+<span class="nc" id="L38">		new Boxel(new BasicBlock((short) 64, orientation.getValue()), position).toCSVFile(directory);</span>
+<span class="nc" id="L39">		new Boxel(new BasicBlock((short) 64, 8), new Point(position.getX(), position.getY() + 1, position.getZ())).toCSVFile(directory);</span>
+<span class="nc" id="L40">		return 2;</span>
+	}
+	@Override
+	public int getNumberOfBlocks() {
+<span class="nc" id="L44">		return 2;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

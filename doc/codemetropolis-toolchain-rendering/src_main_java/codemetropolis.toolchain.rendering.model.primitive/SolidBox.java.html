@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SolidBox.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.primitive</a> &gt; <span class="el_source">SolidBox.java</span></div><h1>SolidBox.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model.primitive;
+
+import java.io.File;
+
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.Paintable;
+import codemetropolis.toolchain.rendering.model.pattern.Pattern;
+import codemetropolis.toolchain.rendering.util.Orientation;
+
+public class SolidBox extends Paintable implements Primitive {
+
+	public Point basePoint;
+	public Point size;
+	public Orientation orientation;
+	
+	public SolidBox(Point basePoint, Point size, Pattern fill, Pattern stroke, Orientation orientation) {
+<span class="nc" id="L18">		super(fill, stroke);</span>
+<span class="nc" id="L19">		this.basePoint = basePoint;</span>
+<span class="nc" id="L20">		this.size = size;</span>
+<span class="nc" id="L21">		this.orientation = orientation;</span>
+<span class="nc" id="L22">	}</span>
+	
+	private Point flipPattern(Point original, Point size) {
+<span class="nc bnc" id="L25" title="All 7 branches missed.">		switch ( orientation ) {</span>
+			case NearX:
+<span class="nc" id="L27">				return original;</span>
+			case NearY:
+<span class="nc" id="L29">				return new Point( original.getY(), original.getX(), original.getZ() );</span>
+			case NearZ:
+<span class="nc" id="L31">				return new Point( original.getZ(), original.getY(), original.getX() );</span>
+			case FarX:
+<span class="nc" id="L33">				return new Point( ( size.getX() - 1 ) - ( original.getX() % size.getX() ), original.getY(), original.getZ() );</span>
+			case FarY:
+<span class="nc" id="L35">				return new Point( ( size.getY() - 1 ) - ( original.getY() % size.getY() ), original.getX(), original.getZ() );</span>
+			case FarZ:
+<span class="nc" id="L37">				return new Point( ( size.getZ() - 1 ) - ( original.getZ() % size.getZ() ), original.getY(), original.getX() );</span>
+			default:
+<span class="nc" id="L39">				return null;</span>
+		}
+	}
+	
+	public int toCSVFile(File directory) {
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		for ( int x = 0; x &lt; size.getX(); x++ ) {</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">			for ( int y = 0; y &lt; size.getY(); y++ ) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">				for ( int z = 0; z &lt; size.getZ(); z++ ) {</span>
+<span class="nc bnc" id="L47" title="All 8 branches missed.">					if ( (( x == 0 || x == size.getX() - 1 ) &amp;&amp; ( y == 0 || y == size.getY() - 1 )) ||</span>
+<span class="nc bnc" id="L48" title="All 8 branches missed.">					     (( x == 0 || x == size.getX() - 1 ) &amp;&amp; ( z == 0 || z == size.getZ() - 1 )) ||</span>
+<span class="nc bnc" id="L49" title="All 8 branches missed.">					     (( y == 0 || y == size.getY() - 1 ) &amp;&amp; ( z == 0 || z == size.getZ() - 1 )) )</span>
+					{
+<span class="nc" id="L51">						new Boxel(</span>
+<span class="nc" id="L52">							new BasicBlock( stroke.applyTo( new Point( x, y, z ), this::flipPattern ) ),</span>
+<span class="nc" id="L53">							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z ))</span>
+<span class="nc" id="L54">						.toCSVFile(directory);</span>
+<span class="nc" id="L55">					} else {</span>
+<span class="nc" id="L56">						new Boxel(</span>
+<span class="nc" id="L57">							new BasicBlock( fill.applyTo( new Point( x, y, z ), this::flipPattern ) ),</span>
+<span class="nc" id="L58">							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z ))</span>
+<span class="nc" id="L59">						.toCSVFile(directory);</span>
+					}
+				}
+			}
+		}
+<span class="nc" id="L64">		return getNumberOfBlocks();</span>
+	}
+
+	public Point getBasePoint() {
+<span class="nc" id="L68">		return basePoint;</span>
+	}
+
+	public Point getSize() {
+<span class="nc" id="L72">		return size;</span>
+	}
+
+	public Orientation getOrientation() {
+<span class="nc" id="L76">		return orientation;</span>
+	}
+
+	public int getNumberOfBlocks() {
+<span class="nc" id="L80">		return size.getX() * size.getY() * size.getZ();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

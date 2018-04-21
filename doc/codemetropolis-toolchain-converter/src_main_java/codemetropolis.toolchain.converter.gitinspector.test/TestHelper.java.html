@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestHelper.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector.test</a> &gt; <span class="el_source">TestHelper.java</span></div><h1>TestHelper.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector.test;
+
+import java.util.List;
+import java.util.Map;
+
+import org.w3c.dom.Document;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
+
+/**
+*
+* @author Zakor Gyula {@literal &lt;ZAGPAAG.SZE&gt;}
+*
+*/
+
+<span class="nc" id="L18">public class TestHelper {</span>
+<span class="fc" id="L19">    private static String XML_SRC_PATH = &quot;src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\GitInspectorOutput.xml&quot;;</span>
+
+	public static boolean equals(CdfProperty p1, CdfProperty p2) {
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">		return p1.getName().equals(p2.getName()) &amp;&amp;</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">			p1.getValue().equals(p2.getValue()) &amp;&amp;</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">			p1.getType().equals(p2.getType());</span>
+	}
+
+	public static boolean equals(CdfElement e1, CdfElement e2) {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		boolean equals = e1.getName().equals(e2.getName()) &amp;&amp;</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">						e1.getType().equals(e2.getType());</span>
+
+<span class="fc" id="L31">		List&lt;CdfProperty&gt; p1 = e1.getProperties();</span>
+<span class="fc" id="L32">		List&lt;CdfProperty&gt; p2 = e2.getProperties();</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		for (int i = 0; i &lt; Math.min(p1.size(), p2.size()); ++i) {</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">			equals = equals &amp;&amp; equals(p1.get(i), p2.get(i));</span>
+		}
+
+<span class="fc" id="L37">		List&lt;CdfElement&gt; elements1 = e1.getChildElements();</span>
+<span class="fc" id="L38">		List&lt;CdfElement&gt; elements2 = e2.getChildElements();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		for (int i = 0; i &lt; Math.min(elements1.size(), elements2.size()); ++i) {</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">			equals = equals &amp;&amp; equals(elements1.get(i), elements2.get(i));</span>
+		}
+<span class="fc" id="L42">		return equals;</span>
+	}
+
+	public static GitInspectorConverter newGitInspectorConverter() {
+<span class="fc" id="L46">	       Map&lt;String, String&gt; params = null;</span>
+<span class="fc" id="L47">	       return new GitInspectorConverter(params);</span>
+	}
+
+	public static Document newDocument() throws Exception {
+<span class="fc" id="L51">	    GitInspectorConverter conv = TestHelper.newGitInspectorConverter();</span>
+<span class="fc" id="L52">        Document doc = conv.createDocumentFromSource(XML_SRC_PATH);</span>
+<span class="fc" id="L53">        return doc;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

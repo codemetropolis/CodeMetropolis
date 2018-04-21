@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui;
+
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.IOException;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+/**
+ * Main class for the CodeMetropolis' GUI module. Initializes some globals, like fonts and look-and-feel, and
+ * instaniates the main gui window.
+ *
+ * @author Adam Bankeszi {@literal &lt;BAAVAGT.SZE&gt;}
+ */
+<span class="nc" id="L17">public class Main {</span>
+
+  private static final int TTF = Font.TRUETYPE_FONT;
+  private static final String SOURCE_SANS = &quot;fonts/SourceSansPro-&quot;;
+<span class="nc" id="L21">  private static final String[] FONT_VARIATIONS = { &quot;Black&quot;, &quot;BlackItalic&quot;, &quot;Bold&quot;, &quot;BoldItalic&quot;, &quot;ExtraLight&quot;,</span>
+<span class="nc" id="L22">    &quot;ExtraLightItalic&quot;, &quot;Italic&quot;, &quot;Light&quot;, &quot;LightItalic&quot;, &quot;Regular&quot;, &quot;Semibold&quot;, &quot;SemiboldItalic&quot; };</span>
+
+  /**
+   * The CodeMetropolis GUI application entry point.
+   *
+   * @param args The command line arguments. Since this a GUI application, it is currently unused.
+   */
+  public static void main(String[] args) {
+<span class="nc" id="L30">    setSystemLookAndFeel();</span>
+<span class="nc" id="L31">    loadSourceSansProFonts();</span>
+
+    // Instantiate the GUI
+<span class="nc" id="L34">    GUIController controller = new GUIController();</span>
+<span class="nc" id="L35">    CodeMetropolisGUI gui = new CodeMetropolisGUI(controller);</span>
+<span class="nc" id="L36">    gui.setVisible(true);</span>
+<span class="nc" id="L37">  }</span>
+
+  /**
+   * Attempts to set the lookAndFeel used by the Swing components to be the system's lookAndFeel.
+   */
+  private static final void setSystemLookAndFeel() {
+    try {
+<span class="nc" id="L44">      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L45">    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {</span>
+      // Failed to set system look and feel. Continue regardless.
+    }
+<span class="nc" id="L48">  }</span>
+
+  /**
+   * Attempts to load the SourceSans ttf font files from the classpath.
+   */
+  private static final void loadSourceSansProFonts() {
+    try {
+<span class="nc" id="L55">      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">      for (String variation : FONT_VARIATIONS) {</span>
+<span class="nc" id="L57">        ge.registerFont(Font.createFont(TTF, ClassLoader.getSystemResourceAsStream(SOURCE_SANS + variation + &quot;.ttf&quot;)));</span>
+      }
+<span class="nc" id="L59">    } catch (FontFormatException | IOException e) {</span>
+      // Failed to load font files. Using defaults instead.
+    }
+<span class="nc" id="L62">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

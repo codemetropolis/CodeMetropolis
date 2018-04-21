@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BrowsingHistoryConverterTests.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.browsinghistory.test</a> &gt; <span class="el_source">BrowsingHistoryConverterTests.java</span></div><h1>BrowsingHistoryConverterTests.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.browsinghistory.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.junit.Test;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+import codemetropolis.toolchain.converter.browsinghistory.BrowsingHistoryConverter;
+
+import org.w3c.dom.Document;
+
+<span class="fc" id="L25">public class BrowsingHistoryConverterTests {</span>
+	
+	public static final String NODE_VALUE1 = &quot;43&quot;;
+	public static final String NODE_VALUE2 = &quot;Text43&quot;;
+	public static final String ITEM_NODE = &quot;item&quot;;
+	public static final String TEST_INPUT_FILE = &quot;./src/main/java/codemetropolis/toolchain/converter/browsinghistory/test/testFile2.xml&quot;;
+	public static final String TEST_INPUT_FILE2 = &quot;./src/main/java/codemetropolis/toolchain/converter/browsinghistory/test/testFile3.txt&quot;;
+
+<span class="fc" id="L33">	BrowsingHistoryConverter converter = new BrowsingHistoryConverter(null);</span>
+	
+	
+<span class="fc" id="L36">	DocumentBuilderFactory documentBuilderFactory = null;</span>
+<span class="fc" id="L37">    DocumentBuilder documentBuilder = null;</span>
+<span class="fc" id="L38">    Document document = null;</span>
+	
+	@Test
+	public void testTypeFromNodeValueWithCorrectValue() {
+
+<span class="fc" id="L43">		CdfProperty.Type result = converter.typeFromNodeValue(NODE_VALUE1);</span>
+<span class="fc" id="L44">		CdfProperty.Type expectedType = CdfProperty.Type.INT;</span>
+<span class="fc" id="L45">		assertEquals(result, expectedType);</span>
+		
+<span class="fc" id="L47">	}</span>
+	
+	@Test
+	public void testTypeFromNodeValueWithCorrectValue2() {
+
+<span class="fc" id="L52">		CdfProperty.Type result = converter.typeFromNodeValue(NODE_VALUE2);</span>
+<span class="fc" id="L53">		CdfProperty.Type expectedType = CdfProperty.Type.STRING;</span>
+<span class="fc" id="L54">		assertEquals(result, expectedType);</span>
+		
+<span class="fc" id="L56">	}</span>
+	
+	@Test
+	public void testTypeFromNodeValueWithIncorrectValue() {
+
+<span class="fc" id="L61">		CdfProperty.Type result = converter.typeFromNodeValue(NODE_VALUE1);</span>
+<span class="fc" id="L62">		CdfProperty.Type expectedType = CdfProperty.Type.STRING;</span>
+<span class="fc" id="L63">		assertNotEquals(result, expectedType);</span>
+		
+<span class="fc" id="L65">	}</span>
+	
+	@Test
+	public void testTypeFromNodeValueWithIncorrectValue2() {
+
+<span class="fc" id="L70">		CdfProperty.Type result = converter.typeFromNodeValue(NODE_VALUE2);</span>
+<span class="fc" id="L71">		CdfProperty.Type expectedType = CdfProperty.Type.INT;</span>
+<span class="fc" id="L72">		assertNotEquals(result, expectedType);</span>
+		
+<span class="fc" id="L74">	}</span>
+	
+	@Test
+	public void testAddPropertiesWithCorrectResult() throws Exception {
+		
+<span class="fc" id="L79">		List&lt;CdfProperty&gt; expectedProperties = new ArrayList&lt;CdfProperty&gt;();</span>
+<span class="fc" id="L80">		CdfElement resultElement = new CdfElement(ITEM_NODE, ITEM_NODE);</span>
+
+<span class="fc" id="L82">		documentBuilderFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L83">	    documentBuilder = documentBuilderFactory.newDocumentBuilder();</span>
+<span class="fc" id="L84">		document = documentBuilder.parse(TEST_INPUT_FILE);</span>
+		
+<span class="fc" id="L86">		converter.addProperties(resultElement, document);</span>
+		
+<span class="fc" id="L88">		assertEquals(resultElement.getProperties(), expectedProperties);</span>
+<span class="fc" id="L89">	}</span>
+	
+	@Test
+	public void testCreateElementsRecursivelyWithCheckChildElements() throws Exception {
+
+<span class="fc" id="L94">		documentBuilderFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L95">	    documentBuilder = documentBuilderFactory.newDocumentBuilder();</span>
+<span class="fc" id="L96">		document = documentBuilder.parse(TEST_INPUT_FILE);</span>
+		
+<span class="fc" id="L98">		CdfElement resultElement = converter.createElementsRecursively(document);</span>
+		
+<span class="fc" id="L100">		assertEquals(resultElement.getNumberOfChildren(), 1);</span>
+<span class="fc" id="L101">	}</span>
+	
+	@Test
+	public void testCreateElementsRecursivelyWithCheckChildElements2() throws Exception {
+
+<span class="fc" id="L106">		documentBuilderFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L107">	    documentBuilder = documentBuilderFactory.newDocumentBuilder();</span>
+<span class="fc" id="L108">		document = documentBuilder.parse(TEST_INPUT_FILE);</span>
+		
+<span class="fc" id="L110">		CdfElement resultElement = converter.createElementsRecursively(document);</span>
+		
+<span class="fc" id="L112">		assertEquals(resultElement.getChildElements().get(0).getChildElements().size(), 0);</span>
+<span class="fc" id="L113">	}</span>
+	
+	@Test
+	public void testReadFileWithCorrectFile() throws Exception  {
+<span class="fc" id="L117">		File expectedFile = new File(TEST_INPUT_FILE);</span>
+<span class="fc" id="L118">		File resultFile = converter.readFile(TEST_INPUT_FILE);</span>
+		
+<span class="fc" id="L120">		assertEquals(resultFile, expectedFile);</span>
+<span class="fc" id="L121">	}</span>
+	
+	@Test
+	public void testReadFileWithIncorrectFile() throws Exception  {
+		
+<span class="fc" id="L126">		boolean isThrown = false;</span>
+		
+		try {
+<span class="nc" id="L129">			File resultFile = converter.readFile(TEST_INPUT_FILE2);</span>
+<span class="pc" id="L130">		}catch(Exception e) {</span>
+<span class="fc" id="L131">			isThrown = true;</span>
+		}
+		
+<span class="fc" id="L134">		assertTrue(isThrown);</span>
+<span class="fc" id="L135">	}</span>
+	
+	
+	@Test
+	public void testCreateDocumentFromXmlFileWithCorrectFile() {
+
+<span class="fc" id="L141">		boolean isThrown = false;</span>
+<span class="fc" id="L142">		File file = new File(TEST_INPUT_FILE);</span>
+		
+		try {
+<span class="fc" id="L145">			converter.createDocumentFromXmlFile(file);</span>
+<span class="pc" id="L146">		}catch(Exception e) {</span>
+<span class="nc" id="L147">			isThrown = true;</span>
+		}
+		
+<span class="fc" id="L150">		assertFalse(isThrown);</span>
+<span class="fc" id="L151">	}</span>
+	
+	@Test
+	public void testCreateDocumentFromXmlFileWithCorrectFile2() throws Exception {
+
+<span class="fc" id="L156">		File file = converter.readFile(TEST_INPUT_FILE);</span>
+
+<span class="fc" id="L158">		documentBuilderFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L159">	    documentBuilder = documentBuilderFactory.newDocumentBuilder();</span>
+<span class="fc" id="L160">	    document = documentBuilder.parse(TEST_INPUT_FILE);</span>
+	    
+<span class="fc" id="L162">		Document resultDocument = converter.createDocumentFromXmlFile(file);</span>
+		
+<span class="fc" id="L164">		assertNotEquals(document, resultDocument);</span>
+<span class="fc" id="L165">	}</span>
+	
+	@Test
+	public void testCreateElementsShouldNotThrowException() {
+		
+<span class="fc" id="L170">		boolean isThrown = true;</span>
+		
+		try {
+<span class="fc" id="L173">			CdfTree resultTree = converter.createElements(TEST_INPUT_FILE);</span>
+<span class="fc" id="L174">			isThrown = false;</span>
+<span class="pc" id="L175">		}catch(CodeMetropolisException e) {</span>
+<span class="nc" id="L176">			e.printStackTrace();</span>
+		}
+		
+<span class="fc" id="L179">		assertFalse(isThrown);</span>
+<span class="fc" id="L180">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

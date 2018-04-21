@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GraphConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.sourcemeter</a> &gt; <span class="el_source">GraphConverter.java</span></div><h1>GraphConverter.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.sourcemeter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import graphlib.Attribute;
+import graphlib.Attribute.AttributeIterator;
+import graphlib.AttributeFloat;
+import graphlib.AttributeInt;
+import graphlib.AttributeString;
+import graphlib.Edge.EdgeIterator;
+import graphlib.Edge.EdgeType;
+import graphlib.Edge.eDirectionType;
+import graphlib.Graph;
+import graphlib.Node;
+
+public class GraphConverter extends CdfConverter {
+	
+	public GraphConverter(Map&lt;String, String&gt; params) {
+<span class="nc" id="L25">		super(params);</span>
+<span class="nc" id="L26">	}</span>
+
+	private static final String ROOT_NODE_ID = &quot;L100&quot;;
+	
+	@Override
+	public CdfTree createElements(String graphPath) {
+<span class="nc" id="L32">		Graph graph = new Graph();</span>
+<span class="nc" id="L33">		graph.loadBinary(graphPath);</span>
+<span class="nc" id="L34">		Node root = graph.findNode(ROOT_NODE_ID);</span>
+<span class="nc" id="L35">		CdfElement rootElement = createElementsRecursively(root);</span>
+<span class="nc" id="L36">		return new CdfTree(rootElement);</span>
+	}
+	
+	private CdfElement createElementsRecursively(Node root) {
+<span class="nc" id="L40">		String name = ((AttributeString)root.findAttributeByName(&quot;Name&quot;).next()).getValue();</span>
+<span class="nc" id="L41">		String type = root.getType().getType();</span>
+<span class="nc" id="L42">		CdfElement element = new CdfElement(name, type);</span>
+<span class="nc" id="L43">		element.setSourceId(root.getUID());</span>
+<span class="nc" id="L44">		addProperties(root, element);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">		for(Node child : getChildNodes(root)) {</span>
+<span class="nc" id="L46">			element.addChildElement(createElementsRecursively(child));</span>
+		}
+<span class="nc" id="L48">		return element;</span>
+	}
+
+	private Node[] getChildNodes(Node node) {
+<span class="nc" id="L52">		List&lt;Node&gt; childList = new ArrayList&lt;Node&gt;();</span>
+<span class="nc" id="L53">		EdgeIterator it = node.findOutEdges(new EdgeType(&quot;LogicalTree&quot;, eDirectionType.edtDirectional));</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">		while(it.hasNext()) {</span>
+<span class="nc" id="L55">			Node childNode = it.next().getToNode();</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">			if(!node.getUID().equals(childNode.getUID())) </span>
+<span class="nc" id="L57">				childList.add(childNode);</span>
+		}
+<span class="nc" id="L59">		return childList.toArray(new Node[childList.size()]);</span>
+	}
+	
+	private void addProperties(Node node, CdfElement element) {
+<span class="nc" id="L63">		AttributeIterator attributeIterator = node.getAttributes();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		while(attributeIterator.hasNext()) {</span>
+			Object value;
+			CdfProperty.Type type;
+<span class="nc" id="L67">			Attribute a = attributeIterator.next();</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">			switch(a.getType()) {</span>
+				case atString:
+<span class="nc" id="L70">					value = ((AttributeString)a).getValue();</span>
+<span class="nc" id="L71">					type = CdfProperty.Type.STRING;</span>
+<span class="nc" id="L72">					break;</span>
+				case atInt:
+<span class="nc" id="L74">					value = ((AttributeInt)a).getValue();</span>
+<span class="nc" id="L75">					type = CdfProperty.Type.INT;</span>
+<span class="nc" id="L76">					break;</span>
+				case atFloat:
+<span class="nc" id="L78">					value = ((AttributeFloat)a).getValue();</span>
+<span class="nc" id="L79">					type = CdfProperty.Type.FLOAT;</span>
+<span class="nc" id="L80">					break;</span>
+				default:
+<span class="nc" id="L82">					continue;</span>
+			}
+<span class="nc" id="L84">		    element.addProperty(a.getName(), String.valueOf(value), type);</span>
+		}
+<span class="nc" id="L86">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EmptyBox.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.primitive</a> &gt; <span class="el_source">EmptyBox.java</span></div><h1>EmptyBox.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model.primitive;
+
+import java.io.File;
+import java.util.LinkedList;
+
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.model.pattern.Pattern;
+import codemetropolis.toolchain.rendering.util.Orientation;
+
+public class EmptyBox implements Primitive {
+
+<span class="nc" id="L12">	private LinkedList&lt;SolidBox&gt; sides = new LinkedList&lt;SolidBox&gt;( );</span>
+
+	private Point nearSideWitdth;
+	private Point farSideWitdth;
+	private Point basePoint;
+	private Point size;
+	
+	public EmptyBox(Point basePoint, Point size, Pattern bottomFill, Pattern topFill, Pattern sideFill, Pattern stroke, Point nearSideWitdth, Point farSideWitdth ) {
+<span class="nc" id="L20">		super();</span>
+<span class="nc" id="L21">		this.nearSideWitdth = nearSideWitdth;</span>
+<span class="nc" id="L22">		this.farSideWitdth = farSideWitdth;</span>
+<span class="nc" id="L23">		this.basePoint = basePoint;</span>
+<span class="nc" id="L24">		this.size = size;</span>
+		
+<span class="nc" id="L26">		sides.add(</span>
+<span class="nc" id="L27">				new SolidBox(</span>
+<span class="nc" id="L28">					new Point( basePoint.getX(), basePoint.getY(), basePoint.getZ() ),</span>
+<span class="nc" id="L29">					new Point( nearSideWitdth.getX(), size.getY(), size.getZ() ),</span>
+<span class="nc" id="L30">					sideFill,</span>
+<span class="nc" id="L31">					stroke,</span>
+<span class="nc" id="L32">					Orientation.NearX )</span>
+				);
+<span class="nc" id="L34">		sides.add(</span>
+<span class="nc" id="L35">				new SolidBox(</span>
+<span class="nc" id="L36">					new Point( basePoint.getX() + size.getX()-1, basePoint.getY(), basePoint.getZ() ),</span>
+<span class="nc" id="L37">					new Point( farSideWitdth.getX(), size.getY(), size.getZ() ),</span>
+<span class="nc" id="L38">					sideFill,</span>
+<span class="nc" id="L39">					stroke,</span>
+<span class="nc" id="L40">					Orientation.FarX )</span>
+				);
+
+<span class="nc" id="L43">		sides.add(</span>
+<span class="nc" id="L44">				new SolidBox(</span>
+<span class="nc" id="L45">					new Point( basePoint.getX(), basePoint.getY(), basePoint.getZ() ),</span>
+<span class="nc" id="L46">					new Point( size.getX(), size.getY(), nearSideWitdth.getZ() ),</span>
+<span class="nc" id="L47">					sideFill,</span>
+<span class="nc" id="L48">					stroke,</span>
+<span class="nc" id="L49">					Orientation.NearZ )</span>
+				);
+<span class="nc" id="L51">		sides.add(</span>
+<span class="nc" id="L52">				new SolidBox(</span>
+<span class="nc" id="L53">					new Point( basePoint.getX(), basePoint.getY(), basePoint.getZ() + size.getZ() - 1 ),</span>
+<span class="nc" id="L54">					new Point( size.getX(), size.getY(), farSideWitdth.getZ() ),</span>
+<span class="nc" id="L55">					sideFill,</span>
+<span class="nc" id="L56">					stroke,</span>
+<span class="nc" id="L57">					Orientation.FarZ )</span>
+				);
+
+<span class="nc" id="L60">		sides.add(</span>
+<span class="nc" id="L61">				new SolidBox(</span>
+<span class="nc" id="L62">					new Point( basePoint.getX(), basePoint.getY(), basePoint.getZ() ),</span>
+<span class="nc" id="L63">					new Point( size.getX(), nearSideWitdth.getY(), size.getZ() ),</span>
+<span class="nc" id="L64">					bottomFill,</span>
+<span class="nc" id="L65">					stroke,</span>
+<span class="nc" id="L66">					Orientation.NearY )</span>
+				);
+<span class="nc" id="L68">		sides.add(</span>
+<span class="nc" id="L69">				new SolidBox(</span>
+<span class="nc" id="L70">					new Point( basePoint.getX(), basePoint.getY() + size.getY() - 1, basePoint.getZ() ),</span>
+<span class="nc" id="L71">					new Point( size.getX(), farSideWitdth.getY(), size.getZ() ),</span>
+<span class="nc" id="L72">					topFill,</span>
+<span class="nc" id="L73">					stroke,</span>
+<span class="nc" id="L74">					Orientation.FarY )</span>
+				);
+<span class="nc" id="L76">	}</span>
+	
+	public int toCSVFile(File directory) {
+<span class="nc" id="L79">		int count = 0;</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		for(SolidBox s : sides) {</span>
+<span class="nc" id="L81">			count += s.toCSVFile(directory);</span>
+		}
+<span class="nc" id="L83">		return count;</span>
+	}
+	
+	public Point getNearSideWitdth() {
+<span class="nc" id="L87">		return nearSideWitdth;</span>
+	}
+	public Point getFarSideWitdth() {
+<span class="nc" id="L90">		return farSideWitdth;</span>
+	}
+	public Point getBasePoint() {
+<span class="nc" id="L93">		return basePoint;</span>
+	}
+	public Point getSize() {
+<span class="nc" id="L96">		return size;</span>
+	}
+
+	public int getNumberOfBlocks() {
+<span class="nc" id="L100">		int result = 0;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		for(SolidBox s : sides)</span>
+<span class="nc" id="L102">			result += s.getNumberOfBlocks();</span>
+<span class="nc" id="L103">		return result;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

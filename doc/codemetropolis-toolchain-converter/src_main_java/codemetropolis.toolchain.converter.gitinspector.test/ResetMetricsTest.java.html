@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResetMetricsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector.test</a> &gt; <span class="el_source">ResetMetricsTest.java</span></div><h1>ResetMetricsTest.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
+
+/**
+*
+* @author Zakor Gyula {@literal &lt;ZAGPAAG.SZE&gt;}
+*
+*/
+
+<span class="fc" id="L16">public class ResetMetricsTest {</span>
+
+    @Test
+    public void testResetMetrics() {
+<span class="fc" id="L20">        GitInspectorConverter conv = TestHelper.newGitInspectorConverter();</span>
+<span class="fc" id="L21">        conv.resetMetrics(&quot;kiscica&quot;);</span>
+<span class="fc" id="L22">        CdfElement testAuthor = new CdfElement(&quot;kiscica&quot;, &quot;author&quot;);</span>
+<span class="fc" id="L23">        CdfElement testMetric = new CdfElement(&quot;kiscica&quot;, &quot;floor-metrics&quot;);</span>
+<span class="fc" id="L24">        assertTrue(TestHelper.equals(testAuthor, conv.getAuthorMetrics()));</span>
+<span class="fc" id="L25">        assertTrue(TestHelper.equals(testMetric, conv.getFloorMetrics()));</span>
+<span class="fc" id="L26">        conv.resetMetrics(&quot;kiskutya&quot;);</span>
+<span class="fc" id="L27">        assertFalse(TestHelper.equals(testAuthor, conv.getAuthorMetrics()));</span>
+<span class="fc" id="L28">        assertFalse(TestHelper.equals(testMetric, conv.getFloorMetrics()));</span>
+<span class="fc" id="L29">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TetrisLayout.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout.tetris</a> &gt; <span class="el_source">TetrisLayout.java</span></div><h1>TetrisLayout.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout.tetris;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.cmxml.comparators.BuildableDescendantLevelComparator;
+import codemetropolis.toolchain.commons.cmxml.comparators.BuildableWidthComparator;
+import codemetropolis.toolchain.placing.layout.Layout;
+
+<span class="nc" id="L21">public class TetrisLayout extends Layout {</span>
+	
+	private static final int DEFAULT_SPACE = 3;
+	private static final int GARDEN_SIZE = 6;
+<span class="nc" id="L25">	private int space = DEFAULT_SPACE;</span>
+
+	@Override
+	public void apply(BuildableTree buildables) {
+<span class="nc" id="L29">		List&lt;Buildable&gt; buildableList = buildables.getBuildables();</span>
+<span class="nc" id="L30">		prepareBuildables(buildableList);</span>
+<span class="nc" id="L31">		Map&lt;Buildable, List&lt;Buildable&gt;&gt; floorsByParent = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L32">		List&lt;Buildable&gt; groundsAndGardens = new ArrayList&lt;&gt;();</span>
+		
+<span class="nc bnc" id="L34" title="All 2 branches missed.">		for (Buildable b : buildableList) {</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">			if(b.getParent() != null &amp;&amp; b.getParent().getType() == Type.GARDEN) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">				if(b.getParent().getParent().getType() != Type.GARDEN) {</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">					if(!floorsByParent.containsKey(b.getParent())) {</span>
+<span class="nc" id="L38">						floorsByParent.put(b.getParent(), new ArrayList&lt;Buildable&gt;());</span>
+					}
+<span class="nc" id="L40">					floorsByParent.get(b.getParent()).add(b);</span>
+				}
+<span class="nc" id="L42">			} else {</span>
+<span class="nc" id="L43">				groundsAndGardens.add(b);</span>
+			}
+		}
+		
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		for(List&lt;Buildable&gt; f : floorsByParent.values()) {</span>
+<span class="nc" id="L48">			placeVertical(f);	</span>
+		}
+		
+<span class="nc" id="L51">		Collections.sort(groundsAndGardens, new BuildableDescendantLevelComparator());</span>
+<span class="nc" id="L52">		Collections.reverse(groundsAndGardens);</span>
+<span class="nc" id="L53">		Collection&lt;Buildable&gt; siblings = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L54">		List&lt;Buildable&gt; alreadyPlaced = new ArrayList&lt;&gt;();</span>
+		
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		for( Buildable b : groundsAndGardens) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">			if(!alreadyPlaced.contains(b)) {</span>
+<span class="nc" id="L58">				siblings.add(b);</span>
+<span class="nc" id="L59">				siblings.addAll(b.getSiblings());</span>
+<span class="nc" id="L60">				placeHorizontal(siblings);</span>
+<span class="nc" id="L61">				alreadyPlaced.addAll(siblings);</span>
+<span class="nc" id="L62">				siblings.clear();</span>
+			}
+		}
+<span class="nc" id="L65">	}</span>
+	
+	public Collection&lt;Buildable&gt; prepareBuildables(Collection&lt;Buildable&gt; buildables) {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		for(Buildable b : buildables) {</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">			if(b.getParent() == null) {</span>
+<span class="nc" id="L70">	    		b.setPositionYR(GROUND_LEVEL);</span>
+<span class="nc bnc" id="L71" title="All 4 branches missed.">	    	} else if(b.getType() == Type.GARDEN || b.getType() == Type.GROUND){</span>
+<span class="nc" id="L72">	    		b.setPositionYR(b.getParent().getPositionY() + 1);</span>
+	    	}
+		}
+<span class="nc" id="L75">		return buildables;</span>
+	}
+	
+	public Collection&lt;Buildable&gt; placeHorizontal(Collection&lt;Buildable&gt; buildables) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		if(buildables.isEmpty()) return buildables;</span>
+<span class="nc" id="L80">		buildables = sortByWidthDescending(buildables);</span>
+		
+<span class="nc bnc" id="L82" title="All 4 branches missed.">		if(buildables.iterator().next().getParent() != null &amp;&amp; buildables.iterator().next().getParent().getType() == Type.GARDEN) {</span>
+<span class="nc" id="L83">			space = GARDEN_SIZE;</span>
+<span class="nc" id="L84">		} else {</span>
+<span class="nc" id="L85">			space = DEFAULT_SPACE;</span>
+		}
+		
+<span class="nc" id="L88">		int width = 0;</span>
+<span class="nc" id="L89">		int height = 0;</span>
+<span class="nc" id="L90">		int newX = 0;</span>
+<span class="nc" id="L91">		int newZ = 0;</span>
+		
+<span class="nc" id="L93">		NavigableMap&lt;Integer, Integer&gt; corners = new TreeMap&lt;Integer, Integer&gt;();</span>
+<span class="nc" id="L94">		corners.put(space, space);</span>
+			
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for(Buildable b : buildables) {</span>
+<span class="nc" id="L97">			int bSizeX = b.getSizeX() + space;</span>
+<span class="nc" id="L98">			int bSizeZ = b.getSizeZ() + space;</span>
+<span class="nc" id="L99">			Boolean alreadyPlaced = false;</span>
+			
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			for (Map.Entry&lt;Integer, Integer&gt; entry : corners.entrySet()) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">				if(!alreadyPlaced) {</span>
+<span class="nc" id="L103">				    int cornerX = entry.getKey();</span>
+<span class="nc" id="L104">				    int cornerZ = entry.getValue();</span>
+<span class="nc" id="L105">				    int nextCornerX = cornerX;</span>
+<span class="nc" id="L106">				    int previousCornerX = cornerX;</span>
+<span class="nc" id="L107">				    int previousCornerZ = cornerZ;</span>
+					
+<span class="nc bnc" id="L109" title="All 2 branches missed.">					if(corners.ceilingKey(cornerX + 1) != null) {</span>
+<span class="nc" id="L110">						nextCornerX = corners.ceilingKey(cornerX + 1);</span>
+					}
+					
+<span class="nc bnc" id="L113" title="All 2 branches missed.">					if(corners.floorKey(cornerX - 1) != null) {</span>
+<span class="nc" id="L114">						previousCornerX = corners.floorKey(cornerX - 1);</span>
+<span class="nc" id="L115">						previousCornerZ = corners.get(previousCornerX);</span>
+					}
+					
+					if(
+<span class="nc bnc" id="L119" title="All 2 branches missed.">							cornerZ &lt; previousCornerZ &amp;&amp;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">							Math.abs(nextCornerX - cornerX) &gt;= bSizeX &amp;&amp;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">							Math.abs(height - cornerZ) &gt;= bSizeZ</span>
+					) {
+<span class="nc" id="L123">						newX = cornerX;</span>
+<span class="nc" id="L124">				    	newZ = cornerZ;</span>
+				    	
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				    	for(int i = corners.floorKey(newX) + 1; i &lt; newX + bSizeX; i++) {</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">				    		if(corners.get(i) != null &amp;&amp; corners.get(i) &gt; newZ) {</span>
+<span class="nc" id="L128">				    			newZ = corners.get(i);</span>
+				    		}
+				    	}
+				    	
+<span class="nc bnc" id="L132" title="All 2 branches missed.">				    	if(newZ + b.getSizeZ() &lt;= height)</span>
+<span class="nc" id="L133">				    		alreadyPlaced = true;</span>
+					} 
+				}
+			}
+			
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			if(!alreadyPlaced) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				for (Map.Entry&lt;Integer, Integer&gt; entry : corners.entrySet()) {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">					if(!alreadyPlaced) {</span>
+<span class="nc" id="L141">					    int cornerX = entry.getKey();</span>
+<span class="nc" id="L142">					    int cornerZ = entry.getValue();</span>
+<span class="nc" id="L143">					    int nextCornerX = cornerX;				</span>
+						
+<span class="nc bnc" id="L145" title="All 2 branches missed.">						if(corners.ceilingKey(cornerX + 1) != null) {</span>
+<span class="nc" id="L146">							nextCornerX = corners.ceilingKey(cornerX + 1);</span>
+						}
+					
+<span class="nc bnc" id="L149" title="All 2 branches missed.">						while(</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">								corners.ceilingKey(nextCornerX + 1) != null &amp;&amp;</span>
+<span class="nc" id="L151">								corners.get(corners.ceilingKey(nextCornerX + 1)) &lt;= cornerZ )</span>
+						{
+<span class="nc" id="L153">							nextCornerX = corners.ceilingKey(nextCornerX + 1);</span>
+						}
+						
+<span class="nc bnc" id="L156" title="All 4 branches missed.">						if(Math.abs(nextCornerX - cornerX) &gt;= bSizeX &amp;&amp; Math.abs(height - cornerZ) &gt;= bSizeZ) {</span>
+<span class="nc" id="L157">							newX = cornerX;</span>
+<span class="nc" id="L158">					    	newZ = cornerZ;</span>
+					    	
+<span class="nc bnc" id="L160" title="All 2 branches missed.">					    	for(int i = corners.floorKey(newX) + 1; i &lt; newX + bSizeX; i++) {</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">					    		if(corners.get(i) != null &amp;&amp; corners.get(i) &gt; newZ) {</span>
+<span class="nc" id="L162">					    			newZ = corners.get(i);</span>
+					    		}
+					    	}
+					    	
+<span class="nc bnc" id="L166" title="All 2 branches missed.">					    	if(newZ + b.getSizeZ() &lt;= height)</span>
+<span class="nc" id="L167">					    		alreadyPlaced = true;</span>
+						}
+					}
+				}
+			}
+			
+<span class="nc bnc" id="L173" title="All 2 branches missed.">			if(!alreadyPlaced) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">				if(width &gt; height) {</span>
+<span class="nc" id="L175">			    	newX = space;</span>
+<span class="nc" id="L176">			    	newZ = height + space;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			    	if(bSizeX &gt; width) width = bSizeX;</span>
+<span class="nc" id="L178">			    	height += bSizeZ;</span>
+<span class="nc" id="L179">			    } else {</span>
+<span class="nc" id="L180">			    	newX = width + space;</span>
+<span class="nc" id="L181">			    	newZ = space;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			    	if(bSizeZ &gt; height) height = bSizeZ;</span>
+<span class="nc" id="L183">			    	width += bSizeX;</span>
+			    }
+			}
+			
+<span class="nc" id="L187">			b.setPositionXR(newX);</span>
+<span class="nc" id="L188">	    	b.setPositionZR(newZ);</span>
+	    	
+	    	// Upper left and lower right
+<span class="nc bnc" id="L191" title="All 4 branches missed.">	    	if(corners.get(newX) == null || corners.get(newX) &lt; newZ + bSizeZ)</span>
+<span class="nc" id="L192">	    		corners.put(newX, newZ + bSizeZ);</span>
+<span class="nc bnc" id="L193" title="All 4 branches missed.">	    	if (corners.get(newX + bSizeX) == null || corners.get(newX + bSizeX) &lt; newZ)</span>
+<span class="nc" id="L194">	    		corners.put(newX + bSizeX , newZ);</span>
+	    	
+<span class="nc" id="L196">	    	Integer lastCornerZ = null;</span>
+	    	
+<span class="nc bnc" id="L198" title="All 2 branches missed.">	    	for(int i = corners.floorKey(newX) + 1; i &lt; newX + bSizeX; i++) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">	    		if(corners.get(i) != null) {</span>
+<span class="nc" id="L200">	    			lastCornerZ = corners.get(i);</span>
+	    		}
+	    	}
+	    	
+<span class="nc bnc" id="L204" title="All 2 branches missed.">	    	for(int i = corners.floorKey(newX) + 1; i &lt; newX + bSizeX; i++) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">	    		if(corners.get(i) != null) {</span>
+<span class="nc" id="L206">	    			corners.remove(i);</span>
+	    		}
+	    	}
+	    	
+<span class="nc bnc" id="L210" title="All 2 branches missed.">	    	if(lastCornerZ != null)</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">	    		if(corners.get(newX + bSizeX) == null)</span>
+<span class="nc" id="L212">	    			corners.put(newX + bSizeX , lastCornerZ);</span>
+		}
+		
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if(buildables.iterator().next().getParent() != null) {</span>
+<span class="nc" id="L216">			Buildable parent = buildables.iterator().next().getParent();</span>
+<span class="nc" id="L217">			parent.setSizeX(width + space);</span>
+<span class="nc" id="L218">			parent.setSizeZ(height + space);</span>
+		}
+		
+<span class="nc" id="L221">		return buildables;</span>
+	}
+
+	public Collection&lt;Buildable&gt; placeVertical(Collection&lt;Buildable&gt; buildables) {
+<span class="nc" id="L225">		buildables = sortByWidthDescending(buildables);</span>
+<span class="nc" id="L226">		List&lt;House&gt; houses = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L227">		List&lt;Buildable&gt; gardens = new ArrayList&lt;&gt;();</span>
+		
+		nextBuildable:
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for(Buildable b : buildables) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			if(b.getType() == Type.GARDEN) {</span>
+<span class="nc" id="L232">				placeVertical(Arrays.asList(b.getChildren()));</span>
+<span class="nc" id="L233">				gardens.add(b);</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			} else if (b.getType() == Type.FLOOR) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">				for(House h : houses) {</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">					if(h.addFloor(b)) {</span>
+<span class="nc" id="L237">						continue nextBuildable;</span>
+					}
+				}
+<span class="nc" id="L240">				House house = new House(MIN_HEIGHT, MAX_HEIGHT);</span>
+<span class="nc" id="L241">				house.addFloor(b);</span>
+<span class="nc" id="L242">				houses.add(house);</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			} else if (b.getType() == Type.CELLAR) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">				for(House h : houses) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">					if(h.addCellar(b)) {</span>
+<span class="nc" id="L246">						continue nextBuildable;</span>
+					}
+				}
+<span class="nc" id="L249">				House house = new House(MIN_HEIGHT, MAX_HEIGHT);</span>
+<span class="nc" id="L250">				house.addCellar(b);</span>
+<span class="nc" id="L251">				houses.add(house);</span>
+			}
+		}
+					
+<span class="nc" id="L255">		List&lt;Object&gt; temp = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L256">		temp.addAll(houses);</span>
+<span class="nc" id="L257">		temp.addAll(gardens);</span>
+<span class="nc" id="L258">		placeHorizontalInGardens(temp);</span>
+		
+<span class="nc" id="L260">		return buildables;</span>
+	}
+	
+	private Collection&lt;Buildable&gt; sortByWidthDescending(Collection&lt;Buildable&gt; buildables) {
+<span class="nc" id="L264">		List&lt;Buildable&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L265">		result.addAll(buildables);</span>
+<span class="nc" id="L266">		Collections.sort(result, new BuildableWidthComparator());</span>
+<span class="nc" id="L267">		Collections.reverse(result);</span>
+<span class="nc" id="L268">		return result;</span>
+	}
+	
+	private void placeHorizontalInGardens(Collection&lt;Object&gt; housesAndGardens) {
+<span class="nc" id="L272">		List&lt;House&gt; houses = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L273">		List&lt;Buildable&gt; objectsToPlace = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L274">		Map&lt;Buildable, Point&gt; realSizes = new HashMap&lt;Buildable, Point&gt;();</span>
+		
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for(Object o : housesAndGardens) {</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if(o.getClass() == House.class) {</span>
+<span class="nc" id="L278">				House h = (House)o;</span>
+<span class="nc" id="L279">				houses.add(h);</span>
+<span class="nc" id="L280">				Buildable bottom = h.getBottom();</span>
+<span class="nc" id="L281">				realSizes.put(bottom, new Point(bottom.getSizeX(), bottom.getSizeY(), bottom.getSizeZ()));</span>
+<span class="nc" id="L282">				bottom.setSizeX(h.getSizeX());</span>
+<span class="nc" id="L283">				bottom.setSizeZ(h.getSizeZ());</span>
+<span class="nc" id="L284">				objectsToPlace.add(bottom);</span>
+<span class="nc" id="L285">			} </span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">			else if(o.getClass() == Buildable.class) {</span>
+<span class="nc" id="L287">				Buildable b = (Buildable)o;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">				if(b.getType() == Type.GARDEN) {</span>
+<span class="nc" id="L289">					objectsToPlace.add(b);</span>
+				}
+			}
+		}
+		
+<span class="nc" id="L294">		placeHorizontal(objectsToPlace);</span>
+		
+<span class="nc bnc" id="L296" title="All 2 branches missed.">		for(House h : houses) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			for(Buildable b : h.getFloorsAndCellars()) {</span>
+<span class="nc" id="L298">				placeFloorHorizontal(b, h.getBottom());</span>
+			}
+<span class="nc" id="L300">			h.getBottom().setSizeX(realSizes.get(h.getBottom()).getX());</span>
+<span class="nc" id="L301">			h.getBottom().setSizeZ(realSizes.get(h.getBottom()).getZ());</span>
+<span class="nc" id="L302">			placeFloorHorizontal(h.getBottom(), h.getTop());</span>
+		}	
+<span class="nc" id="L304">	}</span>
+	
+	private void placeFloorHorizontal(Buildable floor, Buildable bottom) {
+<span class="nc" id="L307">		floor.setPositionXR(bottom.getPositionX() + bottom.getSizeX() / 2 - floor.getSizeX() / 2);</span>
+<span class="nc" id="L308">    	floor.setPositionZR(bottom.getPositionZ() + bottom.getSizeZ() / 2 - floor.getSizeZ() / 2);</span>
+<span class="nc" id="L309">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ConverterExecutor.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter</a> &gt; <span class="el_source">ConverterExecutor.java</span></div><h1>ConverterExecutor.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package codemetropolis.toolchain.converter;</span>
+
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.cdf.converter.ConverterEvent;
+import codemetropolis.toolchain.commons.cdf.converter.ConverterEventListener;
+import codemetropolis.toolchain.commons.cdf.exceptions.CdfWriterException;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+import codemetropolis.toolchain.commons.executor.AbstractExecutor;
+import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.converter.control.ConverterLoader;
+
+<span class="nc" id="L14">public class ConverterExecutor extends AbstractExecutor {</span>
+	
+	@Override
+	public boolean execute(ExecutorArgs args) {
+<span class="nc" id="L18">		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;</span>
+		
+<span class="nc" id="L20">		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams());</span>
+<span class="nc" id="L21">		converter.addConverterEventListener(new ConverterEventListener() {</span>
+			
+			@Override
+			public void onConverterEvent(ConverterEvent event) {
+<span class="nc" id="L25">				print(event.getMessage());</span>
+<span class="nc" id="L26">			}</span>
+			
+		});
+		
+<span class="nc" id="L30">		print(Resources.get(&quot;converting_to_cdf&quot;));</span>
+<span class="nc" id="L31">		CdfTree cdfTree = null;</span>
+		try {
+<span class="nc" id="L33">			cdfTree = converter.createElements(converterArgs.getSource());</span>
+<span class="nc" id="L34">		} catch (CodeMetropolisException e) {</span>
+<span class="nc" id="L35">			printError(e, e.getMessage());</span>
+<span class="nc" id="L36">			return false;</span>
+<span class="nc" id="L37">		} catch (Exception e) {</span>
+<span class="nc" id="L38">			printError(e, Resources.get(&quot;converter_error&quot;));</span>
+<span class="nc" id="L39">			return false;</span>
+		}
+<span class="nc" id="L41">		print(Resources.get(&quot;converting_to_cdf_done&quot;));</span>
+		
+<span class="nc" id="L43">		print(Resources.get(&quot;printing_cdf&quot;));</span>
+		try {
+<span class="nc" id="L45">			cdfTree.writeToFile(converterArgs.getOutputFile());</span>
+<span class="nc" id="L46">		} catch (CdfWriterException e) {</span>
+<span class="nc" id="L47">			printError(e, Resources.get(&quot;cdf_writer_error&quot;));</span>
+<span class="nc" id="L48">			return false;</span>
+		}
+<span class="nc" id="L50">		print(Resources.get(&quot;printing_cdf_done&quot;));</span>
+		
+<span class="nc" id="L52">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>
