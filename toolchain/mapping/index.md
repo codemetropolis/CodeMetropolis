@@ -59,10 +59,12 @@ The bindings are used to tell the mapping component which properties of the sour
 | flower-ratio        | float (0 to 1)   | garden        | quantity of flowers                                                    |
 | tree-ratio          | float (0 to 1)   | garden        | quantity of trees                                                      |
 | mushroom-ratio      | float (0 to 1)   | garden        | quantity of mushrooms                                                  |
-| monster-count       | integer (0 to 4) | garden        | quantity of monster spawners to place
-| monster-label       | string           | garden        | signpost label for monster spawners
+| monster-count**       | integer (0 to 4) | garden        | quantity of monster spawners to place
+| monster-label**       | string           | garden        | signpost label for monster spawners
 
 **\*supported values:** stone, cobblestone, mossy_stone, sandstone, obsidian, wood, dark_wood, birch_wood, planks, dark_planks, metal, dirt, sand, red_sand, brick, stone_brick, dark_brick, glass, gold, diamond
+
+**\*\*** the monster spawners will be placed along the sides, near the buildings' entrances.
 
 Sometimes a source value doesn't fit the world element we use as target. In this case, we use conversions. At the moment, the following conversions are available:
 
