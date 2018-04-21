@@ -48,12 +48,18 @@ public class PackLayout extends Layout {
 			String id = b.getAttributeValue(LINKING_ATTRIBUTE_TARGET);
 			
 			if (id == null) {
+				buildables.getBuildables().remove(b);
+				b.addAttribute(new Attribute("standalone", ""));
+				b.addAttribute(new Attribute("orientation", ""));
 				continue;
 			}
 			
 			Buildable target = buildables.getBuildable(id);
 			
 			if (target == null) {
+				buildables.getBuildables().remove(b);
+				b.addAttribute(new Attribute("standalone", ""));
+				b.addAttribute(new Attribute("orientation", ""));
 				continue;
 			}
 			

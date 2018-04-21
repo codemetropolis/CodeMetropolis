@@ -37,13 +37,7 @@ public class Tunnel extends Linking {
 	}
 
 	public int calculateHeight(Buildable buildable) {
-		int height = buildable.getPositionY() - level;
-		for(Buildable b : buildable.getChildren()) {
-			if(b.getType() == Buildable.Type.CELLAR && height > b.getPositionY() - level) {
-				height = b.getPositionY() - level;
-			}
-		}
-		return height;
+		return buildable.getPositionY() - level + this.height;
 	}
 	
 	public Point calculateStepPosition(boolean isTarget) {
