@@ -13,9 +13,9 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	private String source;
 	private String outputFile;
 	private Map<String, String> params;
-	
+
 	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
-		this(type, source, outputFile, new HashMap<String, String>());
+		this(type, source, outputFile, null);
 	}
 	
 	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map<String, String> params) {

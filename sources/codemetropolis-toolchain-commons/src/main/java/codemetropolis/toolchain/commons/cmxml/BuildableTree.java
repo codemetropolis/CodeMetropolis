@@ -113,7 +113,9 @@ public class BuildableTree {
 			Document doc = dBuilder.parse(xmlFile);
 			doc.getDocumentElement().normalize();
 			NodeList nList = doc.getElementsByTagName("buildable");
-	 
+
+
+
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -169,7 +171,6 @@ public class BuildableTree {
 							);
 					
 					NodeList attributeNodes = eElement.getElementsByTagName("attributes").item(0).getChildNodes();
-					
 					for(int i = 1; attributeNodes.item(i) != null; i += 2) {
 						b.addAttribute(
 								((Element)attributeNodes.item(i)).getAttribute("name"),
