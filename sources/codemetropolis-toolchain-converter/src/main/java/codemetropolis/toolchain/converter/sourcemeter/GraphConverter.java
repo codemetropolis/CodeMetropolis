@@ -1,13 +1,19 @@
 package codemetropolis.toolchain.converter.sourcemeter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.relations.Relations;
 import graphlib.Attribute;
 import graphlib.Attribute.AttributeIterator;
@@ -35,8 +41,13 @@ public class GraphConverter extends CdfConverter {
 		if (getParameter("relationFile") != null) {
 			isRelationsNeeded = true;
 			relations = new Relations(getParameter("relationFile"));
-			relations.parseRelationFile();
-			System.out.println(relations.toString());
+
+			try {
+				relations.parseRelationFile();
+			} catch (Exception e) {
+				System.err.println("Error during parse relation file: " + getParameter("relationFile") + " (File may not exist)");
+			}
+
 		}
 
 		Graph graph = new Graph();
@@ -50,31 +61,24 @@ public class GraphConverter extends CdfConverter {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
 		CdfElement element = new CdfElement(name, type);
-		if ("Class".equals(type) && relations != null) {
+		if ("Class".equals(type) && isRelationsNeeded) {
 			// if the element is a class, check for subclasses from relationFile
-			System.out.println("I find a \"class\" id: " + root.getUID());
 
 			if (relations.getRelationsMap().get(root.getUID()) != null) {
 				String classId = relations.getRelationsMap().get(root.getUID()).toString();
 				element.addProperty("ChildClasses", classId, CdfProperty.Type.STRING);
-				System.out.println(element.getProperty("ChildClasses"));
 			} else  {
 				element.addProperty("ChildClasses", "", CdfProperty.Type.STRING);
 			}
 			
 			// check for attributes
 			if (relations.getAttributesMap().get(root.getUID()) != null) {
-				System.out.println("hello " + relations.getAttributesMap());
 				String classId = relations.getAttributesMap().get(root.getUID()).toString();
 				element.addProperty("AttributeClasses", classId, CdfProperty.Type.STRING);
-				System.out.println(element.getProperty("AttributeClasses"));
 
 			} else  {
 				element.addProperty("AttributeClasses", "", CdfProperty.Type.STRING);
 			}
-
-		} else {
-			System.out.println("Not a \"class\" id: " + root.getUID());
 		}
 		element.setSourceId(root.getUID());
 		addProperties(root, element);

@@ -62,12 +62,7 @@ public class MappingController {
 			Element rootElement = (Element) doc.getChildNodes().item(0);
 			Buildable container = new Buildable(UUID.randomUUID().toString(), "", Type.CONTAINER);
 
-			System.out.println("JO LESZ EZ: " + rootElement.getAttribute("name"));
-
 			Buildable actualBuildable = createBuildable(rootElement);
-			if (actualBuildable != null) {
-				System.out.println("PLS: " + actualBuildable.getId());
-			}
 			if(actualBuildable == null){
 				attributesByBuildables.put(container, new HashMap<>());
 				setChildren(container, rootElement);
@@ -91,15 +86,6 @@ public class MappingController {
 		for(Map.Entry<Buildable, Map<String, String>> entry : attributesByBuildables.entrySet()) {
 			
 			Buildable b = entry.getKey();
-
-			System.out.println("PLS2: " + b.getId());
-			System.out.println("Ennyi kolyke van2: " + b.getChildren().length);
-
-			if (b.getChildren().length == 1) {
-				Buildable c = b.getChildren()[0];
-				System.out.println(c.getId());
-			}
-
 			Map<String, String> attributes = entry.getValue();
 			
 			Linking linking = null;
@@ -115,6 +101,12 @@ public class MappingController {
 			}
 				
 			for(Binding binding : linking.getBindings()) {
+				if ("ChildClasses".equals(binding.getFrom()) || "AttributeClasses".equals(binding.getFrom())
+						 || ("tunnel".equals(binding.getTo()) && (!"ChildClasses".equals(binding.getFrom()) || !"AttributeClasses".equals(binding.getFrom())))
+						 || ("bridge".equals(binding.getTo()) && (!"ChildClasses".equals(binding.getFrom()) || !"AttributeClasses".equals(binding.getFrom())))) {
+					continue;
+				}
+
 				String variableId = binding.getVariableId();
 				if(variableId != null) {
 					String resource = resources.get(variableId);
@@ -191,16 +183,6 @@ public class MappingController {
 			if(childrenNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
 				Element childElement = (Element) childrenNodes.item(i);
 				Buildable childBuildable = createBuildable(childElement);
-				if (childBuildable != null) {
-					System.out.println("PLS: " + childBuildable.getId());
-					System.out.println("Ennyi kolyke van: " + childBuildable.getChildren().length);
-
-					if (childBuildable.getChildren().length == 1) {
-						Buildable c = childBuildable.getChildren()[0];
-						System.out.println(c.getId());
-					}
-
-				}
 				if(childBuildable != null){
 					buildableStack.peek().addChild(childBuildable);
 					setAttributes(childBuildable, childElement);
@@ -235,13 +217,11 @@ public class MappingController {
 			}
 		}
 
-//		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
 		String typeStr = mapping.getTargetTypeOf(element.getAttribute("type"));
 
-		System.out.println("BUILDABLE ID: -------->" + id);
 
-		if (typeStr == null){			
+		if (typeStr == null){
 			return null;
 		}
 
@@ -249,53 +229,70 @@ public class MappingController {
 
 		Buildable temp = new Buildable(id, name, type);
 
-		System.out.println("MEGJOBB: " + element.getAttribute("name"));
-
-		Buildable tunnel = null;
-		Buildable bridge = null;
+		Buildable buildableForInheritence = null;
+		Buildable buildableForAttributes = null;
 
 		if ("class".equals(element.getAttribute("type"))) {
-			System.out.println("DEBUG2");
 
 			NodeList classNodeList = element.getElementsByTagName("property");
 			for (int i = 0; i < classNodeList.getLength(); i++) {
 				Node n = classNodeList.item(i);
-				if (n instanceof Element && "ChildClasses".equals(((Element) n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value"))) {
-					System.out.println("Gyerek:" + ((Element) n).getAttribute("value"));
 
+				Type childType = null;
+				Type attributueType = null;
+
+
+				for (Linking l : mapping.getLinkings()) {
+					if ("class".equals(l.getSource())) {
+						for (Binding b : l.getBindings()) {
+							if ("ChildClasses".equals(b.getFrom())) {
+								if ("tunnel".equals(b.getTo())) {
+									childType = Type.TUNNEL;
+								} else if ("bridge".equals(b.getTo())) {
+									childType = Type.BRIDGE;
+								}
+							} else if ("AttributeClasses".equals(b.getFrom())) {
+								if ("tunnel".equals(b.getTo())) {
+									attributueType = Type.TUNNEL;
+								} else if ("bridge".equals(b.getTo())) {
+									attributueType = Type.BRIDGE;
+								}
+							}
+						}
+					}
+				}
+				if (n instanceof Element && "ChildClasses".equals(((Element) n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value")) && childType != null) {
 					String children = ((Element) n).getAttribute("value");
 					children =  children.replaceAll("\\[", "").replaceAll("\\]", "" );
 					List<String> childrenList = Arrays.asList(children.split(", "));
 
 					for (String s : childrenList) {
-						tunnel = new Buildable (
+						buildableForInheritence = new Buildable (
 								"zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-								"Sample_Tunnel",
-								Type.TUNNEL,
+								"Relation_based_on_inheritance",
+								childType,
 								new Point(0,0,0),
 								new Point(0,0,0)
 						);
-						tunnel.addAttribute("target", s);
-						tunnel.addAttribute("torches", "6");
-						temp.addChild(tunnel);
+						buildableForInheritence.addAttribute("target", s);
+						buildableForInheritence.addAttribute("torches", "6");
+						temp.addChild(buildableForInheritence);
 					}
-				} else if (n instanceof Element && "AttributeClasses".equals(((Element)n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value"))) {
-					System.out.println("Attribútum:" + ((Element) n).getAttribute("value"));
-					
+				} else if (n instanceof Element && "AttributeClasses".equals(((Element)n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value")) && attributueType != null) {
 					String attributes = ((Element) n).getAttribute("value");
 					attributes =  attributes.replaceAll("\\[", "").replaceAll("\\]", "" );
 					List<String> attributeList = Arrays.asList(attributes.split(", "));
 					for (String s : attributeList) {
-						bridge = new Buildable (
+						buildableForAttributes = new Buildable (
 								"yxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-								"Sample_Bridge",
-								Type.BRIDGE,
+								"Relation_based_on_attributes",
+								attributueType,
 								new Point(0,0,0),
 								new Point(0,0,0)
 						);
-						bridge.addAttribute("target", s);
-						bridge.addAttribute("torches", "6");
-						temp.addChild(bridge);
+						buildableForAttributes.addAttribute("target", s);
+						buildableForAttributes.addAttribute("torches", "6");
+						temp.addChild(buildableForAttributes);
 					}
 
 				}
@@ -341,7 +338,7 @@ public class MappingController {
 						name,
 						String.valueOf(value)
 						);
-			}							
+			}
 		}
 		return attributes;
 	}
@@ -379,8 +376,7 @@ public class MappingController {
 			if(build.getParent() != null){
 				Type buildableParentType = build.getParent().getType();
 				if(!Type.GARDEN.equals(buildableParentType) && !Type.GROUND.equals(buildableParentType) && !Type.CONTAINER.equals(buildableParentType)){
-					// only temporarily
-					//throw new NotValidBuildableStructure(build.getCdfNames());
+					throw new NotValidBuildableStructure(build.getCdfNames());
 				}
 			} else if(!Type.CONTAINER.equals(build.getType())) {
 				throw new NotValidBuildableStructure(build.getCdfNames());
