@@ -66,12 +66,6 @@ public class Main {
 	    	System.out.println(Resources.get("converter_usage"));
 	    	return;
 	    }
-
-	    if (options.getRelationFile() != null) {
-	    	// Make relations
-
-
-		}
 			
 	    ConverterExecutor executor = new ConverterExecutor();
 	    executor.setPrefix(Resources.get("converter_prefix"));
@@ -81,8 +75,7 @@ public class Main {
 	    			converterType,
 		    		options.getSource(),
 		    		options.getOutputFile(),
-		    		params,
-					options.getRelationFile()
+		    		params
 	    		));	
 		
 	}

@@ -28,15 +28,6 @@ public class ConverterExecutor extends AbstractExecutor {
 			
 		});
 
-		Relations relations = null;
-
-		if (converterArgs.getRelationFile() != null) {
-			relations = new Relations(converterArgs.getRelationFile());
-			relations.parseRelationFile();
-			System.out.println(relations.toString());
-		}
-
-
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = null;
 		try {
