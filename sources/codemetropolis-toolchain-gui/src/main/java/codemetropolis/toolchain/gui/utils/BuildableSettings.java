@@ -145,26 +145,23 @@ public class BuildableSettings {
 	/**
 	 * Writes to the console, what display settings will be provided to the Mapping file editor GUI.
 	 */
-	public void displaySettings() throws BadConfigFileFomatException {
-		try {
-			Map<String, String[]> returnedSettings = readSettings();
+	public void displaySettings() throws BadConfigFileFomatException, FileNotFoundException {
+		
+		Map<String, String[]> returnedSettings = readSettings();
 			
-			for(String buildableType : returnedSettings.keySet()) {
+		for(String buildableType : returnedSettings.keySet()) {
 				
-				String[] buildableProperties = returnedSettings.get(buildableType);
+			String[] buildableProperties = returnedSettings.get(buildableType);
 				
-				System.out.print(buildableType + "=");
+			System.out.print(buildableType + "=");
 				
-				for(int i = 0; i < buildableProperties.length; i++) {
+			for(int i = 0; i < buildableProperties.length; i++) {
 					
-					System.out.print(buildableProperties[i] + ";");
+				System.out.print(buildableProperties[i] + ";");
 					
-				}
-				System.out.println();
 			}
-		} 
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}		
+			System.out.println();
+		}
 	}
+	
 }

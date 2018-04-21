@@ -3,10 +3,14 @@ package codemetropolis.toolchain.gui.utils;
 import java.io.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,7 +59,7 @@ public class PropertyCollector {
 	 * @param cdfFilePath The path from the cdf file from which the information will be read.
 	 * @return The {@link Map} which contains the individual source code element types as keys and their metrics/properties as values.
 	 */
-	public Map<String, List<Property>> getFromCdf(String cdfFilePath) {
+	public Map<String, List<Property>> getFromCdf(String cdfFilePath) throws FileNotFoundException {
 		try {
 			
 			initializePropertyMap();
@@ -84,7 +88,7 @@ public class PropertyCollector {
 				}
 			};
 
-		} catch (Exception e) {
+		} catch (ParserConfigurationException | SAXException | IOException e) {	
 			e.printStackTrace();
 		}
 			

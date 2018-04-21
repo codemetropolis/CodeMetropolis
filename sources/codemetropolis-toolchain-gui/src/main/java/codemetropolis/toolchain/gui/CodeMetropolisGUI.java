@@ -322,7 +322,7 @@ public class CodeMetropolisGUI extends JFrame {
    * @param cdfPath The path of the cdf file.
    * @return The cdf file exists or not.
    */
-  public boolean checkInputCdfFile(String cdfPath) {
+  public static boolean checkInputCdfFile(String cdfPath) {
 	  File cdfXmlFile = new File(cdfPath);
 		if(!cdfXmlFile.exists()) {
 			return false;
