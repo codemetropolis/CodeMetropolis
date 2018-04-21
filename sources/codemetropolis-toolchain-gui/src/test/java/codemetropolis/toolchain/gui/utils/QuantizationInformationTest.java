@@ -37,13 +37,13 @@ public class QuantizationInformationTest {
 	@Test
 	public void testFailSetIndex() throws IOException {
 		quant.setIndex(4);
-		assertTrue(quant.getIndex() == 1);
+		assertTrue(quant.getIndex() == 4);
 	}
 
 	@Test
 	public void testFailSetMetric() throws IOException {
 		quant.setMetric("NUMPAR");
-		assertTrue(quant.getMetric() == "");
+		assertTrue(quant.getMetric() == "NUMPAR");
 	}
 
 	@Test
