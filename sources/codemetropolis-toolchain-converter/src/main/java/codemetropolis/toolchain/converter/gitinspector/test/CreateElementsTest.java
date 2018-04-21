@@ -10,6 +10,12 @@ import codemetropolis.toolchain.commons.cdf.CdfTree;
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+*
+* @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+*
+*/
+
 public class CreateElementsTest {
 
     private static String XML_SRC_PATH = "src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\GitInspectorOutput.xml";

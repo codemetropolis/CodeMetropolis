@@ -10,6 +10,12 @@ import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+*
+* @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+*
+*/
+
 public class GetMetricsFromFirstAuthorElementNodeTest {
 
     @Test

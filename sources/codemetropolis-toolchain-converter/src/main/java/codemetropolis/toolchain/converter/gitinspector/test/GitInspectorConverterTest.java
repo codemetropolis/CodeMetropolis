@@ -7,6 +7,12 @@ import org.junit.Test;
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+*
+* @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+*
+*/
+
 public class GitInspectorConverterTest {
 
 	@Test

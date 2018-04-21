@@ -7,6 +7,12 @@ import org.junit.Test;
 import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+ * 
+ * @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+ *
+ */
+
 public class CreateDocumentFromSourceTest {
     private static String XML_SRC_PATH = "src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\GitInspectorOutput.xml";
     private static String INVALID_FORMAT_PATH = "src\\main\\java\\codemetropolis\\toolchain\\converter\\gitinspector\\test\\";

@@ -6,6 +6,12 @@ import org.junit.Test;
 
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+*
+* @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+*
+*/
+
 public class DownscalePossibleLargeNumericValueTest {
 
 	private static String[] squareNumbers = {"0", "1", "4", "16", "81", "100", "256", "3481", "7569", "16129", "205234276"};

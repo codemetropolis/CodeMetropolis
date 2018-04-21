@@ -9,6 +9,12 @@ import org.w3c.dom.Document;
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
 
+/**
+*
+* @author Zakor Gyula {@literal <ZAGPAAG.SZE>}
+*
+*/
+
 public class CreateRootelemenTest {
     static Document document;
     static GitInspectorConverter converter;
