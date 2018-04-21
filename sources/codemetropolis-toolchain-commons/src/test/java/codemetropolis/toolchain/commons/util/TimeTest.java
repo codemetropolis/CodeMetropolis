@@ -21,4 +21,38 @@ public class TimeTest extends TestCase {
 		assertEquals(24, testObj.getHours());
 	}
 	
+	public void testGetMinutes() {
+		testObj = new Time(0);
+		assertEquals(0, testObj.getMinutes());
+		
+		testObj = new Time(6999);
+		assertEquals(0, testObj.getMinutes());
+		
+		testObj = new Time(59999);
+		assertEquals(0, testObj.getMinutes());
+		
+		testObj = new Time(60000);
+		assertEquals(1, testObj.getMinutes());
+		
+		testObj = new Time(3600000);
+		assertEquals(0, testObj.getMinutes());
+		
+		testObj = new Time(3730000);
+		assertEquals(2, testObj.getMinutes());
+	}
+	
+	public void testGetSeconds() {
+		testObj = new Time(0);
+		assertEquals(0, testObj.getSeconds());
+		
+		testObj = new Time(3999);
+		assertEquals(3, testObj.getSeconds());
+		
+		testObj = new Time(60000);
+		assertEquals(0, testObj.getSeconds());
+		
+		testObj = new Time(74500);
+		assertEquals(14, testObj.getSeconds());
+	}
+	
 }
