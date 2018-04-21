@@ -16,7 +16,7 @@ import codemetropolis.toolchain.mapping.conversions.Conversion;
 public class Binding {
 	
 	@XmlAttribute
-	private String from;
+	public String from;
 	
 	@XmlAttribute
 	private String to;
