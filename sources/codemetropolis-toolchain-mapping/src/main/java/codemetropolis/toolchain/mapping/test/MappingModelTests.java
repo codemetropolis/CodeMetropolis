@@ -2,17 +2,16 @@ package codemetropolis.toolchain.mapping.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
+import org.apache.commons.collections4.map.MultiKeyMap;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 
+import codemetropolis.toolchain.mapping.control.LimitController;
 import codemetropolis.toolchain.mapping.exceptions.MappingReaderException;
 import codemetropolis.toolchain.mapping.model.Binding;
 import codemetropolis.toolchain.mapping.model.Limit;
@@ -68,6 +67,44 @@ public class MappingModelTests {
 		String result = binding.getVariableId();
 		
 		assertEquals(result, expected);
+	}
+	
+	@Test
+	public void tesLimitControllerAddIsCorrect() {
+		
+		Limit limit = new Limit();
+		limit.add(10);
+		
+		MultiKeyMap<String, Limit> expectedLimits = new MultiKeyMap<>();
+		expectedLimits.put("sourceName", "sourceFrom", limit);
+		
+		LimitController limitController = new LimitController();
+
+		limitController.add("sourceName", "sourceFrom", 10);
+		
+		Limit resultLimit = limitController.getLimit("sourceName", "sourceFrom");
+		Limit expectedLimit = expectedLimits.get("sourceName", "sourceFrom");
+		
+		assertTrue(EqualsBuilder.reflectionEquals(expectedLimit,resultLimit));
+	}
+	
+	@Test
+	public void tesLimitControllerAddIsCorrect2() {
+		
+		Limit limit = new Limit();
+		limit.add(10);
+		
+		MultiKeyMap<String, Limit> expectedLimits = new MultiKeyMap<>();
+		expectedLimits.put("sourceName", "sourceFrom", limit);
+		
+		LimitController limitController = new LimitController();
+
+		limitController.add("sourceName", "sourceFrom", 10);
+		
+		Limit resultLimit = limitController.getLimit("sourceName", "sourceFrom");
+		Limit expectedLimit = expectedLimits.get("sourceName", "sourceFrom");
+		
+		assertEquals(expectedLimit.getValueSetSize(), resultLimit.getValueSetSize());
 	}
 	
 }

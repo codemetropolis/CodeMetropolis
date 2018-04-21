@@ -16,6 +16,8 @@ import org.junit.Test;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
 import codemetropolis.toolchain.converter.browsinghistory.BrowsingHistoryConverter;
 
 import org.w3c.dom.Document;
@@ -160,5 +162,20 @@ public class BrowsingHistoryConverterTests {
 		Document resultDocument = converter.createDocumentFromXmlFile(file);
 		
 		assertNotEquals(document, resultDocument);
+	}
+	
+	@Test
+	public void testCreateElementsShouldNotThrowException() {
+		
+		boolean isThrown = true;
+		
+		try {
+			CdfTree resultTree = converter.createElements(TEST_INPUT_FILE);
+			isThrown = false;
+		}catch(CodeMetropolisException e) {
+			e.printStackTrace();
+		}
+		
+		assertFalse(isThrown);
 	}
 }
