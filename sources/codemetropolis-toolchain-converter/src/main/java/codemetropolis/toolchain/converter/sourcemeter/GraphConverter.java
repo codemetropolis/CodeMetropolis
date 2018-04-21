@@ -50,7 +50,7 @@ public class GraphConverter extends CdfConverter {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
 		CdfElement element = new CdfElement(name, type);
-		if ("Class".equals(type)) {
+		if ("Class".equals(type) && relations != null) {
 			// if the element is a class, check for subclasses from relationFile
 			System.out.println("I find a \"class\" id: " + root.getUID());
 
