@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
-import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.MappingFileEditorDialog;
 import codemetropolis.toolchain.gui.conversions.*;
@@ -51,7 +50,7 @@ public class TransferHelper extends TransferHandler {
     	JTable currFloorTable = MappingFileEditorDialog.getFloorTable();
     	JTable currCellarTable = MappingFileEditorDialog.getCellarTable();
 
-    	List<Conversion> conversionList = null;
+    	List<Conversion> conversionList = MappingFileEditorDialog.gardenConversion;
 
     	if (target == currGardenTable) {
     		conversionList = MappingFileEditorDialog.gardenConversion;

@@ -21,4 +21,15 @@ public class BuildableSettingsTest {
 		boolean result = BuildableSettings.validateProperties(buildableName, buildableProperties);
 		Assert.assertEquals(result, false);
 	}
+
+	/**
+     * @throws IOException if it is false.
+     */
+	@Test
+	public void testPassValidateProperties() throws IOException {
+		String buildableName = "CELLAR";
+		String[] buildableProperties = {"width"};
+		boolean result = BuildableSettings.validateProperties(buildableName, buildableProperties);
+		Assert.assertEquals(result, true);
+	}
 }
