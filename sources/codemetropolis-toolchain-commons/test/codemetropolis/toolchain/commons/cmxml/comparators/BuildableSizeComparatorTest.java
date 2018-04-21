@@ -20,7 +20,7 @@ public class BuildableSizeComparatorTest {
 
 	@Test
 	public void compareTest() {
-		BuildableWidthComparator c = new BuildableWidthComparator();
+		BuildableSizeComparator c = new BuildableSizeComparator();
 		Buildable b1 = new Buildable("UNIQUE_ID_1", "SAMPLE_TUNNEL_1", Type.TUNNEL, new Point(0, 0, 0), new Point(10, 10, 10));
 		Buildable b2 = new Buildable("UNIQUE_ID_2", "SAMPLE_TUNNEL_2", Type.TUNNEL, new Point(0, 0, 0), new Point(10, 10, 10));
 		assertTrue(c.compare(b1, b2) == 0);
