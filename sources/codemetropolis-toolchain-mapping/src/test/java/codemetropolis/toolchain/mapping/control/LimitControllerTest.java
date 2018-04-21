@@ -1,6 +1,5 @@
 package codemetropolis.toolchain.mapping.control;
 
-import codemetropolis.toolchain.mapping.model.Limit;
 import junit.framework.TestCase;
 
 public class LimitControllerTest extends TestCase {
