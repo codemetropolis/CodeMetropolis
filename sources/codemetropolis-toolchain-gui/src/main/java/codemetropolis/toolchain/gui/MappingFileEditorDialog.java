@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,17 +24,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
-import codemetropolis.toolchain.gui.beans.QuantizationInformation;
+
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMScrollPane;
+import codemetropolis.toolchain.gui.components.CMTable;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
-import codemetropolis.toolchain.gui.conversions.Conversion;
 import codemetropolis.toolchain.gui.conversions.QuantizationConversion;
 import codemetropolis.toolchain.gui.utils.BuildableSettings;
 import codemetropolis.toolchain.gui.utils.Property;
@@ -53,14 +56,6 @@ public class MappingFileEditorDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	
 	private static final FileFilter XML_FILTER;
-
-	static public List<Conversion> cellarConversion;
-	static public List<Conversion> gardenConversion;
-	static public List<Conversion> floorConversion;
-
-	static public Map<QuantizationInformation, QuantizationConversion> cellarQuant;
-	static public Map<QuantizationInformation, QuantizationConversion> gardenQuant;
-	static public Map<QuantizationInformation, QuantizationConversion> floorQuant;
 	
 	/**
 	 * Contains the possible results of assigning a metric to a property of a buildable type.
@@ -71,14 +66,6 @@ public class MappingFileEditorDialog extends JDialog {
 	
 	static {
 		XML_FILTER = new XmlFileFilter();
-
-		cellarConversion = new ArrayList<Conversion>();
-		gardenConversion = new ArrayList<Conversion>();
-		floorConversion = new ArrayList<Conversion>();
-
-		cellarQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
-		gardenQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
-		floorQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
 
 		ASSIGN_RESULT_MATRIX = new HashMap<String, Map<String, AssignResult>>();
 		
@@ -112,9 +99,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private JPanel floorPanel;
 	private JPanel gardenPanel;
 	private JPanel groundPanel;
-	private static JTable cellarTable;
-	private static JTable floorTable;
-	private static JTable gardenTable;
+	private CMTable cellarTable;	
+	private CMTable floorTable;	
+	private CMTable gardenTable;
 	
 	//ListModel and JList for the buildables: cellar, floor, garden
 	private ListModel<String> cellarListmodel;
@@ -139,8 +126,7 @@ public class MappingFileEditorDialog extends JDialog {
 	private void loadDisplayedInfo(String cdfFilePath) {
 		try {
 			BuildableSettings settings = new BuildableSettings();
-			displayedBuildableAttributes = settings.readSettings();
-						
+			displayedBuildableAttributes = settings.readSettings();						
 		}
 		catch(BadConfigFileFomatException e) {
 			JOptionPane.showMessageDialog(
@@ -166,13 +152,11 @@ public class MappingFileEditorDialog extends JDialog {
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	 /**
 	  * Instantiates the Mapping file editor dialog.
-	  *
 	  * @param cdfFilePath The path of the input cdf xml file.
 	  * @param cmGui The parent window of the dialog.
 	  */
@@ -184,7 +168,6 @@ public class MappingFileEditorDialog extends JDialog {
 		addResourceOptions(panel);
 		addSaveOptions(panel);
 		addBuildableTabs(panel);
-		addConversionOptions(panel);
 		
 		this.setResizable(false);
 	    this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
@@ -348,8 +331,7 @@ public class MappingFileEditorDialog extends JDialog {
 		buildableTabbedPane.setFont(new Font("Source Sans Pro", Font.PLAIN, 16));
 		buildableTabbedPane.setBounds(10, 175, 780, 300);
 		
-		panel.add(buildableTabbedPane);
-		
+		panel.add(buildableTabbedPane);		
 	}
 	
 	/**
@@ -496,18 +478,70 @@ public class MappingFileEditorDialog extends JDialog {
 	 * @param buildableType The type of the buildable (method, attribute, etc.).
 	 * @return The JTable contains the buildable attributes.
 	 */
-	private JTable setUpBuildableTable(String buildableType) {
+	private CMTable setUpBuildableTable(String buildableType) {
+		CMTable table = new CMTable();
+		
 		String[] displayedProperties = displayedBuildableAttributes.get(buildableType);
 	    
-		Object[] columnNames = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_propery")};
+		Object[] header = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_propery")};
 	    Object[][] initData = new Object[displayedProperties.length][2];
 	    
 	    for(int i = 0; i < displayedProperties.length; i++) {
 	    	initData[i][0] = displayedProperties[i] + ": " + BuildableSettings.BUILDABLE_ATTRIBUTE_TYPES.get(displayedProperties[i]);
 	    	initData[i][1] = null;
 	    }
+	    
+	    TableModel tModel = new DefaultTableModel(initData, header);
+	    table.setModel(tModel);
+	    
+	    MappingFileEditorDialog self = this;
+	    //For listening changes in the table.
+	    table.getModel().addTableModelListener(new TableModelListener() {
 
-	    JTable table = new JTable(initData, columnNames);
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				int row = e.getFirstRow();
+				String buildableAttribute = (String) table.getValueAt(row , 0);
+				String assignedMetric = (String) table.getValueAt(row, 1);
+				
+				String buildableAttributeType = buildableAttribute.split(": ")[1];
+				String assignedMetricType = assignedMetric.split(": ")[1];
+				
+				AssignResult cell = MappingFileEditorDialog.ASSIGN_RESULT_MATRIX.get(buildableAttributeType).get(assignedMetricType);
+				switch (cell) {
+				// We don't have to examine the case when there's no conversion allowed, because it was examined in the checkType method of the TransferHelper class.
+			    	case NO_CONVERSION:
+			    		table.getConversionList().set(row, null);
+			    		System.out.println("null");
+			    		break;
+			    	case TO_INT:
+			    		Object o = "toInt";
+			    		table.getConversionList().set(row, o);
+			    		System.out.println(o.toString());
+			    		break;
+			    	case TO_DOUBLE:
+			    		Object o1 = "toDouble";
+			    		table.getConversionList().set(row, o1);
+			    		System.out.println(o1.toString());
+			    		break;
+			    	case NORMALIZE:
+			    		Object o2 = "normalize";
+			    		table.getConversionList().set(row, o2);
+			    		System.out.println(o2.toString());
+			    		break;
+			    	case QUANTIZATON:
+			    		QuantizationConversion qConv = new QuantizationConversion();
+			    		table.getConversionList().set(row, qConv);
+			    		System.out.println(qConv.toString());
+			    		new QuantizationDialog(self, qConv, buildableAttributeType);
+			    		break;
+			    	default:
+			    		break;
+		    	}
+			}
+	    	
+	    });
+
 	    table.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
 	    table.setRowHeight(30);
 	    table.setBounds(15, 50, 480, displayedProperties.length * 30);
@@ -535,94 +569,5 @@ public class MappingFileEditorDialog extends JDialog {
 		}
 		
 		return model;
-	}
-	
-	/**
-	 * Adds the conversion options to the {@code panel}.
-	 * @param panel The {@link JPanel} to which the options will be added to.
-	 */
-	private void addConversionOptions(JPanel panel) {
-		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
-		panel.add(conversionButton);
-		
-		MappingFileEditorDialog self = this;
-		conversionButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int index;
-				String buildableAttribute;
-				String metric;
-
-				for (Conversion element :  cellarConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation cellar = new QuantizationInformation();
-
-						index = cellarConversion.indexOf(element);
-						buildableAttribute = (String) cellarTable.getModel().getValueAt(index, 0);
-						metric = (String) cellarTable.getModel().getValueAt(index, 1);
-
-						cellar.setIndex(index);
-						cellar.setBuildableAttribute(buildableAttribute);
-						cellar.setMetric(metric);
-
-						cellarQuant.put(cellar, new QuantizationConversion());
-					}
-				}
-				for (Conversion element :  gardenConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation garden = new QuantizationInformation();
-
-						index = gardenConversion.indexOf(element);
-						buildableAttribute = (String) gardenTable.getModel().getValueAt(index, 0);
-						metric = (String) gardenTable.getModel().getValueAt(index, 1);
-
-						garden.setIndex(index);
-						garden.setBuildableAttribute(buildableAttribute);
-						garden.setMetric(metric);
-
-						gardenQuant.put(garden, new QuantizationConversion());
-					}
-				}
-				for (Conversion element :  floorConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation floor = new QuantizationInformation();
-
-						index = floorConversion.indexOf(element);
-						buildableAttribute = (String) floorTable.getModel().getValueAt(index, 0);
-						metric = (String) floorTable.getModel().getValueAt(index, 1);
-
-						floor.setIndex(index);
-						floor.setBuildableAttribute(buildableAttribute);
-						floor.setMetric(metric);
-
-						floorQuant.put(floor, new QuantizationConversion());
-					}
-				}
-				QuantizationSetterDialog dialog = new QuantizationSetterDialog(self);
-				dialog.setVisible(true);
-				
-			}
-		});
-	}
-
-    /**
-     * @return floorTable
-     */
-    public static JTable getFloorTable() {
-    	return floorTable;
-    }
-
-    /**
-     * @return gardenTable
-     */
-    public static JTable getGardenTable() {
-        return gardenTable;
-    }
-
-    /**
-     * @return cellarTable
-     */
-    public static JTable getCellarTable() {
-        return cellarTable;
 	}
 }
