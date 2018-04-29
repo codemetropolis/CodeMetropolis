@@ -16,6 +16,8 @@ public class CMTable extends JTable {
 	private static final int LIST_MAX_SIZE = 10;
 
 	private List<Object> conversionList;
+	private String target;
+	private String source;
 	
 	/**
 	 * @see javax.swing.JTable#JTable()
@@ -59,5 +61,33 @@ public class CMTable extends JTable {
 		for(int i = 0; i < size; i++) {
 			conversionList.add(null);
 		}
+	}
+	
+	/**
+	 * Getter for the {@code target} attribute.
+	 */
+	public String getTarget() {
+		return target;
+	}
+
+	/**
+	 * Setter for the {@code target} attribute.
+	 */
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	/**
+	 * Getter for the {@code source} attribute.
+	 */
+	public String getSource() {
+		return source;
+	}
+
+	/**
+	 * Setter for the {@code source} attribute.
+	 */
+	public void setSource(String source) {
+		this.source = source;
 	}
 }
