@@ -318,7 +318,7 @@ public class CodeMetropolisGUI extends JFrame {
   }
   
   /**
-   * Chacks if the input cdf file does exist or not.
+   * Checks if the input cdf file does exist or not.
    * @param cdfPath The path of the cdf file.
    * @return The cdf file exists or not.
    */

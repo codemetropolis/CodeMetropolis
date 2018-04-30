@@ -2,12 +2,8 @@ package codemetropolis.toolchain.gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,27 +12,29 @@ import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
-import codemetropolis.toolchain.gui.beans.QuantizationInformation;
+
 import codemetropolis.toolchain.gui.components.CMButton;
-import codemetropolis.toolchain.gui.components.CMCheckBox;
 import codemetropolis.toolchain.gui.components.CMLabel;
 import codemetropolis.toolchain.gui.components.CMScrollPane;
+import codemetropolis.toolchain.gui.components.CMTable;
 import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.components.listeners.AddResourceListener;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
-import codemetropolis.toolchain.gui.conversions.Conversion;
-import codemetropolis.toolchain.gui.conversions.QuantizationConversion;
+import codemetropolis.toolchain.gui.components.listeners.NewAssigninmentListener;
+import codemetropolis.toolchain.gui.components.listeners.RemoveResourceListener;
+import codemetropolis.toolchain.gui.components.listeners.SaveMappingListener;
 import codemetropolis.toolchain.gui.utils.BuildableSettings;
 import codemetropolis.toolchain.gui.utils.Property;
 import codemetropolis.toolchain.gui.utils.PropertyCollector;
@@ -53,14 +51,6 @@ public class MappingFileEditorDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	
 	private static final FileFilter XML_FILTER;
-
-	static public List<Conversion> cellarConversion;
-	static public List<Conversion> gardenConversion;
-	static public List<Conversion> floorConversion;
-
-	static public Map<QuantizationInformation, QuantizationConversion> cellarQuant;
-	static public Map<QuantizationInformation, QuantizationConversion> gardenQuant;
-	static public Map<QuantizationInformation, QuantizationConversion> floorQuant;
 	
 	/**
 	 * Contains the possible results of assigning a metric to a property of a buildable type.
@@ -71,14 +61,6 @@ public class MappingFileEditorDialog extends JDialog {
 	
 	static {
 		XML_FILTER = new XmlFileFilter();
-
-		cellarConversion = new ArrayList<Conversion>();
-		gardenConversion = new ArrayList<Conversion>();
-		floorConversion = new ArrayList<Conversion>();
-
-		cellarQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
-		gardenQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
-		floorQuant = new HashMap<QuantizationInformation, QuantizationConversion>();
 
 		ASSIGN_RESULT_MATRIX = new HashMap<String, Map<String, AssignResult>>();
 		
@@ -112,9 +94,9 @@ public class MappingFileEditorDialog extends JDialog {
 	private JPanel floorPanel;
 	private JPanel gardenPanel;
 	private JPanel groundPanel;
-	private static JTable cellarTable;
-	private static JTable floorTable;
-	private static JTable gardenTable;
+	private CMTable cellarTable;	
+	private CMTable floorTable;	
+	private CMTable gardenTable;
 	
 	//ListModel and JList for the buildables: cellar, floor, garden
 	private ListModel<String> cellarListmodel;
@@ -128,7 +110,6 @@ public class MappingFileEditorDialog extends JDialog {
 	private ListModel<String> resourcesListmodel;
 	private JList<String> resourcesList;
 	
-	private CMCheckBox useMappingCheckBox;
 	private CMTextField pathField;
 	
 	/**
@@ -139,8 +120,7 @@ public class MappingFileEditorDialog extends JDialog {
 	private void loadDisplayedInfo(String cdfFilePath) {
 		try {
 			BuildableSettings settings = new BuildableSettings();
-			displayedBuildableAttributes = settings.readSettings();
-						
+			displayedBuildableAttributes = settings.readSettings();						
 		}
 		catch(BadConfigFileFomatException e) {
 			JOptionPane.showMessageDialog(
@@ -166,13 +146,11 @@ public class MappingFileEditorDialog extends JDialog {
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	 /**
 	  * Instantiates the Mapping file editor dialog.
-	  *
 	  * @param cdfFilePath The path of the input cdf xml file.
 	  * @param cmGui The parent window of the dialog.
 	  */
@@ -181,10 +159,10 @@ public class MappingFileEditorDialog extends JDialog {
 		loadDisplayedInfo(cdfFilePath);
 		
 		JPanel panel = createBasePanel();
+		addBuildableTabs(panel);
 		addResourceOptions(panel);
 		addSaveOptions(panel);
-		addBuildableTabs(panel);
-		addConversionOptions(panel);
+		
 		
 		this.setResizable(false);
 	    this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
@@ -225,79 +203,14 @@ public class MappingFileEditorDialog extends JDialog {
 	    resourcesList.setVisibleRowCount(-1);
 		CMScrollPane resourcesScrollPane = new CMScrollPane(resourcesList, 10, 35, 240, 120);
 		
+		List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
+		List<JTable> tables = Arrays.asList(cellarTable, floorTable, gardenTable);
+		
 		CMButton resourcesAddButton = new CMButton(Translations.t("gui_b_add"), 265, 35, 120, 30);
-		resourcesAddButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JTextField nameField = new JTextField();
-				JTextField valueField = new JTextField();
+		resourcesAddButton.addActionListener(new AddResourceListener(lists));
 				
-				JPanel addResourcePanel = new JPanel();
-				addResourcePanel.setLayout(new GridLayout(4, 2));
-				addResourcePanel.add(new JLabel("Resource name:"));
-				addResourcePanel.add(nameField);
-				addResourcePanel.add(new JLabel("Resource value:"));
-				addResourcePanel.add(valueField);
-				
-				int result = JOptionPane.showConfirmDialog(null, addResourcePanel, Translations.t("gui_add_resource_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				if(result == JOptionPane.OK_OPTION) {
-					if (nameField.getText().matches("[a-zA-Z0-9]+") &&
-						(valueField.getText().matches("[0-9]+(.[0-9]+)?")) ||  BuildableSettings.VALID_CHARACTER_TYPES.contains(valueField.getText())) {
-						//Produce the resource string from the text fields...
-						String resourceToAdd = nameField.getText() + ": " + valueField.getText();
-						//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
-						List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
-						for (JList<String> list : lists) {
-							DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
-							listModel.addElement(resourceToAdd);
-						} 
-					}
-					else {
-						JOptionPane.showMessageDialog(
-								null,
-								Translations.t("gui_err_name_value_not_valid"),
-								Translations.t("gui_err_title"),
-								JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		});
 		CMButton resourcesRemoveButton = new CMButton(Translations.t("gui_b_remove"), 265, 80, 120, 30);
-		resourcesRemoveButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int indexToRemove = resourcesList.getSelectedIndex();
-				if(indexToRemove == -1) {
-					JOptionPane.showMessageDialog(
-							null,
-							Translations.t("gui_err_resources_empty_no_selected"),
-							Translations.t("gui_err_title"),
-							JOptionPane.ERROR_MESSAGE);
-				}
-				else {
-					String resourceToRemove = resourcesList.getModel().getElementAt(indexToRemove);
-					List<JList<String>> lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);
-					List<JTable> tables = Arrays.asList(cellarTable, floorTable, gardenTable);
-					for(JList<String> list : lists) {
-						DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
-						listModel.removeElement(resourceToRemove);
-					}
-					for(JTable table : tables) {
-						int rows = table.getRowCount();
-						int columns = table.getColumnCount();
-						for(int i = 0; i < rows; i++)
-							for(int j = 0; j < columns; j++) {
-								String cellValue = (String) table.getValueAt(i, j);
-								if(resourceToRemove.equals(cellValue)) {
-									table.setValueAt(null, i, j);
-								}
-							}
-					}
-				}				
-			}
-		});
+		resourcesRemoveButton.addActionListener(new RemoveResourceListener(resourcesList, lists, tables));
 		
 		panel.add(resourcesLabel);
 		panel.add(resourcesScrollPane);
@@ -313,18 +226,17 @@ public class MappingFileEditorDialog extends JDialog {
 		CMLabel saveSettingsLabel = new CMLabel(Translations.t("gui_l_save_settings"), 415, 0, 120, 30);
 		CMLabel pathLabel = new CMLabel(Translations.t("gui_l_path"), 415, 35, 60, 30);
 		pathField = new CMTextField(475, 35, 270, 30);
+		pathField.setEditable(false);
 		CMButton specifyPathButton = new CMButton(Translations.t("gui_b_specify_path"), 415, 80, 120, 30);
-		useMappingCheckBox = new CMCheckBox(550, 80, 30, 30);
-		CMLabel useMappingLabel = new CMLabel(Translations.t("gui_l_use_mapping_file"),575, 80, 180, 30);
 		CMButton saveMappingFileButton = new CMButton(Translations.t("gui_b_save_mapping_file"), 415, 120, 165, 30);
-		specifyPathButton.addActionListener(new BrowseListener(pathField, JFileChooser.FILES_ONLY, XML_FILTER));
+		specifyPathButton.addActionListener(new BrowseListener(pathField, Translations.t("gui_save_filechooser_title"), JFileChooser.FILES_ONLY, XML_FILTER));
+		List<CMTable> tables = Arrays.asList(cellarTable, floorTable, gardenTable);
+		saveMappingFileButton.addActionListener(new SaveMappingListener(pathField.getText(), tables, resourcesList));
 		
 		panel.add(saveSettingsLabel);
 		panel.add(pathLabel);
 		panel.add(pathField);
 		panel.add(specifyPathButton);
-		panel.add(useMappingCheckBox);
-		panel.add(useMappingLabel);
 		panel.add(saveMappingFileButton);
 	}
 	
@@ -348,8 +260,7 @@ public class MappingFileEditorDialog extends JDialog {
 		buildableTabbedPane.setFont(new Font("Source Sans Pro", Font.PLAIN, 16));
 		buildableTabbedPane.setBounds(10, 175, 780, 300);
 		
-		panel.add(buildableTabbedPane);
-		
+		panel.add(buildableTabbedPane);		
 	}
 	
 	/**
@@ -370,6 +281,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);
 	    
 	    cellarTable = setUpBuildableTable("CELLAR");
+	    cellarTable.setTarget("cellar");
+	    cellarTable.setSource("attribute");
 	    Rectangle bounds = cellarTable.getBounds();
 	    CMScrollPane scrollPane = new CMScrollPane(cellarTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
@@ -409,6 +322,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);		
 	    
 	    floorTable = setUpBuildableTable("FLOOR");
+	    floorTable.setTarget("floor");
+	    floorTable.setSource("method");
 	    Rectangle bounds = floorTable.getBounds();
 	    CMScrollPane scrollPane = new CMScrollPane(floorTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
@@ -448,6 +363,8 @@ public class MappingFileEditorDialog extends JDialog {
 	    CMLabel propertiesLabel = new CMLabel(Translations.t("gui_l_properties"), 525, 15, 120, 30);
 	    
 	    gardenTable = setUpBuildableTable("GARDEN");
+	    gardenTable.setTarget("garden");
+	    gardenTable.setSource("class");
 	    Rectangle bounds = gardenTable.getBounds();
 	    CMScrollPane scrollPane = new CMScrollPane(gardenTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);
 	    
@@ -496,18 +413,26 @@ public class MappingFileEditorDialog extends JDialog {
 	 * @param buildableType The type of the buildable (method, attribute, etc.).
 	 * @return The JTable contains the buildable attributes.
 	 */
-	private JTable setUpBuildableTable(String buildableType) {
+	private CMTable setUpBuildableTable(String buildableType) {
+		CMTable table = new CMTable();
+		
 		String[] displayedProperties = displayedBuildableAttributes.get(buildableType);
 	    
-		Object[] columnNames = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_propery")};
+		Object[] header = new String[] {Translations.t("gui_t_attribute"), Translations.t("gui_t_assigned_propery")};
 	    Object[][] initData = new Object[displayedProperties.length][2];
 	    
 	    for(int i = 0; i < displayedProperties.length; i++) {
 	    	initData[i][0] = displayedProperties[i] + ": " + BuildableSettings.BUILDABLE_ATTRIBUTE_TYPES.get(displayedProperties[i]);
 	    	initData[i][1] = null;
 	    }
+	    
+	    TableModel tModel = new DefaultTableModel(initData, header);
+	    table.setModel(tModel);
+	    
+	    MappingFileEditorDialog self = this;
+	    //For listening changes in the table.
+	    table.getModel().addTableModelListener(new NewAssigninmentListener(table, self));
 
-	    JTable table = new JTable(initData, columnNames);
 	    table.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
 	    table.setRowHeight(30);
 	    table.setBounds(15, 50, 480, displayedProperties.length * 30);
@@ -535,94 +460,5 @@ public class MappingFileEditorDialog extends JDialog {
 		}
 		
 		return model;
-	}
-	
-	/**
-	 * Adds the conversion options to the {@code panel}.
-	 * @param panel The {@link JPanel} to which the options will be added to.
-	 */
-	private void addConversionOptions(JPanel panel) {
-		CMButton conversionButton = new CMButton(Translations.t("gui_b_conversions"), 10, 490, 150, 30);
-		panel.add(conversionButton);
-		
-		MappingFileEditorDialog self = this;
-		conversionButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int index;
-				String buildableAttribute;
-				String metric;
-
-				for (Conversion element :  cellarConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation cellar = new QuantizationInformation();
-
-						index = cellarConversion.indexOf(element);
-						buildableAttribute = (String) cellarTable.getModel().getValueAt(index, 0);
-						metric = (String) cellarTable.getModel().getValueAt(index, 1);
-
-						cellar.setIndex(index);
-						cellar.setBuildableAttribute(buildableAttribute);
-						cellar.setMetric(metric);
-
-						cellarQuant.put(cellar, new QuantizationConversion());
-					}
-				}
-				for (Conversion element :  gardenConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation garden = new QuantizationInformation();
-
-						index = gardenConversion.indexOf(element);
-						buildableAttribute = (String) gardenTable.getModel().getValueAt(index, 0);
-						metric = (String) gardenTable.getModel().getValueAt(index, 1);
-
-						garden.setIndex(index);
-						garden.setBuildableAttribute(buildableAttribute);
-						garden.setMetric(metric);
-
-						gardenQuant.put(garden, new QuantizationConversion());
-					}
-				}
-				for (Conversion element :  floorConversion) {
-					if ( element instanceof QuantizationConversion ) {
-						QuantizationInformation floor = new QuantizationInformation();
-
-						index = floorConversion.indexOf(element);
-						buildableAttribute = (String) floorTable.getModel().getValueAt(index, 0);
-						metric = (String) floorTable.getModel().getValueAt(index, 1);
-
-						floor.setIndex(index);
-						floor.setBuildableAttribute(buildableAttribute);
-						floor.setMetric(metric);
-
-						floorQuant.put(floor, new QuantizationConversion());
-					}
-				}
-				QuantizationSetterDialog dialog = new QuantizationSetterDialog(self);
-				dialog.setVisible(true);
-				
-			}
-		});
-	}
-
-    /**
-     * @return floorTable
-     */
-    public static JTable getFloorTable() {
-    	return floorTable;
-    }
-
-    /**
-     * @return gardenTable
-     */
-    public static JTable getGardenTable() {
-        return gardenTable;
-    }
-
-    /**
-     * @return cellarTable
-     */
-    public static JTable getCellarTable() {
-        return cellarTable;
 	}
 }

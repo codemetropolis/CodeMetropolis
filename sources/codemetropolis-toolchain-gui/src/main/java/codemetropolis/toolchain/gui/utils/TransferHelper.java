@@ -6,15 +6,12 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.Point;
 import java.io.IOException;
-import java.util.List;
-
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import codemetropolis.toolchain.gui.MappingFileEditorDialog;
 import codemetropolis.toolchain.gui.MappingFileEditorDialog.AssignResult;
-import codemetropolis.toolchain.gui.conversions.*;
 
 /**
  * This class is used to handle the transfer of
@@ -40,31 +37,13 @@ public class TransferHelper extends TransferHandler {
      * @return boolean available dropping
      */
     public boolean typeChecker (Object obj, JTable target, int row, int col) {
-    	int currCol = col -1;
+    	int currCol = col - 1;
 
     	if (col == 0) {	return false; }
 
     	Object value = target.getModel().getValueAt(row, currCol);
     	String dragValue = obj.toString();
     	String dropValue = value.toString();
-
-    	JTable currGardenTable = MappingFileEditorDialog.getGardenTable();
-    	JTable currFloorTable = MappingFileEditorDialog.getFloorTable();
-    	JTable currCellarTable = MappingFileEditorDialog.getCellarTable();
-
-    	List<Conversion> conversionList = MappingFileEditorDialog.gardenConversion;
-
-    	if (target == currGardenTable) {
-    		conversionList = MappingFileEditorDialog.gardenConversion;
-    	}
-
-    	if (target == currFloorTable) {
-    		conversionList = MappingFileEditorDialog.floorConversion;
-    	}
-
-		if (target == currCellarTable) {
-			conversionList = MappingFileEditorDialog.cellarConversion;
-		}
 
     	dragValue = dragValue.split(": ")[1];
     	dropValue = dropValue.split(": ")[1];
@@ -81,31 +60,20 @@ public class TransferHelper extends TransferHandler {
     	}
     	    	
     	switch (cell) {
-    	case CANNOT_ASSIGN:
-    		return false;
-
-    	case NO_CONVERSION:
-    		conversionList.add(row, new EmptyConversion());
-    		return true;
-
-    	case TO_INT:
-    		conversionList.add(row, new ToIntConversion());
-    		return true;
-
-    	case TO_DOUBLE:
-    		conversionList.add(row, new ToDoubleConversion());
-    		return true;
-
-    	case NORMALIZE:
-    		conversionList.add(row, new NormalizeConversion());
-    		return true;
-
-    	case QUANTIZATON:
-    		conversionList.add(row, new QuantizationConversion());
-    		return true;
-
-    	default:
-    		return true;
+	    	case CANNOT_ASSIGN:
+	    		return false;
+	    	case NO_CONVERSION:
+	    		return true;
+	    	case TO_INT:
+	    		return true;
+	    	case TO_DOUBLE:
+	    		return true;
+	    	case NORMALIZE:
+	    		return true;
+	    	case QUANTIZATON:
+	    		return true;
+	    	default:
+	    		return true;
     	}
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
  * Class for representing a quantization conversion.
  * @author Viktor Meszaros {@literal <MEVXAAT.SZE>}
  */
-public class QuantizationConversion extends Conversion {
+public class QuantizationConversion{
 	private List<String> levels;
 	
 	public QuantizationConversion() {
@@ -16,5 +16,9 @@ public class QuantizationConversion extends Conversion {
 	
 	public List<String> getLevels(){
 		return levels;
+	}
+	
+	public void setLevels(List<String> levels) {
+		this.levels = levels;
 	}
 }
