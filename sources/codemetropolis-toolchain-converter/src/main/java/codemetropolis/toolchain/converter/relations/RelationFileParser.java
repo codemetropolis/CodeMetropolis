@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Relations {
+public class RelationFileParser {
 
 	// Map to store the relations between classes, first argument is the key, the ID of the class
 	// second argument is the child classes of the first argument (it can be null that means they have no child)
@@ -29,7 +29,7 @@ public class Relations {
 	private NodeList typeList;
 	private NodeList typeFormerTypeList;
 
-	public Relations(String relationFile) {
+	public RelationFileParser(String relationFile) {
 		this.relationFile = relationFile;
 	}
 
@@ -57,15 +57,14 @@ public class Relations {
 				// if the child is a subclass
 				if ("Class_IsSubclass".equals(nClassChild.getNodeName())) {
 					getSubclassRelation(nClassChild, idClass);
+				}
+				
+				// if the child is an attribute in class
+				if ("logical:Attribute".equals(nClassChild.getNodeName())) {
+					// get children
+					NodeList attrChildren = nClassChild.getChildNodes();
+					getAttributeRelations(nClass, attrChildren);
 
-					// if the child is an attribute in class
-					if ("logical:Attribute".equals(nClassChild.getNodeName())) {
-
-						// get children
-						NodeList attrChildren = nClassChild.getChildNodes();
-						getAttributeRelations(nClass, attrChildren);
-
-					}
 				}
 			}
 		}
@@ -84,7 +83,7 @@ public class Relations {
 		if (refParent == null) {
 			return;
 		}
-		
+
 		refParent = refParent.replaceAll("id", "L");
 		idClass = idClass.replaceAll("id", "L");
 
@@ -99,7 +98,7 @@ public class Relations {
 		}
 		relationsMap.put(refParent, children);
 	}
-	
+
 
 	private void getAttributeRelations(Node nClass, NodeList attrChildren) {
 
@@ -120,6 +119,7 @@ public class Relations {
 				if (refAttrClass == null) {
 					return;
 				}
+
 
 				// search for classes with obtained id (may not need, but builtins are excluded this way for sure)
 				for (int iAttrClass = 0; iAttrClass < classList.getLength(); ++iAttrClass) {
