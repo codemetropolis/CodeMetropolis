@@ -28,6 +28,10 @@ public class Relations {
     private Map<String , ArrayList<String>> attributesMap = new HashMap<String, ArrayList<String>>();
 
 	private String relationFile = null;
+	
+	private NodeList classList;
+	private NodeList typeList;
+	private NodeList typeFormerTypeList;
 
     public Relations(String relationFile) {
         this.relationFile = relationFile;
@@ -45,61 +49,61 @@ public class Relations {
         NodeList typeList = doc.getElementsByTagName("type:Type");
         NodeList typeFormerTypeList = doc.getElementsByTagName("type:TypeFormerType");
 
-        String refIdToRelation = null;
-        String refIdToRelation2 = null;
         String parent = null;
-        String currentClass = null;
+        String idClass = null;
 
         for (int iClass = 0; iClass < classList.getLength(); iClass++) {
-            Node nNode = classList.item(iClass);
-            Element currentClassNode = (Element) nNode;
-            currentClass = currentClassNode.getAttribute("id");
+            
+			Node nClass = classList.item(iClass);
+            idClass = nClass.getAttributes().getNamedItem("id").getNodeValue();
+			
+			NodeList classChildren = nClass.getChildNodes();
+            for (int iClassChild = 0; iClassChild < classChildren.getLength(); iClassChild++) {
+                Node nClassChild = classChildren.item(iClassChild);
 
-            for (int iClassChild = 0; iClassChild < nNode.getChildNodes().getLength(); iClassChild++) {
-                Node n = nNode.getChildNodes().item(iClassChild);
+				// if the child is a subclass
+                if ("Class_IsSubclass".equals(nClassChild.getNodeName())) {
+                    String refType = nClassChild.getAttributes().getNamedItem("ref").getNodeValue();
 
-                if ("Class_IsSubclass".equals(n.getNodeName())) {
-                    Element classListElement = (Element) n;
-                    refIdToRelation = ((Element) n).getAttribute("ref");
-
+					// search for type with obtained id
                     for (int iType = 0; iType < typeList.getLength(); iType++) {
-                        Node nNodeType = typeList.item(iType);
-                        ((Element) nNodeType).getAttribute("id");
+                        Node nType = typeList.item(iType);
+						String idType = nType.getAttributes().getNamedItem("id").getNodeValue();
+                        if (refType.equals(idType)) {
+							
+							// get typeformertype ref from type
+							NodeList typeChildren = nType.getChildNodes();
+                            for (int iTypeChild = 0; iTypeChild < typeChildren.getLength(); iTypeChild++) {
+                                Node nTypeChild = typeChildren.item(iTypeChild);
 
-                        // If the type was found search for "Type_HasTypeFormer" ref
-                        if (refIdToRelation.equals(((Element) nNodeType).getAttribute("id"))) {
-                            for (int iTypeChild = 0; iTypeChild < nNodeType.getChildNodes().getLength(); iTypeChild++) {
-                                Node n2 = nNodeType.getChildNodes().item(iTypeChild);
+                                if ("Type_HasTypeFormer".equals(nTypeChild.getNodeName())) {
+                                    String refTypeFormerType = nTypeChild.getAttributes().getNamedItem("ref").getNodeValue();
 
-                                if ("Type_HasTypeFormer".equals(n2.getNodeName())) {
-                                    Element hasTypeFormerElement = (Element) n2;
-                                    refIdToRelation2 = hasTypeFormerElement.getAttribute("ref");
-
-                                    // // If the Type_HasTypeFormer was found search for "TypeFormerType_RefersTo" ref
+                                    // search for typeformertype with obtained id
                                     for (int iTypeFormerType = 0; iTypeFormerType < typeFormerTypeList.getLength(); iTypeFormerType++) {
-                                        Node nNodeTypeFormerType = typeFormerTypeList.item(iTypeFormerType);
-                                        ((Element) nNodeTypeFormerType).getAttribute("id"); //?
+                                        Node nTypeFormerType = typeFormerTypeList.item(iTypeFormerType);
+										String idTypeFormerType = nTypeFormerType.getAttributes().getNamedItem("id").getNodeValue();	
+										if (refTypeFormerType.equals(idTypeFormerType)) {
+											
+											// get class ref from typeformertype
+											NodeList typeFormerTypeChildren = nTypeFormerType.getChildNodes();
+                                            for (int iTypeFormerTypeChild = 0; iTypeFormerTypeChild < typeFormerTypeChildren.getLength(); iTypeFormerTypeChild++) {
+                                                Node nTypeFormerTypeChild = typeFormerTypeChildren.item(iTypeFormerTypeChild);
 
-                                        // If the type was found search for "Type_HasTypeFormer" ref
-                                        if (refIdToRelation2.equals(((Element) nNodeTypeFormerType).getAttribute("id"))) {
-                                            for (int iTypeFormerTypeChild = 0; iTypeFormerTypeChild < nNodeTypeFormerType.getChildNodes().getLength(); iTypeFormerTypeChild++) {
-                                                Node n3 = nNodeTypeFormerType.getChildNodes().item(iTypeFormerTypeChild);
-
-                                                if ("TypeFormerType_RefersTo".equals(n3.getNodeName())) {
-                                                    Element hasTypeFormerTypeRefersToElement = (Element) n3;
-                                                    parent = hasTypeFormerTypeRefersToElement.getAttribute("ref");
+                                                if ("TypeFormerType_RefersTo".equals(nTypeFormerTypeChild.getNodeName())) {
+                                                    parent = nTypeFormerTypeChild.getAttributes().getNamedItem("ref").getNodeValue();
 
                                                     parent = parent.replaceAll("id", "L");
-                                                    currentClass = currentClass.replaceAll("id", "L");
+                                                    idClass = idClass.replaceAll("id", "L");
 
                                                     ArrayList<String> children;
                                                     children = relationsMap.get(parent);
 
                                                     if (children != null) {
-                                                        children.add(currentClass);
+                                                        children.add(idClass);
                                                     } else {
                                                         children = new ArrayList<String>();
-                                                        children.add(currentClass);
+                                                        children.add(idClass);
                                                     }
                                                     relationsMap.put(parent, children);
                                                 }
@@ -113,55 +117,56 @@ public class Relations {
                 }
 
                 // if the child is an attribute in class
-                if ("logical:Attribute".equals(n.getNodeName())) {
+                if ("logical:Attribute".equals(nClassChild.getNodeName())) {
+					
                     // get the type of the attribute
-                    NodeList attrChildren = n.getChildNodes();
+                    NodeList attrChildren = nClassChild.getChildNodes();
                     for (int iAttrChild = 0; iAttrChild < attrChildren.getLength(); ++iAttrChild) {
-                        Node attrChild = attrChildren.item(iAttrChild);
-                        if ("Attribute_HasType".equals(attrChild.getNodeName())) {
-                            String typeRef = attrChild.getAttributes().getNamedItem("ref").getNodeValue();
+                        Node nAttrChild = attrChildren.item(iAttrChild);
+                        if ("Attribute_HasType".equals(nAttrChild.getNodeName())) {
+                            String refType = nAttrChild.getAttributes().getNamedItem("ref").getNodeValue();
 
                             // search for type with obtained id
                             for (int iType = 0; iType < typeList.getLength(); ++iType) {
-                                Node type = typeList.item(iType);
-                                String typeId = type.getAttributes().getNamedItem("id").getNodeValue();
-                                if (typeRef.equals(typeId)) {
+                                Node nType = typeList.item(iType);
+                                String idType = nType.getAttributes().getNamedItem("id").getNodeValue();
+                                if (refType.equals(idType)) {
 
                                     // get typeFormerType ref from type
-                                    NodeList typeChildren = type.getChildNodes();
+                                    NodeList typeChildren = nType.getChildNodes();
                                     for (int iTypeChildren = 0; iTypeChildren < typeChildren.getLength(); ++iTypeChildren) {
                                         Node typeChild = typeChildren.item(iTypeChildren);
                                         if ("Type_HasTypeFormer".equals(typeChild.getNodeName())) {
-                                            String typeFormerTypeRef = typeChild.getAttributes().getNamedItem("ref").getNodeValue();
+                                            String refTypeFormerType = typeChild.getAttributes().getNamedItem("ref").getNodeValue();
 
                                             // search for typeFormerType with obtained id
                                             for (int iTypeFormerType = 0; iTypeFormerType < typeFormerTypeList.getLength(); ++iTypeFormerType) {
                                                 Node typeFormerType = typeFormerTypeList.item(iTypeFormerType);
-                                                String typeFormerTypeId = typeFormerType.getAttributes().getNamedItem("id").getNodeValue();
-                                                if (typeFormerTypeRef.equals(typeFormerTypeId)) {
+                                                String idTypeFormerType = typeFormerType.getAttributes().getNamedItem("id").getNodeValue();
+                                                if (refTypeFormerType.equals(idTypeFormerType)) {
 
                                                     // get class ref from typeFormerType
                                                     NodeList typeFormerTypeChildren = typeFormerType.getChildNodes();
                                                     for (int iTypeFormerTypeChild = 0; iTypeFormerTypeChild < typeFormerTypeChildren.getLength(); ++iTypeFormerTypeChild) {
                                                         Node typeFormerTypeChild = typeFormerTypeChildren.item(iTypeFormerTypeChild);
                                                         if ("TypeFormerType_RefersTo".equals(typeFormerTypeChild.getNodeName())) {
-                                                            String classRef = typeFormerTypeChild.getAttributes().getNamedItem("ref").getNodeValue();
+                                                            String refAttrClass = typeFormerTypeChild.getAttributes().getNamedItem("ref").getNodeValue();
 
                                                             // search for classes with obtained id (may not need, but builtins are excluded this way for sure)
-                                                            for (int jClass = 0; jClass < classList.getLength(); ++jClass) {
-                                                                Node klass = classList.item(jClass);
-                                                                String classId = klass.getAttributes().getNamedItem("id").getNodeValue();
-                                                                if (classRef.equals(classId)) {
+                                                            for (int iAttrClass = 0; iAttrClass < classList.getLength(); ++iAttrClass) {
+                                                                Node nAttrClass = classList.item(iAttrClass);
+                                                                String idAttrClass = nAttrClass.getAttributes().getNamedItem("id").getNodeValue();
+                                                                if (refAttrClass.equals(idAttrClass)) {
 
                                                                     // add attribute to attributesMap (init list if it does not exist)
-                                                                    String classKey = nNode.getAttributes().getNamedItem("id").getNodeValue().replaceAll("id", "L");
-                                                                    String attrClassKey = classId.replaceAll("id", "L");
-                                                                    ArrayList<String> attributes = attributesMap.get(classKey);
+                                                                    String keyClass = nClass.getAttributes().getNamedItem("id").getNodeValue().replaceAll("id", "L");
+                                                                    String keyAttrClass = idAttrClass.replaceAll("id", "L");
+                                                                    ArrayList<String> attributes = attributesMap.get(keyClass);
                                                                     if (attributes == null) {
                                                                         attributes = new ArrayList<String>();
-                                                                        attributesMap.put(classKey, attributes);
+                                                                        attributesMap.put(keyClass, attributes);
                                                                     }
-                                                                    attributes.add(attrClassKey);
+                                                                    attributes.add(keyAttrClass);
                                                                     break;
                                                                 }
                                                             }
@@ -184,6 +189,11 @@ public class Relations {
             }
         }
     }
+    
+    private getTypeFormerTypeByRef() {
+    	
+    }
+    
 
     public Map<String, ArrayList<String>> getRelationsMap() {
         return relationsMap;
