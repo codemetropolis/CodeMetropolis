@@ -1,5 +1,6 @@
 package codemetropolis.toolchain.converter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	private String source;
 	private String outputFile;
 	private Map<String, String> params;
-	
+
 	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
 		this(type, source, outputFile, null);
 	}
@@ -38,7 +39,7 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	}
 	
 	public Map<String, String> getParams() {
-		return new HashMap<>(params);
+		return Collections.unmodifiableMap(params);
 	}
 	
 	public String getParameter(String key) {

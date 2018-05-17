@@ -16,15 +16,24 @@ import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
 import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
-import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
-import codemetropolis.toolchain.rendering.model.building.*;
+import codemetropolis.toolchain.rendering.model.building.Bridge;
+import codemetropolis.toolchain.rendering.model.building.Building;
+import codemetropolis.toolchain.rendering.model.building.Cellar;
+import codemetropolis.toolchain.rendering.model.building.Floor;
+import codemetropolis.toolchain.rendering.model.building.Garden;
+import codemetropolis.toolchain.rendering.model.building.Ground;
+import codemetropolis.toolchain.rendering.model.building.Tunnel;
 import codemetropolis.toolchain.rendering.model.primitive.Boxel;
 
 public class WorldBuilder {
 
-	private static final int GROUND_LEVEL = 60;
+	public static final int GROUND_LEVEL = 60;
+	public static final int MIN_HEIGHT = 10;
+	public static final int MAX_HEIGHT = 200;
+	public static int TUNNEL_LEVEL = GROUND_LEVEL;
+	public static int BRIDGE_LEVEL = GROUND_LEVEL;
 	
 	private World world;
 	private List<Building> buildings = new ArrayList<Building>();
@@ -37,7 +46,7 @@ public class WorldBuilder {
 		world = new World(worldPath, GROUND_LEVEL);
 	}
 	
-	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{
+	public void createBuildings(String inputPath) throws RenderingException{
 		BuildableTree buildables = new BuildableTree();
 		try {
 			buildables.loadFromFile(inputPath);
@@ -46,10 +55,14 @@ public class WorldBuilder {
 			return;
 		}
 		
+		calculateMaxDepthAndHeight(buildables);
+		
 		List<Floor> floors = new ArrayList<Floor>();
 		List<Cellar> cellars = new ArrayList<Cellar>();
 		List<Garden> gardens = new ArrayList<Garden>();
 		List<Ground> grounds = new ArrayList<Ground>();
+		List<Tunnel> tunnels = new ArrayList<Tunnel>();
+		List<Bridge> bridges = new ArrayList<Bridge>();
 
 		for(Buildable b : buildables.getBuildables()) {
 			switch(b.getType()) {
@@ -75,6 +88,14 @@ public class WorldBuilder {
 					break;
 				case CONTAINER:
 					break;
+				case TUNNEL:
+					Tunnel tunnel = new Tunnel(b);
+					tunnels.add(tunnel);
+					break;
+				case BRIDGE:
+					Bridge bridge = new Bridge(b);
+					bridges.add(bridge);
+					break;
 			}
 		}
 		
@@ -82,6 +103,18 @@ public class WorldBuilder {
 		buildings.addAll(gardens);
 		buildings.addAll(cellars);
 		buildings.addAll(floors);
+		
+		for(Tunnel t : tunnels) {
+			t.prepareStairs();
+			total += t.getNumberOfBlocks();
+		}
+		buildings.addAll(tunnels);
+		
+		for(Bridge b : bridges) {
+			b.prepareStairs();
+			total += b.getNumberOfBlocks();
+		}
+		buildings.addAll(bridges);
 		
 		raiseProgressEvent(BuildPhase.READING_INPUT_FILE, 1, 1, -1);
 	}
@@ -165,5 +198,18 @@ public class WorldBuilder {
 		}
     }
 	//endregion
+	
+	private void calculateMaxDepthAndHeight(BuildableTree buildables) {
+		for(Buildable b : buildables.getBuildables()) {
+			if(b.getType() == Buildable.Type.CELLAR && b.getPositionY() < TUNNEL_LEVEL) {
+				TUNNEL_LEVEL = b.getPositionY();
+				continue;
+			}
+			if(b.getType() == Buildable.Type.FLOOR && b.getPositionY() > BRIDGE_LEVEL) {
+				BRIDGE_LEVEL = b.getPositionY();
+				continue;
+			}
+		}
+	}
 	
 }

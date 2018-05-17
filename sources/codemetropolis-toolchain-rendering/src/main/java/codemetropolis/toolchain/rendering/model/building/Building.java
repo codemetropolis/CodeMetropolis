@@ -25,9 +25,9 @@ public class Building {
 		this.innerBuildable = innerBuildable;
 		
 		size = new Point(
-				adjustSize(innerBuildable.getSizeX()),
-				adjustSize(innerBuildable.getSizeY()),
-				adjustSize(innerBuildable.getSizeZ())
+				adjustSize(innerBuildable.getSizeX(), MIN_SIZE),
+				adjustSize(innerBuildable.getSizeY(), MIN_SIZE),
+				adjustSize(innerBuildable.getSizeZ(), MIN_SIZE)
 				);
 		
 		position = new Point(
@@ -43,8 +43,10 @@ public class Building {
 				);
 	}
 	
-	private static int adjustSize( int x ) {
-		if(x < MIN_SIZE) return MIN_SIZE;
+	public Building() {}
+	
+	protected static int adjustSize( int x, int min_size ) {
+		if(x < min_size) return min_size;
 		if(x % 2 == 0) return x + 1;
 		return x;
 	}

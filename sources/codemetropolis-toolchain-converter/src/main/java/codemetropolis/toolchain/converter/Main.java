@@ -3,6 +3,7 @@ package codemetropolis.toolchain.converter;
 import java.util.HashMap;
 import java.util.Map;
 
+import codemetropolis.toolchain.converter.relations.Relations;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -10,6 +11,8 @@ import codemetropolis.toolchain.commons.util.FileLogger;
 import codemetropolis.toolchain.commons.util.Resources;
 import codemetropolis.toolchain.commons.util.Settings;
 import codemetropolis.toolchain.converter.control.ConverterType;
+
+import javax.management.relation.RelationService;
 
 public class Main {
 
