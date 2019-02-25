@@ -8,16 +8,16 @@ import codemetropolis.toolchain.placing.exceptions.LayoutException;
 
 public class House {
 	
-	private final int minHeight;
-	private final int maxHeight;
+	protected final int minHeight;
+	protected final int maxHeight;
 
-	private Buildable parent;
-	private List<Buildable> floors = new ArrayList<Buildable>();
-	private List<Buildable> cellars = new ArrayList<Buildable>();
-	private Buildable topFloor;
-	private Buildable bottomFloor;
-	private Buildable topCellar;
-	private Buildable bottomCellar;
+	protected Buildable parent;
+	protected List<Buildable> floors = new ArrayList<Buildable>();
+	protected List<Buildable> cellars = new ArrayList<Buildable>();
+	protected Buildable topFloor;
+	protected Buildable bottomFloor;
+	protected Buildable topCellar;
+	protected Buildable bottomCellar;
 	
 	public House(int minHeight, int maxHeight) {
 		this.minHeight = minHeight;
@@ -25,14 +25,14 @@ public class House {
 	}
 
 	public boolean add(Buildable b) throws LayoutException {
-		if(b.getType() == Buildable.Type.FLOOR)
+		if(b.getType() == Buildable.Type.FLOOR || b.getType() == Buildable.Type.DECORATION_FLOOR)
 			return addFloor(b);
 		else
 			return addCellar(b);
 	}
 	
 	public boolean addFloor(Buildable floor) throws LayoutException {
-		if(floor.getType() != Buildable.Type.FLOOR) {
+		if(floor.getType() != Buildable.Type.FLOOR && floor.getType() != Buildable.Type.DECORATION_FLOOR) {
 			throw new LayoutException(String.format("Cannot add %s %d as a floor. Wrong buildable type.", floor.getType().toString(), floor.getId()));
 		}
 		if(bottomFloor == null) {
@@ -148,8 +148,16 @@ public class House {
 		}
 	}
 
+	public Buildable getTopFloor() {
+		return this.topFloor;
+	}
+
 	public Buildable getParent() {
 		return parent;
 	}
 	
+	public void setParent(Buildable parent) {
+		this.parent = parent;
+	}
+
 }

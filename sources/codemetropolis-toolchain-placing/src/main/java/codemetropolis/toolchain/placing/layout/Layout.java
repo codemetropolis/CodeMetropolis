@@ -4,7 +4,9 @@ import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.placing.exceptions.LayoutException;
 import codemetropolis.toolchain.placing.exceptions.NonExistentLayoutException;
 import codemetropolis.toolchain.placing.layout.pack.PackLayout;
+import codemetropolis.toolchain.placing.layout.railway.RailwayLayout;
 //import codemetropolis.toolchain.placing.layout.tetris.TetrisLayout;
+import codemetropolis.toolchain.placing.layout.town.TownLayout;
 
 public abstract class Layout {
 
@@ -17,9 +19,13 @@ public abstract class Layout {
 			switch(LayoutAlgorithm.valueOf(algorithm.toUpperCase())) {
 				case PACK:
 					return new PackLayout();
+				case RAILWAY:
+					return new RailwayLayout();
 				//TODO tetris layout is out of date and needs to be updated
 				//case TETRIS:
 				//	return new TetrisLayout();
+				case TOWN:
+					return new TownLayout();
 			}	
 		} catch (IllegalArgumentException e) {
 			throw new NonExistentLayoutException(algorithm);

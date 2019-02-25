@@ -46,7 +46,11 @@ public class PlacingExecutor extends AbstractExecutor {
 		
 		print(Resources.get("calculating_size_and_pos"));
 		try {
-			Layout layout = Layout.parse(placingArgs.getLayout());
+			String layoutString = placingArgs.getLayout();
+			if("BASIC".equals(layoutString) && "MINIMALIST".equals(layoutString)) {
+				placingArgs.setLayout("PACK");
+			}
+			Layout layout = Layout.parse(layoutString);
 			layout.apply(buildables);
 		} catch (NonExistentLayoutException e) {
 			printError(e, Resources.get("missing_layout_error"));

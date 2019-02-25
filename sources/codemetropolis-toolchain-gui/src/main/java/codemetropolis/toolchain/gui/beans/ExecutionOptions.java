@@ -6,6 +6,7 @@ import java.util.Map;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
 import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+import codemetropolis.toolchain.rendering.model.Themes;
 
 /**
  * Contains the parameters required for running the CodeMetropolis toolchain on a given project.
@@ -32,6 +33,7 @@ public class ExecutionOptions {
 
   // Rendering tool
   private File minecraftRoot;
+  private Themes theme;
 
   /**
    * Constructs an {@link ExecutionOptions} instance with default values.
@@ -42,6 +44,7 @@ public class ExecutionOptions {
     this.scale = 1.0f;
     this.validate = false;
     this.layoutAlgorithm = LayoutAlgorithm.PACK;
+    this.theme = Themes.BASIC;
     this.showMap = false;
   }
 
@@ -71,6 +74,10 @@ public class ExecutionOptions {
 
   public LayoutAlgorithm getLayoutAlgorithm() {
     return layoutAlgorithm;
+  }
+  
+  public Themes getTheme() {
+	  return theme;
   }
 
   public boolean isShowMap() {
@@ -107,6 +114,10 @@ public class ExecutionOptions {
 
   public void setLayoutAlgorithm(LayoutAlgorithm layoutAlgorithm) {
     this.layoutAlgorithm = layoutAlgorithm;
+  }
+  
+  public void setThemes(Themes theme) {
+	  this.theme = theme;
   }
 
   public void setShowMap(boolean showMap) {

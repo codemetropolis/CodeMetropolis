@@ -1,11 +1,13 @@
 package codemetropolis.toolchain.placing.layout.pack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
@@ -151,6 +153,41 @@ public class PackLayout extends Layout {
 				housesOfParent.add(h);
 			}
 		}
+		
+		addDecorationFloors(houses);
+	
 		return houses;
 	}
+	
+	/**
+	 * Adds a nice roof onto the top of the houses.
+	 * 
+	 * @param houses The houses.
+	 */
+	private void addDecorationFloors(Map<Buildable, List<House>> houses) {
+		for(List<House> houseList : houses.values()) {
+			for(House house : houseList) {
+				if(house.getTopFloor() != null) {	
+					Buildable oldTopFloor = house.getTopFloor();
+					
+					Buildable decorationFloor = new Buildable(UUID.randomUUID().toString(), "decorationFloor",
+						Buildable.Type.DECORATION_FLOOR);
+					decorationFloor.setSizeX(oldTopFloor.getSizeX());
+					decorationFloor.setSizeY(9);
+					decorationFloor.setSizeZ(oldTopFloor.getSizeZ());
+					decorationFloor.setAttributes(Arrays.asList(oldTopFloor.getAttributes()));
+					decorationFloor.setCdfNames(oldTopFloor.getCdfNames());
+					decorationFloor.setParent(oldTopFloor.getParent());
+					decorationFloor.getParent().addChild(decorationFloor);
+					
+					try {
+						house.add(decorationFloor);
+					} catch (LayoutException e) {
+						// Should not happen, as we explicitly add a Buildable.Type.DECORATION_FLOOR
+					}
+				}
+			}
+		}
+	}
+	
 }

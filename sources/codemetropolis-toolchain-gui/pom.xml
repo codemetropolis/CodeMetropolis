@@ -80,6 +80,10 @@
       <groupId>codemetropolis.toolchain</groupId>
       <artifactId>codemetropolis-toolchain-rendering</artifactId>
       <version>1.4.0</version>
+    </dependency>	<dependency>
+      <groupId>codemetropolis.toolchain</groupId>
+      <artifactId>codemetropolis-toolchain-metrics</artifactId>
+      <version>1.4.0</version>
     </dependency>
 
     <!-- JUnit 4 -->

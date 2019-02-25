@@ -13,6 +13,7 @@ import codemetropolis.toolchain.gui.components.CMMetricPanel;
 import codemetropolis.toolchain.gui.executors.ConverterToolExecutor;
 import codemetropolis.toolchain.gui.executors.MappingToolExecutor;
 import codemetropolis.toolchain.gui.executors.MetricGeneratorExecutor;
+import codemetropolis.toolchain.gui.executors.MetricsGUIFileExecutor;
 import codemetropolis.toolchain.gui.executors.PlacingToolExecutor;
 import codemetropolis.toolchain.gui.executors.RenderingToolExecutor;
 import codemetropolis.toolchain.gui.metricgenerators.SonarQubeGenerator;
@@ -58,6 +59,7 @@ public class GUIController {
       new MappingToolExecutor().execute(projectRoot, executionOptions, out);
       new PlacingToolExecutor().execute(projectRoot, executionOptions, out);
       new RenderingToolExecutor().execute(projectRoot, executionOptions, out);
+      new MetricsGUIFileExecutor().execute(projectRoot, executionOptions, out);
     } catch (Exception e) {
       throw new ExecutionException("Toolchain execution failed!", e);
     }
@@ -69,7 +71,7 @@ public class GUIController {
    * @return The {@link File} object for the generated directory.
    * @throws ExecutionException if creating the directory failed.
    */
-  private File createTargetFolder() throws ExecutionException {
+  public File createTargetFolder() throws ExecutionException {
     File cmRoot = new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis");
     if (!cmRoot.exists()) {
       cmRoot.mkdir();
