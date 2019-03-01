@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>WorldBuilder.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.control</a> &gt; <span class="el_source">WorldBuilder.java</span></div><h1>WorldBuilder.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.control;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
+
+import codemetropolis.blockmodifier.World;
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
+import codemetropolis.toolchain.rendering.events.ProgressEvent;
+import codemetropolis.toolchain.rendering.events.ProgressEventListener;
+import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
+import codemetropolis.toolchain.rendering.exceptions.RenderingException;
+import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
+import codemetropolis.toolchain.rendering.model.building.*;
+import codemetropolis.toolchain.rendering.model.primitive.Boxel;
+
+public class WorldBuilder {
+
+	private static final int GROUND_LEVEL = 60;
+	
+	private World world;
+<span class="nc" id="L30">	private List&lt;Building&gt; buildings = new ArrayList&lt;Building&gt;();</span>
+<span class="nc" id="L31">	private StopWatch stopWatch = new StopWatch();</span>
+
+<span class="nc" id="L33">	private int count = 0;</span>
+<span class="nc" id="L34">	private int total = 0;</span>
+	
+<span class="nc" id="L36">	public WorldBuilder(String worldPath) {</span>
+<span class="nc" id="L37">		world = new World(worldPath, GROUND_LEVEL);</span>
+<span class="nc" id="L38">	}</span>
+	
+	public void createBuildings(String inputPath) throws BuildingTypeMismatchException{
+<span class="nc" id="L41">		BuildableTree buildables = new BuildableTree();</span>
+		try {
+<span class="nc" id="L43">			buildables.loadFromFile(inputPath);</span>
+<span class="nc" id="L44">		} catch (CmxmlReaderException e) {</span>
+<span class="nc" id="L45">			e.printStackTrace();</span>
+<span class="nc" id="L46">			return;</span>
+		}
+		
+<span class="nc" id="L49">		List&lt;Floor&gt; floors = new ArrayList&lt;Floor&gt;();</span>
+<span class="nc" id="L50">		List&lt;Cellar&gt; cellars = new ArrayList&lt;Cellar&gt;();</span>
+<span class="nc" id="L51">		List&lt;Garden&gt; gardens = new ArrayList&lt;Garden&gt;();</span>
+<span class="nc" id="L52">		List&lt;Ground&gt; grounds = new ArrayList&lt;Ground&gt;();</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">		for(Buildable b : buildables.getBuildables()) {</span>
+<span class="nc bnc" id="L55" title="All 5 branches missed.">			switch(b.getType()) {</span>
+				case FLOOR: 
+<span class="nc" id="L57">					Floor floor = new Floor(b);</span>
+<span class="nc" id="L58">					floors.add(floor);</span>
+<span class="nc" id="L59">					total += floor.getNumberOfBlocks();</span>
+<span class="nc" id="L60">					break;</span>
+				case CELLAR: 
+<span class="nc" id="L62">					Cellar cellar = new Cellar(b);</span>
+<span class="nc" id="L63">					cellars.add(cellar);</span>
+<span class="nc" id="L64">					total += cellar.getNumberOfBlocks();</span>
+<span class="nc" id="L65">					break;</span>
+				case GARDEN: 
+<span class="nc" id="L67">					Garden garden = new Garden(b);</span>
+<span class="nc" id="L68">					gardens.add(garden);</span>
+<span class="nc" id="L69">					total += garden.getNumberOfBlocks();</span>
+<span class="nc" id="L70">					break;</span>
+				case GROUND:
+<span class="nc" id="L72">					Ground ground = new Ground(b);</span>
+<span class="nc" id="L73">					grounds.add(ground);</span>
+<span class="nc" id="L74">					total += ground.getNumberOfBlocks();</span>
+<span class="nc" id="L75">					break;</span>
+				case CONTAINER:
+					break;
+			}
+		}
+		
+<span class="nc" id="L81">		buildings.addAll(grounds);</span>
+<span class="nc" id="L82">		buildings.addAll(gardens);</span>
+<span class="nc" id="L83">		buildings.addAll(cellars);</span>
+<span class="nc" id="L84">		buildings.addAll(floors);</span>
+		
+<span class="nc" id="L86">		raiseProgressEvent(BuildPhase.READING_INPUT_FILE, 1, 1, -1);</span>
+<span class="nc" id="L87">	}</span>
+	
+	public void createBlocks(File directory, int maxTime) throws TooLongRenderDurationException {
+<span class="nc" id="L90">		raiseProgressEvent(BuildPhase.GENERATING_BLOCKS, 0, total, 0);</span>
+<span class="nc" id="L91">		stopWatch.reset();</span>
+<span class="nc" id="L92">		stopWatch.start();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		for(Building b : buildings) {</span>
+<span class="nc" id="L94">			count += b.toCSVFile(directory);</span>
+<span class="nc" id="L95">			long timeElapsed = stopWatch.getTime();</span>
+<span class="nc" id="L96">			int timeLeftInMinutes = (int) ((double)timeElapsed / count * (total - count)) / (1000 * 60);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			if(timeLeftInMinutes &gt; maxTime) throw new TooLongRenderDurationException(timeLeftInMinutes, maxTime);</span>
+<span class="nc" id="L98">			raiseProgressEvent(BuildPhase.GENERATING_BLOCKS, count, total, timeElapsed);</span>
+		}
+<span class="nc" id="L100">		stopWatch.stop();</span>
+<span class="nc" id="L101">	}</span>
+	
+	public void build(File sourceDirectory) throws RenderingException {
+		
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if(!sourceDirectory.exists()) {</span>
+<span class="nc" id="L106">			return;</span>
+		}
+		
+<span class="nc" id="L109">		raiseProgressEvent(BuildPhase.PLACING_BLOCKS, 0, total, 0);</span>
+<span class="nc" id="L110">        count = 0;</span>
+<span class="nc" id="L111">        stopWatch.reset();</span>
+<span class="nc" id="L112">		stopWatch.start();</span>
+        
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for(File f : sourceDirectory.listFiles()) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if(f.getName().matches(&quot;blocks\\.-?[0-9]*\\.-?[0-9]*.csv&quot;)) {</span>
+<span class="nc" id="L116">                try(BufferedReader reader = new BufferedReader(new FileReader(f))) {</span>
+<span class="nc" id="L117">                	String blockString = reader.readLine();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                	while(blockString != null) {</span>
+<span class="nc" id="L119">                		Boxel boxel = Boxel.parseCSV(blockString);</span>
+<span class="nc" id="L120">                		boxel.render(world);</span>
+<span class="nc" id="L121">                		count++;</span>
+<span class="nc" id="L122">                		blockString = reader.readLine();</span>
+                	}
+<span class="nc bnc" id="L124" title="All 8 branches missed.">                } catch (IOException e) {</span>
+<span class="nc" id="L125">					throw new RenderingException(e);</span>
+				}
+            }
+<span class="nc" id="L128">            long timeSpent = stopWatch.getTime();</span>
+<span class="nc" id="L129">			raiseProgressEvent(BuildPhase.PLACING_BLOCKS, count, total, timeSpent);</span>
+        }
+        
+<span class="nc" id="L132">        world.finish();</span>
+<span class="nc" id="L133">        stopWatch.stop();</span>
+<span class="nc" id="L134">        raiseProgressEvent(BuildPhase.PLACING_BLOCKS, total, total, stopWatch.getTime());</span>
+<span class="nc" id="L135">	}</span>
+	
+	public int getNumberOfBuildings() {
+<span class="nc" id="L138">		return buildings.size();</span>
+	}
+	
+	public int getNumberOfBlocks() {
+<span class="nc" id="L142">		return total;</span>
+	}
+	
+	public long getTimeElapsedDuringLastPhase() {
+<span class="nc" id="L146">		return stopWatch.getTime();</span>
+	}
+	
+	//region PROGRESS EVENT
+<span class="nc" id="L150">	private List&lt;EventListener&gt; listeners = new ArrayList&lt;EventListener&gt;();</span>
+	
+	public synchronized void addEventListener(ProgressEventListener listener)  {
+<span class="nc" id="L153">		listeners.add(listener);</span>
+<span class="nc" id="L154">	}</span>
+	
+	public synchronized void removeEventListener(ProgressEventListener listener)   {
+<span class="nc" id="L157">		listeners.remove(listener);</span>
+<span class="nc" id="L158">	}</span>
+	 
+	private synchronized void raiseProgressEvent(BuildPhase phase, long count, long total, long timeElapsedInMillis) {
+<span class="nc" id="L161">		ProgressEvent event = new ProgressEvent(this, phase, count, total, timeElapsedInMillis);</span>
+		
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for(EventListener listener : listeners) {</span>
+<span class="nc" id="L164">			((ProgressEventListener) listener).onNextState(event);</span>
+		}
+<span class="nc" id="L166">    }</span>
+	//endregion
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

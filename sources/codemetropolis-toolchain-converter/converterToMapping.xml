@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<element name="#document" type="#document">
+    <children>
+        <element name="chrome_visited_sites" type="chrome_visited_sites">
+            <children>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://www.inf.u-szeged.hu/"/>
+                        <property name="title" type="string" value="Informatikai Intézet – üdvözlet a webhelyen! | Informatikai Intézet"/>
+                        <property name="visit_count" type="int" value="12"/>
+                        <property name="typed_count" type="int" value="7"/>
+                        <property name="referrer" type="int" value="7"/>
+                        <property name="visit_id" type="int" value="1"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="11"/>
+                        <property name="transition_type" type="string" value="Auto Bookmark"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start,Chain End"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://www.coosp.etr.u-szeged.hu/Home"/>
+                        <property name="title" type="string" value="Bejelentkezés - SZTE CooSpace"/>
+                        <property name="visit_count" type="int" value="12"/>
+                        <property name="typed_count" type="int" value="5"/>
+                        <property name="referrer" type="int" value="5"/>
+                        <property name="visit_id" type="int" value="2"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="12"/>
+                        <property name="transition_type" type="string" value="Auto Bookmark"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://www.coosp.etr.u-szeged.hu/?ReturnUrl=%2fHome"/>
+                        <property name="title" type="string" value="Bejelentkezés - SZTE CooSpace"/>
+                        <property name="visit_count" type="int" value="13"/>
+                        <property name="typed_count" type="int" value="12"/>
+                        <property name="referrer" type="string" value="http://www.coosp.etr.u-szeged.hu/Home"/>
+                        <property name="visit_id" type="int" value="3"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="11"/>
+                        <property name="transition_type" type="string" value="Auto Bookmark"/>
+                        <property name="transition_qualifiers" type="string" value="Server Redirect"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="https://www.coosp.etr.u-szeged.hu/?ReturnUrl=%2fHome"/>
+                        <property name="title" type="string" value="Bejelentkezés - SZTE CooSpace"/>
+                        <property name="visit_count" type="int" value="1"/>
+                        <property name="typed_count" type="int" value="2"/>
+                        <property name="referrer" type="string" value="http://www.coosp.etr.u-szeged.hu/?ReturnUrl=%2fHome"/>
+                        <property name="visit_id" type="int" value="4"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="12"/>
+                        <property name="transition_type" type="string" value="Auto Bookmark"/>
+                        <property name="transition_qualifiers" type="string" value="Chain End,Server Redirect"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://hvg.hu/"/>
+                        <property name="title" type="string" value="hvg.hu - Főoldal"/>
+                        <property name="visit_count" type="int" value="12"/>
+                        <property name="typed_count" type="int" value="22"/>
+                        <property name="referrer" type="int" value="22"/>
+                        <property name="visit_id" type="int" value="5"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="1"/>
+                        <property name="transition_type" type="string" value="Typed"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start,Chain End"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://index.com/"/>
+                        <property name="title" type="string" value="Retail Software That Transforms Your In-Store Payments | Index"/>
+                        <property name="visit_count" type="int" value="5"/>
+                        <property name="typed_count" type="int" value="3"/>
+                        <property name="referrer" type="int" value="3"/>
+                        <property name="visit_id" type="int" value="6"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="17"/>
+                        <property name="transition_type" type="string" value="Typed"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="http://www.index.com/"/>
+                        <property name="title" type="string" value="Retail Software That Transforms Your In-Store Payments | Index"/>
+                        <property name="visit_count" type="int" value="5"/>
+                        <property name="typed_count" type="int" value="8"/>
+                        <property name="referrer" type="string" value="http://index.com/"/>
+                        <property name="visit_id" type="int" value="7"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="21"/>
+                        <property name="transition_type" type="string" value="Typed"/>
+                        <property name="transition_qualifiers" type="string" value="Server Redirect"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="https://www.index.com/"/>
+                        <property name="title" type="string" value="Retail Software That Transforms Your In-Store Payments | Index"/>
+                        <property name="visit_count" type="int" value="2"/>
+                        <property name="typed_count" type="int" value="3"/>
+                        <property name="referrer" type="string" value="http://www.index.com/"/>
+                        <property name="visit_id" type="int" value="8"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="12"/>
+                        <property name="transition_type" type="string" value="Typed"/>
+                        <property name="transition_qualifiers" type="string" value="Chain End,Server Redirect"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="https://www.google.com/search?source=hp&amp;ei=D-3ZWuSvJ8q6swGd_o_YCQ&amp;q=horde&amp;oq=horde&amp;gs_l=psy-ab.3..0l10.1270.1878.0.2043.5.5.0.0.0.0.109.380.3j1.4.0....0...1c.1.64.psy-ab..1.4.379...0i131k1.0.6DLc65q5WLU"/>
+                        <property name="title" type="string" value="horde - Google-keresés"/>
+                        <property name="visit_count" type="int" value="12"/>
+                        <property name="typed_count" type="int" value="7"/>
+                        <property name="referrer" type="string" value="https://www.google.com/"/>
+                        <property name="visit_id" type="int" value="9"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="15"/>
+                        <property name="transition_type" type="string" value="Form Submit"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start,Chain End"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+                <element name="item" type="item">
+                    <children/>
+                    <properties>
+                        <property name="url" type="string" value="https://www.stud.u-szeged.hu/horde/"/>
+                        <property name="title" type="string" value="Horde :: Bejelentkezés"/>
+                        <property name="visit_count" type="int" value="10"/>
+                        <property name="typed_count" type="int" value="22"/>
+                        <property name="referrer" type="string" value="https://www.google.com/"/>
+                        <property name="visit_id" type="int" value="10"/>
+                        <property name="profile" type="string" value="Default"/>
+                        <property name="url_length" type="int" value="35"/>
+                        <property name="transition_type" type="string" value="Link"/>
+                        <property name="transition_qualifiers" type="string" value="Chain Start"/>
+                    </properties>
+                </element>
+                <element name="#text" type="#text">
+                    <children/>
+                    <properties/>
+                </element>
+            </children>
+            <properties/>
+        </element>
+    </children>
+    <properties/>
+</element>

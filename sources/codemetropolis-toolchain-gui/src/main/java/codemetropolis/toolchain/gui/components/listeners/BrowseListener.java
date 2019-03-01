@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
  * Listener class to handle file and directory browsing.
@@ -34,6 +35,27 @@ public class BrowseListener implements ActionListener {
     if (filter != null) {
       this.fileChooser.setFileFilter(filter);
     }
+  }
+  
+  /**
+   * Constructs a {@link BrowseListener} instance with the given parameters.
+   *
+   * @param fileNameTextField The {@link CMTextField} instance that will contain the path for the selected file.
+   * @param title The text what will be displayed in the title bar.
+   * @param fileSelectionMode The file selection mode for the {@link JFileChooser}. See
+   *   {@link JFileChooser#setFileSelectionMode(int)} for details.
+   * @param filter Optional. If provided, it will be used for the {@link JFileChooser} to filter the visible entities.
+   */
+  public BrowseListener(CMTextField fileNameTextField, String title, int fileSelectionMode, FileFilter filter) {
+	    this.fileNameTextField = fileNameTextField;
+
+	    this.fileChooser = new JFileChooser();
+	    this.fileChooser.setFileSelectionMode(fileSelectionMode);
+	    this.fileChooser.setDialogTitle(title);
+	    this.fileChooser.setApproveButtonText(Translations.t("gui_b_ok"));
+	    if (filter != null) {
+	      this.fileChooser.setFileFilter(filter);
+	    }
   }
 
   @Override

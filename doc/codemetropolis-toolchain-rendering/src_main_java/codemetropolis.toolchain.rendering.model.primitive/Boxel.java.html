@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Boxel.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.primitive</a> &gt; <span class="el_source">Boxel.java</span></div><h1>Boxel.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model.primitive;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import codemetropolis.blockmodifier.World;
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+
+public class Boxel implements Primitive {
+	
+	public BasicBlock block;
+	public Point position;
+	public String info;
+	
+	public Boxel(BasicBlock block, Point position) {
+<span class="nc" id="L21">		super();</span>
+<span class="nc" id="L22">		this.block = block;</span>
+<span class="nc" id="L23">		this.position = position;</span>
+<span class="nc" id="L24">	}</span>
+	
+	public Boxel(BasicBlock block, Point position, String info) {
+<span class="nc" id="L27">		this(block, position);</span>
+<span class="nc" id="L28">		this.info = info;</span>
+<span class="nc" id="L29">	}</span>
+	
+	public void render(World world) {
+<span class="nc bnc" id="L32" title="All 4 branches missed.">		if(position.getY() &lt; 0 || position.getY() &gt;= 255) return;</span>
+		
+<span class="nc bnc" id="L34" title="All 4 branches missed.">		switch(block.getId()) {</span>
+			case 63:
+<span class="nc" id="L36">				world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(), info);</span>
+<span class="nc" id="L37">				break;</span>
+			case 68:
+<span class="nc" id="L39">				world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(), info);</span>
+<span class="nc" id="L40">				break;</span>
+			case 176:
+<span class="nc" id="L42">				world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(), World.BannerColor.valueOf(info.toUpperCase()));</span>
+<span class="nc" id="L43">				break;</span>
+			default:
+<span class="nc" id="L45">				world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());	</span>
+		}
+<span class="nc" id="L47">	}</span>
+	
+	public String toCSV() {
+		//if(block == BasicBlock.NonBlock) return null;
+<span class="nc bnc" id="L51" title="All 2 branches missed.">		if(block.getId() == -1) return null;</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">		return String.format(&quot;%d;%d;%d;%d;%d;%s&quot;, block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), (info == null || info.equals(&quot;&quot;) ? &quot;NULL&quot; : info));</span>
+	}
+	
+	public static Boxel parseCSV(String csv) {
+<span class="nc" id="L56">		String[] parts = csv.split(&quot;;&quot;);</span>
+<span class="nc" id="L57">		return new Boxel(</span>
+<span class="nc" id="L58">			new BasicBlock(</span>
+<span class="nc" id="L59">				Short.parseShort(parts[0]),</span>
+<span class="nc" id="L60">				Integer.parseInt(parts[1])),</span>
+<span class="nc" id="L61">			new Point(</span>
+<span class="nc" id="L62">				Integer.parseInt(parts[2]),</span>
+<span class="nc" id="L63">				Integer.parseInt(parts[3]),</span>
+<span class="nc" id="L64">				Integer.parseInt(parts[4])),</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">			(parts[5].equals(&quot;NULL&quot;) ? &quot;&quot; : parts[5])</span>
+		);
+	}
+	
+	@Override
+	public int toCSVFile(File directory) {
+<span class="nc" id="L71">		int x = position.getX() &gt;&gt; 9;</span>
+<span class="nc" id="L72">		int z = position.getZ() &gt;&gt; 9;</span>
+		
+<span class="nc" id="L74">		directory.mkdirs();</span>
+<span class="nc" id="L75">		String filename = String.format(&quot;blocks.%d.%d.csv&quot;, x, z);</span>
+<span class="nc" id="L76">		File file = new File(directory, filename);</span>
+		
+<span class="nc" id="L78">		try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {	</span>
+<span class="nc" id="L79">			String csv = toCSV();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">			if(csv != null) writer.println(csv);</span>
+<span class="nc bnc" id="L81" title="All 8 branches missed.">		} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L82">			e.printStackTrace();</span>
+<span class="nc" id="L83">		} catch (IOException e1) {</span>
+<span class="nc" id="L84">			e1.printStackTrace();</span>
+		}
+<span class="nc" id="L86">		return 1;</span>
+	}
+
+	@Override
+	public int getNumberOfBlocks() {
+<span class="nc" id="L91">		return 1;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

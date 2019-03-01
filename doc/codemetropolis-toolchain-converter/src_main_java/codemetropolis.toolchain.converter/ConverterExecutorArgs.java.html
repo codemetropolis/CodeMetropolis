@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ConverterExecutorArgs.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter</a> &gt; <span class="el_source">ConverterExecutorArgs.java</span></div><h1>ConverterExecutorArgs.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import codemetropolis.toolchain.commons.executor.ExecutorArgs;
+import codemetropolis.toolchain.converter.control.ConverterType;
+
+public class ConverterExecutorArgs extends ExecutorArgs {
+	
+	private ConverterType type;
+	private String source;
+	private String outputFile;
+	private Map&lt;String, String&gt; params;
+	
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile) {
+<span class="nc" id="L18">		this(type, source, outputFile, new HashMap&lt;String, String&gt;());</span>
+<span class="nc" id="L19">	}</span>
+	
+	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map&lt;String, String&gt; params) {
+<span class="nc" id="L22">		super();</span>
+<span class="nc" id="L23">		this.type = type;</span>
+<span class="nc" id="L24">		this.source = source;</span>
+<span class="nc" id="L25">		this.outputFile = outputFile;</span>
+<span class="nc" id="L26">		this.params = params;</span>
+<span class="nc" id="L27">	}</span>
+
+	public ConverterType getType() {
+<span class="nc" id="L30">		return type;</span>
+	}
+	
+	public String getSource() {
+<span class="nc" id="L34">		return source;</span>
+	}
+
+	public String getOutputFile(){
+<span class="nc" id="L38">		return outputFile;</span>
+	}
+	
+	public Map&lt;String, String&gt; getParams() {
+<span class="nc" id="L42">		return Collections.unmodifiableMap(params);</span>
+	}
+	
+	public String getParameter(String key) {
+<span class="nc" id="L46">		return params.get(key);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

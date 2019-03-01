@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Floor.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.building</a> &gt; <span class="el_source">Floor.java</span></div><h1>Floor.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model.building;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
+import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
+import codemetropolis.toolchain.rendering.model.primitive.Door;
+import codemetropolis.toolchain.rendering.model.primitive.EmptyBox;
+import codemetropolis.toolchain.rendering.model.primitive.Row;
+import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
+import codemetropolis.toolchain.rendering.model.primitive.WallSign;
+import codemetropolis.toolchain.rendering.util.Character;
+import codemetropolis.toolchain.rendering.util.Orientation;
+
+public class Floor extends Building {
+
+	public Floor(Buildable innerBuildable) throws BuildingTypeMismatchException {
+<span class="nc" id="L21">		super(innerBuildable);</span>
+		
+<span class="nc bnc" id="L23" title="All 4 branches missed.">		if ( innerBuildable.getType()!= Type.FLOOR &amp;&amp; innerBuildable.getType() != Type.CELLAR )</span>
+<span class="nc" id="L24">			throw new BuildingTypeMismatchException(innerBuildable.getType(), getClass());</span>
+
+<span class="nc" id="L26">		prepareWalls();</span>
+<span class="nc" id="L27">		prepareStairs();</span>
+<span class="nc" id="L28">		prepareDoor();</span>
+<span class="nc" id="L29">		prepareSigns();</span>
+<span class="nc" id="L30">		prepareTorches();</span>
+<span class="nc" id="L31">	}</span>
+	
+	protected void prepareDoor() {
+<span class="nc" id="L34">		BasicBlock _red = new BasicBlock( &quot;minecraft:redstone_block&quot; );</span>
+<span class="nc" id="L35">		BasicBlock _lgt = new BasicBlock( &quot;minecraft:lit_redstone_lamp&quot; );</span>
+<span class="nc" id="L36">		BasicBlock _rwl = new BasicBlock( &quot;minecraft:wool&quot;, 14 );</span>
+<span class="nc" id="L37">		BasicBlock _gwl = new BasicBlock( &quot;minecraft:wool&quot;, 5 );</span>
+<span class="nc" id="L38">		BasicBlock _bwl = new BasicBlock( &quot;minecraft:wool&quot;, 3 );</span>
+<span class="nc" id="L39">		BasicBlock _ywl = new BasicBlock( &quot;minecraft:wool&quot;, 4 );</span>
+<span class="nc" id="L40">		primitives.add(</span>
+<span class="nc" id="L41">			new SolidBox(</span>
+<span class="nc" id="L42">				position.translate( new Point( center.getX() - 1, 0, 0 ) ), new Point( 3, 4, 1 ),</span>
+<span class="nc" id="L43">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L44">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L46">					{</span>
+<span class="nc" id="L47">						{</span>
+<span class="nc" id="L48">							{ _rwl },</span>
+<span class="nc" id="L49">							{ _lgt },</span>
+<span class="nc" id="L50">							{ _red },</span>
+<span class="nc" id="L51">							{ _rwl }</span>
+						}
+					} ),
+<span class="nc" id="L54">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L56">		primitives.add(</span>
+<span class="nc" id="L57">			new SolidBox(</span>
+<span class="nc" id="L58">				position.translate( new Point( center.getX() - 1, 0, size.getZ() - 1 ) ), new Point( 3, 4, 1 ),</span>
+<span class="nc" id="L59">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L60">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L62">					{</span>
+<span class="nc" id="L63">						{</span>
+<span class="nc" id="L64">							{ _gwl },</span>
+<span class="nc" id="L65">							{ _lgt },</span>
+<span class="nc" id="L66">							{ _red },</span>
+<span class="nc" id="L67">							{ _gwl }</span>
+						}
+					} ),
+<span class="nc" id="L70">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L72">		primitives.add(</span>
+<span class="nc" id="L73">			new SolidBox(</span>
+<span class="nc" id="L74">				position.translate( new Point( 0, 0, center.getZ()-1 ) ), new Point( 1, 4, 3 ),</span>
+<span class="nc" id="L75">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L76">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L78">					{</span>
+<span class="nc" id="L79">						{</span>
+<span class="nc" id="L80">							{ _bwl },</span>
+<span class="nc" id="L81">							{ _lgt },</span>
+<span class="nc" id="L82">							{ _red },</span>
+<span class="nc" id="L83">							{ _bwl }</span>
+						}
+					} ),
+<span class="nc" id="L86">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L88">		primitives.add(</span>
+<span class="nc" id="L89">			new SolidBox(</span>
+<span class="nc" id="L90">				position.translate( new Point( size.getX()-1, 0, center.getZ() - 1 ) ), new Point( 1, 4, 3 ),</span>
+<span class="nc" id="L91">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L92">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L94">					{</span>
+<span class="nc" id="L95">						{</span>
+<span class="nc" id="L96">							{ _ywl },</span>
+<span class="nc" id="L97">							{ _lgt },</span>
+<span class="nc" id="L98">							{ _red },</span>
+<span class="nc" id="L99">							{ _ywl }</span>
+						}
+					} ),
+<span class="nc" id="L102">				Orientation.NearX )</span>
+			);
+		
+<span class="nc" id="L105">		primitives.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ(), Door.Orientation.SOUTH));</span>
+<span class="nc" id="L106">		primitives.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ()  + size.getZ() - 1, Door.Orientation.NORTH));</span>
+<span class="nc" id="L107">		primitives.add(new Door(position.getX(), position.getY() + 1, position.getZ() + size.getZ() / 2, Door.Orientation.EAST));</span>
+<span class="nc" id="L108">		primitives.add(new Door(position.getX() + size.getX() - 1, position.getY() + 1, position.getZ() + size.getZ() / 2, Door.Orientation.WEST));	</span>
+<span class="nc" id="L109">	}</span>
+	
+	protected void prepareStairs() {
+<span class="nc" id="L112">		BasicBlock _air = new BasicBlock( (short) 0 );</span>
+<span class="nc" id="L113">		BasicBlock _str = new BasicBlock( (short) 1 );</span>
+<span class="nc" id="L114">		BasicBlock _cre = new BasicBlock( (short) 85 );</span>
+<span class="nc" id="L115">		primitives.add(</span>
+<span class="nc" id="L116">			new SolidBox(</span>
+<span class="nc" id="L117">				position.translate( new Point( center.getX() - 2, 0, center.getZ() - 2 ) ),</span>
+<span class="nc" id="L118">				new Point( 5, size.getY() + 1, 5 ),</span>
+<span class="nc" id="L119">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L121">					{</span>
+<span class="nc" id="L122">						{</span>
+<span class="nc" id="L123">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L124">							{ _air, _str, _air, _air, _air },</span>
+<span class="nc" id="L125">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L126">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L127">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L129">						{</span>
+<span class="nc" id="L130">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L131">							{ _air, _air, _str, _air, _air },</span>
+<span class="nc" id="L132">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L133">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L134">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L136">						{</span>
+<span class="nc" id="L137">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L138">							{ _air, _air, _air, _str, _air },</span>
+<span class="nc" id="L139">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L140">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L141">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L143">						{</span>
+<span class="nc" id="L144">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L145">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L146">							{ _air, _air, _cre, _str, _air },</span>
+<span class="nc" id="L147">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L148">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L150">						{</span>
+<span class="nc" id="L151">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L152">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L153">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L154">							{ _air, _air, _air, _str, _air },</span>
+<span class="nc" id="L155">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L157">						{</span>
+<span class="nc" id="L158">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L159">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L160">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L161">							{ _air, _air, _str, _air, _air },</span>
+<span class="nc" id="L162">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L164">						{</span>
+<span class="nc" id="L165">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L166">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L167">							{ _air, _air, _cre, _air, _air },</span>
+<span class="nc" id="L168">							{ _air, _str, _air, _air, _air },</span>
+<span class="nc" id="L169">							{ _air, _air, _air, _air, _air }</span>
+						},
+<span class="nc" id="L171">						{</span>
+<span class="nc" id="L172">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L173">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L174">							{ _air, _str, _cre, _air, _air },</span>
+<span class="nc" id="L175">							{ _air, _air, _air, _air, _air },</span>
+<span class="nc" id="L176">							{ _air, _air, _air, _air, _air }</span>
+						}
+					} ),
+<span class="nc" id="L179">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:fence&quot; ) } } } ),</span>
+<span class="nc" id="L180">				Orientation.NearY ) );</span>
+<span class="nc" id="L181">	}</span>
+	
+	protected void prepareWalls() {
+		RepeationPattern _bottomFill;
+		RepeationPattern _topFill;
+		RandomPattern _sideFill;
+		RepeationPattern _stroke;
+		BasicBlock _sideBlock;
+		BasicBlock _strcBlock;
+		
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		if(innerBuildable.hasAttribute( &quot;character&quot; ))</span>
+		{
+<span class="nc" id="L193">			Character character = Character.parse(innerBuildable.getAttributeValue(&quot;character&quot;));</span>
+<span class="nc" id="L194">			_sideBlock = character.getBlock();</span>
+<span class="nc" id="L195">			_topFill = new RepeationPattern( new BasicBlock[][][] { { { character.getTopBlock() } } } );</span>
+<span class="nc" id="L196">		} else {</span>
+<span class="nc" id="L197">			_sideBlock = new BasicBlock( &quot;minecraft:wool&quot;, 2 );</span>
+<span class="nc" id="L198">			_topFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:wool&quot;, 2 ) } } } );</span>
+		}
+		
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		if(innerBuildable.hasAttribute( &quot;external_character&quot; ))</span>
+		{
+<span class="nc" id="L203">			Character externalCharacter = Character.parse(innerBuildable.getAttributeValue(&quot;external_character&quot;));</span>
+<span class="nc" id="L204">			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );</span>
+<span class="nc" id="L205">			_strcBlock = externalCharacter.getBlock();</span>
+<span class="nc" id="L206">			_stroke = new RepeationPattern( new BasicBlock[][][] { { { externalCharacter.getBlock() } } } );</span>
+<span class="nc" id="L207">		} else {</span>
+<span class="nc" id="L208">			_bottomFill = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:wool&quot;, 2 ) } } } );</span>
+<span class="nc" id="L209">			_strcBlock = new BasicBlock( &quot;minecraft:wool&quot;, 10 );</span>
+<span class="nc" id="L210">			_stroke = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:wool&quot;, 15 ) } } } );</span>
+		}
+		
+<span class="nc" id="L213">		RandomPattern _fallbackPattern = new RandomPattern( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.NonBlock } } } ) );</span>
+<span class="nc" id="L214">		_fallbackPattern.add( new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:fence&quot; ) } } } ), .5 );</span>
+<span class="nc" id="L215">		_sideFill = new RandomPattern( _fallbackPattern );</span>
+<span class="nc" id="L216">		_sideFill.add(</span>
+<span class="nc" id="L217">			new RepeationPattern(</span>
+				new BasicBlock[][][]
+<span class="nc" id="L219">				{</span>
+<span class="nc" id="L220">					{</span>
+<span class="nc" id="L221">						{ _sideBlock, _sideBlock, _strcBlock, _sideBlock, _sideBlock },</span>
+<span class="nc" id="L222">						{ _sideBlock, _sideBlock, _strcBlock, _sideBlock, _sideBlock },</span>
+<span class="nc" id="L223">						{ _strcBlock, _strcBlock, _strcBlock, _strcBlock, _strcBlock },</span>
+<span class="nc" id="L224">						{ _sideBlock, _sideBlock, _strcBlock, _sideBlock, _sideBlock },</span>
+<span class="nc" id="L225">						{ _sideBlock, _sideBlock, _strcBlock, _sideBlock, _sideBlock }</span>
+					}
+				} ),
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			innerBuildable.hasAttribute( &quot;completeness&quot; )</span>
+<span class="nc" id="L229">				? Double.parseDouble( innerBuildable.getAttributeValue(&quot;completeness&quot;) )</span>
+<span class="nc" id="L230">				: 1 );</span>
+<span class="nc" id="L231">		primitives.add(</span>
+<span class="nc" id="L232">			new EmptyBox(</span>
+<span class="nc" id="L233">				position,</span>
+<span class="nc" id="L234">				size,</span>
+<span class="nc" id="L235">				_bottomFill,</span>
+<span class="nc" id="L236">				_topFill,</span>
+<span class="nc" id="L237">				_sideFill,</span>
+<span class="nc" id="L238">				_stroke,</span>
+<span class="nc" id="L239">				new Point( 1, 1, 1 ),</span>
+<span class="nc" id="L240">				new Point( 1, 1, 1 ) )</span>
+			);
+<span class="nc" id="L242">	}</span>
+	
+	private void prepareSigns( ) {
+		//Wall signs outside
+<span class="nc" id="L246">		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() - 1, WallSign.Orientation.NORTH, innerBuildable.getName()));</span>
+<span class="nc" id="L247">		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ()  + size.getZ(), WallSign.Orientation.SOUTH, innerBuildable.getName()));</span>
+<span class="nc" id="L248">		primitives.add(new WallSign(position.getX() - 1, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.WEST, innerBuildable.getName()));</span>
+<span class="nc" id="L249">		primitives.add(new WallSign(position.getX() + size.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.EAST, innerBuildable.getName()));</span>
+		//Wall signs inside
+<span class="nc" id="L251">		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + 1, WallSign.Orientation.SOUTH, innerBuildable.getName()));</span>
+<span class="nc" id="L252">		primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ()  + size.getZ() - 2, WallSign.Orientation.NORTH, innerBuildable.getName()));</span>
+<span class="nc" id="L253">		primitives.add(new WallSign(position.getX() + 1, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.EAST, innerBuildable.getName()));</span>
+<span class="nc" id="L254">		primitives.add(new WallSign(position.getX() + size.getX() - 2, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.WEST, innerBuildable.getName()));	</span>
+<span class="nc" id="L255">	}</span>
+	
+	private void prepareTorches( ) {
+		
+<span class="nc bnc" id="L259" title="All 2 branches missed.">		if(!innerBuildable.hasAttribute( &quot;torches&quot; )) return;</span>
+		
+<span class="nc" id="L261">		int numberOfTorches = Integer.parseInt(innerBuildable.getAttributeValue(&quot;torches&quot;));</span>
+		BasicBlock[] pattern;
+		
+<span class="nc" id="L264">		pattern = createTorchPattern(numberOfTorches, 3);</span>
+<span class="nc" id="L265">		primitives.add(new Row(</span>
+<span class="nc" id="L266">				new Point(position.getX() + size.getX() / 2 + 2, position.getY() + 2, position.getZ() + 1),</span>
+<span class="nc" id="L267">				size.getX() / 2 - 2,</span>
+<span class="nc" id="L268">				Row.Direction.WEST,</span>
+<span class="nc" id="L269">				pattern));</span>
+		
+<span class="nc" id="L271">		primitives.add(new Row(</span>
+<span class="nc" id="L272">				new Point(position.getX() + size.getX() / 2 - 2, position.getY() + 2, position.getZ() + 1),</span>
+<span class="nc" id="L273">				size.getX() / 2 - 2,</span>
+<span class="nc" id="L274">				Row.Direction.EAST,</span>
+<span class="nc" id="L275">				pattern));</span>
+		
+<span class="nc" id="L277">		pattern = createTorchPattern(numberOfTorches, 4);</span>
+<span class="nc" id="L278">		primitives.add(new Row(</span>
+<span class="nc" id="L279">				new Point(position.getX() + size.getX() / 2 + 2, position.getY() + 2, position.getZ()  + size.getZ() - 2),</span>
+<span class="nc" id="L280">				size.getX() / 2 - 2,</span>
+<span class="nc" id="L281">				Row.Direction.WEST,</span>
+<span class="nc" id="L282">				pattern));</span>
+		
+<span class="nc" id="L284">		primitives.add(new Row(</span>
+<span class="nc" id="L285">				new Point(position.getX() + size.getX() / 2 - 2, position.getY() + 2, position.getZ()  + size.getZ() - 2),</span>
+<span class="nc" id="L286">				size.getX() / 2 - 2,</span>
+<span class="nc" id="L287">				Row.Direction.EAST,</span>
+<span class="nc" id="L288">				pattern));</span>
+		
+<span class="nc" id="L290">		pattern = createTorchPattern(numberOfTorches, 1);</span>
+<span class="nc" id="L291">		primitives.add(new Row(</span>
+<span class="nc" id="L292">				new Point(position.getX() + 1, position.getY() + 2, position.getZ() + size.getZ() / 2 + 2),</span>
+<span class="nc" id="L293">				size.getZ() / 2 - 2,</span>
+<span class="nc" id="L294">				Row.Direction.NORTH,</span>
+<span class="nc" id="L295">				pattern));</span>
+		
+<span class="nc" id="L297">		primitives.add(new Row(</span>
+<span class="nc" id="L298">				new Point(position.getX() + 1, position.getY() + 2, position.getZ() + size.getZ() / 2 - 2),</span>
+<span class="nc" id="L299">				size.getZ() / 2 - 2,</span>
+<span class="nc" id="L300">				Row.Direction.SOUTH,</span>
+<span class="nc" id="L301">				pattern));</span>
+		
+<span class="nc" id="L303">		pattern = createTorchPattern(numberOfTorches, 2);</span>
+<span class="nc" id="L304">		primitives.add(new Row(</span>
+<span class="nc" id="L305">				new Point(position.getX() + size.getX() - 2, position.getY() + 2, position.getZ() + size.getZ() / 2 + 2),</span>
+<span class="nc" id="L306">				size.getZ() / 2 - 2,</span>
+<span class="nc" id="L307">				Row.Direction.NORTH,</span>
+<span class="nc" id="L308">				pattern));</span>
+		
+<span class="nc" id="L310">		primitives.add(new Row(</span>
+<span class="nc" id="L311">				new Point(position.getX() + size.getX() - 2, position.getY() + 2, position.getZ() + size.getZ() / 2 - 2),</span>
+<span class="nc" id="L312">				size.getZ() / 2 - 2,</span>
+<span class="nc" id="L313">				Row.Direction.SOUTH,</span>
+<span class="nc" id="L314">				pattern));</span>
+		
+<span class="nc" id="L316">	}</span>
+	
+	private BasicBlock[] createTorchPattern(int number, int data) {
+<span class="nc" id="L319">		BasicBlock[] pattern = null;</span>
+<span class="nc" id="L320">		BasicBlock torch = new BasicBlock((short) 50, data);</span>
+<span class="nc" id="L321">		BasicBlock space = BasicBlock.NonBlock;</span>
+		
+<span class="nc bnc" id="L323" title="All 7 branches missed.">		switch(number) {</span>
+			case 0:
+<span class="nc" id="L325">				pattern = new BasicBlock[] { space };</span>
+<span class="nc" id="L326">				break;</span>
+			case 1:
+<span class="nc" id="L328">				pattern = new BasicBlock[] { torch, space, space, space, space };</span>
+<span class="nc" id="L329">				break;</span>
+			case 2:
+<span class="nc" id="L331">				pattern = new BasicBlock[] { torch, space, space, space };</span>
+<span class="nc" id="L332">				break;</span>
+			case 3:
+<span class="nc" id="L334">				pattern = new BasicBlock[] { torch, space, space };</span>
+<span class="nc" id="L335">				break;</span>
+			case 4:
+<span class="nc" id="L337">				pattern = new BasicBlock[] { torch, space };</span>
+<span class="nc" id="L338">				break;</span>
+			case 5:
+<span class="nc" id="L340">				pattern = new BasicBlock[] { torch };</span>
+				break;
+		}
+<span class="nc" id="L343">		return pattern;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BuildingTypeMismatchException.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.exceptions</a> &gt; <span class="el_source">BuildingTypeMismatchException.java</span></div><h1>BuildingTypeMismatchException.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.exceptions;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.rendering.model.building.Building;
+
+public class BuildingTypeMismatchException extends RenderingException {
+
+	private static final long serialVersionUID = 3337855398912743115L;
+
+	public BuildingTypeMismatchException() {
+<span class="nc" id="L11">		super();</span>
+<span class="nc" id="L12">	}</span>
+
+	public BuildingTypeMismatchException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+<span class="nc" id="L15">		super(message, cause, enableSuppression, writableStackTrace);</span>
+<span class="nc" id="L16">	}</span>
+
+	public BuildingTypeMismatchException(String message, Throwable cause) {
+<span class="nc" id="L19">		super(message, cause);</span>
+<span class="nc" id="L20">	}</span>
+
+	public BuildingTypeMismatchException(String message) {
+<span class="nc" id="L23">		super(message);</span>
+<span class="nc" id="L24">	}</span>
+
+	public BuildingTypeMismatchException(Throwable cause) {
+<span class="nc" id="L27">		super(cause);</span>
+<span class="nc" id="L28">	}</span>
+	
+	public BuildingTypeMismatchException(Type buildableType, Class&lt;? extends Building&gt; buildingType) {
+<span class="nc" id="L31">		this(String.format(&quot;Buildable of type '%s' cannot be converted to '%s'&quot;, buildableType.name(), buildingType.getName()));</span>
+<span class="nc" id="L32">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

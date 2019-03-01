@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PackLayout.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout.pack</a> &gt; <span class="el_source">PackLayout.java</span></div><h1>PackLayout.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout.pack;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.cmxml.comparators.BuildableSizeComparator;
+import codemetropolis.toolchain.placing.exceptions.LayoutException;
+import codemetropolis.toolchain.placing.layout.Layout;
+import codemetropolis.toolchain.placing.layout.pack.RectanglePacker.Rectangle;
+
+<span class="nc" id="L18">public class PackLayout extends Layout {</span>
+	
+<span class="nc" id="L20">	private final int SPACE = 3;</span>
+
+	@Override
+	public void apply(BuildableTree buildables) throws LayoutException {
+<span class="nc" id="L24">		prepareBuildables(buildables);</span>
+<span class="nc" id="L25">		Map&lt;Buildable, List&lt;House&gt;&gt; houses = createHouses(buildables);</span>
+<span class="nc" id="L26">		BuildableWrapper root = new BuildableWrapper(buildables.getRoot());</span>
+<span class="nc" id="L27">		packRecursive(root, houses);</span>
+<span class="nc" id="L28">	}</span>
+	
+	private void prepareBuildables(BuildableTree buildables) {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		for(Buildable b : buildables.getBuildables()) {</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">				if(b.isRoot()) continue;</span>
+<span class="nc" id="L33">				b.setPositionYR(b.getParent().getPositionY() + 1);</span>
+		}
+		
+<span class="nc" id="L36">		buildables.getRoot().setPositionYR(GROUND_LEVEL);</span>
+<span class="nc" id="L37">	}</span>
+	
+	private Point getMaxSizes(Collection&lt;BuildableWrapper&gt; buildables) {
+<span class="nc" id="L40">		int maxX = 0, maxZ = 0;</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">		for(BuildableWrapper b : buildables) {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">			if(b.getSizeX() &gt; maxX) maxX = b.getSizeX();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">			if(b.getSizeZ() &gt; maxZ) maxZ = b.getSizeZ();</span>
+		}
+<span class="nc" id="L45">		return new Point(maxX, 0, maxZ);</span>
+	}
+	
+	public void packRecursive(BuildableWrapper root, Map&lt;Buildable, List&lt;House&gt;&gt; houses) {
+<span class="nc" id="L49">		List&lt;BuildableWrapper&gt; children = root.getChildren(houses);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		for(BuildableWrapper c : children) {</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">			if(!c.getChildren(houses).isEmpty()) {</span>
+<span class="nc" id="L52">				packRecursive(c, houses);</span>
+			}
+		}
+<span class="nc" id="L55">		Collections.sort(children);</span>
+<span class="nc" id="L56">		Collections.reverse(children);</span>
+<span class="nc" id="L57">		pack(children, SPACE);</span>
+<span class="nc" id="L58">	}</span>
+	
+	private void pack(Collection&lt;BuildableWrapper&gt; buildables, int space) {
+<span class="nc" id="L61">		Point startingSize = getMaxSizes(buildables);</span>
+<span class="nc" id="L62">		pack(buildables, startingSize.getX(), startingSize.getZ(), space);</span>
+<span class="nc" id="L63">	}</span>
+	
+	private void pack(Collection&lt;BuildableWrapper&gt; buildables, int sizeX, int sizeZ, int space) {
+<span class="nc" id="L66">		RectanglePacker&lt;BuildableWrapper&gt; packer = new RectanglePacker&lt;BuildableWrapper&gt;(sizeX, sizeZ, space);</span>
+		
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		for(BuildableWrapper b : buildables) {</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">			if(packer.insert(b.getSizeX(), b.getSizeZ(), b) == null) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">				if(sizeX &gt; sizeZ) {</span>
+<span class="nc" id="L71">					sizeZ++;</span>
+<span class="nc" id="L72">				} else {</span>
+<span class="nc" id="L73">					sizeX++;</span>
+				}
+<span class="nc" id="L75">				pack(buildables, sizeX, sizeZ,  space);</span>
+<span class="nc" id="L76">				return;</span>
+			};
+		}
+		
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		for(BuildableWrapper b : buildables) {</span>
+<span class="nc" id="L81">			Rectangle r = packer.findRectangle(b);</span>
+<span class="nc" id="L82">			b.setPositionX(r.x + space);</span>
+<span class="nc" id="L83">			b.setPositionZ(r.y + space);</span>
+		}
+		
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		if(!buildables.isEmpty()) {</span>
+<span class="nc" id="L87">			Point parentSize = calculateParentSize(buildables, space);</span>
+<span class="nc" id="L88">			Buildable parent = buildables.iterator().next().getParent();</span>
+<span class="nc" id="L89">			parent.setSizeX(parentSize.getX());</span>
+<span class="nc" id="L90">			parent.setSizeZ(parentSize.getZ());</span>
+		}
+<span class="nc" id="L92">	}</span>
+	
+	private Point calculateParentSize(Collection&lt;BuildableWrapper&gt; buildables, int space) {
+<span class="nc" id="L95">		BuildableWrapper firstChild = buildables.iterator().next();</span>
+<span class="nc" id="L96">		int minX = firstChild.getPositionX();</span>
+<span class="nc" id="L97">		int maxX = firstChild.getPositionX() + firstChild.getSizeX();</span>
+<span class="nc" id="L98">		int minZ = firstChild.getPositionZ();</span>
+<span class="nc" id="L99">		int maxZ = firstChild.getPositionZ() + firstChild.getSizeZ();</span>
+		
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		for(BuildableWrapper b : buildables) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">			if(b.getPositionX() &lt; minX) minX = b.getPositionX();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			if(b.getPositionX() + b.getSizeX() &gt; maxX) maxX = b.getPositionX() + b.getSizeX();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">			if(b.getPositionZ() &lt; minZ) minZ = b.getPositionZ();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">			if(b.getPositionZ() + b.getSizeZ() &gt; maxZ) maxZ = b.getPositionZ() + b.getSizeZ();</span>
+		}
+		
+<span class="nc" id="L108">		return new Point(</span>
+<span class="nc" id="L109">				maxX - minX + 2 * space,</span>
+<span class="nc" id="L110">				0,</span>
+<span class="nc" id="L111">				maxZ - minZ + 2 * space</span>
+				);
+	}
+	
+	private void sort(List&lt;Buildable&gt; buildables) {
+<span class="nc" id="L116">		Collections.sort(buildables, new BuildableSizeComparator());</span>
+<span class="nc" id="L117">		Collections.reverse(buildables);</span>
+<span class="nc" id="L118">	}</span>
+	
+	private List&lt;Buildable&gt; getFloorsAndCellarsSorted(BuildableTree buildables) {
+<span class="nc" id="L121">		List&lt;Buildable&gt; result = new ArrayList&lt;Buildable&gt;();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for(Buildable b : buildables.getBuildables()) {</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">			if(b.getType() != Buildable.Type.FLOOR &amp;&amp; b.getType() != Buildable.Type.CELLAR) continue;</span>
+<span class="nc" id="L124">			result.add(b);</span>
+		}
+<span class="nc" id="L126">		sort(result);</span>
+<span class="nc" id="L127">		return result;</span>
+	}
+	
+	private Map&lt;Buildable, List&lt;House&gt;&gt; createHouses(BuildableTree buildables) throws LayoutException {
+<span class="nc" id="L131">		Map&lt;Buildable, List&lt;House&gt;&gt; houses = new HashMap&lt;Buildable, List&lt;House&gt;&gt;();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for(Buildable b : getFloorsAndCellarsSorted(buildables)) {</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">			if(b.getType() != Buildable.Type.FLOOR &amp;&amp; b.getType() != Buildable.Type.CELLAR) continue;</span>
+<span class="nc" id="L134">			List&lt;House&gt; housesOfParent = houses.get(b.getParent());</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if(housesOfParent == null) {</span>
+<span class="nc" id="L136">				housesOfParent = new ArrayList&lt;House&gt;();</span>
+<span class="nc" id="L137">				houses.put(b.getParent(), housesOfParent);</span>
+			}
+			
+<span class="nc" id="L140">			boolean addedSuccessfully = false;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			for(House h : housesOfParent) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">				if(h.add(b)) {</span>
+<span class="nc" id="L143">					addedSuccessfully = true;</span>
+<span class="nc" id="L144">					break;</span>
+				}
+			}
+			
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if(!addedSuccessfully) {</span>
+<span class="nc" id="L149">				House h = new House(MIN_HEIGHT, MAX_HEIGHT);</span>
+<span class="nc" id="L150">				h.add(b);</span>
+<span class="nc" id="L151">				housesOfParent.add(h);</span>
+			}
+		}
+<span class="nc" id="L154">		return houses;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SonarClient.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.sonarqube</a> &gt; <span class="el_source">SonarClient.java</span></div><h1>SonarClient.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.sonarqube;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
+import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
+
+public class SonarClient {
+
+	private static final String URL_METRIC_SEARCH = &quot;metrics/search?f=name&quot;;
+	private static final String URL_RESOURCES = &quot;resources&quot;;
+	private static final String PARAM_SCOPE = &quot;scopes&quot;;
+	private static final String PARAM_RESOURCE = &quot;resource&quot;;
+	private static final String PARAM_METRICS = &quot;metrics&quot;;
+	private static final String PARAM_DEPTH = &quot;depth&quot;;
+
+	private String sonarUrl;
+	private String username;
+	private String password;
+	private String metricNames;
+<span class="nc" id="L31">	private Map&lt;Integer, SonarResource&gt; resources = new ConcurrentHashMap&lt;Integer, SonarResource&gt;();</span>
+<span class="nc" id="L32">	private Map&lt;String, String&gt; metricNamesAndTypes = new HashMap&lt;String, String&gt;();</span>
+	
+<span class="nc" id="L34">	public SonarClient(String sonarUrl, String username, String password) {</span>
+<span class="nc" id="L35">		this.sonarUrl = sonarUrl;</span>
+<span class="nc" id="L36">		this.username = username;</span>
+<span class="nc" id="L37">		this.password = password;</span>
+<span class="nc" id="L38">	}</span>
+	
+	public SonarClient(String sonarUrl) {
+<span class="nc" id="L41">		this(sonarUrl, null, null);</span>
+<span class="nc" id="L42">	}</span>
+	
+	public void init() throws SonarConnectException {
+<span class="nc" id="L45">		metricNames = getMetricsParameterNames();</span>
+<span class="nc" id="L46">	}</span>
+	
+	private void getResources(SonarResource resource) throws SonarConnectException {
+<span class="nc" id="L49">		Scope scope = null;</span>
+<span class="nc bnc" id="L50" title="All 4 branches missed.">		switch(resource.getScope()) {</span>
+			case PRJ:
+<span class="nc" id="L52">				scope = Scope.DIR;</span>
+<span class="nc" id="L53">				break;</span>
+			case DIR:
+<span class="nc" id="L55">				scope = Scope.FIL;</span>
+<span class="nc" id="L56">				break;</span>
+			case FIL:
+<span class="nc" id="L58">				return;</span>
+		}
+		
+<span class="nc" id="L61">		String requestUrl = String.format(&quot;%s%s&quot;, sonarUrl, URL_RESOURCES);</span>
+<span class="nc" id="L62">		SonarRequest request = new SonarRequest(requestUrl, username, password);</span>
+<span class="nc" id="L63">		request.setParameter(PARAM_RESOURCE, String.valueOf(resource.getId()));</span>
+<span class="nc" id="L64">		request.setParameter(PARAM_DEPTH, String.valueOf(-1));</span>
+<span class="nc" id="L65">		request.setParameter(PARAM_SCOPE, scope.toString());</span>
+<span class="nc" id="L66">		request.setParameter(PARAM_METRICS, metricNames);</span>
+<span class="nc" id="L67">		String responseStr = request.sendPost();</span>
+				
+<span class="nc" id="L69">		JsonParser jsonParser = new JsonParser();</span>
+<span class="nc" id="L70">		JsonElement jsonElement = jsonParser.parse(responseStr);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		if(jsonElement.isJsonArray()){</span>
+<span class="nc" id="L72">			Iterator&lt;JsonElement&gt; iterator = ((JsonArray)jsonElement).iterator();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			while(iterator.hasNext()){</span>
+<span class="nc" id="L74">				JsonElement arrayElement = iterator.next();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">				if(arrayElement.isJsonObject()){</span>
+<span class="nc" id="L76">					SonarResource childResource = createResource((JsonObject)arrayElement);</span>
+<span class="nc" id="L77">					resources.put(childResource.getId(), childResource);</span>
+<span class="nc" id="L78">					resources.get(resource.getId()).addChild(childResource.getId());</span>
+<span class="nc" id="L79">					getResources(childResource);</span>
+				}			
+			}
+		}
+<span class="nc" id="L83">	}</span>
+	
+	public List&lt;String&gt; getProjectKeys() throws SonarConnectException {
+<span class="nc" id="L86">		List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L87">		String requestUrl = String.format(&quot;%s%s&quot;, sonarUrl, URL_RESOURCES);</span>
+<span class="nc" id="L88">		SonarRequest request = new SonarRequest(requestUrl, username, password);</span>
+<span class="nc" id="L89">		String responseStr = request.sendPost();</span>
+<span class="nc" id="L90">		JsonParser jsonParser = new JsonParser();</span>
+<span class="nc" id="L91">		JsonElement jsonElement = jsonParser.parse(responseStr);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		if(jsonElement.isJsonArray()){</span>
+<span class="nc" id="L93">			Iterator&lt;JsonElement&gt; iterator = ((JsonArray)jsonElement).iterator();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			while(iterator.hasNext()){</span>
+<span class="nc" id="L95">				JsonObject projectJsonObject = iterator.next().getAsJsonObject();</span>
+<span class="nc" id="L96">				result.add(projectJsonObject.get(&quot;key&quot;).getAsString());	</span>
+			}
+		}
+<span class="nc" id="L99">		return result;</span>
+	}
+	
+	public Map&lt;Integer, SonarResource&gt; getProject(String projectKey) throws SonarConnectException {
+		
+<span class="nc" id="L104">		String requestUrl = String.format(&quot;%s%s&quot;, sonarUrl, URL_RESOURCES);</span>
+<span class="nc" id="L105">		SonarRequest request = new SonarRequest(requestUrl, username, password);</span>
+<span class="nc" id="L106">		request.setParameter(PARAM_RESOURCE, projectKey);</span>
+<span class="nc" id="L107">		request.setParameter(PARAM_SCOPE, Scope.PRJ.toString());</span>
+<span class="nc" id="L108">		request.setParameter(PARAM_METRICS, metricNames);</span>
+<span class="nc" id="L109">		String responseStr = request.sendPost();</span>
+		
+<span class="nc" id="L111">		JsonParser jsonParser = new JsonParser();</span>
+<span class="nc" id="L112">		JsonElement jsonElement = jsonParser.parse(responseStr);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if(jsonElement.isJsonArray()){</span>
+<span class="nc" id="L114">			Iterator&lt;JsonElement&gt; iterator = ((JsonArray)jsonElement).iterator();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">			while(iterator.hasNext()){</span>
+<span class="nc" id="L116">				JsonElement arrayElement = iterator.next();</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">				if(arrayElement.isJsonObject()){</span>
+<span class="nc" id="L118">					SonarResource childResource = createResource((JsonObject)arrayElement);</span>
+<span class="nc" id="L119">					resources.put(childResource.getId(), childResource);</span>
+				}			
+			}
+		}
+<span class="nc" id="L123">		Iterator&lt;Integer&gt; iterator = resources.keySet().iterator();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		while(iterator.hasNext()){</span>
+<span class="nc" id="L125">			SonarResource innerResources = resources.get(iterator.next());</span>
+<span class="nc" id="L126">			getResources(innerResources);</span>
+		}
+<span class="nc" id="L128">		return resources;</span>
+	}
+	
+	private String getMetricsParameterNames() throws SonarConnectException{
+<span class="nc" id="L132">		StringBuilder metricNames = new StringBuilder();</span>
+		
+<span class="nc" id="L134">		String requestUrl = String.format(&quot;%s%s&quot;, sonarUrl, URL_METRIC_SEARCH);</span>
+<span class="nc" id="L135">		SonarRequest request = new SonarRequest(requestUrl, username, password);</span>
+<span class="nc" id="L136">		String responeStr = request.sendPost();</span>
+		
+<span class="nc" id="L138">		JsonParser jsonParser = new JsonParser();</span>
+<span class="nc" id="L139">		JsonElement jsonElement = jsonParser.parse(responeStr);</span>
+<span class="nc" id="L140">		JsonArray domainJsonArray = jsonElement.getAsJsonObject().getAsJsonArray(&quot;metrics&quot;);</span>
+<span class="nc" id="L141">		Iterator&lt;JsonElement&gt; iterator = domainJsonArray.iterator();</span>
+		
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		while(iterator.hasNext()){</span>
+<span class="nc" id="L144">			JsonElement element = iterator.next();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			if(element.isJsonObject()){</span>
+<span class="nc" id="L146">				JsonObject jsonArray = (JsonObject) element;</span>
+<span class="nc" id="L147">				metricNames.append(jsonArray.get(&quot;key&quot;).getAsString());</span>
+<span class="nc" id="L148">				metricNames.append(&quot;,&quot;);</span>
+<span class="nc" id="L149">				metricNamesAndTypes.put(jsonArray.get(&quot;key&quot;).getAsString(), jsonArray.get(&quot;type&quot;).getAsString());</span>
+			}
+		}
+		
+<span class="nc" id="L153">		return metricNames.toString();</span>
+	}
+	
+	private SonarResource createResource(JsonObject jsonObject){
+
+<span class="nc" id="L158">		SonarResource resource = new SonarResource();</span>
+<span class="nc" id="L159">		String name = jsonObject.get(&quot;name&quot;).getAsString();</span>
+<span class="nc" id="L160">		String scope = jsonObject.get(&quot;scope&quot;).getAsString();</span>
+<span class="nc" id="L161">		String key = jsonObject.get(&quot;key&quot;).getAsString();</span>
+<span class="nc" id="L162">		int id = jsonObject.get(&quot;id&quot;).getAsInt();</span>
+		
+<span class="nc" id="L164">		resource.setName(name);</span>
+<span class="nc" id="L165">		resource.setScope(Scope.valueOf(scope));</span>
+<span class="nc" id="L166">		resource.setKey(key);</span>
+<span class="nc" id="L167">		resource.setId(id);</span>
+
+<span class="nc" id="L169">		JsonElement metrics = jsonObject.get(&quot;msr&quot;);</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">		if(metrics != null &amp;&amp; metrics.isJsonArray()){</span>
+<span class="nc" id="L171">			JsonArray array = (JsonArray) jsonObject.get(&quot;msr&quot;);</span>
+<span class="nc" id="L172">			resource.addMetrics(getMetricNameAndValues(array));</span>
+		}
+		
+<span class="nc" id="L175">		return resource;</span>
+	}
+
+	private List&lt;SonarMetric&gt; getMetricNameAndValues(JsonArray jsonArray){
+<span class="nc" id="L179">		List&lt;SonarMetric&gt; metricList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L180">		Iterator&lt;JsonElement&gt; iterator = jsonArray.iterator();</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		while(iterator.hasNext()){</span>
+<span class="nc" id="L182">			JsonElement element = iterator.next();</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			if(element.isJsonObject()){</span>
+<span class="nc" id="L184">				JsonObject jsonObject = (JsonObject) element;</span>
+
+<span class="nc bnc" id="L186" title="All 6 branches missed.">				if(!jsonObject.has(&quot;key&quot;) || (!jsonObject.has(&quot;val&quot;) &amp;&amp; !jsonObject.has(&quot;data&quot;))){</span>
+<span class="nc" id="L187">					continue;			</span>
+				}
+<span class="nc" id="L189">				String name = jsonObject.get(&quot;key&quot;).getAsString();</span>
+<span class="nc" id="L190">				String value = &quot;&quot;;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">				if(jsonObject.has(&quot;val&quot;)){</span>
+<span class="nc" id="L192">					value = jsonObject.get(&quot;val&quot;).getAsString();</span>
+<span class="nc" id="L193">				} else {</span>
+<span class="nc" id="L194">					value = jsonObject.get(&quot;data&quot;).getAsString();</span>
+				}
+<span class="nc" id="L196">				String type = metricNamesAndTypes.get(name);</span>
+<span class="nc" id="L197">				SonarMetric metric = new SonarMetric(name, value, getMetricType(type));</span>
+<span class="nc" id="L198">				metricList.add(metric);</span>
+			}
+		}
+<span class="nc" id="L201">		return metricList;</span>
+	}
+	
+	private MetricType getMetricType(String type){	
+		try {
+<span class="nc" id="L206">			return MetricType.valueOf(type);</span>
+<span class="nc" id="L207">		} catch(Exception e) {</span>
+<span class="nc" id="L208">			return MetricType.DATA;</span>
+		}	
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,31 @@
+<gitinspector>
+	<version>0.5.0dev</version>
+	<repository>gfx</repository>
+	<report-date>2018/04/16</report-date>
+	<changes>
+		<message>The following historical commit information, by author, was found</message>
+		<authors>
+			<author>
+				<name>Teszt Bela</name>
+				<email>becike@beciakiraly.eu</email>
+				<commits>56</commits>
+				<insertions>4570</insertions>
+				<deletions>2988</deletions>
+				<percentage-of-changes>57.55</percentage-of-changes>
+			</author>
+		</authors>
+	</changes>
+	<blame>
+		<message>Below are the number of rows from each author that have survived and are still intact in the current revision</message>
+		<authors>
+			<author>
+				<name>Teszt Bela</name>
+				<email>becike@beciakiraly.eu</email>
+				<rows>3797</rows>
+				<stability>83.1</stability>
+				<age>0.8</age>
+				<percentage-in-comments>4.32</percentage-in-comments>
+			</author>
+		</authors>
+	</blame>
+</gitinspector>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CMMetricPanel.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.components</a> &gt; <span class="el_source">CMMetricPanel.java</span></div><h1>CMMetricPanel.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.components;
+
+import javax.swing.JPanel;
+
+import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
+
+/**
+ * Extension to JPanel, as we need to store to which metric generator (SourceMeter, SonarQube) this panel provides
+ * options for. Can also validate the fields and fill them into a gievn {@link ExecutionOptions} instance.
+ *
+ * @author Abel Szkalisity {@literal &lt;SZAVAET.SZE&gt;}
+ */
+<span class="nc" id="L14">public abstract class CMMetricPanel extends JPanel {</span>
+
+  private static final long serialVersionUID = 1L;
+
+  protected String tabTitle;
+  protected ConverterType converterType;
+
+  /**
+   * Fills the given {@link ExecutionOptions} instance with data from the panel.
+   *
+   * @param executionOptions The target {@link ExecutionOptions} instance.
+   */
+  public abstract void fillFields(ExecutionOptions executionOptions);
+
+  /**
+   * Validates the given {@link ExecutionOptions} instance.
+   *
+   * @param executionOptions The instance to validate.
+   * @return True, if the options related to this panel are existent and valid, false otherwise.
+   */
+  public abstract boolean validateFields(ExecutionOptions executionOptions);
+
+  public String getTabTitle() {
+<span class="nc" id="L37">    return tabTitle;</span>
+  }
+
+  public ConverterType getConverterType() {
+<span class="nc" id="L41">    return converterType;</span>
+  }
+
+  public void setTabTitle(String tabTitle) {
+<span class="nc" id="L45">    this.tabTitle = tabTitle;</span>
+<span class="nc" id="L46">  }</span>
+
+  public void setConverterType(ConverterType converterType) {
+<span class="nc" id="L49">    this.converterType = converterType;</span>
+<span class="nc" id="L50">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

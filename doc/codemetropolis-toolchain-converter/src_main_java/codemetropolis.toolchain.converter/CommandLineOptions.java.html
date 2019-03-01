@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommandLineOptions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter</a> &gt; <span class="el_source">CommandLineOptions.java</span></div><h1>CommandLineOptions.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter;
+
+import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.StringArrayOptionHandler;
+
+<span class="nc" id="L6">public class CommandLineOptions {</span>
+	
+	@Option(name=&quot;-h&quot;, aliases = { &quot;--help&quot; })
+<span class="nc" id="L9">	private boolean showHelp = false;</span>
+	
+	@Option(name=&quot;-t&quot;, aliases = {&quot;--type&quot;})
+<span class="nc" id="L12">	private String type = null;</span>
+	
+	@Option(name=&quot;-s&quot;, aliases = { &quot;--source&quot;, &quot;-i&quot;, &quot;--input&quot; })
+<span class="nc" id="L15">	private String source = null;</span>
+	
+	@Option(name=&quot;-o&quot;, aliases = {&quot;--output&quot;})
+<span class="nc" id="L18">	private String outputFile = &quot;converterToMapping.xml&quot;;</span>
+	
+	@Option(name=&quot;-p&quot;, handler = StringArrayOptionHandler.class, aliases = {&quot;--params&quot;})
+<span class="nc" id="L21">	private String[] params = null;</span>
+	
+	public String getOutputFile(){
+<span class="nc" id="L24">		return outputFile;</span>
+	}
+	
+	public String getType() {
+<span class="nc" id="L28">		return type;</span>
+	}
+
+	public String getSource() {
+<span class="nc" id="L32">		return source;</span>
+	}
+
+	public boolean showHelp() {
+<span class="nc" id="L36">		return showHelp;</span>
+	}
+
+	public String[] getParams() {
+<span class="nc" id="L40">		return params;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

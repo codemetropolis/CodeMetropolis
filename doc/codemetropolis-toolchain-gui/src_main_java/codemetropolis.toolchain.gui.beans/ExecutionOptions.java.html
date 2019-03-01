@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExecutionOptions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.beans</a> &gt; <span class="el_source">ExecutionOptions.java</span></div><h1>ExecutionOptions.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.beans;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+
+/**
+ * Contains the parameters required for running the CodeMetropolis toolchain on a given project.
+ *
+ * @author Abel Szkalisity {@literal &lt;SZAVAET.SZE&gt;}
+ */
+public class ExecutionOptions {
+
+  // General
+  private String projectName;
+
+  // Converter tool
+  private ConverterType converterType;
+  private Map&lt;String, Object&gt; metricGenerationParams;
+
+  // Mapping tool
+  private File mappingXml;
+  private float scale;
+  private boolean validate;
+
+  // Placing tool
+  private LayoutAlgorithm layoutAlgorithm;
+  private boolean showMap;
+
+  // Rendering tool
+  private File minecraftRoot;
+
+  /**
+   * Constructs an {@link ExecutionOptions} instance with default values.
+   */
+<span class="nc" id="L39">  public ExecutionOptions() {</span>
+<span class="nc" id="L40">    this.converterType = ConverterType.SOURCEMETER;</span>
+<span class="nc" id="L41">    this.metricGenerationParams = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L42">    this.scale = 1.0f;</span>
+<span class="nc" id="L43">    this.validate = false;</span>
+<span class="nc" id="L44">    this.layoutAlgorithm = LayoutAlgorithm.PACK;</span>
+<span class="nc" id="L45">    this.showMap = false;</span>
+<span class="nc" id="L46">  }</span>
+
+  public String getProjectName() {
+<span class="nc" id="L49">    return projectName;</span>
+  }
+
+  public ConverterType getConverterType() {
+<span class="nc" id="L53">    return converterType;</span>
+  }
+
+  public Map&lt;String, Object&gt; getMetricGenerationParams() {
+<span class="nc" id="L57">    return metricGenerationParams;</span>
+  }
+
+  public File getMappingXml() {
+<span class="nc" id="L61">    return mappingXml;</span>
+  }
+
+  public float getScale() {
+<span class="nc" id="L65">    return scale;</span>
+  }
+
+  public boolean isValidate() {
+<span class="nc" id="L69">    return validate;</span>
+  }
+
+  public LayoutAlgorithm getLayoutAlgorithm() {
+<span class="nc" id="L73">    return layoutAlgorithm;</span>
+  }
+
+  public boolean isShowMap() {
+<span class="nc" id="L77">    return showMap;</span>
+  }
+
+  public File getMinecraftRoot() {
+<span class="nc" id="L81">    return minecraftRoot;</span>
+  }
+
+  public void setProjectName(String projectName) {
+<span class="nc" id="L85">    this.projectName = projectName;</span>
+<span class="nc" id="L86">  }</span>
+
+  public void setConverterType(ConverterType converterType) {
+<span class="nc" id="L89">    this.converterType = converterType;</span>
+<span class="nc" id="L90">  }</span>
+
+  public void setMetricGenerationParams(Map&lt;String, Object&gt; metricGenerationParams) {
+<span class="nc" id="L93">    this.metricGenerationParams = metricGenerationParams;</span>
+<span class="nc" id="L94">  }</span>
+
+  public void setMappingXml(File mappingXml) {
+<span class="nc" id="L97">    this.mappingXml = mappingXml;</span>
+<span class="nc" id="L98">  }</span>
+
+  public void setScale(float scale) {
+<span class="nc" id="L101">    this.scale = scale;</span>
+<span class="nc" id="L102">  }</span>
+
+  public void setValidate(boolean validate) {
+<span class="nc" id="L105">    this.validate = validate;</span>
+<span class="nc" id="L106">  }</span>
+
+  public void setLayoutAlgorithm(LayoutAlgorithm layoutAlgorithm) {
+<span class="nc" id="L109">    this.layoutAlgorithm = layoutAlgorithm;</span>
+<span class="nc" id="L110">  }</span>
+
+  public void setShowMap(boolean showMap) {
+<span class="nc" id="L113">    this.showMap = showMap;</span>
+<span class="nc" id="L114">  }</span>
+
+  public void setMinecraftRoot(File minecraftRoot) {
+<span class="nc" id="L117">    this.minecraftRoot = minecraftRoot;</span>
+<span class="nc" id="L118">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

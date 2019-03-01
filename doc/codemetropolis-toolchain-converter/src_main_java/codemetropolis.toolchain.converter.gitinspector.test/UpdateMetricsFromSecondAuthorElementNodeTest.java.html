@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>UpdateMetricsFromSecondAuthorElementNodeTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector.test</a> &gt; <span class="el_source">UpdateMetricsFromSecondAuthorElementNodeTest.java</span></div><h1>UpdateMetricsFromSecondAuthorElementNodeTest.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
+
+/**
+*
+* @author Zakor Gyula {@literal &lt;ZAGPAAG.SZE&gt;}
+*
+*/
+
+<span class="fc" id="L19">public class UpdateMetricsFromSecondAuthorElementNodeTest {</span>
+
+    @Test
+    public void testUpdateMetricsFromSecondAuthorElementNode() throws Exception {
+<span class="fc" id="L23">        CdfElement authorMetrics = new CdfElement(&quot;Gipsz Jakab&quot;, &quot;author&quot;);</span>
+<span class="fc" id="L24">        CdfElement floorMetrics = new CdfElement(&quot;Gipsz Jakab&quot;, &quot;floor-metrics&quot;);</span>
+<span class="fc" id="L25">        authorMetrics.addChildElement(floorMetrics);</span>
+
+<span class="fc" id="L27">        GitInspectorConverter conv = TestHelper.newGitInspectorConverter();</span>
+<span class="fc" id="L28">        Document doc = TestHelper.newDocument();</span>
+<span class="fc" id="L29">        Element element = doc.createElement(&quot;test-elemnt&quot;);</span>
+
+<span class="fc" id="L31">        Element nameAttr = doc.createElement(&quot;name&quot;);</span>
+<span class="fc" id="L32">        nameAttr.appendChild(doc.createTextNode(&quot;Gipsz Jakab&quot;));</span>
+<span class="fc" id="L33">        element.appendChild(nameAttr);</span>
+
+<span class="fc" id="L35">        Element commitsAttr = doc.createElement(&quot;rows&quot;);</span>
+<span class="fc" id="L36">        commitsAttr.appendChild(doc.createTextNode(&quot;1600&quot;));</span>
+<span class="fc" id="L37">        element.appendChild(commitsAttr);</span>
+
+<span class="fc" id="L39">        Element insertionsAttr = doc.createElement(&quot;stability&quot;);</span>
+<span class="fc" id="L40">        insertionsAttr.appendChild(doc.createTextNode(&quot;89.4&quot;));</span>
+<span class="fc" id="L41">        element.appendChild(insertionsAttr);</span>
+
+<span class="fc" id="L43">        Element deletionsAttr = doc.createElement(&quot;age&quot;);</span>
+<span class="fc" id="L44">        deletionsAttr.appendChild(doc.createTextNode(&quot;0.1&quot;));</span>
+<span class="fc" id="L45">        element.appendChild(deletionsAttr);</span>
+
+<span class="fc" id="L47">        Element pocAttr = doc.createElement(&quot;percentage-in-comments&quot;);</span>
+<span class="fc" id="L48">        pocAttr.appendChild(doc.createTextNode(&quot;0.51&quot;));</span>
+<span class="fc" id="L49">        element.appendChild(pocAttr);</span>
+
+<span class="fc" id="L51">        conv.updateMetricsFromSecondAuthorElementNode(element, authorMetrics);</span>
+
+<span class="fc" id="L53">        authorMetrics = new CdfElement(&quot;Gipsz Jakab&quot;, &quot;author&quot;);</span>
+<span class="fc" id="L54">        floorMetrics = new CdfElement(&quot;Gipsz Jakab&quot;, &quot;floor-metrics&quot;);</span>
+
+<span class="fc" id="L56">        authorMetrics.addProperty(&quot;rows&quot;, &quot;40&quot;, CdfProperty.Type.INT);</span>
+<span class="fc" id="L57">        floorMetrics.addProperty(&quot;rows&quot;, &quot;40&quot;, CdfProperty.Type.INT);</span>
+
+<span class="fc" id="L59">        authorMetrics.addProperty(&quot;stability&quot;, &quot;89.4&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L60">        floorMetrics.addProperty(&quot;stability&quot;, &quot;89.4&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L62">        authorMetrics.addProperty(&quot;age&quot;, &quot;0.1&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L63">        floorMetrics.addProperty(&quot;age&quot;, &quot;0.1&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L65">        authorMetrics.addProperty(&quot;PIC&quot;, &quot;0.51&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L66">        floorMetrics.addProperty(&quot;PIC&quot;, &quot;0.51&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L68">        authorMetrics.addChildElement(floorMetrics);</span>
+
+<span class="fc" id="L70">        assertTrue(TestHelper.equals(authorMetrics, conv.getAuthorMetrics()));</span>
+<span class="fc" id="L71">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

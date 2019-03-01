@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SonarRequest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.sonarqube</a> &gt; <span class="el_source">SonarRequest.java</span></div><h1>SonarRequest.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.sonarqube;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Base64;
+
+import codemetropolis.toolchain.commons.util.Resources;
+
+public class SonarRequest {
+	
+	private String url;
+	private String params;
+	private String username;
+	private String password;
+	
+<span class="nc" id="L20">	public SonarRequest(String url, String username, String password) {</span>
+<span class="nc" id="L21">		this.url = url;</span>
+<span class="nc" id="L22">		this.params = &quot;&quot;;</span>
+<span class="nc" id="L23">		this.username = username;</span>
+<span class="nc" id="L24">		this.password = password;</span>
+<span class="nc" id="L25">	}</span>
+	
+	public SonarRequest(String url) {
+<span class="nc" id="L28">		this(url, null, null);</span>
+<span class="nc" id="L29">	}</span>
+	
+	public String sendGet() throws SonarConnectException {
+<span class="nc" id="L32">		return send(&quot;GET&quot;);</span>
+	}
+	
+	public String sendPost() throws SonarConnectException {
+<span class="nc" id="L36">		return send(&quot;POST&quot;);</span>
+	}
+	
+	private String send(String method) throws SonarConnectException {
+		try {
+<span class="nc bnc" id="L41" title="All 2 branches missed.">			URL url = new URL(method.equalsIgnoreCase(&quot;GET&quot;) ? getUrlWithParams() : this.url);</span>
+<span class="nc" id="L42">			HttpURLConnection connection = (HttpURLConnection) url.openConnection();</span>
+<span class="nc" id="L43">			connection.setRequestMethod(method);</span>
+			
+<span class="nc bnc" id="L45" title="All 2 branches missed.">			if(isLoginInfoSet()) {</span>
+<span class="nc" id="L46">				connection.setRequestProperty(&quot;Authorization&quot;, &quot;Basic &quot; + createAuthenticationString());</span>
+			}
+			
+<span class="nc bnc" id="L49" title="All 2 branches missed.">			if(method.equalsIgnoreCase(&quot;POST&quot;)) {</span>
+<span class="nc" id="L50">				connection.setDoOutput(true);</span>
+<span class="nc" id="L51">				DataOutputStream os = new DataOutputStream(connection.getOutputStream());</span>
+<span class="nc" id="L52">				os.writeBytes(params);</span>
+<span class="nc" id="L53">				os.flush();</span>
+<span class="nc" id="L54">				os.close();</span>
+			}
+			
+<span class="nc bnc" id="L57" title="All 2 branches missed.">			if(connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {</span>
+<span class="nc" id="L58">				throw new SonarConnectException(Resources.get(&quot;sonar_unauthorized_error&quot;));</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">			} else if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {</span>
+<span class="nc" id="L60">				throw new RuntimeException(&quot;HTTP request returned an error. HTTP error code : &quot; + connection.getResponseCode());</span>
+			} 
+			
+<span class="nc" id="L63">			BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));</span>
+<span class="nc" id="L64">			String line = br.readLine();</span>
+<span class="nc" id="L65">			connection.disconnect();	</span>
+<span class="nc" id="L66">			return line;</span>
+<span class="nc" id="L67">		} catch(IOException e) {</span>
+<span class="nc" id="L68">			throw new SonarConnectException(Resources.get(&quot;sonar_connect_error&quot;));</span>
+		}
+	}
+	
+	private String createAuthenticationString() {
+<span class="nc" id="L73">		String authStr = String.format(&quot;%s:%s&quot;, username, password);</span>
+<span class="nc" id="L74">		return Base64.getEncoder().encodeToString(authStr.getBytes());</span>
+	}
+	
+	private boolean isLoginInfoSet() {
+<span class="nc bnc" id="L78" title="All 4 branches missed.">		return username != null &amp;&amp; password != null;</span>
+	}
+
+	public String getUrl() {
+<span class="nc" id="L82">		return url;</span>
+	}
+
+	public void setUrl(String url) {
+<span class="nc" id="L86">		this.url = url;</span>
+<span class="nc" id="L87">	}</span>
+
+	public String getParams() {
+<span class="nc" id="L90">		return params;</span>
+	}
+
+	public void setParameter(String key, String value) {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		params = String.format(&quot;%s%s%s=%s&quot;, params, params.equals(&quot;&quot;) ? &quot;&quot; : &quot;&amp;&quot;, key, value);</span>
+<span class="nc" id="L95">	}</span>
+	
+	public String getUrlWithParams() {
+<span class="nc" id="L98">		return String.format(&quot;%s?%s&quot;, url, params);</span>
+	}
+	
+	public void setLoginInfo(String username, String password) {
+<span class="nc" id="L102">		this.username = username;</span>
+<span class="nc" id="L103">		this.password = password;</span>
+<span class="nc" id="L104">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

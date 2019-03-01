@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>House.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout.tetris</a> &gt; <span class="el_source">House.java</span></div><h1>House.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout.tetris;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+
+public class House {
+	
+	private final int maxHeight;
+	private final int minHeight;
+	
+<span class="nc" id="L14">	private List&lt;Buildable&gt; floorsAndCellars = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L15">	private Buildable top = null;</span>
+<span class="nc" id="L16">	private Buildable bottom = null;</span>
+	
+<span class="nc" id="L18">	public House(int minHeight, int maxHeight) {</span>
+<span class="nc" id="L19">		this.minHeight = minHeight;</span>
+<span class="nc" id="L20">		this.maxHeight = maxHeight;</span>
+<span class="nc" id="L21">	}</span>
+
+	public boolean addFloor(Buildable b) {
+<span class="nc bnc" id="L24" title="All 2 branches missed.">		if(b.getType() != Type.FLOOR)</span>
+<span class="nc" id="L25">			return false;</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		if(top != null) {</span>
+			if(
+<span class="nc bnc" id="L28" title="All 2 branches missed.">					getHeight() + b.getSizeY() &gt; maxHeight ||</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">					b.getSizeX() &gt; getSizeX() ||</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">					b.getSizeZ() &gt; getSizeZ())</span>
+<span class="nc" id="L31">				return false;</span>
+			
+<span class="nc" id="L33">			b.setPositionY(getHeight());</span>
+<span class="nc" id="L34">		} else {</span>
+<span class="nc" id="L35">			bottom = b;</span>
+<span class="nc" id="L36">			b.setPositionY(b.getParent().getPositionY() + 1);</span>
+		}
+<span class="nc" id="L38">		top = b;</span>
+<span class="nc" id="L39">		floorsAndCellars.add(b);</span>
+<span class="nc" id="L40">		setSizeOfContainingBuildables(b);</span>
+<span class="nc" id="L41">		return true;</span>
+	}
+
+	private void setSizeOfContainingBuildables(Buildable b) {
+<span class="nc" id="L45">		Buildable parent = b.getParent();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		while(parent != null) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">			if(getHeight() - parent.getPositionY() + 1 &gt; parent.getSizeY()) {</span>
+<span class="nc" id="L48">				parent.setSizeY(getHeight() - parent.getPositionY() + 1);</span>
+<span class="nc" id="L49">				parent = parent.getParent();</span>
+			} else {
+				break;
+			}
+		}
+<span class="nc" id="L54">	}</span>
+	
+	public boolean addCellar(Buildable b) {
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if(b.getType() != Type.CELLAR)</span>
+<span class="nc" id="L58">			return false;</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">		if(bottom != null) {</span>
+			if(
+<span class="nc bnc" id="L61" title="All 2 branches missed.">					getDepth() - b.getSizeY() &lt; minHeight ||</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">					b.getSizeX() &gt; getSizeX() ||</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">					b.getSizeZ() &gt; getSizeZ())</span>
+<span class="nc" id="L64">				return false;</span>
+			
+<span class="nc" id="L66">			b.setPositionY(getDepth() - b.getSizeY());</span>
+<span class="nc" id="L67">		} else {</span>
+<span class="nc" id="L68">			top = b;</span>
+<span class="nc" id="L69">			b.setPositionY(b.getParent().getPositionY() - b.getSizeY());</span>
+		}
+<span class="nc" id="L71">		bottom = b;</span>
+<span class="nc" id="L72">		floorsAndCellars.add(b);</span>
+		
+<span class="nc" id="L74">		return true;</span>
+	}
+
+	public List&lt;Buildable&gt; getFloorsAndCellars() {
+<span class="nc" id="L78">		return new ArrayList&lt;&gt;(floorsAndCellars);</span>
+	}
+	
+	public Buildable getTop() {
+<span class="nc" id="L82">		return top;</span>
+	}
+
+	public Buildable getBottom() {
+<span class="nc" id="L86">		return bottom;</span>
+	}
+	
+	public int getSizeX() {
+<span class="nc" id="L90">		int max = 0;</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		for(Buildable b : floorsAndCellars)</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">			if(b.getSizeX() &gt; max) max = b.getSizeX();</span>
+<span class="nc" id="L93">		return max;</span>
+	}
+	
+	public int getSizeY() {
+<span class="nc" id="L97">		return top.getPositionY() + top.getSizeY();</span>
+	}
+	
+	public int getSizeZ() {
+<span class="nc" id="L101">		int max = 0;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		for(Buildable b : floorsAndCellars)</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			if(b.getSizeZ() &gt; max) max = b.getSizeZ();</span>
+<span class="nc" id="L104">		return max;</span>
+	}
+	
+	public int getHeight() {
+<span class="nc" id="L108">		return getSizeY();</span>
+	}
+	
+	public int getDepth() {
+<span class="nc" id="L112">		return bottom.getPositionY();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

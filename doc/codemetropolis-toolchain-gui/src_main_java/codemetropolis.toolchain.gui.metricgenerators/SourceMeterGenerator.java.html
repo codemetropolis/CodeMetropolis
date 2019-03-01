@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SourceMeterGenerator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.metricgenerators</a> &gt; <span class="el_source">SourceMeterGenerator.java</span></div><h1>SourceMeterGenerator.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.metricgenerators;
+
+import java.io.File;
+import java.util.Map;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
+import codemetropolis.toolchain.converter.control.ConverterType;
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.components.CMButton;
+import codemetropolis.toolchain.gui.components.CMLabel;
+import codemetropolis.toolchain.gui.components.CMMetricPanel;
+import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.utils.ExeFileFilter;
+import codemetropolis.toolchain.gui.utils.GuiUtils;
+import codemetropolis.toolchain.gui.utils.Translations;
+
+/**
+ * Metric generation settings panel for the SonarQube settings.
+ *
+ * @author Abel Szkalisity {@literal &lt;SZAVAET.SZE&gt;}
+ */
+public class SourceMeterGenerator extends CMMetricPanel {
+
+  private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L29">  private static final FileFilter EXE_FILTER = new ExeFileFilter();</span>
+
+  private CMTextField projectRootPath;
+  private CMTextField sourceMeterPath;
+
+  /**
+   * Instantiates a SourceMeter settings panel.
+   */
+<span class="nc" id="L37">  public SourceMeterGenerator() {</span>
+<span class="nc" id="L38">    setTabTitle(Translations.t(&quot;gui_tab_sm&quot;));</span>
+<span class="nc" id="L39">    setConverterType(ConverterType.SOURCEMETER);</span>
+
+<span class="nc" id="L41">    setLayout(null);</span>
+
+<span class="nc" id="L43">    addProjectRootField();</span>
+<span class="nc" id="L44">    addSourceMeterExecutableField();</span>
+<span class="nc" id="L45">  }</span>
+
+  /**
+   * Adds the project root browser to the panel.
+   */
+  public void addProjectRootField() {
+<span class="nc" id="L51">    CMLabel label = new CMLabel(Translations.t(&quot;gui_l_project_root&quot;), 5, 5, 120, 30);</span>
+<span class="nc" id="L52">    projectRootPath = new CMTextField(130, 5, 225, 30);</span>
+<span class="nc" id="L53">    CMButton browseButton = new CMButton(Translations.t(&quot;gui_b_browse&quot;), 360, 5, 100, 30);</span>
+<span class="nc" id="L54">    browseButton.addActionListener(new BrowseListener(projectRootPath, JFileChooser.DIRECTORIES_ONLY, null));</span>
+
+<span class="nc" id="L56">    add(label);</span>
+<span class="nc" id="L57">    add(projectRootPath);</span>
+<span class="nc" id="L58">    add(browseButton);</span>
+<span class="nc" id="L59">  }</span>
+
+  /**
+   * Adds the SourceMeter executable browser to the panel.
+   */
+  public void addSourceMeterExecutableField() {
+<span class="nc" id="L65">    CMLabel label = new CMLabel(Translations.t(&quot;gui_l_sm_exe&quot;), 5, 40, 120, 30);</span>
+<span class="nc" id="L66">    sourceMeterPath = new CMTextField(130, 40, 225, 30);</span>
+<span class="nc" id="L67">    CMButton browseButton = new CMButton(Translations.t(&quot;gui_b_browse&quot;), 360, 40, 100, 30);</span>
+<span class="nc" id="L68">    browseButton.addActionListener(new BrowseListener(sourceMeterPath, JFileChooser.FILES_ONLY, EXE_FILTER));</span>
+
+<span class="nc" id="L70">    add(label);</span>
+<span class="nc" id="L71">    add(sourceMeterPath);</span>
+<span class="nc" id="L72">    add(browseButton);</span>
+<span class="nc" id="L73">  }</span>
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void fillFields(ExecutionOptions executionOptions) {
+<span class="nc" id="L80">    File sourceMeterExe = new File(sourceMeterPath.getText());</span>
+<span class="nc" id="L81">    File projectRoot = new File(projectRootPath.getText());</span>
+
+<span class="nc" id="L83">    Map&lt;String, Object&gt; params = executionOptions.getMetricGenerationParams();</span>
+<span class="nc" id="L84">    params.put(&quot;sourceMeterExe&quot;, sourceMeterExe);</span>
+<span class="nc" id="L85">    params.put(&quot;projectRoot&quot;, projectRoot);</span>
+
+<span class="nc" id="L87">    executionOptions.setConverterType(converterType);</span>
+<span class="nc" id="L88">  }</span>
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean validateFields(ExecutionOptions executionOptions) {
+<span class="nc" id="L95">    Map&lt;String, Object&gt; params = executionOptions.getMetricGenerationParams();</span>
+
+    try {
+<span class="nc" id="L98">      File sourceMeterExe = (File) params.get(&quot;sourceMeterExe&quot;);</span>
+<span class="nc" id="L99">      File projectRoot = (File) params.get(&quot;projectRoot&quot;);</span>
+
+<span class="nc bnc" id="L101" title="All 8 branches missed.">      if (sourceMeterExe == null || !sourceMeterExe.exists() || !sourceMeterExe.isFile() || !sourceMeterExe.canRead()</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">          || !sourceMeterExe.canExecute() || !sourceMeterExe.getName().endsWith(&quot;.exe&quot;)) {</span>
+<span class="nc" id="L103">        GuiUtils.showError(Translations.t(&quot;gui_err_invalid_sm_exe&quot;));</span>
+<span class="nc" id="L104">        return false;</span>
+<span class="nc bnc" id="L105" title="All 8 branches missed.">      } else if (projectRoot == null || !projectRoot.exists() || !projectRoot.isDirectory() || !projectRoot.canRead()) {</span>
+<span class="nc" id="L106">        GuiUtils.showError(Translations.t(&quot;gui_err_invalid_project_root&quot;));</span>
+<span class="nc" id="L107">        return false;</span>
+      }
+<span class="nc" id="L109">    } catch (ClassCastException e) {</span>
+<span class="nc" id="L110">      GuiUtils.showError(Translations.t(&quot;gui_err_unexpected_err&quot;));</span>
+<span class="nc" id="L111">    }</span>
+
+<span class="nc" id="L113">    return true;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

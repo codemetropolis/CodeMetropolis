@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FileLogger.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-commons</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.commons.util</a> &gt; <span class="el_source">FileLogger.java</span></div><h1>FileLogger.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.commons.util;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+public final class FileLogger {
+	
+	private static final String LOGGER_NAME = &quot;CodeMetropolis.Log&quot;;
+	
+	private static Logger logger;  
+	private static FileHandler fileHandler;
+	
+<span class="nc" id="L16">	private FileLogger() {}</span>
+	 
+	public static void load(String filePath) {
+		try {
+<span class="nc" id="L20">			logger = Logger.getLogger(LOGGER_NAME);  </span>
+<span class="nc" id="L21">			logger.setLevel(Level.ALL);</span>
+<span class="nc" id="L22">			logger.setUseParentHandlers(false);</span>
+<span class="nc" id="L23">			fileHandler = new FileHandler(filePath, true); </span>
+<span class="nc" id="L24">			fileHandler.setFormatter(new SimpleFormatter());</span>
+<span class="nc" id="L25">			logger.addHandler(fileHandler);</span>
+<span class="nc" id="L26">		} catch (SecurityException | IOException e) {</span>
+<span class="nc" id="L27">			System.err.println(&quot;An exception has occurred while initializing file logger.&quot;);</span>
+		}  
+<span class="nc" id="L29">	}</span>
+	
+	public static void logInfo(String message) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		if(logger == null) return;</span>
+<span class="nc" id="L33">		logger.log(Level.INFO, message);</span>
+<span class="nc" id="L34">	}</span>
+	
+	public static void logWarning(String message, Exception exception) {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">		if(logger == null) return;</span>
+<span class="nc" id="L38">		logger.log(Level.WARNING, message, exception);</span>
+<span class="nc" id="L39">	}</span>
+	 
+	public static void logError(String message, Exception exception) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if(logger == null) return;</span>
+<span class="nc" id="L43">		logger.log(Level.SEVERE, message, exception);</span>
+<span class="nc" id="L44">	}</span>
+	 
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

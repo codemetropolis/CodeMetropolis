@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Layout.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout</a> &gt; <span class="el_source">Layout.java</span></div><h1>Layout.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout;
+
+import codemetropolis.toolchain.commons.cmxml.BuildableTree;
+import codemetropolis.toolchain.placing.exceptions.LayoutException;
+import codemetropolis.toolchain.placing.exceptions.NonExistentLayoutException;
+import codemetropolis.toolchain.placing.layout.pack.PackLayout;
+//import codemetropolis.toolchain.placing.layout.tetris.TetrisLayout;
+
+<span class="nc" id="L9">public abstract class Layout {</span>
+
+	protected static final int GROUND_LEVEL = 60;
+	protected static final int MIN_HEIGHT = 10;
+	protected static final int MAX_HEIGHT = 200;
+	
+	public static Layout parse(String algorithm) throws NonExistentLayoutException {
+		try{
+<span class="nc bnc" id="L17" title="All 2 branches missed.">			switch(LayoutAlgorithm.valueOf(algorithm.toUpperCase())) {</span>
+				case PACK:
+<span class="nc" id="L19">					return new PackLayout();</span>
+				//TODO tetris layout is out of date and needs to be updated
+				//case TETRIS:
+				//	return new TetrisLayout();
+			}	
+<span class="nc" id="L24">		} catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L25">			throw new NonExistentLayoutException(algorithm);</span>
+		}
+<span class="nc" id="L27">		return null;</span>
+	}
+	
+	public abstract void apply(BuildableTree buildables) throws LayoutException;
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

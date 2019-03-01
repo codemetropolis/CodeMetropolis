@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractExecutor.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-commons</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.commons.executor</a> &gt; <span class="el_source">AbstractExecutor.java</span></div><h1>AbstractExecutor.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.commons.executor;
+
+import java.io.PrintStream;
+
+import codemetropolis.toolchain.commons.util.FileLogger;
+
+<span class="nc" id="L7">public abstract class AbstractExecutor {</span>
+
+<span class="nc" id="L9">	private PrintStream printStream = System.out;</span>
+<span class="nc" id="L10">	private PrintStream errorStream = System.err;</span>
+<span class="nc" id="L11">	private String prefix = &quot;&quot;;</span>
+<span class="nc" id="L12">	private String errorPrefix = &quot;&quot;;</span>
+	
+	public void setPrintStream(PrintStream printStream) {
+<span class="nc" id="L15">		this.printStream = printStream;</span>
+<span class="nc" id="L16">	}</span>
+	
+	public void setErrorStream(PrintStream errorStream) {
+<span class="nc" id="L19">		this.errorStream = errorStream;</span>
+<span class="nc" id="L20">	}</span>
+	
+	public void setPrefix(String prefix) {
+<span class="nc" id="L23">		this.prefix = prefix;</span>
+<span class="nc" id="L24">	}</span>
+
+	public void setErrorPrefix(String errorPrefix) {
+<span class="nc" id="L27">		this.errorPrefix = errorPrefix;</span>
+<span class="nc" id="L28">	}</span>
+	
+	protected void print(String message, Object... args ) {
+<span class="nc" id="L31">		print(true, true, message, args);</span>
+<span class="nc" id="L32">	}</span>
+	
+	protected void print(boolean log, String message, Object... args ) {
+<span class="nc" id="L35">		print(true, log, message, args);</span>
+<span class="nc" id="L36">	}</span>
+	
+	protected void print(boolean withPrefix, boolean log, String message, Object... args ) {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		String str = String.format(&quot;%s%s\n&quot;, withPrefix ? prefix : &quot;&quot;, message);</span>
+<span class="nc" id="L40">		String paramStr = String.format(str, args);</span>
+<span class="nc" id="L41">		printStream.print(paramStr);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if(log) FileLogger.logInfo(paramStr);</span>
+<span class="nc" id="L43">	}</span>
+	
+	protected void printError(Exception exception, String message, Object... args ) {
+<span class="nc" id="L46">		printError(true, true, exception, message, args);</span>
+<span class="nc" id="L47">	}</span>
+	
+	protected void printError(boolean log, Exception exception, String message, Object... args ) {
+<span class="nc" id="L50">		printError(true, log, exception, message, args);</span>
+<span class="nc" id="L51">	}</span>
+	
+	protected void printError(boolean withPrefix, boolean log, Exception exception, String message, Object... args ) {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">		String str = String.format(&quot;%s%s\n&quot;, withPrefix ? errorPrefix : &quot;&quot;, message);</span>
+<span class="nc" id="L55">		String paramStr = String.format(str, args);</span>
+<span class="nc" id="L56">		errorStream.print(paramStr);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if(log) FileLogger.logError(paramStr, exception);</span>
+<span class="nc" id="L58">	}</span>
+	
+	public abstract boolean execute(ExecutorArgs args);
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

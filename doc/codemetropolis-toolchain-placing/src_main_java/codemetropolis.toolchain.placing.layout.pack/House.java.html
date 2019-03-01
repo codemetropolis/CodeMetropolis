@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>House.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-placing</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.placing.layout.pack</a> &gt; <span class="el_source">House.java</span></div><h1>House.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.placing.layout.pack;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.placing.exceptions.LayoutException;
+
+public class House {
+	
+	private final int minHeight;
+	private final int maxHeight;
+
+	private Buildable parent;
+<span class="nc" id="L15">	private List&lt;Buildable&gt; floors = new ArrayList&lt;Buildable&gt;();</span>
+<span class="nc" id="L16">	private List&lt;Buildable&gt; cellars = new ArrayList&lt;Buildable&gt;();</span>
+	private Buildable topFloor;
+	private Buildable bottomFloor;
+	private Buildable topCellar;
+	private Buildable bottomCellar;
+	
+<span class="nc" id="L22">	public House(int minHeight, int maxHeight) {</span>
+<span class="nc" id="L23">		this.minHeight = minHeight;</span>
+<span class="nc" id="L24">		this.maxHeight = maxHeight;</span>
+<span class="nc" id="L25">	}</span>
+
+	public boolean add(Buildable b) throws LayoutException {
+<span class="nc bnc" id="L28" title="All 2 branches missed.">		if(b.getType() == Buildable.Type.FLOOR)</span>
+<span class="nc" id="L29">			return addFloor(b);</span>
+		else
+<span class="nc" id="L31">			return addCellar(b);</span>
+	}
+	
+	public boolean addFloor(Buildable floor) throws LayoutException {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">		if(floor.getType() != Buildable.Type.FLOOR) {</span>
+<span class="nc" id="L36">			throw new LayoutException(String.format(&quot;Cannot add %s %d as a floor. Wrong buildable type.&quot;, floor.getType().toString(), floor.getId()));</span>
+		}
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		if(bottomFloor == null) {</span>
+<span class="nc" id="L39">			floors.add(floor);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if(topCellar != null) {</span>
+<span class="nc" id="L41">				floor.setPositionX(topCellar.getCenter().getX() - (floor.getSizeX() / 2));</span>
+<span class="nc" id="L42">				floor.setPositionZ(topCellar.getCenter().getZ() - (floor.getSizeZ() / 2));</span>
+			}
+<span class="nc" id="L44">			parent = floor.getParent();</span>
+<span class="nc" id="L45">			bottomFloor = floor;</span>
+<span class="nc" id="L46">			topFloor = floor;</span>
+<span class="nc" id="L47">			return true;</span>
+		}
+<span class="nc bnc" id="L49" title="All 2 branches missed.">		if(floor.getParent() != parent) {</span>
+<span class="nc" id="L50">			throw new LayoutException(String.format(&quot;Cannot add %s %d as a floor. Floors and cellars in the house must be childs of the same parent.&quot;, floor.getType().toString(), floor.getId()));</span>
+		}
+<span class="nc bnc" id="L52" title="All 2 branches missed.">		if(topFloor.getPositionY() + topFloor.getSizeY() + floor.getSizeY() &gt; maxHeight) return false;</span>
+<span class="nc bnc" id="L53" title="All 4 branches missed.">		if(floor.getSizeX() &gt; topFloor.getSizeX() || floor.getSizeZ() &gt; topFloor.getSizeZ()) return false;</span>
+		
+<span class="nc" id="L55">		floors.add(floor);</span>
+<span class="nc" id="L56">		floor.setPositionY(topFloor.getPositionY() + topFloor.getSizeY());</span>
+<span class="nc" id="L57">		floor.setPositionX(topFloor.getCenter().getX() - (floor.getSizeX() / 2));</span>
+<span class="nc" id="L58">		floor.setPositionZ(topFloor.getCenter().getZ() - (floor.getSizeZ() / 2));</span>
+<span class="nc" id="L59">		topFloor = floor;</span>
+		
+<span class="nc" id="L61">		return true;</span>
+	}
+	
+	public boolean addCellar(Buildable cellar) throws LayoutException {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		if(cellar.getType() != Buildable.Type.CELLAR) {</span>
+<span class="nc" id="L66">			throw new LayoutException(String.format(&quot;Cannot add %s %d as a cellar. Wrong buildable type.&quot;, cellar.getType().toString(), cellar.getId()));</span>
+		}
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		if(topCellar == null) {</span>
+<span class="nc" id="L69">			cellars.add(cellar);</span>
+<span class="nc" id="L70">			cellar.setPositionY(cellar.getPositionY() - cellar.getSizeY() - 1);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">			if(bottomFloor != null) {</span>
+<span class="nc" id="L72">				cellar.setPositionX(bottomFloor.getCenter().getX() - (cellar.getSizeX() / 2));</span>
+<span class="nc" id="L73">				cellar.setPositionZ(bottomFloor.getCenter().getZ() - (cellar.getSizeZ() / 2));</span>
+			}
+<span class="nc" id="L75">			parent = cellar.getParent();</span>
+<span class="nc" id="L76">			topCellar = cellar;</span>
+<span class="nc" id="L77">			bottomCellar = cellar;</span>
+<span class="nc" id="L78">			return true;</span>
+		}
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if(cellar.getParent() != parent) {</span>
+<span class="nc" id="L81">			throw new LayoutException(String.format(&quot;Cannot add %s %d as a floor. Floors and cellars in the house must be childs of the same parent.&quot;, cellar.getType().toString(), cellar.getId()));</span>
+		}
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		if(bottomCellar.getPositionY() - cellar.getSizeY() &lt; minHeight) return false;</span>
+<span class="nc bnc" id="L84" title="All 4 branches missed.">		if(cellar.getSizeX() &gt; bottomCellar.getSizeX() || cellar.getSizeZ() &gt; bottomCellar.getSizeZ()) return false;</span>
+		
+<span class="nc" id="L86">		cellars.add(cellar);</span>
+<span class="nc" id="L87">		cellar.setPositionY(bottomCellar.getPositionY() - cellar.getSizeY() - 1);</span>
+<span class="nc" id="L88">		cellar.setPositionX(bottomCellar.getCenter().getX() - (cellar.getSizeX() / 2));</span>
+<span class="nc" id="L89">		cellar.setPositionZ(bottomCellar.getCenter().getZ() - (cellar.getSizeZ() / 2));</span>
+<span class="nc" id="L90">		bottomCellar = cellar;</span>
+		
+<span class="nc" id="L92">		return true;</span>
+	}
+	
+	public int getSizeX() {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if(bottomFloor == null) return topCellar.getSizeX();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if(topCellar == null) return bottomFloor.getSizeX();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		return (bottomFloor.getSizeX() &gt; topCellar.getSizeX() ? bottomFloor.getSizeX() : topCellar.getSizeX());</span>
+	}
+	
+	public int getSizeZ() {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if(bottomFloor == null) return topCellar.getSizeZ();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if(topCellar == null) return bottomFloor.getSizeZ();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		return (bottomFloor.getSizeZ() &gt; topCellar.getSizeZ() ? bottomFloor.getSizeZ() : topCellar.getSizeZ());</span>
+	}
+	
+	public void translateNearX(int x) {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for(Buildable b : floors) b.setPositionXR(b.getPositionX() + x);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for(Buildable b : cellars) b.setPositionXR(b.getPositionX() + x);</span>
+<span class="nc" id="L110">	}</span>
+	
+	public void translateNearZ(int z) {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		for(Buildable b : floors) b.setPositionZR(b.getPositionZ() + z);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		for(Buildable b : cellars) b.setPositionZR(b.getPositionZ() + z);</span>
+<span class="nc" id="L115">	}</span>
+	
+	public int getPositionX() {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if(bottomFloor == null) return topCellar.getPositionX();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if(topCellar == null) return bottomFloor.getPositionX();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		return (bottomFloor.getPositionX() &lt; topCellar.getPositionX() ? bottomFloor.getPositionX() : topCellar.getPositionX());</span>
+	}
+	
+	public int getPositionZ() {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if(bottomFloor == null) return topCellar.getPositionZ();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if(topCellar == null) return bottomFloor.getPositionZ();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		return (bottomFloor.getPositionZ() &lt; topCellar.getPositionZ() ? bottomFloor.getPositionZ() : topCellar.getPositionZ());</span>
+	}
+	
+	public void setPositionXR(int x) {
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for(Buildable b : floors) {</span>
+<span class="nc" id="L131">			int offset = b.getPositionX() - b.getParent().getPositionX();</span>
+<span class="nc" id="L132">			b.setPositionXR(x + offset);</span>
+		}
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for(Buildable b : cellars) {</span>
+<span class="nc" id="L135">			int offset = b.getPositionX() - b.getParent().getPositionX();</span>
+<span class="nc" id="L136">			b.setPositionXR(x + offset);</span>
+		}
+<span class="nc" id="L138">	}</span>
+	
+	public void setPositionZR(int z) {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		for(Buildable b : floors) {</span>
+<span class="nc" id="L142">			int offset = b.getPositionZ() - b.getParent().getPositionZ();</span>
+<span class="nc" id="L143">			b.setPositionZR(z + offset);</span>
+		}
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		for(Buildable b : cellars) {</span>
+<span class="nc" id="L146">			int offset = b.getPositionZ() - b.getParent().getPositionZ();</span>
+<span class="nc" id="L147">			b.setPositionZR(z + offset);</span>
+		}
+<span class="nc" id="L149">	}</span>
+
+	public Buildable getParent() {
+<span class="nc" id="L152">		return parent;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommandLineOptions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-mapping</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.mapping</a> &gt; <span class="el_source">CommandLineOptions.java</span></div><h1>CommandLineOptions.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.mapping;
+
+import org.kohsuke.args4j.Option;
+
+<span class="nc" id="L5">public class CommandLineOptions {</span>
+	
+	@Option(name=&quot;-h&quot;, aliases = { &quot;--help&quot; })
+<span class="nc" id="L8">	private boolean showHelp = false;</span>
+	
+	@Option(name=&quot;-i&quot;, aliases = { &quot;--input&quot; })
+<span class="nc" id="L11">	private String inputFile = null;</span>
+
+	@Option(name=&quot;-o&quot;, aliases = { &quot;--output&quot; })
+<span class="nc" id="L14">	private String outputFile = &quot;mappingToPlacing.xml&quot;;</span>
+	 
+	@Option(name=&quot;-m&quot;, aliases = { &quot;--mapping&quot; })
+<span class="nc" id="L17">	private String mappingFile = null;</span>
+	
+	@Option(name=&quot;-s&quot;, aliases = { &quot;--scale&quot; })
+<span class="nc" id="L20">	private double scale = 1.0;</span>
+	
+	@Option(name=&quot;-v&quot;, aliases = { &quot;--validate&quot; })
+<span class="nc" id="L23">	private boolean hierarchyValidation = false;</span>
+
+	public boolean showHelp() {
+<span class="nc" id="L26">		return showHelp;</span>
+	}
+
+	public String getInputFile() {
+<span class="nc" id="L30">		return inputFile;</span>
+	}
+
+	public String getOutputFile() {
+<span class="nc" id="L34">		return outputFile;</span>
+	}
+
+	public String getMappingFile() {
+<span class="nc" id="L38">		return mappingFile;</span>
+	}
+
+	public double getScale() {
+<span class="nc" id="L42">		return scale;</span>
+	}
+
+	public boolean isHierarchyValidationEnabled() {
+<span class="nc" id="L46">		return hierarchyValidation;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

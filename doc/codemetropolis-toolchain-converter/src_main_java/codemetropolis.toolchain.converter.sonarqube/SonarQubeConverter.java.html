@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SonarQubeConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.sonarqube</a> &gt; <span class="el_source">SonarQubeConverter.java</span></div><h1>SonarQubeConverter.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.sonarqube;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
+import codemetropolis.toolchain.commons.cdf.CdfTree;
+import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.commons.exceptions.CodeMetropolisException;
+import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.converter.sonarqube.SonarMetric.MetricType;
+import codemetropolis.toolchain.converter.sonarqube.SonarResource.Scope;
+
+public class SonarQubeConverter extends CdfConverter {
+
+	private static final String USERNAME_PARAM_NAME = &quot;username&quot;;
+	private static final String PASSWORD_PARAM_NAME = &quot;password&quot;;
+	private static final String SPLIT_DIRS_PARAM_NAME = &quot;splitDirs&quot;;
+	private static final String PROJECTS_PARAM_NAME = &quot;projects&quot;;
+	private static final String ROOT_CONTAINER_NAME = &quot;projects&quot;;
+	private static final String ROOT_CONTAINER_TYPE = &quot;container&quot;;
+	
+	private Map&lt;Integer, SonarResource&gt; resources;
+	private Map&lt;Integer, CdfElement&gt; cdfElements;
+	
+	public SonarQubeConverter(Map&lt;String, String&gt; params) {
+<span class="nc" id="L32">		super(params);</span>
+<span class="nc" id="L33">		resources = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L34">		cdfElements = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L35">	}</span>
+
+	@Override
+	public CdfTree createElements(String url) throws CodeMetropolisException {
+<span class="nc" id="L39">		resources.putAll(getResources(url));</span>
+		
+<span class="nc" id="L41">		CdfTree cdfTree = new CdfTree();	</span>
+<span class="nc" id="L42">		Iterator&lt;Integer&gt; iterator = resources.keySet().iterator();</span>
+		
+<span class="nc" id="L44">		CdfElement rootElement = new CdfElement(ROOT_CONTAINER_NAME, ROOT_CONTAINER_TYPE);</span>
+<span class="nc" id="L45">		cdfTree.setRoot(rootElement);</span>
+		
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		while(iterator.hasNext()){</span>
+<span class="nc" id="L48">			Integer rootId = iterator.next();</span>
+<span class="nc" id="L49">			SonarResource res = resources.get(rootId);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">			if(Scope.PRJ.equals(res.getScope())){</span>
+<span class="nc" id="L51">				CdfElement projectElement = createCdfElement(res);</span>
+<span class="nc" id="L52">				rootElement.addChildElement(projectElement);</span>
+			}
+		}
+		
+<span class="nc" id="L56">		String splitDirsParam = getParameter(SPLIT_DIRS_PARAM_NAME);</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">		if(splitDirsParam != null &amp;&amp; Boolean.valueOf(splitDirsParam)) {</span>
+<span class="nc" id="L58">			processDirHierarchy(cdfTree);</span>
+		}
+		
+<span class="nc" id="L61">		return cdfTree;</span>
+	}
+	
+	private String[] getProjectsInParams() {
+<span class="nc" id="L65">		String projectStr = getParameter(PROJECTS_PARAM_NAME);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">		if(projectStr == null) return new String[0];</span>
+<span class="nc" id="L67">		return projectStr.split(&quot;,&quot;);</span>
+	}
+	
+	private Map&lt;Integer, SonarResource&gt; getResources(String url) throws SonarConnectException {
+<span class="nc" id="L71">		Map&lt;Integer, SonarResource&gt; result = new HashMap&lt;&gt;();</span>
+		
+<span class="nc" id="L73">		SonarClient sonarClient = new SonarClient(url, getParameter(USERNAME_PARAM_NAME), getParameter(PASSWORD_PARAM_NAME));</span>
+<span class="nc" id="L74">		sonarClient.init();</span>
+		
+<span class="nc" id="L76">		String[] projectRegexList = getProjectsInParams();</span>
+<span class="nc" id="L77">		List&lt;String&gt; allProjects = sonarClient.getProjectKeys();</span>
+<span class="nc" id="L78">		Set&lt;String&gt; projects = new LinkedHashSet&lt;&gt;();</span>
+		
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if(projectRegexList.length == 0) {</span>
+<span class="nc" id="L81">			projects.addAll(allProjects);</span>
+<span class="nc" id="L82">		} else {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">			for(String p : allProjects) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">				for(String regex : projectRegexList) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">					if(p.matches(regex)) {</span>
+<span class="nc" id="L86">						projects.add(p);</span>
+<span class="nc" id="L87">						break;</span>
+					}
+				}
+			}
+		}
+		
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		for(String key : projects) {</span>
+<span class="nc" id="L94">			fireConverterEvent(String.format(Resources.get(&quot;sonar_downloading_project&quot;), key));</span>
+<span class="nc" id="L95">			result.putAll(sonarClient.getProject(key));</span>
+		}
+		
+<span class="nc" id="L98">		return result;</span>
+	}
+	
+	private CdfElement createCdfElement(SonarResource resource){
+<span class="nc" id="L102">		CdfElement cdfElement = new CdfElement();</span>
+<span class="nc" id="L103">		cdfElement.setName(resource.getName());	</span>
+<span class="nc" id="L104">		cdfElement.setType(resource.getScope().toString());</span>
+<span class="nc" id="L105">		cdfElement.setSourceId(String.valueOf(resource.getId()));</span>
+<span class="nc" id="L106">		cdfElement.addProperty(&quot;key&quot;, resource.getKey(), Type.STRING);</span>
+<span class="nc" id="L107">		addCdfProperties(cdfElement, resource.getMetrics());</span>
+<span class="nc" id="L108">		setChildren(cdfElement, resource);</span>
+<span class="nc" id="L109">		cdfElements.put(resource.getId(), cdfElement);</span>
+		
+<span class="nc" id="L111">		return cdfElement;</span>
+	}
+	
+	private void addCdfProperties(CdfElement cdfElement, List&lt;SonarMetric&gt; metrics){
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for(SonarMetric metric : metrics){</span>
+<span class="nc" id="L116">			cdfElement.addProperty(metric.getName(), metric.getValue(), getMetricType(metric.getType()));</span>
+		}
+<span class="nc" id="L118">	}</span>
+	
+	private Type getMetricType(MetricType type){
+<span class="nc bnc" id="L121" title="All 4 branches missed.">		switch(type){</span>
+			case INT:
+<span class="nc" id="L123">				return Type.INT;</span>
+			case FLOAT:
+			case PERCENT:
+			case MILLISEC:
+<span class="nc" id="L127">				return Type.FLOAT;</span>
+			case DATA:
+<span class="nc" id="L129">				return Type.STRING;</span>
+			default:
+<span class="nc" id="L131">				return Type.STRING;</span>
+		}
+	}
+	
+	private void setChildren(CdfElement cdfElement, SonarResource resource){
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if(cdfElements.containsKey(resource.getId())){</span>
+<span class="nc" id="L137">			CdfElement child = cdfElements.get(resource.getId());</span>
+<span class="nc" id="L138">			cdfElement.addChildElement(child);</span>
+<span class="nc" id="L139">		} else {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			for(Integer ids : resource.getChildIdList()){</span>
+<span class="nc" id="L141">				CdfElement child = createCdfElement(resources.get(ids));</span>
+<span class="nc" id="L142">				cdfElement.addChildElement(child);</span>
+			}
+		}			
+<span class="nc" id="L145">	}</span>
+	
+	private void processDirHierarchy(CdfTree cdfTree) {
+<span class="nc" id="L148">		CdfTree.Iterator it = cdfTree.iterator();</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		while(it.hasNext()) {</span>
+			
+<span class="nc" id="L151">			CdfElement prj = it.next();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if(!&quot;prj&quot;.equalsIgnoreCase(prj.getType())) {</span>
+<span class="nc" id="L153">				continue;</span>
+			}
+			
+<span class="nc" id="L156">			String prjKey = prj.getPropertyValue(&quot;key&quot;);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			for(CdfElement child : prj.getChildElements()) {</span>
+				
+<span class="nc" id="L159">				String childKey = child.getPropertyValue(&quot;key&quot;);	</span>
+<span class="nc" id="L160">				String[] nodeNames = childKey.replaceFirst(prjKey + &quot;:&quot;, &quot;&quot;).split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">				if(nodeNames.length &lt; 2) continue;</span>
+				
+<span class="nc" id="L163">				CdfElement dir = prj;</span>
+<span class="nc" id="L164">				int i = 0;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">				while(i &lt; nodeNames.length - 1) {</span>
+<span class="nc" id="L166">					CdfElement matchingChild = getChildByName(dir, nodeNames[i]);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">					if(matchingChild == null) break;</span>
+<span class="nc" id="L168">					dir = matchingChild;</span>
+<span class="nc" id="L169">					i++;</span>
+				}
+				
+<span class="nc bnc" id="L172" title="All 2 branches missed.">				while(i &lt; nodeNames.length - 1) {</span>
+<span class="nc" id="L173">					CdfElement newElement = new CdfElement(nodeNames[i], &quot;dir&quot;);</span>
+<span class="nc" id="L174">					dir.addChildElement(newElement);</span>
+<span class="nc" id="L175">					dir = newElement;</span>
+<span class="nc" id="L176">					i++;</span>
+				}
+				
+<span class="nc" id="L179">				prj.removeChildElement(child);</span>
+<span class="nc" id="L180">				child.setName(nodeNames[nodeNames.length - 1]);</span>
+<span class="nc" id="L181">				dir.addChildElement(child);</span>
+			}	
+		}
+<span class="nc" id="L184">	}</span>
+	
+	private CdfElement getChildByName(CdfElement parent, String name) {
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for(CdfElement child : parent.getChildElements()) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if(child.getName().equals(name)) return child;</span>
+		}
+<span class="nc" id="L190">		return null;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

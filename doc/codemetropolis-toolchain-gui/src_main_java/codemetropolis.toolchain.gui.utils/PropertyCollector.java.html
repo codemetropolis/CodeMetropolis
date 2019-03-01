@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PropertyCollector.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui.utils</a> &gt; <span class="el_source">PropertyCollector.java</span></div><h1>PropertyCollector.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui.utils;
+
+import java.io.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * This class is responsible for providing information what properties/metrics belong to the individual source code element types.
+ *  @author Viktor Meszaros {@literal &lt;MEVXAAT.SZE&gt;}
+ */
+public class PropertyCollector {
+	/**
+	 * Those source code element types, whose properties wanted to be collected.
+	 */
+<span class="fc" id="L30">	public static final Set&lt;String&gt;  acceptedTypes = new HashSet&lt;String&gt;(Arrays.asList(</span>
+<span class="fc" id="L31">		     new String[] {&quot;package&quot;,&quot;class&quot;,&quot;attribute&quot;,&quot;method&quot;}</span>
+<span class="fc" id="L32">	));</span>
+	
+	/**
+	 * The String key contains the name of the source code element type. The value assigned to the key is a list with the properties (&lt;name, type&gt; pairs).
+	 */
+	private Map&lt;String, List&lt;Property&gt;&gt; propertyMap;
+	
+	/**
+	 * Class initialization.
+	 */
+<span class="fc" id="L42">	public PropertyCollector() {</span>
+<span class="fc" id="L43">		initializePropertyMap();</span>
+<span class="fc" id="L44">	}</span>
+	
+	/**
+	 * Initialize the property map.
+	 */
+	private void initializePropertyMap() {
+<span class="fc" id="L50">		Map&lt;String, List&lt;Property&gt;&gt; tmpPropertyMap = new HashMap&lt;String, List&lt;Property&gt;&gt;();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		for(String type : acceptedTypes) {</span>
+<span class="fc" id="L52">			tmpPropertyMap.put(type, null);</span>
+		}
+<span class="fc" id="L54">		propertyMap = tmpPropertyMap;</span>
+<span class="fc" id="L55">	}</span>
+	
+	/**
+	 * Gets the {@link Map} which contains the individual source code element types as keys and their metrics/properties as values.
+	 * @param cdfFilePath The path from the cdf file from which the information will be read.
+	 * @return The {@link Map} which contains the individual source code element types as keys and their metrics/properties as values.
+	 */
+	public Map&lt;String, List&lt;Property&gt;&gt; getFromCdf(String cdfFilePath) throws FileNotFoundException {
+		try {
+			
+<span class="fc" id="L65">			initializePropertyMap();</span>
+
+<span class="fc" id="L67">			File file = new File(cdfFilePath);</span>
+
+<span class="fc" id="L69">			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();</span>
+<span class="fc" id="L70">			Document doc = dBuilder.parse(file);</span>
+			
+<span class="fc" id="L72">			Element rootElement = doc.getDocumentElement();</span>
+<span class="fc" id="L73">			rootElement.normalize();</span>
+				
+			//This NodeList 'elementTags' below doesn't contains the root element.
+			//The root element is also an 'element' tag (a package), that's why we need to try collecting its properties as well.
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			if(isValidElement(rootElement)) {</span>
+<span class="fc" id="L78">				tryCollectProperties(rootElement);</span>
+			}
+							
+<span class="fc" id="L81">			NodeList elementTags = rootElement.getElementsByTagName(&quot;element&quot;);</span>
+			
+			//Iteration through all of the rest 'element' tags (they represent source code element types). Trying to collect their properties.
+<span class="fc bfc" id="L84" title="All 2 branches covered.">			for(int i = 0; i &lt; elementTags.getLength(); i++) {</span>
+<span class="fc" id="L85">				Element currentTag = (Element) elementTags.item(i);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				if(isValidElement(currentTag)) {</span>
+<span class="fc" id="L87">					tryCollectProperties(currentTag);</span>
+				}
+			};
+
+<span class="pc" id="L91">		} catch (ParserConfigurationException | SAXException | IOException e) {	</span>
+<span class="nc" id="L92">			e.printStackTrace();</span>
+		}
+			
+<span class="fc" id="L95">		return propertyMap;</span>
+	}
+		
+	/**
+	 * Checks if the tag is a valid 'element' tag or not.
+	 * @param element The {@link Element} which will be examined.
+	 * @return The examined element is a valid 'element' tag or not.
+	 */
+	public boolean isValidElement(Element element) {
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		return element.getTagName().equals(&quot;element&quot;) &amp;&amp;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">			element.hasAttribute(&quot;type&quot;) &amp;&amp;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">			acceptedTypes.contains(element.getAttribute(&quot;type&quot;));</span>
+	}	
+	
+	/**
+	 * Checks if the properties/metrics of the element have been ever gathered or not. If not, calls the {@code getPropertyList} method to collect them.
+	 * @param element The 'element' tag which will be examined.
+	 */
+	private void tryCollectProperties(Element element) {
+<span class="fc" id="L114">		List&lt;Property&gt; propertyList = null;</span>
+		//We will collect the properties of the source code element types only in that way, when we have never collected them before.
+		//The element tag must have child nodes. (E.g. the 'properties' tag also a child element.)
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if(propertyList == null &amp;&amp; element.hasChildNodes()) {</span>
+<span class="fc" id="L118">			NodeList children = element.getChildNodes();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			for(int i = 0; i &lt; children.getLength(); i++) {</span>
+<span class="fc" id="L120">				Node child = children.item(i);</span>
+				//When we found the 'properties' tag, we collect the list of properties contained by it.
+<span class="fc bfc" id="L122" title="All 4 branches covered.">				if(child.getNodeType() == Node.ELEMENT_NODE &amp;&amp; child.getNodeName().equals(&quot;properties&quot;)) {</span>
+<span class="fc" id="L123">					propertyList = getPropertyList((Element)child);</span>
+<span class="fc" id="L124">					propertyMap.put(element.getAttribute(&quot;type&quot;), propertyList);</span>
+<span class="fc" id="L125">					break;</span>
+				}
+			}
+		}
+<span class="fc" id="L129">	}</span>
+		
+	/**
+	 * Collects the properties contained by the 'properties' tag.
+	 * @param element The 'properties' tag of the 'element' tag.
+	 * @return The list of the gathered properties/metrics.
+	 */
+	public List&lt;Property&gt; getPropertyList(Element element) {
+<span class="fc" id="L137">		List&lt;Property&gt; result = new ArrayList&lt;Property&gt;();</span>
+		
+<span class="fc" id="L139">		NodeList properties = element.getElementsByTagName(&quot;property&quot;);</span>
+		
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for(int i = 0; i &lt; properties.getLength(); i++) {</span>
+<span class="fc" id="L142">			Element property = (Element) properties.item(i);</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">			if(property.hasAttribute(&quot;name&quot;) &amp;&amp; property.hasAttribute(&quot;type&quot;)) {</span>
+<span class="fc" id="L144">				Property p = new Property();</span>
+<span class="fc" id="L145">				p.name = property.getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L146">				p.type = property.getAttribute(&quot;type&quot;);</span>
+<span class="fc" id="L147">				result.add(p);</span>
+			}
+		}
+<span class="fc" id="L150">		return result;</span>
+	}
+	
+	/**
+	 * Displays the various properties (&lt;name, type&gt; pairs) of the source code elements.
+	 */
+	public void displayProperties() {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for(String srcCodeElement : acceptedTypes) {</span>
+<span class="nc" id="L158">			System.out.println(&quot;Properties of source code element '&quot; + srcCodeElement + &quot;':&quot;);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			for(Property p : propertyMap.get(srcCodeElement)) {</span>
+<span class="nc" id="L160">				System.out.println(p.name + &quot;: &quot; + p.type);</span>
+			}
+		}
+<span class="nc" id="L163">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

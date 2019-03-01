@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Character.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.util</a> &gt; <span class="el_source">Character.java</span></div><h1>Character.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.util;
+
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+
+<span class="nc" id="L5">public enum Character {</span>
+	
+<span class="nc" id="L7">	STONE,</span>
+<span class="nc" id="L8">	COBBLESTONE,</span>
+<span class="nc" id="L9">	MOSSY_STONE,</span>
+<span class="nc" id="L10">	SANDSTONE,</span>
+<span class="nc" id="L11">	OBSIDIAN,</span>
+<span class="nc" id="L12">	WOOD,</span>
+<span class="nc" id="L13">	DARK_WOOD,</span>
+<span class="nc" id="L14">	BIRCH_WOOD,</span>
+<span class="nc" id="L15">	PLANKS,</span>
+<span class="nc" id="L16">	DARK_PLANKS,</span>
+<span class="nc" id="L17">	METAL,</span>
+<span class="nc" id="L18">	DIRT,</span>
+<span class="nc" id="L19">	SAND,</span>
+<span class="nc" id="L20">	RED_SAND,</span>
+<span class="nc" id="L21">	BRICK,</span>
+<span class="nc" id="L22">	STONE_BRICK,</span>
+<span class="nc" id="L23">	DARK_BRICK,</span>
+<span class="nc" id="L24">	GLASS,</span>
+<span class="nc" id="L25">	GOLD,</span>
+<span class="nc" id="L26">	DIAMOND,</span>
+<span class="nc" id="L27">	UNDEFINED;</span>
+	
+	public static Character parse(String str) {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		for(Character c : Character.values()) {</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">			if(c.toString().equalsIgnoreCase(str)) return c;</span>
+		}
+<span class="nc" id="L33">		return Character.UNDEFINED;</span>
+	}
+	
+	public BasicBlock getBlock() {
+<span class="nc bnc" id="L37" title="All 22 branches missed.">		switch(this) {</span>
+<span class="nc" id="L38">			case STONE: return new BasicBlock( &quot;minecraft:stone&quot; );</span>
+<span class="nc" id="L39">			case COBBLESTONE: return new BasicBlock( &quot;minecraft:cobblestone&quot; );</span>
+<span class="nc" id="L40">			case MOSSY_STONE: return new BasicBlock( &quot;minecraft:mossy_cobblestone&quot; );</span>
+<span class="nc" id="L41">			case SANDSTONE: return new BasicBlock( &quot;minecraft:sandstone&quot; );</span>
+<span class="nc" id="L42">			case OBSIDIAN: return new BasicBlock( &quot;minecraft:obsidian&quot; );</span>
+<span class="nc" id="L43">			case WOOD: return new BasicBlock( &quot;minecraft:log&quot; );</span>
+<span class="nc" id="L44">			case DARK_WOOD: return new BasicBlock( &quot;minecraft:log&quot;, 1 );</span>
+<span class="nc" id="L45">			case BIRCH_WOOD: return new BasicBlock( &quot;minecraft:log&quot;, 2 );</span>
+<span class="nc" id="L46">			case PLANKS: return new BasicBlock( &quot;minecraft:planks&quot; );</span>
+<span class="nc" id="L47">			case DARK_PLANKS: return new BasicBlock( &quot;minecraft:planks&quot;, 5 );</span>
+<span class="nc" id="L48">			case METAL: return new BasicBlock( &quot;minecraft:iron_block&quot; );</span>
+<span class="nc" id="L49">			case DIRT: return new BasicBlock( &quot;minecraft:dirt&quot; );</span>
+<span class="nc" id="L50">			case SAND: return new BasicBlock( &quot;minecraft:sandstone&quot; , 2 );</span>
+<span class="nc" id="L51">			case RED_SAND: return new BasicBlock( &quot;minecraft:sand&quot; );</span>
+<span class="nc" id="L52">			case BRICK: return new BasicBlock( &quot;minecraft:double_stone_slab&quot;, 4 );</span>
+<span class="nc" id="L53">			case STONE_BRICK: return new BasicBlock( &quot;minecraft:double_stone_slab&quot;, 5 );</span>
+<span class="nc" id="L54">			case DARK_BRICK: return new BasicBlock( &quot;minecraft:double_stone_slab&quot;, 6 );</span>
+<span class="nc" id="L55">			case GLASS: return new BasicBlock( &quot;minecraft:glass&quot; );</span>
+<span class="nc" id="L56">			case GOLD: return new BasicBlock( &quot;minecraft:gold_block&quot; );</span>
+<span class="nc" id="L57">			case DIAMOND: return new BasicBlock( &quot;minecraft:diamond_block&quot; );</span>
+<span class="nc" id="L58">			case UNDEFINED: return new BasicBlock( &quot;minecraft:wool&quot;, 2 );</span>
+<span class="nc" id="L59">			default: return null;</span>
+		}
+	}
+	
+	public BasicBlock getTopBlock() {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		switch(this) {</span>
+			case WOOD:
+			case DARK_WOOD:
+			case BIRCH_WOOD:
+			case PLANKS:
+			case DARK_PLANKS:
+<span class="nc" id="L70">				return new BasicBlock( &quot;minecraft:fence&quot; );</span>
+<span class="nc" id="L71">			default: return getBlock();</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

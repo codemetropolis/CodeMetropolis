@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CodeMetropolisGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui</a> &gt; <span class="el_source">CodeMetropolisGUI.java</span></div><h1>CodeMetropolisGUI.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package codemetropolis.toolchain.gui;</span>
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.PipedOutputStream;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
+
+import codemetropolis.toolchain.gui.beans.ExecutionOptions;
+import codemetropolis.toolchain.gui.components.CMButton;
+import codemetropolis.toolchain.gui.components.CMCheckBox;
+import codemetropolis.toolchain.gui.components.CMComboBox;
+import codemetropolis.toolchain.gui.components.CMLabel;
+import codemetropolis.toolchain.gui.components.CMMetricPanel;
+import codemetropolis.toolchain.gui.components.CMSpinner;
+import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.utils.ExecutionWorker;
+import codemetropolis.toolchain.gui.utils.GuiUtils;
+import codemetropolis.toolchain.gui.utils.Translations;
+import codemetropolis.toolchain.gui.utils.XmlFileFilter;
+import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
+
+/**
+ * GUI window for the CodeMetropolis toolchain.
+ *
+ * @author Adam Bankeszi {@literal &lt;BAAVAGT.SZE&gt;}
+ */
+public class CodeMetropolisGUI extends JFrame {
+
+  private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L47">  private static final FileFilter XML_FILTER = new XmlFileFilter();</span>
+  private static final int COVER_IMAGE_COUNT = 4;
+<span class="fc" id="L49">  private static final Random rng = new Random();</span>
+
+  private GUIController controller;
+
+  private CMTextField projectName;
+  private JTabbedPane metricTabbedPane;
+  private CMTextField mappingPath;
+  private CMTextField mappingEditorCdfPath;
+  private CMTextField mcRootPath;
+  private CMCheckBox showMap;
+  private CMCheckBox validateStructure;
+  private CMSpinner scaleSpinner;
+  private CMComboBox&lt;LayoutAlgorithm&gt; layoutSelector;
+
+  /**
+   * Instantiates the CodeMetropolis GUI.
+   *
+   * @param controller The {@link GUIController} instance.
+   */
+  public CodeMetropolisGUI(GUIController controller) {
+<span class="nc" id="L69">    super(Translations.t(&quot;gui_title&quot;));</span>
+<span class="nc" id="L70">    this.controller = controller;</span>
+
+<span class="nc" id="L72">    JPanel panel = createBasePanel();</span>
+<span class="nc" id="L73">    addHeaderImages(panel);</span>
+<span class="nc" id="L74">    addTitle(panel);</span>
+<span class="nc" id="L75">    addProjectNameField(panel);</span>
+<span class="nc" id="L76">    addMetricTabs(panel);</span>
+<span class="nc" id="L77">    addMappingOptions(panel);</span>
+<span class="nc" id="L78">    addPlacingOptions(panel);</span>
+<span class="nc" id="L79">    addMinecraftRootBrowser(panel);</span>
+<span class="nc" id="L80">    addStartButton(panel);</span>
+
+<span class="nc" id="L82">    initFields();</span>
+
+<span class="nc" id="L84">    this.setResizable(false);</span>
+<span class="nc" id="L85">    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L86">    this.setContentPane(panel);</span>
+<span class="nc" id="L87">    this.pack();</span>
+<span class="nc" id="L88">    this.setLocationRelativeTo(null);</span>
+<span class="nc" id="L89">  }</span>
+
+  /**
+   * Does automatic initialization for some of the fields. Search for Minecraft folder if exists.
+   */
+  public void initFields() {
+<span class="nc" id="L95">    String minecraftRoot = GuiUtils.findMinecraftRoot();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">    if (minecraftRoot != null) {</span>
+<span class="nc" id="L97">      mcRootPath.setText(minecraftRoot);</span>
+    }
+<span class="nc" id="L99">  }</span>
+
+  /**
+   * Creates the base panel for the CodeMetropolis GUI.
+   *
+   * @return The generated {@link JPanel}.
+   */
+  private static final JPanel createBasePanel() {
+<span class="nc" id="L107">    JPanel panel = new JPanel();</span>
+<span class="nc" id="L108">    panel.setLayout(null);</span>
+<span class="nc" id="L109">    panel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L110">    panel.setBounds(0, 0, 500, 700);</span>
+
+<span class="nc" id="L112">    Dimension size = new Dimension(500, 800);</span>
+<span class="nc" id="L113">    panel.setMinimumSize(size);</span>
+<span class="nc" id="L114">    panel.setPreferredSize(size);</span>
+<span class="nc" id="L115">    panel.setMaximumSize(size);</span>
+
+<span class="nc" id="L117">    return panel;</span>
+  }
+
+  /**
+   * Adds the cover image and the logo to the top of the {@code panel}.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addHeaderImages(JPanel panel) {
+<span class="nc" id="L126">    JPanel headerPanel = new JPanel();</span>
+<span class="nc" id="L127">    headerPanel.setLayout(null);</span>
+
+    // Load the cover and logo images
+<span class="nc" id="L130">    Image coverImage = new ImageIcon(ClassLoader.getSystemResource(&quot;images/cm-background-&quot;</span>
+<span class="nc" id="L131">      + (rng.nextInt(COVER_IMAGE_COUNT) + 1) + &quot;.png&quot;)).getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);</span>
+<span class="nc" id="L132">    ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource(&quot;images/cm-logo-border.png&quot;));</span>
+<span class="nc" id="L133">    Image logoImage = logoIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);</span>
+
+<span class="nc" id="L135">    JLabel coverImageContainer = new JLabel(new ImageIcon(coverImage));</span>
+<span class="nc" id="L136">    coverImageContainer.setBounds(0, 0, 500, 200);</span>
+<span class="nc" id="L137">    JLabel logoImageContainer = new JLabel(new ImageIcon(logoImage));</span>
+<span class="nc" id="L138">    logoImageContainer.setBounds(175, 125, 150, 150);</span>
+
+    // Add the icon to the window title bar as well
+<span class="nc" id="L141">    setIconImage(logoIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));</span>
+
+<span class="nc" id="L143">    headerPanel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L144">    headerPanel.setBounds(0, 0, 500, 275);</span>
+
+<span class="nc" id="L146">    headerPanel.add(coverImageContainer);</span>
+<span class="nc" id="L147">    headerPanel.add(logoImageContainer);</span>
+<span class="nc" id="L148">    headerPanel.setComponentZOrder(coverImageContainer, 1);</span>
+<span class="nc" id="L149">    headerPanel.setComponentZOrder(logoImageContainer, 0);</span>
+<span class="nc" id="L150">    panel.add(headerPanel);</span>
+<span class="nc" id="L151">  }</span>
+
+  /**
+   * Adds the CodeMetropolis title to the {@code panel}
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addTitle(JPanel panel) {
+<span class="nc" id="L159">    JLabel title = new JLabel(Translations.t(&quot;gui_title&quot;));</span>
+<span class="nc" id="L160">    title.setFont(new Font(&quot;Source Sans Pro&quot;, Font.BOLD, 26));</span>
+<span class="nc" id="L161">    title.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L162">    title.setBounds(0, 280, 500, 30);</span>
+
+<span class="nc" id="L164">    panel.add(title);</span>
+<span class="nc" id="L165">  }</span>
+
+  /**
+   * Adds the project name field to the {@code panel}.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addProjectNameField(JPanel panel) {
+<span class="nc" id="L173">    CMLabel label = new CMLabel(Translations.t(&quot;gui_l_project_name&quot;), 15, 325, 120, 30);</span>
+<span class="nc" id="L174">    projectName = new CMTextField(145, 325, 340, 30);</span>
+
+<span class="nc" id="L176">    panel.add(label);</span>
+<span class="nc" id="L177">    panel.add(projectName);</span>
+<span class="nc" id="L178">  }</span>
+
+  /**
+   * Adds the metric generation tabbed pane to the {@code panel}
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addMetricTabs(JPanel panel) {
+<span class="nc" id="L186">    metricTabbedPane = new JTabbedPane();</span>
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">    for (CMMetricPanel metricPanel : controller.getMetricGeneratorPanels()) {</span>
+<span class="nc" id="L189">      metricTabbedPane.add(metricPanel.getTabTitle(), metricPanel);</span>
+    }
+
+<span class="nc" id="L192">    metricTabbedPane.setBounds(15, 365, 472, 180);</span>
+<span class="nc" id="L193">    metricTabbedPane.setFont(new Font(&quot;Source Sans Pro&quot;, Font.PLAIN, 16));</span>
+<span class="nc" id="L194">    panel.add(metricTabbedPane);</span>
+<span class="nc" id="L195">  }</span>
+
+  /**
+   * Adds the options for the mapping tool to the {@code panel}.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addMappingOptions(JPanel panel) {
+<span class="nc" id="L203">	CodeMetropolisGUI self = this;</span>
+	
+<span class="nc" id="L205">    CMLabel mappingLabel = new CMLabel(Translations.t(&quot;gui_l_mapping&quot;), 15, 555, 120, 30);</span>
+<span class="nc" id="L206">    mappingPath = new CMTextField(145, 555, 235, 30);</span>
+<span class="nc" id="L207">    CMButton mappingBrowse = new CMButton(Translations.t(&quot;gui_b_browse&quot;), 385, 555, 100, 30);</span>
+<span class="nc" id="L208">    mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));</span>
+    
+    //Mapping file editor GUI components
+<span class="nc" id="L211">    CMLabel mappingEditorLabel = new CMLabel(Translations.t(&quot;gui_l_source_cdf&quot;), 15, 590, 120, 30);</span>
+<span class="nc" id="L212">    mappingEditorCdfPath = new CMTextField(145, 590, 235, 30);</span>
+<span class="nc" id="L213">    CMButton mappingEditorBrowse = new CMButton(Translations.t(&quot;gui_b_browse&quot;), 385, 590, 100, 30);</span>
+<span class="nc" id="L214">    mappingEditorBrowse.addActionListener(new BrowseListener(mappingEditorCdfPath, JFileChooser.FILES_ONLY, XML_FILTER));</span>
+<span class="nc" id="L215">    CMButton mappingEditorButton = new CMButton(Translations.t(&quot;gui_b_mapping_file_editor&quot;), 300, 625, 185, 30);</span>
+<span class="nc" id="L216">    mappingEditorButton.addActionListener(new ActionListener() {</span>
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        	if(!checkInputCdfFile(mappingEditorCdfPath.getText())) {</span>
+<span class="nc" id="L221">        		JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L222">    					self,</span>
+<span class="nc" id="L223">    					Translations.t(&quot;gui_err_missing_cdf_file&quot;),</span>
+<span class="nc" id="L224">    					Translations.t(&quot;gui_err_title&quot;),</span>
+<span class="nc" id="L225">    					JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L226">        	}</span>
+        	else {
+<span class="nc" id="L228">        		MappingFileEditorDialog dialog = new MappingFileEditorDialog(mappingEditorCdfPath.getText(), self);</span>
+<span class="nc" id="L229">    			dialog.setVisible(true);</span>
+        	}
+<span class="nc" id="L231">        }</span>
+    });
+    
+<span class="nc" id="L234">    CMLabel scaleLabel = new CMLabel(Translations.t(&quot;gui_l_scale&quot;), 15, 660, 120, 30);</span>
+<span class="nc" id="L235">    scaleSpinner = new CMSpinner(145, 660, 120, 30);</span>
+
+<span class="nc" id="L237">    validateStructure = new CMCheckBox(275, 660, 20, 30);</span>
+<span class="nc" id="L238">    CMLabel validateStructureLabel = new CMLabel(Translations.t(&quot;gui_l_validate_structure&quot;), 300, 660, 185, 30);</span>
+
+<span class="nc" id="L240">    panel.add(mappingLabel);</span>
+<span class="nc" id="L241">    panel.add(mappingPath);</span>
+<span class="nc" id="L242">    panel.add(mappingBrowse);</span>
+<span class="nc" id="L243">    panel.add(mappingEditorLabel);</span>
+<span class="nc" id="L244">    panel.add(mappingEditorCdfPath);</span>
+<span class="nc" id="L245">    panel.add(mappingEditorBrowse);</span>
+<span class="nc" id="L246">    panel.add(mappingEditorButton);</span>
+<span class="nc" id="L247">    panel.add(scaleLabel);</span>
+<span class="nc" id="L248">    panel.add(scaleSpinner);</span>
+<span class="nc" id="L249">    panel.add(validateStructure);</span>
+<span class="nc" id="L250">    panel.add(validateStructureLabel);</span>
+<span class="nc" id="L251">  }</span>
+
+  /**
+   * Adds the options for the placing tool to the {@code panel}.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addPlacingOptions(JPanel panel) {
+<span class="nc" id="L259">    CMLabel layoutLabel = new CMLabel(Translations.t(&quot;gui_l_layout&quot;), 15, 695, 120, 30);</span>
+<span class="nc" id="L260">    layoutSelector = new CMComboBox&lt;LayoutAlgorithm&gt;(LayoutAlgorithm.values());</span>
+<span class="nc" id="L261">    layoutSelector.setBounds(145, 695, 120, 30);</span>
+
+<span class="nc" id="L263">    showMap = new CMCheckBox(275, 695, 20, 30);</span>
+<span class="nc" id="L264">    CMLabel showMapLabel = new CMLabel(Translations.t(&quot;gui_l_show_map&quot;), 300, 695, 185, 30);</span>
+
+<span class="nc" id="L266">    panel.add(layoutLabel);</span>
+<span class="nc" id="L267">    panel.add(layoutSelector);</span>
+<span class="nc" id="L268">    panel.add(showMap);</span>
+<span class="nc" id="L269">    panel.add(showMapLabel);</span>
+<span class="nc" id="L270">  }</span>
+
+  /**
+   * Adds the minecraft root folder browser. This should actually be automatically filled, but in case it is not found
+   * or the user wishes to save the results to a different location, it enables them to do so.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addMinecraftRootBrowser(JPanel panel) {
+<span class="nc" id="L279">    CMLabel mcRootLabel = new CMLabel(Translations.t(&quot;gui_l_mcroot&quot;), 15, 730, 120, 30);</span>
+<span class="nc" id="L280">    mcRootPath = new CMTextField(145, 730, 235, 30);</span>
+<span class="nc" id="L281">    CMButton mcRootBrowse = new CMButton(Translations.t(&quot;gui_b_browse&quot;), 385, 730, 100, 30);</span>
+<span class="nc" id="L282">    mcRootBrowse.addActionListener(new BrowseListener(mcRootPath, JFileChooser.DIRECTORIES_ONLY, null));</span>
+
+<span class="nc" id="L284">    panel.add(mcRootLabel);</span>
+<span class="nc" id="L285">    panel.add(mcRootPath);</span>
+<span class="nc" id="L286">    panel.add(mcRootBrowse);</span>
+<span class="nc" id="L287">  }</span>
+
+  /**
+   * Adds the start button to the bottom of panel.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addStartButton(JPanel panel) {
+<span class="nc" id="L295">    CodeMetropolisGUI self = this;</span>
+<span class="nc" id="L296">    CMButton start = new CMButton(Translations.t(&quot;gui_b_generate&quot;), 190, 765, 120, 30);</span>
+<span class="nc" id="L297">    start.addActionListener(new ActionListener() {</span>
+
+      @Override
+      public void actionPerformed(ActionEvent event) {
+<span class="nc" id="L301">        ExecutionOptions executionOptions = controller.getExecutionOptions();</span>
+<span class="nc" id="L302">        fillOptions(executionOptions);</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (!fillAndValidateMetricOptions(executionOptions)) {</span>
+<span class="nc" id="L304">          return;</span>
+        }
+
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        if (GuiUtils.validateOptions(controller.getExecutionOptions())) {</span>
+<span class="nc" id="L308">          PipedOutputStream out = new PipedOutputStream();</span>
+<span class="nc" id="L309">          ExecutionDialog dialog = new ExecutionDialog(self, out);</span>
+<span class="nc" id="L310">          dialog.setVisible(true);</span>
+<span class="nc" id="L311">          ExecutionWorker worker = new ExecutionWorker(start, controller, out);</span>
+<span class="nc" id="L312">          worker.execute();</span>
+        }
+<span class="nc" id="L314">      }</span>
+    });
+
+<span class="nc" id="L317">    panel.add(start);</span>
+<span class="nc" id="L318">  }</span>
+  
+  /**
+   * Chacks if the input cdf file does exist or not.
+   * @param cdfPath The path of the cdf file.
+   * @return The cdf file exists or not.
+   */
+  public static boolean checkInputCdfFile(String cdfPath) {
+<span class="fc" id="L326">	  File cdfXmlFile = new File(cdfPath);</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">		if(!cdfXmlFile.exists()) {</span>
+<span class="fc" id="L328">			return false;</span>
+		}
+		else {			
+<span class="fc" id="L331">			return true;</span>
+		}
+  }
+
+  /**
+   * Fills the data required for the metric generation tools.
+   *
+   * @param executionOptions The target {@link ExecutionOptions} instance.
+   * @return True if the options are valid, false otherwise.
+   */
+  private final boolean fillAndValidateMetricOptions(ExecutionOptions executionOptions) {
+<span class="nc" id="L342">    executionOptions.getMetricGenerationParams().clear();</span>
+
+<span class="nc" id="L344">    CMMetricPanel currentTab = (CMMetricPanel) metricTabbedPane.getSelectedComponent();</span>
+<span class="nc" id="L345">    currentTab.fillFields(executionOptions);</span>
+<span class="nc" id="L346">    return currentTab.validateFields(executionOptions);</span>
+  }
+
+  /**
+   * Fills the data from the UI fields to the given {@link ExecutionOptions} instance.
+   *
+   * @param executionOptions The target instance.
+   */
+  private final void fillOptions(ExecutionOptions executionOptions) {
+<span class="nc" id="L355">    Double scale = (Double) scaleSpinner.getValue();</span>
+<span class="nc" id="L356">    executionOptions.setProjectName(projectName.getText());</span>
+<span class="nc" id="L357">    executionOptions.setMappingXml(new File(mappingPath.getText()));</span>
+<span class="nc" id="L358">    executionOptions.setScale(scale.floatValue());</span>
+<span class="nc" id="L359">    executionOptions.setValidate(validateStructure.isSelected());</span>
+<span class="nc" id="L360">    executionOptions.setLayoutAlgorithm((LayoutAlgorithm) layoutSelector.getSelectedItem());</span>
+<span class="nc" id="L361">    executionOptions.setShowMap(showMap.isSelected());</span>
+<span class="nc" id="L362">    executionOptions.setMinecraftRoot(new File(mcRootPath.getText()));</span>
+<span class="nc" id="L363">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

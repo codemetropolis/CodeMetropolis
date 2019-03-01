@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Garden.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.model.building</a> &gt; <span class="el_source">Garden.java</span></div><h1>Garden.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.model.building;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable;
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
+import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
+import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
+import codemetropolis.toolchain.rendering.model.pattern.YSplitPattern;
+import codemetropolis.toolchain.rendering.model.primitive.SignPost;
+import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
+import codemetropolis.toolchain.rendering.util.Orientation;
+
+public class Garden extends Building {
+
+	public Garden(Buildable innerBuildable) throws BuildingTypeMismatchException {
+<span class="nc" id="L18">		super(innerBuildable);</span>
+		
+<span class="nc bnc" id="L20" title="All 2 branches missed.">		if ( innerBuildable.getType() != Type.GARDEN )</span>
+<span class="nc" id="L21">			throw new BuildingTypeMismatchException(innerBuildable.getType(), getClass());</span>
+
+<span class="nc" id="L23">		prepareBase();</span>
+<span class="nc" id="L24">		prepareDoor();</span>
+<span class="nc" id="L25">		prepareSigns();</span>
+<span class="nc" id="L26">	}</span>
+	
+	private void prepareBase( ) {
+<span class="nc" id="L29">		BasicBlock _fnc = new BasicBlock( &quot;minecraft:fence&quot; );</span>
+<span class="nc" id="L30">		BasicBlock _sns = new BasicBlock( &quot;minecraft:sandstone&quot; );</span>
+<span class="nc" id="L31">		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NonBlock } } } ) );</span>
+		
+<span class="nc" id="L33">		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { new BasicBlock( &quot;minecraft:yellow_flower&quot; ) } } } ) );</span>
+<span class="nc" id="L34">		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { new BasicBlock( &quot;minecraft:red_flower&quot; ) } } } ), 0.5);</span>
+<span class="nc" id="L35">		_flowers.add(</span>
+<span class="nc" id="L36">			_redOrYellow,</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">			innerBuildable.hasAttribute( &quot;flower-ratio&quot; )</span>
+<span class="nc" id="L38">				? Double.parseDouble( innerBuildable.getAttributeValue(&quot;flower-ratio&quot;) )</span>
+<span class="nc" id="L39">				: 0 );</span>
+<span class="nc" id="L40">		_flowers.add(</span>
+<span class="nc" id="L41">			new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:brown_mushroom&quot; ) } } } ),</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">			innerBuildable.hasAttribute( &quot;mushroom-ratio&quot; )</span>
+<span class="nc" id="L43">				? Double.parseDouble( innerBuildable.getAttributeValue(&quot;mushroom-ratio&quot;) )</span>
+<span class="nc" id="L44">				: 0 );</span>
+<span class="nc" id="L45">		_flowers.add(</span>
+<span class="nc" id="L46">			new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:sapling&quot; ) } } } ),</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">			innerBuildable.hasAttribute( &quot;tree-ratio&quot; )</span>
+<span class="nc" id="L48">				? Double.parseDouble( innerBuildable.getAttributeValue(&quot;tree-ratio&quot;) )</span>
+<span class="nc" id="L49">				: 0 );</span>
+<span class="nc" id="L50">		primitives.add(</span>
+<span class="nc" id="L51">			new SolidBox(</span>
+<span class="nc" id="L52">				position, new Point( size.getX(), 2, size.getZ() ),</span>
+<span class="nc" id="L53">				new YSplitPattern(</span>
+<span class="nc" id="L54">					0,</span>
+<span class="nc" id="L55">					new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:grass&quot; ) } } } ),</span>
+<span class="nc" id="L56">					_flowers ),</span>
+<span class="nc" id="L57">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L59">					{</span>
+<span class="nc" id="L60">						{</span>
+<span class="nc" id="L61">							{ _fnc },</span>
+<span class="nc" id="L62">							{ _sns }</span>
+						}
+					} ),
+<span class="nc" id="L65">				Orientation.NearX ) );</span>
+<span class="nc" id="L66">	}</span>
+	
+	protected void prepareDoor( )
+	{
+<span class="nc" id="L70">		BasicBlock _fnc = new BasicBlock( &quot;minecraft:fence&quot; );</span>
+<span class="nc" id="L71">		BasicBlock _rwl = new BasicBlock( &quot;minecraft:wool&quot;, 14 );</span>
+<span class="nc" id="L72">		BasicBlock _gwl = new BasicBlock( &quot;minecraft:wool&quot;, 5 );</span>
+<span class="nc" id="L73">		BasicBlock _bwl = new BasicBlock( &quot;minecraft:wool&quot;, 3 );</span>
+<span class="nc" id="L74">		BasicBlock _ywl = new BasicBlock( &quot;minecraft:wool&quot;, 4 );</span>
+<span class="nc" id="L75">		primitives.add(</span>
+<span class="nc" id="L76">			new SolidBox(</span>
+<span class="nc" id="L77">				position.translate( new Point( center.getX() - 1, 0, 0 ) ), new Point( 3, 4, 1 ),</span>
+<span class="nc" id="L78">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L79">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L81">					{</span>
+<span class="nc" id="L82">						{</span>
+<span class="nc" id="L83">							{ _fnc },</span>
+<span class="nc" id="L84">							{ _fnc },</span>
+<span class="nc" id="L85">							{ _fnc },</span>
+<span class="nc" id="L86">							{ _rwl }</span>
+						}
+					} ),
+<span class="nc" id="L89">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L91">		primitives.add(</span>
+<span class="nc" id="L92">			new SolidBox(</span>
+<span class="nc" id="L93">				position.translate( new Point( center.getX() - 1, 0, size.getZ() - 1 ) ), new Point( 3, 4, 1 ),</span>
+<span class="nc" id="L94">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L95">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L97">					{</span>
+<span class="nc" id="L98">						{</span>
+<span class="nc" id="L99">							{ _fnc },</span>
+<span class="nc" id="L100">							{ _fnc },</span>
+<span class="nc" id="L101">							{ _fnc },</span>
+<span class="nc" id="L102">							{ _gwl }</span>
+						}
+					} ),
+<span class="nc" id="L105">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L107">		primitives.add(</span>
+<span class="nc" id="L108">			new SolidBox(</span>
+<span class="nc" id="L109">				position.translate( new Point( 0, 0, center.getZ()-1 ) ), new Point( 1, 4, 3 ),</span>
+<span class="nc" id="L110">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L111">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L113">					{</span>
+<span class="nc" id="L114">						{</span>
+<span class="nc" id="L115">							{ _fnc },</span>
+<span class="nc" id="L116">							{ _fnc },</span>
+<span class="nc" id="L117">							{ _fnc },</span>
+<span class="nc" id="L118">							{ _bwl }</span>
+						}
+					} ),
+<span class="nc" id="L121">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L123">		primitives.add(</span>
+<span class="nc" id="L124">			new SolidBox(</span>
+<span class="nc" id="L125">				position.translate( new Point( size.getX()-1, 0, center.getZ() - 1 ) ), new Point( 1, 4, 3 ),</span>
+<span class="nc" id="L126">				new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( &quot;minecraft:air&quot;, 2 ) } } } ),</span>
+<span class="nc" id="L127">				new RepeationPattern(</span>
+					new BasicBlock[][][]
+<span class="nc" id="L129">					{</span>
+<span class="nc" id="L130">						{</span>
+<span class="nc" id="L131">							{ _fnc },</span>
+<span class="nc" id="L132">							{ _fnc },</span>
+<span class="nc" id="L133">							{ _fnc },</span>
+<span class="nc" id="L134">							{ _ywl }</span>
+						}
+					} ),
+<span class="nc" id="L137">				Orientation.NearX )</span>
+			);
+<span class="nc" id="L139">	}</span>
+	
+	private void prepareSigns( ) {
+<span class="nc" id="L142">		primitives.add(new SignPost(position.getX(), position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHWEST, innerBuildable.getName()));</span>
+<span class="nc" id="L143">		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHEAST, innerBuildable.getName()));</span>
+<span class="nc" id="L144">		primitives.add(new SignPost(position.getX(), position.getY() + 2, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHWEST, innerBuildable.getName()));</span>
+<span class="nc" id="L145">		primitives.add(new SignPost(position.getX() + size.getX() - 1, position.getY() + 2, position.getZ() + size.getZ() - 1, SignPost.Orientation.SOUTHEAST, innerBuildable.getName()));</span>
+<span class="nc" id="L146">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

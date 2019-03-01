@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>QuantizationSetterDialog.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui</a> &gt; <span class="el_source">QuantizationSetterDialog.java</span></div><h1>QuantizationSetterDialog.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.gui;
+
+import java.awt.Dimension;
+import java.util.Set;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
+import codemetropolis.toolchain.gui.beans.QuantizationInformation;
+import codemetropolis.toolchain.gui.components.CMButton;
+import codemetropolis.toolchain.gui.components.CMComboBox;
+import codemetropolis.toolchain.gui.components.CMLabel;
+import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.utils.BuildableSettings;
+import codemetropolis.toolchain.gui.utils.Translations;
+
+/**
+ * This class is define the view of
+ * quantization dialog.
+ *
+ * @author Tamas Keri {@literal &lt;KETWAAT.SZE&gt;}
+ * @author Viktor Meszaros {@literal &lt;MEVXAAT.SZE&gt;}
+ */
+public class QuantizationSetterDialog extends JDialog {
+
+	private static final long serialVersionUID = 1L;
+
+	MappingFileEditorDialog parent;
+
+	CMTextField gardenTextField;
+	CMTextField cellarTextField;
+	CMTextField floorTextField;
+
+	CMButton gardenButton;
+	CMButton cellarButton;
+	CMButton floorButton;
+
+	CMComboBox&lt;QuantizationInformation&gt; gardenComboBox;
+	CMComboBox&lt;QuantizationInformation&gt; cellarComboBox;
+	CMComboBox&lt;QuantizationInformation&gt; floorComboBox;
+
+<span class="nc" id="L42">	public QuantizationSetterDialog(MappingFileEditorDialog parent) {</span>
+<span class="nc" id="L43">		this.parent = parent;</span>
+<span class="nc" id="L44">		JPanel panel = createBasePanel();</span>
+<span class="nc" id="L45">		addCellarComponents(panel);</span>
+<span class="nc" id="L46">		addFloorComponents(panel);</span>
+<span class="nc" id="L47">		addGardenComponents(panel);</span>
+<span class="nc" id="L48">		addSaveComponents(panel);</span>
+		
+<span class="nc" id="L50">		this.setResizable(false);</span>
+<span class="nc" id="L51">	    this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);</span>
+<span class="nc" id="L52">	    this.setContentPane(panel);</span>
+<span class="nc" id="L53">	    this.pack();</span>
+<span class="nc" id="L54">	    this.setLocationRelativeTo(parent);</span>
+<span class="nc" id="L55">	}</span>
+	
+	private JPanel createBasePanel() {
+<span class="nc" id="L58">		JPanel panel = new JPanel();</span>
+<span class="nc" id="L59">	    panel.setLayout(null);</span>
+<span class="nc" id="L60">	    panel.setBounds(0, 0, 300, 500);</span>
+
+<span class="nc" id="L62">	    Dimension size = new Dimension(300, 500);</span>
+<span class="nc" id="L63">	    panel.setMinimumSize(size);</span>
+<span class="nc" id="L64">	    panel.setPreferredSize(size);</span>
+<span class="nc" id="L65">	    panel.setMaximumSize(size);</span>
+
+<span class="nc" id="L67">	    return panel;</span>
+	}
+	
+	private void addCellarComponents(JPanel panel) {
+<span class="nc" id="L71">		CMLabel forCellarLabel = new CMLabel(Translations.t(&quot;gui_buildable_cellar&quot;), 0, 0, 120, 30);</span>
+<span class="nc" id="L72">		cellarComboBox = new CMComboBox&lt;QuantizationInformation&gt;(fillComboBox(&quot;CELLAR&quot;), 0, 40, 250, 30);</span>
+<span class="nc" id="L73">		cellarTextField = new CMTextField(0, 80, 160, 30);</span>
+<span class="nc" id="L74">		cellarButton = new CMButton(Translations.t(&quot;gui_b_add_level_value&quot;), 170, 120, 80, 30);</span>
+<span class="nc" id="L75">		panel.add(forCellarLabel);</span>
+<span class="nc" id="L76">		panel.add(cellarComboBox);</span>
+<span class="nc" id="L77">		panel.add(cellarTextField);</span>
+<span class="nc" id="L78">		panel.add(cellarButton);</span>
+<span class="nc" id="L79">	}</span>
+	
+	private void addFloorComponents(JPanel panel) {
+<span class="nc" id="L82">		CMLabel forFloorLabel = new CMLabel(Translations.t(&quot;gui_buildable_floor&quot;), 0, 180, 120, 30);</span>
+<span class="nc" id="L83">		floorComboBox = new CMComboBox&lt;QuantizationInformation&gt;(fillComboBox(&quot;FLOOR&quot;), 0, 220, 250, 30);</span>
+<span class="nc" id="L84">		floorTextField = new CMTextField(0, 260, 160, 30);</span>
+<span class="nc" id="L85">		floorButton = new CMButton(Translations.t(&quot;gui_b_add_level_value&quot;), 170, 300, 80, 30);</span>
+<span class="nc" id="L86">		panel.add(forFloorLabel);</span>
+<span class="nc" id="L87">		panel.add(floorComboBox);</span>
+<span class="nc" id="L88">		panel.add(floorTextField);</span>
+<span class="nc" id="L89">		panel.add(floorButton);</span>
+<span class="nc" id="L90">	}</span>
+	
+	private void addGardenComponents(JPanel panel) {
+<span class="nc" id="L93">		CMLabel forGardenLabel = new CMLabel(Translations.t(&quot;gui_buildable_garden&quot;), 0, 340, 120, 30);</span>
+<span class="nc" id="L94">		gardenComboBox = new CMComboBox&lt;QuantizationInformation&gt;(fillComboBox(&quot;GARDEN&quot;), 0, 380, 250, 30);</span>
+<span class="nc" id="L95">		gardenTextField = new CMTextField(0, 80, 160, 30);</span>
+<span class="nc" id="L96">		gardenButton = new CMButton(Translations.t(&quot;gui_b_add_level_value&quot;), 170, 420, 80, 30);</span>
+<span class="nc" id="L97">		panel.add(forGardenLabel);</span>
+<span class="nc" id="L98">		panel.add(gardenComboBox);</span>
+<span class="nc" id="L99">		panel.add(gardenTextField);</span>
+<span class="nc" id="L100">		panel.add(gardenButton);</span>
+<span class="nc" id="L101">	}</span>
+	
+	private void addSaveComponents(JPanel panel) {
+<span class="nc" id="L104">		CMButton saveButton = new CMButton(Translations.t(&quot;gui_b_save_settings&quot;), 0, 460, 100, 30);</span>
+<span class="nc" id="L105">		panel.add(saveButton);</span>
+<span class="nc" id="L106">	}</span>
+	
+	private QuantizationInformation[] fillComboBox(String buildableType) {		
+<span class="nc" id="L109">		Set&lt;String&gt; acceptedTypes = BuildableSettings.DEFAULT_SETTINGS.keySet();</span>
+<span class="nc" id="L110">		String inputType = buildableType.toUpperCase();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (acceptedTypes.contains(inputType)) {</span>
+<span class="nc" id="L112">			Set&lt;QuantizationInformation&gt; set = null;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if(inputType.equals(&quot;CELLAR&quot;)) {</span>
+<span class="nc" id="L114">				set = MappingFileEditorDialog.cellarQuant.keySet();</span>
+			}
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			if(inputType.equals(&quot;FLOOR&quot;)) {</span>
+<span class="nc" id="L117">				set = MappingFileEditorDialog.floorQuant.keySet();</span>
+			}
+<span class="nc bnc" id="L119" title="All 2 branches missed.">			if(inputType.equals(&quot;GARDEN&quot;)) {</span>
+<span class="nc" id="L120">				set = MappingFileEditorDialog.gardenQuant.keySet();</span>
+			}			 
+<span class="nc" id="L122">			QuantizationInformation[] boxItems = new QuantizationInformation[set.size()];</span>
+<span class="nc" id="L123">			boxItems = set.toArray(boxItems);</span>
+<span class="nc" id="L124">			return boxItems;</span>
+		}
+<span class="nc" id="L126">		else return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

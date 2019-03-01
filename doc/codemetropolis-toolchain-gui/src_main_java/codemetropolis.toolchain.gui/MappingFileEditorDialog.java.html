@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MappingFileEditorDialog.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-gui</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.gui</a> &gt; <span class="el_source">MappingFileEditorDialog.java</span></div><h1>MappingFileEditorDialog.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">package codemetropolis.toolchain.gui;</span>
+
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Rectangle;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileFilter;
+
+import codemetropolis.toolchain.gui.beans.BadConfigFileFomatException;
+import codemetropolis.toolchain.gui.beans.QuantizationInformation;
+import codemetropolis.toolchain.gui.components.CMButton;
+import codemetropolis.toolchain.gui.components.CMCheckBox;
+import codemetropolis.toolchain.gui.components.CMLabel;
+import codemetropolis.toolchain.gui.components.CMScrollPane;
+import codemetropolis.toolchain.gui.components.CMTextField;
+import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
+import codemetropolis.toolchain.gui.conversions.Conversion;
+import codemetropolis.toolchain.gui.conversions.QuantizationConversion;
+import codemetropolis.toolchain.gui.utils.BuildableSettings;
+import codemetropolis.toolchain.gui.utils.Property;
+import codemetropolis.toolchain.gui.utils.PropertyCollector;
+import codemetropolis.toolchain.gui.utils.TransferHelper;
+import codemetropolis.toolchain.gui.utils.Translations;
+import codemetropolis.toolchain.gui.utils.XmlFileFilter;
+
+/**
+ * Dialog for the mapping file editor.
+ * @author Viktor Meszaros {@literal &lt;MEVXAAT.SZE&gt;}
+ */
+public class MappingFileEditorDialog extends JDialog {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private static final FileFilter XML_FILTER;
+
+	static public List&lt;Conversion&gt; cellarConversion;
+	static public List&lt;Conversion&gt; gardenConversion;
+	static public List&lt;Conversion&gt; floorConversion;
+
+	static public Map&lt;QuantizationInformation, QuantizationConversion&gt; cellarQuant;
+	static public Map&lt;QuantizationInformation, QuantizationConversion&gt; gardenQuant;
+	static public Map&lt;QuantizationInformation, QuantizationConversion&gt; floorQuant;
+	
+	/**
+	 * Contains the possible results of assigning a metric to a property of a buildable type.
+	 */
+<span class="fc" id="L68">	public enum AssignResult {CANNOT_ASSIGN, NO_CONVERSION, TO_INT, TO_DOUBLE, NORMALIZE, QUANTIZATON};</span>
+	
+	public static final Map&lt;String, Map&lt;String, AssignResult&gt;&gt; ASSIGN_RESULT_MATRIX;
+	
+	static {
+<span class="fc" id="L73">		XML_FILTER = new XmlFileFilter();</span>
+
+<span class="fc" id="L75">		cellarConversion = new ArrayList&lt;Conversion&gt;();</span>
+<span class="fc" id="L76">		gardenConversion = new ArrayList&lt;Conversion&gt;();</span>
+<span class="fc" id="L77">		floorConversion = new ArrayList&lt;Conversion&gt;();</span>
+
+<span class="fc" id="L79">		cellarQuant = new HashMap&lt;QuantizationInformation, QuantizationConversion&gt;();</span>
+<span class="fc" id="L80">		gardenQuant = new HashMap&lt;QuantizationInformation, QuantizationConversion&gt;();</span>
+<span class="fc" id="L81">		floorQuant = new HashMap&lt;QuantizationInformation, QuantizationConversion&gt;();</span>
+
+<span class="fc" id="L83">		ASSIGN_RESULT_MATRIX = new HashMap&lt;String, Map&lt;String, AssignResult&gt;&gt;();</span>
+		
+<span class="fc" id="L85">		ASSIGN_RESULT_MATRIX.put(&quot;int&quot;, new HashMap&lt;String, AssignResult&gt;());</span>
+<span class="fc" id="L86">		ASSIGN_RESULT_MATRIX.put(&quot;int(0 to 5)&quot;, new HashMap&lt;String, AssignResult&gt;());</span>
+<span class="fc" id="L87">		ASSIGN_RESULT_MATRIX.put(&quot;string&quot;, new HashMap&lt;String, AssignResult&gt;());</span>
+<span class="fc" id="L88">		ASSIGN_RESULT_MATRIX.put(&quot;float(0 to 1)&quot;, new HashMap&lt;String, AssignResult&gt;());</span>
+		//First row of the &quot;matrix&quot;
+<span class="fc" id="L90">		ASSIGN_RESULT_MATRIX.get(&quot;int&quot;).put(&quot;int&quot;, AssignResult.NO_CONVERSION);</span>
+<span class="fc" id="L91">		ASSIGN_RESULT_MATRIX.get(&quot;int&quot;).put(&quot;float&quot;, AssignResult.TO_INT);</span>
+<span class="fc" id="L92">		ASSIGN_RESULT_MATRIX.get(&quot;int&quot;).put(&quot;string&quot;, AssignResult.CANNOT_ASSIGN);</span>
+		//Second row of the &quot;matrix&quot;
+<span class="fc" id="L94">		ASSIGN_RESULT_MATRIX.get(&quot;int(0 to 5)&quot;).put(&quot;int&quot;, AssignResult.QUANTIZATON);</span>
+<span class="fc" id="L95">		ASSIGN_RESULT_MATRIX.get(&quot;int(0 to 5)&quot;).put(&quot;float&quot;, AssignResult.QUANTIZATON);</span>
+<span class="fc" id="L96">		ASSIGN_RESULT_MATRIX.get(&quot;int(0 to 5)&quot;).put(&quot;string&quot;, AssignResult.CANNOT_ASSIGN);</span>
+		//Third row of the &quot;matrix&quot;
+<span class="fc" id="L98">		ASSIGN_RESULT_MATRIX.get(&quot;string&quot;).put(&quot;int&quot;, AssignResult.QUANTIZATON);</span>
+<span class="fc" id="L99">		ASSIGN_RESULT_MATRIX.get(&quot;string&quot;).put(&quot;float&quot;, AssignResult.QUANTIZATON);</span>
+<span class="fc" id="L100">		ASSIGN_RESULT_MATRIX.get(&quot;string&quot;).put(&quot;string&quot;, AssignResult.NO_CONVERSION);</span>
+		//Fourth row of the &quot;matrix&quot;
+<span class="fc" id="L102">		ASSIGN_RESULT_MATRIX.get(&quot;float(0 to 1)&quot;).put(&quot;int&quot;, AssignResult.NORMALIZE);</span>
+<span class="fc" id="L103">		ASSIGN_RESULT_MATRIX.get(&quot;float(0 to 1)&quot;).put(&quot;float&quot;, AssignResult.NORMALIZE);</span>
+<span class="fc" id="L104">		ASSIGN_RESULT_MATRIX.get(&quot;float(0 to 1)&quot;).put(&quot;string&quot;, AssignResult.CANNOT_ASSIGN);</span>
+	}
+		
+	private Map&lt;String, String[]&gt; displayedBuildableAttributes;
+	private Map&lt;String, List&lt;Property&gt;&gt; sourceCodeElementProperties;
+	
+	private JTabbedPane buildableTabbedPane;	
+	private JPanel cellarPanel;
+	private JPanel floorPanel;
+	private JPanel gardenPanel;
+	private JPanel groundPanel;
+	private static JTable cellarTable;
+	private static JTable floorTable;
+<span class="fc" id="L117">	private static JTable gardenTable;</span>
+	
+	//ListModel and JList for the buildables: cellar, floor, garden
+	private ListModel&lt;String&gt; cellarListmodel;
+	private JList&lt;String&gt; cellarList;
+	private ListModel&lt;String&gt; floorListmodel;
+	private JList&lt;String&gt; floorList;
+	private ListModel&lt;String&gt; gardenListmodel;
+	private JList&lt;String&gt; gardenList;
+	
+	//ListModel and JList for the resources
+	private ListModel&lt;String&gt; resourcesListmodel;
+	private JList&lt;String&gt; resourcesList;
+	
+	private CMCheckBox useMappingCheckBox;
+	private CMTextField pathField;
+	
+	/**
+	 * Loads the list of the buildable attributes which are desired to display on the GUI from the configuration file.
+	 * Loads the list of the source code element from the given input cdf xml file.
+	 * @param cdfFilePath The path of the input cdf xml file.
+	 */
+	private void loadDisplayedInfo(String cdfFilePath) {
+		try {
+<span class="nc" id="L141">			BuildableSettings settings = new BuildableSettings();</span>
+<span class="nc" id="L142">			displayedBuildableAttributes = settings.readSettings();</span>
+						
+<span class="nc" id="L144">		}</span>
+<span class="nc" id="L145">		catch(BadConfigFileFomatException e) {</span>
+<span class="nc" id="L146">			JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L147">					null,</span>
+<span class="nc" id="L148">					Translations.t(&quot;gui_err_invaild_config_file_format&quot;),</span>
+<span class="nc" id="L149">					Translations.t(&quot;gui_err_title&quot;),</span>
+<span class="nc" id="L150">					JOptionPane.ERROR_MESSAGE);</span>
+			
+<span class="nc" id="L152">			displayedBuildableAttributes = BuildableSettings.DEFAULT_SETTINGS;</span>
+		}
+<span class="nc" id="L154">		catch(FileNotFoundException e) {</span>
+<span class="nc" id="L155">			JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L156">					null,</span>
+<span class="nc" id="L157">					Translations.t(&quot;gui_err_config_file_not_found&quot;),</span>
+<span class="nc" id="L158">					Translations.t(&quot;gui_err_title&quot;),</span>
+<span class="nc" id="L159">					JOptionPane.ERROR_MESSAGE);</span>
+			
+<span class="nc" id="L161">			displayedBuildableAttributes = BuildableSettings.DEFAULT_SETTINGS;</span>
+		}
+		try {
+<span class="nc" id="L164">			PropertyCollector pc = new PropertyCollector();</span>
+<span class="nc" id="L165">			sourceCodeElementProperties = pc.getFromCdf(cdfFilePath);</span>
+<span class="nc" id="L166">		}</span>
+<span class="nc" id="L167">		catch(FileNotFoundException e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
+		}
+		
+<span class="nc" id="L171">	}</span>
+	
+	 /**
+	  * Instantiates the Mapping file editor dialog.
+	  *
+	  * @param cdfFilePath The path of the input cdf xml file.
+	  * @param cmGui The parent window of the dialog.
+	  */
+	public MappingFileEditorDialog(String cdfFilePath, CodeMetropolisGUI cmGui) {
+<span class="nc" id="L180">		super(cmGui, Translations.t(&quot;gui_mapping_editor_title&quot;) ,true);</span>
+<span class="nc" id="L181">		loadDisplayedInfo(cdfFilePath);</span>
+		
+<span class="nc" id="L183">		JPanel panel = createBasePanel();</span>
+<span class="nc" id="L184">		addResourceOptions(panel);</span>
+<span class="nc" id="L185">		addSaveOptions(panel);</span>
+<span class="nc" id="L186">		addBuildableTabs(panel);</span>
+<span class="nc" id="L187">		addConversionOptions(panel);</span>
+		
+<span class="nc" id="L189">		this.setResizable(false);</span>
+<span class="nc" id="L190">	    this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);</span>
+<span class="nc" id="L191">	    this.setContentPane(panel);</span>
+<span class="nc" id="L192">	    this.pack();</span>
+<span class="nc" id="L193">	    this.setLocationRelativeTo(cmGui);</span>
+<span class="nc" id="L194">	}</span>
+	
+	/**
+	 * Creates the base panel for the Mapping file editor dialog.
+	 * 
+	 * @return The created {@link JPanel}.
+	 */
+	private JPanel createBasePanel() {
+<span class="nc" id="L202">		JPanel panel = new JPanel();</span>
+<span class="nc" id="L203">	    panel.setLayout(null);</span>
+<span class="nc" id="L204">	    panel.setBounds(0, 0, 800, 550);</span>
+
+<span class="nc" id="L206">	    Dimension size = new Dimension(800, 550);</span>
+<span class="nc" id="L207">	    panel.setMinimumSize(size);</span>
+<span class="nc" id="L208">	    panel.setPreferredSize(size);</span>
+<span class="nc" id="L209">	    panel.setMaximumSize(size);</span>
+
+<span class="nc" id="L211">	    return panel;</span>
+	}
+	
+	/**
+	 * Adds the resource options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the components will be added to.
+	 */
+	private void addResourceOptions(JPanel panel) {
+<span class="nc" id="L219">		CMLabel resourcesLabel = new CMLabel(Translations.t(&quot;gui_l_resources&quot;), 10, 0, 120, 30);</span>
+		
+<span class="nc" id="L221">		resourcesListmodel = new DefaultListModel&lt;String&gt;();</span>
+<span class="nc" id="L222">	    resourcesList = new JList&lt;String&gt;(resourcesListmodel);</span>
+<span class="nc" id="L223">	    resourcesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L224">	    resourcesList.setLayoutOrientation(JList.VERTICAL);</span>
+<span class="nc" id="L225">	    resourcesList.setVisibleRowCount(-1);</span>
+<span class="nc" id="L226">		CMScrollPane resourcesScrollPane = new CMScrollPane(resourcesList, 10, 35, 240, 120);</span>
+		
+<span class="nc" id="L228">		CMButton resourcesAddButton = new CMButton(Translations.t(&quot;gui_b_add&quot;), 265, 35, 120, 30);</span>
+<span class="nc" id="L229">		resourcesAddButton.addActionListener(new ActionListener() {</span>
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L233">				JTextField nameField = new JTextField();</span>
+<span class="nc" id="L234">				JTextField valueField = new JTextField();</span>
+				
+<span class="nc" id="L236">				JPanel addResourcePanel = new JPanel();</span>
+<span class="nc" id="L237">				addResourcePanel.setLayout(new GridLayout(4, 2));</span>
+<span class="nc" id="L238">				addResourcePanel.add(new JLabel(&quot;Resource name:&quot;));</span>
+<span class="nc" id="L239">				addResourcePanel.add(nameField);</span>
+<span class="nc" id="L240">				addResourcePanel.add(new JLabel(&quot;Resource value:&quot;));</span>
+<span class="nc" id="L241">				addResourcePanel.add(valueField);</span>
+				
+<span class="nc" id="L243">				int result = JOptionPane.showConfirmDialog(null, addResourcePanel, Translations.t(&quot;gui_add_resource_title&quot;), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">				if(result == JOptionPane.OK_OPTION) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">					if (nameField.getText().matches(&quot;[a-zA-Z0-9]+&quot;) &amp;&amp;</span>
+<span class="nc bnc" id="L246" title="All 4 branches missed.">						(valueField.getText().matches(&quot;[0-9]+(.[0-9]+)?&quot;)) ||  BuildableSettings.VALID_CHARACTER_TYPES.contains(valueField.getText())) {</span>
+						//Produce the resource string from the text fields...
+<span class="nc" id="L248">						String resourceToAdd = nameField.getText() + &quot;: &quot; + valueField.getText();</span>
+						//Add the newly defined resource to the property lists of the buildables and to the resource list (on top left of the window).
+<span class="nc" id="L250">						List&lt;JList&lt;String&gt;&gt; lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">						for (JList&lt;String&gt; list : lists) {</span>
+<span class="nc" id="L252">							DefaultListModel&lt;String&gt; listModel = (DefaultListModel&lt;String&gt;) list.getModel();</span>
+<span class="nc" id="L253">							listModel.addElement(resourceToAdd);</span>
+						} 
+<span class="nc" id="L255">					}</span>
+					else {
+<span class="nc" id="L257">						JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L258">								null,</span>
+<span class="nc" id="L259">								Translations.t(&quot;gui_err_name_value_not_valid&quot;),</span>
+<span class="nc" id="L260">								Translations.t(&quot;gui_err_title&quot;),</span>
+<span class="nc" id="L261">								JOptionPane.ERROR_MESSAGE);</span>
+					}
+				}
+<span class="nc" id="L264">			}</span>
+		});
+<span class="nc" id="L266">		CMButton resourcesRemoveButton = new CMButton(Translations.t(&quot;gui_b_remove&quot;), 265, 80, 120, 30);</span>
+<span class="nc" id="L267">		resourcesRemoveButton.addActionListener(new ActionListener() {</span>
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L271">				int indexToRemove = resourcesList.getSelectedIndex();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">				if(indexToRemove == -1) {</span>
+<span class="nc" id="L273">					JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L274">							null,</span>
+<span class="nc" id="L275">							Translations.t(&quot;gui_err_resources_empty_no_selected&quot;),</span>
+<span class="nc" id="L276">							Translations.t(&quot;gui_err_title&quot;),</span>
+<span class="nc" id="L277">							JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L278">				}</span>
+				else {
+<span class="nc" id="L280">					String resourceToRemove = resourcesList.getModel().getElementAt(indexToRemove);</span>
+<span class="nc" id="L281">					List&lt;JList&lt;String&gt;&gt; lists = Arrays.asList(resourcesList, cellarList, floorList, gardenList);</span>
+<span class="nc" id="L282">					List&lt;JTable&gt; tables = Arrays.asList(cellarTable, floorTable, gardenTable);</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">					for(JList&lt;String&gt; list : lists) {</span>
+<span class="nc" id="L284">						DefaultListModel&lt;String&gt; listModel = (DefaultListModel&lt;String&gt;) list.getModel();</span>
+<span class="nc" id="L285">						listModel.removeElement(resourceToRemove);</span>
+					}
+<span class="nc bnc" id="L287" title="All 2 branches missed.">					for(JTable table : tables) {</span>
+<span class="nc" id="L288">						int rows = table.getRowCount();</span>
+<span class="nc" id="L289">						int columns = table.getColumnCount();</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">						for(int i = 0; i &lt; rows; i++)</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">							for(int j = 0; j &lt; columns; j++) {</span>
+<span class="nc" id="L292">								String cellValue = (String) table.getValueAt(i, j);</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">								if(resourceToRemove.equals(cellValue)) {</span>
+<span class="nc" id="L294">									table.setValueAt(null, i, j);</span>
+								}
+							}
+					}
+				}				
+<span class="nc" id="L299">			}</span>
+		});
+		
+<span class="nc" id="L302">		panel.add(resourcesLabel);</span>
+<span class="nc" id="L303">		panel.add(resourcesScrollPane);</span>
+<span class="nc" id="L304">		panel.add(resourcesAddButton);</span>
+<span class="nc" id="L305">		panel.add(resourcesRemoveButton);</span>
+<span class="nc" id="L306">	}</span>
+	
+	/**
+	 * Adds the saving options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the components will be added to.
+	 */
+	private void addSaveOptions(JPanel panel) {
+<span class="nc" id="L313">		CMLabel saveSettingsLabel = new CMLabel(Translations.t(&quot;gui_l_save_settings&quot;), 415, 0, 120, 30);</span>
+<span class="nc" id="L314">		CMLabel pathLabel = new CMLabel(Translations.t(&quot;gui_l_path&quot;), 415, 35, 60, 30);</span>
+<span class="nc" id="L315">		pathField = new CMTextField(475, 35, 270, 30);</span>
+<span class="nc" id="L316">		CMButton specifyPathButton = new CMButton(Translations.t(&quot;gui_b_specify_path&quot;), 415, 80, 120, 30);</span>
+<span class="nc" id="L317">		useMappingCheckBox = new CMCheckBox(550, 80, 30, 30);</span>
+<span class="nc" id="L318">		CMLabel useMappingLabel = new CMLabel(Translations.t(&quot;gui_l_use_mapping_file&quot;),575, 80, 180, 30);</span>
+<span class="nc" id="L319">		CMButton saveMappingFileButton = new CMButton(Translations.t(&quot;gui_b_save_mapping_file&quot;), 415, 120, 165, 30);</span>
+<span class="nc" id="L320">		specifyPathButton.addActionListener(new BrowseListener(pathField, JFileChooser.FILES_ONLY, XML_FILTER));</span>
+		
+<span class="nc" id="L322">		panel.add(saveSettingsLabel);</span>
+<span class="nc" id="L323">		panel.add(pathLabel);</span>
+<span class="nc" id="L324">		panel.add(pathField);</span>
+<span class="nc" id="L325">		panel.add(specifyPathButton);</span>
+<span class="nc" id="L326">		panel.add(useMappingCheckBox);</span>
+<span class="nc" id="L327">		panel.add(useMappingLabel);</span>
+<span class="nc" id="L328">		panel.add(saveMappingFileButton);</span>
+<span class="nc" id="L329">	}</span>
+	
+	/**
+	 * Adds the the tabs of the buildables to the {@code buildableTabbedPane} {@link JTabbedPane}.
+	 * @param panel The {@link JPanel} to which the {@code buildableTabbedPane} will be added to.
+	 */
+	private void addBuildableTabs(JPanel panel) {
+<span class="nc" id="L336">		buildableTabbedPane = new JTabbedPane();</span>
+		
+<span class="nc" id="L338">		createCellarTab();</span>
+<span class="nc" id="L339">		createFloorTab();</span>
+<span class="nc" id="L340">		createGardenTab();</span>
+<span class="nc" id="L341">		createGroundTab();</span>
+		
+<span class="nc" id="L343">		buildableTabbedPane.add(Translations.t(&quot;gui_tab_cellar&quot;), cellarPanel);</span>
+<span class="nc" id="L344">		buildableTabbedPane.add(Translations.t(&quot;gui_tab_floor&quot;), floorPanel);</span>
+<span class="nc" id="L345">		buildableTabbedPane.add(Translations.t(&quot;gui_tab_garden&quot;), gardenPanel);</span>
+<span class="nc" id="L346">		buildableTabbedPane.add(Translations.t(&quot;gui_tab_ground&quot;), groundPanel);</span>
+		
+<span class="nc" id="L348">		buildableTabbedPane.setFont(new Font(&quot;Source Sans Pro&quot;, Font.PLAIN, 16));</span>
+<span class="nc" id="L349">		buildableTabbedPane.setBounds(10, 175, 780, 300);</span>
+		
+<span class="nc" id="L351">		panel.add(buildableTabbedPane);</span>
+		
+<span class="nc" id="L353">	}</span>
+	
+	/**
+	 * Creates the tab to the buildable type cellar, where the buildable attributes and their desired values can be paired.
+	 */
+	private void createCellarTab() {
+<span class="nc" id="L359">		cellarPanel = new JPanel();</span>
+<span class="nc" id="L360">		cellarPanel.setLayout(null);</span>
+<span class="nc" id="L361">	    cellarPanel.setBounds(0, 0, 780, 285);</span>
+
+<span class="nc" id="L363">	    Dimension size = new Dimension(780, 285);</span>
+<span class="nc" id="L364">	    cellarPanel.setMinimumSize(size);</span>
+<span class="nc" id="L365">	    cellarPanel.setPreferredSize(size);</span>
+<span class="nc" id="L366">	    cellarPanel.setMaximumSize(size);</span>
+	    
+<span class="nc" id="L368">	    CMLabel assignedLabel = new CMLabel(Translations.t(&quot;gui_l_assigned_to&quot;), 15, 15, 270, 30);</span>
+<span class="nc" id="L369">	    CMLabel attributeLabel = new CMLabel(Translations.t(&quot;gui_l_attribute&quot;), 270, 15, 60, 30);</span>
+<span class="nc" id="L370">	    CMLabel propertiesLabel = new CMLabel(Translations.t(&quot;gui_l_properties&quot;), 525, 15, 120, 30);</span>
+	    
+<span class="nc" id="L372">	    cellarTable = setUpBuildableTable(&quot;CELLAR&quot;);</span>
+<span class="nc" id="L373">	    Rectangle bounds = cellarTable.getBounds();</span>
+<span class="nc" id="L374">	    CMScrollPane scrollPane = new CMScrollPane(cellarTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);</span>
+	    
+<span class="nc" id="L376">	    cellarListmodel = initializeListModel(&quot;attribute&quot;);</span>
+<span class="nc" id="L377">	    cellarList = new JList&lt;String&gt;();</span>
+<span class="nc" id="L378">	    cellarList.setModel(cellarListmodel);</span>
+<span class="nc" id="L379">	    cellarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L380">	    cellarList.setLayoutOrientation(JList.VERTICAL);</span>
+<span class="nc" id="L381">	    cellarList.setVisibleRowCount(-1);</span>
+<span class="nc" id="L382">	    cellarList.setDragEnabled(true);</span>
+<span class="nc" id="L383">	    cellarList.setDropMode(DropMode.INSERT);</span>
+
+<span class="nc" id="L385">	    CMScrollPane cellarScrollPane = new CMScrollPane(cellarList, 525, 50, 240, 180);</span>
+	    
+<span class="nc" id="L387">	    cellarPanel.add(assignedLabel);</span>
+<span class="nc" id="L388">	    cellarPanel.add(attributeLabel);</span>
+<span class="nc" id="L389">	    cellarPanel.add(propertiesLabel);</span>
+<span class="nc" id="L390">	    cellarPanel.add(scrollPane);</span>
+<span class="nc" id="L391">	    cellarPanel.add(cellarScrollPane);	    </span>
+<span class="nc" id="L392">	}</span>
+	
+	/**
+	 * Creates the tab to the buildable type floor, where the buildable attributes and their desired values can be paired.
+	 */
+	private void createFloorTab() {
+<span class="nc" id="L398">		floorPanel = new JPanel();</span>
+<span class="nc" id="L399">		floorPanel.setLayout(null);</span>
+<span class="nc" id="L400">	    floorPanel.setBounds(0, 0, 780, 285);</span>
+
+<span class="nc" id="L402">	    Dimension size = new Dimension(780, 285);</span>
+<span class="nc" id="L403">	    floorPanel.setMinimumSize(size);</span>
+<span class="nc" id="L404">	    floorPanel.setPreferredSize(size);</span>
+<span class="nc" id="L405">	    floorPanel.setMaximumSize(size);</span>
+	    
+<span class="nc" id="L407">	    CMLabel assignedLabel = new CMLabel(Translations.t(&quot;gui_l_assigned_to&quot;), 15, 15, 270, 30);</span>
+<span class="nc" id="L408">	    CMLabel methodLabel = new CMLabel(Translations.t(&quot;gui_l_method&quot;), 270, 15, 60, 30);</span>
+<span class="nc" id="L409">	    CMLabel propertiesLabel = new CMLabel(Translations.t(&quot;gui_l_properties&quot;), 525, 15, 120, 30);		</span>
+	    
+<span class="nc" id="L411">	    floorTable = setUpBuildableTable(&quot;FLOOR&quot;);</span>
+<span class="nc" id="L412">	    Rectangle bounds = floorTable.getBounds();</span>
+<span class="nc" id="L413">	    CMScrollPane scrollPane = new CMScrollPane(floorTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);</span>
+	    
+<span class="nc" id="L415">	    floorListmodel = initializeListModel(&quot;method&quot;);</span>
+<span class="nc" id="L416">	    floorList = new JList&lt;String&gt;();</span>
+<span class="nc" id="L417">	    floorList.setModel(floorListmodel);</span>
+<span class="nc" id="L418">	    floorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L419">	    floorList.setLayoutOrientation(JList.VERTICAL);</span>
+<span class="nc" id="L420">	    floorList.setVisibleRowCount(-1);</span>
+<span class="nc" id="L421">	    floorList.setDragEnabled(true);</span>
+<span class="nc" id="L422">	    floorList.setDropMode(DropMode.INSERT);</span>
+	    
+<span class="nc" id="L424">	    CMScrollPane floorScrollPane = new CMScrollPane(floorList, 525, 50, 240, 180);</span>
+	    
+<span class="nc" id="L426">	    floorPanel.add(assignedLabel);</span>
+<span class="nc" id="L427">	    floorPanel.add(methodLabel);</span>
+<span class="nc" id="L428">	    floorPanel.add(propertiesLabel);</span>
+<span class="nc" id="L429">	    floorPanel.add(scrollPane);</span>
+<span class="nc" id="L430">	    floorPanel.add(floorScrollPane);</span>
+<span class="nc" id="L431">	}</span>
+	
+	/**
+	 * Creates the tab to the buildable type garden, where the buildable attributes and their desired values can be paired.
+	 */
+	private void createGardenTab() {
+<span class="nc" id="L437">		gardenPanel = new JPanel();</span>
+<span class="nc" id="L438">		gardenPanel.setLayout(null);</span>
+<span class="nc" id="L439">	    gardenPanel.setBounds(0, 0, 780, 285);</span>
+
+<span class="nc" id="L441">	    Dimension size = new Dimension(780, 285);</span>
+<span class="nc" id="L442">	    gardenPanel.setMinimumSize(size);</span>
+<span class="nc" id="L443">	    gardenPanel.setPreferredSize(size);</span>
+<span class="nc" id="L444">	    gardenPanel.setMaximumSize(size);</span>
+	    
+<span class="nc" id="L446">	    CMLabel assignedLabel = new CMLabel(Translations.t(&quot;gui_l_assigned_to&quot;), 15, 15, 270, 30);</span>
+<span class="nc" id="L447">	    CMLabel classLabel = new CMLabel(Translations.t(&quot;gui_l_class&quot;), 270, 15, 60, 30);</span>
+<span class="nc" id="L448">	    CMLabel propertiesLabel = new CMLabel(Translations.t(&quot;gui_l_properties&quot;), 525, 15, 120, 30);</span>
+	    
+<span class="nc" id="L450">	    gardenTable = setUpBuildableTable(&quot;GARDEN&quot;);</span>
+<span class="nc" id="L451">	    Rectangle bounds = gardenTable.getBounds();</span>
+<span class="nc" id="L452">	    CMScrollPane scrollPane = new CMScrollPane(gardenTable, bounds.x, bounds.y, bounds.width, bounds.height + 30);</span>
+	    
+<span class="nc" id="L454">	    gardenListmodel = initializeListModel(&quot;class&quot;);</span>
+<span class="nc" id="L455">	    gardenList = new JList&lt;String&gt;();</span>
+<span class="nc" id="L456">	    gardenList.setModel(gardenListmodel);</span>
+<span class="nc" id="L457">	    gardenList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L458">	    gardenList.setLayoutOrientation(JList.VERTICAL);</span>
+<span class="nc" id="L459">	    gardenList.setVisibleRowCount(-1);</span>
+<span class="nc" id="L460">	    gardenList.setDragEnabled(true);</span>
+<span class="nc" id="L461">	    gardenList.setDropMode(DropMode.INSERT);</span>
+	    
+<span class="nc" id="L463">	    CMScrollPane gardenScrollPane = new CMScrollPane(gardenList, 525, 50, 240, 180);</span>
+	    
+<span class="nc" id="L465">	    gardenPanel.add(assignedLabel);</span>
+<span class="nc" id="L466">	    gardenPanel.add(classLabel);</span>
+<span class="nc" id="L467">	    gardenPanel.add(propertiesLabel);</span>
+<span class="nc" id="L468">	    gardenPanel.add(scrollPane);</span>
+<span class="nc" id="L469">	    gardenPanel.add(gardenScrollPane);</span>
+<span class="nc" id="L470">	}</span>
+	
+	/**
+	 * Creates the tab to the buildable type ground.
+	 */
+	private void createGroundTab() {
+<span class="nc" id="L476">		groundPanel = new JPanel();</span>
+<span class="nc" id="L477">		groundPanel.setLayout(null);</span>
+<span class="nc" id="L478">	    groundPanel.setBounds(0, 0, 780, 285);</span>
+
+<span class="nc" id="L480">	    Dimension size = new Dimension(780, 285);</span>
+<span class="nc" id="L481">	    groundPanel.setMinimumSize(size);</span>
+<span class="nc" id="L482">	    groundPanel.setPreferredSize(size);</span>
+<span class="nc" id="L483">	    groundPanel.setMaximumSize(size);</span>
+	    
+<span class="nc" id="L485">	    CMLabel assignedLabel = new CMLabel(Translations.t(&quot;gui_l_assigned_to&quot;), 15, 15, 270, 30);</span>
+<span class="nc" id="L486">	    CMLabel packageLabel = new CMLabel(Translations.t(&quot;gui_l_package&quot;), 270, 15, 60, 30);</span>
+<span class="nc" id="L487">	    CMLabel noAttrsLabel = new CMLabel(Translations.t(&quot;gui_l_no_attributes&quot;), 15, 60, 300, 30);</span>
+	    
+<span class="nc" id="L489">	    groundPanel.add(assignedLabel);</span>
+<span class="nc" id="L490">	    groundPanel.add(packageLabel);</span>
+<span class="nc" id="L491">	    groundPanel.add(noAttrsLabel);</span>
+<span class="nc" id="L492">	}</span>
+	
+	/**
+	 * Sets up the table of a buildable type which contains the attributes of the buildable (height, character, etc.) and provides a second column for their values.
+	 * @param buildableType The type of the buildable (method, attribute, etc.).
+	 * @return The JTable contains the buildable attributes.
+	 */
+	private JTable setUpBuildableTable(String buildableType) {
+<span class="nc" id="L500">		String[] displayedProperties = displayedBuildableAttributes.get(buildableType);</span>
+	    
+<span class="nc" id="L502">		Object[] columnNames = new String[] {Translations.t(&quot;gui_t_attribute&quot;), Translations.t(&quot;gui_t_assigned_propery&quot;)};</span>
+<span class="nc" id="L503">	    Object[][] initData = new Object[displayedProperties.length][2];</span>
+	    
+<span class="nc bnc" id="L505" title="All 2 branches missed.">	    for(int i = 0; i &lt; displayedProperties.length; i++) {</span>
+<span class="nc" id="L506">	    	initData[i][0] = displayedProperties[i] + &quot;: &quot; + BuildableSettings.BUILDABLE_ATTRIBUTE_TYPES.get(displayedProperties[i]);</span>
+<span class="nc" id="L507">	    	initData[i][1] = null;</span>
+	    }
+
+<span class="nc" id="L510">	    JTable table = new JTable(initData, columnNames);</span>
+<span class="nc" id="L511">	    table.setFont(new Font(&quot;Source Sans Pro&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L512">	    table.setRowHeight(30);</span>
+<span class="nc" id="L513">	    table.setBounds(15, 50, 480, displayedProperties.length * 30);</span>
+<span class="nc" id="L514">        table.setDragEnabled(true);</span>
+<span class="nc" id="L515">        table.setDropMode(DropMode.USE_SELECTION);</span>
+<span class="nc" id="L516">        table.setTransferHandler(new TransferHelper());</span>
+<span class="nc" id="L517">        table.setRowSelectionAllowed(false);</span>
+<span class="nc" id="L518">        table.setCellSelectionEnabled(true);</span>
+
+<span class="nc" id="L520">	    return table;</span>
+	}
+
+	/**
+	 * Fills up the list model of the given source code element type with its own properties/metrics.
+	 * @param sourceCodeElementType Type of the source code element (method, attribute, etc.).
+	 * @return The {@link ListModel} contains all of the properties/metrics.
+	 */
+	public ListModel&lt;String&gt; initializeListModel(String sourceCodeElementType) {
+<span class="nc" id="L529">		List&lt;Property&gt; propertyList = sourceCodeElementProperties.get(sourceCodeElementType);</span>
+
+<span class="nc" id="L531">		DefaultListModel&lt;String&gt; model = new DefaultListModel&lt;String&gt;();</span>
+		
+<span class="nc bnc" id="L533" title="All 2 branches missed.">		for(Property p : propertyList) {</span>
+<span class="nc" id="L534">			model.addElement(p.name + &quot;: &quot; + p.type);</span>
+		}
+		
+<span class="nc" id="L537">		return model;</span>
+	}
+	
+	/**
+	 * Adds the conversion options to the {@code panel}.
+	 * @param panel The {@link JPanel} to which the options will be added to.
+	 */
+	private void addConversionOptions(JPanel panel) {
+<span class="nc" id="L545">		CMButton conversionButton = new CMButton(Translations.t(&quot;gui_b_conversions&quot;), 10, 490, 150, 30);</span>
+<span class="nc" id="L546">		panel.add(conversionButton);</span>
+		
+<span class="nc" id="L548">		MappingFileEditorDialog self = this;</span>
+<span class="nc" id="L549">		conversionButton.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int index;
+				String buildableAttribute;
+				String metric;
+
+<span class="nc bnc" id="L556" title="All 2 branches missed.">				for (Conversion element :  cellarConversion) {</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">					if ( element instanceof QuantizationConversion ) {</span>
+<span class="nc" id="L558">						QuantizationInformation cellar = new QuantizationInformation();</span>
+
+<span class="nc" id="L560">						index = cellarConversion.indexOf(element);</span>
+<span class="nc" id="L561">						buildableAttribute = (String) cellarTable.getModel().getValueAt(index, 0);</span>
+<span class="nc" id="L562">						metric = (String) cellarTable.getModel().getValueAt(index, 1);</span>
+
+<span class="nc" id="L564">						cellar.setIndex(index);</span>
+<span class="nc" id="L565">						cellar.setBuildableAttribute(buildableAttribute);</span>
+<span class="nc" id="L566">						cellar.setMetric(metric);</span>
+
+<span class="nc" id="L568">						cellarQuant.put(cellar, new QuantizationConversion());</span>
+					}
+				}
+<span class="nc bnc" id="L571" title="All 2 branches missed.">				for (Conversion element :  gardenConversion) {</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">					if ( element instanceof QuantizationConversion ) {</span>
+<span class="nc" id="L573">						QuantizationInformation garden = new QuantizationInformation();</span>
+
+<span class="nc" id="L575">						index = gardenConversion.indexOf(element);</span>
+<span class="nc" id="L576">						buildableAttribute = (String) gardenTable.getModel().getValueAt(index, 0);</span>
+<span class="nc" id="L577">						metric = (String) gardenTable.getModel().getValueAt(index, 1);</span>
+
+<span class="nc" id="L579">						garden.setIndex(index);</span>
+<span class="nc" id="L580">						garden.setBuildableAttribute(buildableAttribute);</span>
+<span class="nc" id="L581">						garden.setMetric(metric);</span>
+
+<span class="nc" id="L583">						gardenQuant.put(garden, new QuantizationConversion());</span>
+					}
+				}
+<span class="nc bnc" id="L586" title="All 2 branches missed.">				for (Conversion element :  floorConversion) {</span>
+<span class="nc bnc" id="L587" title="All 2 branches missed.">					if ( element instanceof QuantizationConversion ) {</span>
+<span class="nc" id="L588">						QuantizationInformation floor = new QuantizationInformation();</span>
+
+<span class="nc" id="L590">						index = floorConversion.indexOf(element);</span>
+<span class="nc" id="L591">						buildableAttribute = (String) floorTable.getModel().getValueAt(index, 0);</span>
+<span class="nc" id="L592">						metric = (String) floorTable.getModel().getValueAt(index, 1);</span>
+
+<span class="nc" id="L594">						floor.setIndex(index);</span>
+<span class="nc" id="L595">						floor.setBuildableAttribute(buildableAttribute);</span>
+<span class="nc" id="L596">						floor.setMetric(metric);</span>
+
+<span class="nc" id="L598">						floorQuant.put(floor, new QuantizationConversion());</span>
+					}
+				}
+<span class="nc" id="L601">				QuantizationSetterDialog dialog = new QuantizationSetterDialog(self);</span>
+<span class="nc" id="L602">				dialog.setVisible(true);</span>
+				
+<span class="nc" id="L604">			}</span>
+		});
+<span class="nc" id="L606">	}</span>
+
+    /**
+     * @return floorTable
+     */
+    public static JTable getFloorTable() {
+<span class="fc" id="L612">    	return floorTable;</span>
+    }
+
+    /**
+     * @return gardenTable
+     */
+    public static JTable getGardenTable() {
+<span class="fc" id="L619">        return gardenTable;</span>
+    }
+
+    /**
+     * @return cellarTable
+     */
+    public static JTable getCellarTable() {
+<span class="fc" id="L626">        return cellarTable;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

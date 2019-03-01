@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Buildable.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-commons</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.commons.cmxml</a> &gt; <span class="el_source">Buildable.java</span></div><h1>Buildable.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package codemetropolis.toolchain.commons.cmxml;</span>
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Stack;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+public class Buildable implements Comparable&lt;Buildable&gt; {
+	
+<span class="fc" id="L14">	public enum Type {</span>
+<span class="fc" id="L15">		GROUND,</span>
+<span class="fc" id="L16">		GARDEN,</span>
+<span class="fc" id="L17">		FLOOR,</span>
+<span class="fc" id="L18">		CELLAR,</span>
+<span class="fc" id="L19">		CONTAINER;</span>
+	}
+	
+	private String id;
+	private String name;
+	private Type type;
+	private Point position;
+	private Point size;
+	private List&lt;Attribute&gt; attributes;
+	private List&lt;Buildable&gt; children;
+	private Buildable parent;
+	private String cdfNames;
+	
+	public Buildable(String id, String name, Type type) {
+<span class="fc" id="L33">		this(id, name, type, new Point(), new Point());</span>
+<span class="fc" id="L34">	}</span>
+	
+<span class="fc" id="L36">	public Buildable(String id, String name, Type type, Point position, Point size) {</span>
+<span class="fc" id="L37">		this.id = id;</span>
+<span class="fc" id="L38">		this.name = name;</span>
+<span class="fc" id="L39">		this.type = type;</span>
+<span class="fc" id="L40">		this.position = position;</span>
+<span class="fc" id="L41">		this.size = size;</span>
+<span class="fc" id="L42">		this.attributes = new ArrayList&lt;Attribute&gt;();</span>
+<span class="fc" id="L43">		this.children = new ArrayList&lt;Buildable&gt;();</span>
+<span class="fc" id="L44">	}</span>
+	
+	public boolean isOverlapping(Buildable b) {
+<span class="nc bnc" id="L47" title="All 4 branches missed.">		return 	b.getPositionX() &lt; this.getPositionX() + this.getSizeX() &amp;&amp;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">				b.getPositionX() + b.getSizeX() &gt; this.getPositionX() &amp;&amp;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">				b.getPositionZ() &lt; this.getPositionZ() + this.getSizeZ() &amp;&amp;</span>
+<span class="nc" id="L50">				b.getPositionZ() + b.getSizeZ() &gt; this.getPositionZ();</span>
+	}
+	
+	public boolean isOverlapping(int x1, int z1, int x2, int z2) {
+<span class="nc bnc" id="L54" title="All 4 branches missed.">		return	x1 &lt; this.getPositionX() + this.getSizeX() &amp;&amp;</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">				x2 &gt; this.getPositionX() &amp;&amp;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">				z1 &lt; this.getPositionZ() + this.getSizeZ() &amp;&amp;</span>
+<span class="nc" id="L57">				z2 &gt; this.getPositionZ();</span>
+	}
+	
+	public boolean isOverlapping(int x, int z) {
+<span class="nc bnc" id="L61" title="All 4 branches missed.">		return	x &lt;= this.getPositionX() + this.getSizeX() &amp;&amp;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">				x &gt;= this.getPositionX() &amp;&amp;</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">				z &lt;= this.getPositionZ() + this.getSizeZ() &amp;&amp;</span>
+<span class="nc" id="L64">				z &gt;= this.getPositionZ(); </span>
+	}
+	
+	public Point getCenter() {
+<span class="nc" id="L68">		return new Point(</span>
+<span class="nc" id="L69">				position.getX() + size.getX() / 2,</span>
+<span class="nc" id="L70">				position.getY() + size.getY() / 2,</span>
+<span class="nc" id="L71">				position.getZ() + size.getZ() / 2</span>
+				);
+	}
+	
+	public String getFullName() {
+<span class="nc" id="L76">		return getFullName(&quot;.&quot;);</span>
+	}
+	
+	public String getFullName(String separator) {
+<span class="nc" id="L80">		StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L81">		Buildable[] ancestors = getAncestors();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		for(int i = 1; i &lt; ancestors.length; i++)</span>
+<span class="nc" id="L83">			sb.append(ancestors[i].getName()).append(separator);</span>
+<span class="nc" id="L84">		sb.append(getName());</span>
+<span class="nc" id="L85">		return sb.toString();</span>
+	}
+	
+	public boolean hasAttribute(String name) {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">		for(Attribute a : attributes) {</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">			if(a.getName().equals(name))</span>
+<span class="nc" id="L91">				return true;</span>
+		}
+<span class="nc" id="L93">		return false;</span>
+	}
+	
+	public String getAttributeValue(String name) {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		for(Attribute a : attributes) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">			if(a.getName().equals(name))</span>
+<span class="nc" id="L99">				return a.getValue();</span>
+		}
+<span class="nc" id="L101">		return null;</span>
+	}
+	
+	public Buildable[] getAncestors() {
+<span class="nc" id="L105">		List&lt;Buildable&gt; result = new ArrayList&lt;Buildable&gt;();</span>
+<span class="nc" id="L106">		Buildable temp = this;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		while(!temp.isRoot()) {</span>
+<span class="nc" id="L108">			result.add(0, temp.getParent());</span>
+<span class="nc" id="L109">			temp = temp.getParent();</span>
+		}
+<span class="nc" id="L111">		return result.toArray(new Buildable[result.size()]);</span>
+	}
+	
+	public List&lt;Buildable&gt; getSiblings() {
+<span class="nc" id="L115">		List&lt;Buildable&gt; result = new ArrayList&lt;Buildable&gt;();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		if(!isRoot()) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			for(Buildable b : parent.getChildren()) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">				if(b != this) {</span>
+<span class="nc" id="L119">					result.add(b);</span>
+				}
+			}
+		}
+<span class="nc" id="L123">		return result;</span>
+	}
+	
+	public Buildable getLastLeftDescendant() {
+<span class="nc" id="L127">		Buildable b = this;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		while(b.getFirstChild() != null) {</span>
+<span class="nc" id="L129">			b = b.getFirstChild();</span>
+		}	
+<span class="nc" id="L131">		return b;</span>
+	}
+	
+	public int getNumberOfDescendants() {
+<span class="nc" id="L135">		return getDescendants().size();</span>
+	}
+	
+	public List&lt;Buildable&gt; getDescendants() {
+<span class="nc" id="L139">		List&lt;Buildable&gt; result = new ArrayList&lt;Buildable&gt;();</span>
+<span class="nc" id="L140">		Stack&lt;Buildable&gt; temp = new Stack&lt;Buildable&gt;();</span>
+<span class="nc" id="L141">		temp.push(this);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		while(!temp.isEmpty()) {</span>
+<span class="nc" id="L143">			Buildable current = temp.pop();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			if(current.getNumberOfChildren() &gt; 0) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				for(Buildable child : current.getChildren()) {</span>
+<span class="nc" id="L146">					result.add(child);</span>
+<span class="nc" id="L147">					temp.push(child);</span>
+				}
+			}
+		}
+<span class="nc" id="L151">		return result;</span>
+	}
+	
+	public int getDescendantLevel() {
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if(this.isRoot()) return 1;</span>
+<span class="nc" id="L156">		return parent.getDescendantLevel() + 1;</span>
+	}
+	
+	public void addAttribute(Attribute a) {
+<span class="nc" id="L160">		attributes.add(a);</span>
+<span class="nc" id="L161">	}</span>
+	
+	public void addAttribute(String name, String value) {
+<span class="nc" id="L164">		Attribute a = new Attribute(</span>
+<span class="nc" id="L165">				name,</span>
+<span class="nc" id="L166">				value</span>
+				);
+<span class="nc" id="L168">		attributes.add(a);</span>
+<span class="nc" id="L169">	}</span>
+	
+	public void addAttributes(Attribute... attributes) {
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for(Attribute a : attributes) {</span>
+<span class="nc" id="L173">			this.attributes.add(a);</span>
+		}
+<span class="nc" id="L175">	}</span>
+	
+	public void clearAttributes() {
+<span class="nc" id="L178">		attributes.clear();</span>
+<span class="nc" id="L179">	}</span>
+	
+	public void addChild(Buildable b) {
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if(!b.isRoot()) b.parent.children.remove(b);</span>
+<span class="fc" id="L183">		children.add(b);</span>
+<span class="fc" id="L184">		b.parent = this;</span>
+<span class="fc" id="L185">	}</span>
+	
+	public void addChildren(Buildable... children) {
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for(Buildable b : children) {</span>
+<span class="nc" id="L189">			addChild(b);</span>
+		}
+<span class="nc" id="L191">	}</span>
+	
+	public void addChildren(Collection&lt;Buildable&gt; children) {
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		for(Buildable b : children) {</span>
+<span class="nc" id="L195">			addChild(b);</span>
+		}
+<span class="nc" id="L197">	}</span>
+	
+	public void clearChildren() {
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		for(Buildable c : children) {</span>
+<span class="nc" id="L201">			c.parent = null;</span>
+		}
+<span class="nc" id="L203">		children.clear();</span>
+<span class="nc" id="L204">	}</span>
+	
+	public Buildable getFirstChild() {
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if(!children.isEmpty()) {</span>
+<span class="nc" id="L208">			return children.get(0);</span>
+		}
+<span class="nc" id="L210">		return null;</span>
+	}
+	
+	public Buildable getLastChild() {
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if(!children.isEmpty()) {</span>
+<span class="nc" id="L215">			return children.get(children.size()-1);</span>
+		}
+<span class="nc" id="L217">		return null;</span>
+	}
+	
+	public int getNumberOfChildren() {
+<span class="nc" id="L221">		return children.size();</span>
+	}
+	
+	public int getNumberOfAttributes() {
+<span class="nc" id="L225">		return attributes.size();</span>
+	}
+
+	public String getName() {
+<span class="fc" id="L229">		return name;</span>
+	}
+
+	public void setName(String name) {
+<span class="nc" id="L233">		this.name = name;</span>
+<span class="nc" id="L234">	}</span>
+
+	public Type getType() {
+<span class="nc" id="L237">		return type;</span>
+	}
+
+	public void setType(Type type) {
+<span class="nc" id="L241">		this.type = type;</span>
+<span class="nc" id="L242">	}</span>
+	
+	public int getPositionX() {
+<span class="nc" id="L245">		return position.getX();</span>
+	}
+	
+	public int getPositionY() {
+<span class="nc" id="L249">		return position.getY();</span>
+	}
+	
+	public int getPositionZ() {
+<span class="nc" id="L253">		return position.getZ();</span>
+	}
+	
+	public void setPositionX(int x) {
+<span class="nc" id="L257">		position.setX(x);</span>
+<span class="nc" id="L258">	}</span>
+	
+	public void setPositionXR(int x) { //Recursive version: also sets the position of children
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		for(Buildable b : this.getDescendants()) {</span>
+<span class="nc" id="L262">			b.setPositionX(b.getPositionX() - position.getX() + x);</span>
+		}
+<span class="nc" id="L264">		position.setX(x);</span>
+<span class="nc" id="L265">	}</span>
+	
+	public void setPositionY(int y) {
+<span class="nc" id="L268">		position.setY(y);</span>
+<span class="nc" id="L269">	}</span>
+	
+	public void setPositionYR(int y) { //Recursive version: also sets the position of children
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		for(Buildable b : this.getDescendants()) {</span>
+<span class="nc" id="L273">			b.setPositionY(b.getPositionY() - position.getY() + y);</span>
+		}
+<span class="nc" id="L275">		position.setY(y);</span>
+<span class="nc" id="L276">	}</span>
+	
+	public void setPositionZ(int z) {
+<span class="nc" id="L279">		position.setZ(z);</span>
+<span class="nc" id="L280">	}</span>
+	
+	public void setPositionZR(int z) { //Recursive version: also sets the position of children
+<span class="nc bnc" id="L283" title="All 2 branches missed.">		for(Buildable b : this.getDescendants()) {</span>
+<span class="nc" id="L284">			b.setPositionZ(b.getPositionZ() - position.getZ() + z);</span>
+		}
+<span class="nc" id="L286">		position.setZ(z);</span>
+<span class="nc" id="L287">	}</span>
+	
+	public int getSizeX() {
+<span class="nc" id="L290">		return size.getX();</span>
+	}
+	
+	public int getSizeY() {
+<span class="nc" id="L294">		return size.getY();</span>
+	}
+	
+	public int getSizeZ() {
+<span class="nc" id="L298">		return size.getZ();</span>
+	}
+	
+	public void setSizeX(int x) {
+<span class="nc" id="L302">		size.setX(x);</span>
+<span class="nc" id="L303">	}</span>
+	
+	public void setSizeY(int y) {
+<span class="nc" id="L306">		size.setY(y);</span>
+<span class="nc" id="L307">	}</span>
+	
+	public void setSizeZ(int z) {
+<span class="nc" id="L310">		size.setZ(z);</span>
+<span class="nc" id="L311">	}</span>
+
+	public Attribute[] getAttributes() {
+<span class="nc" id="L314">		return attributes.toArray(new Attribute[attributes.size()]);</span>
+	}
+
+	public Buildable[] getChildren() {
+<span class="nc" id="L318">		return children.toArray(new Buildable[children.size()]);</span>
+	}
+
+	public Buildable getParent() {
+<span class="nc" id="L322">		return parent;</span>
+	}
+
+	public boolean isRoot() {
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		return parent == null;</span>
+	}
+
+	public String getId() {
+<span class="nc" id="L330">		return id;</span>
+	}
+
+	public String getCdfNames() {
+<span class="fc" id="L334">		return cdfNames;</span>
+	}
+
+	public void setCdfNames(String cdfNames) {
+<span class="fc" id="L338">		this.cdfNames = cdfNames;</span>
+<span class="fc" id="L339">	}</span>
+
+	@Override
+	public int compareTo(Buildable b) {
+<span class="nc" id="L343">		return size.getX() * size.getY() * size.getZ() - b.getSizeX() * b.getSizeY() * b.getSizeZ();</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L348">		final int prime = 31;</span>
+<span class="fc" id="L349">		int result = 1;</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		result = prime * result + ((id == null) ? 0 : id.hashCode());</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		result = prime * result + ((name == null) ? 0 : name.hashCode());</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		result = prime * result + ((type == null) ? 0 : type.hashCode());</span>
+<span class="fc" id="L353">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L358" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L359">			return true;</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L361">			return false;</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L363">			return false;</span>
+<span class="nc" id="L364">		Buildable other = (Buildable) obj;</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (id == null) {</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">			if (other.id != null)</span>
+<span class="nc" id="L367">				return false;</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">		} else if (!id.equals(other.id))</span>
+<span class="nc" id="L369">			return false;</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (name == null) {</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">			if (other.name != null)</span>
+<span class="nc" id="L372">				return false;</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">		} else if (!name.equals(other.name))</span>
+<span class="nc" id="L374">			return false;</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">		if (type != other.type)</span>
+<span class="nc" id="L376">			return false;</span>
+<span class="nc" id="L377">		return true;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L382">		return toString(0, false);</span>
+	}
+	
+	public String toEscapedString() {
+<span class="nc" id="L386">		return toString(0, true);</span>
+	}
+	
+	String toString(int indent, boolean escape) {
+<span class="nc" id="L390">		String id = this.id;</span>
+<span class="nc" id="L391">		String name = this.name;</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">		if(escape) {</span>
+<span class="nc" id="L393">			id = StringEscapeUtils.escapeXml10(id);</span>
+<span class="nc" id="L394">			name = StringEscapeUtils.escapeXml10(name);</span>
+		}
+		
+<span class="nc" id="L397">		StringBuilder indentSb = new StringBuilder();</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">		for(int i = 0; i &lt; indent; i++)</span>
+<span class="nc" id="L399">			indentSb.append(&quot;\t&quot;);</span>
+		
+<span class="nc" id="L401">		StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L402">		sb.append(</span>
+<span class="nc" id="L403">				indentSb + &quot;&lt;buildable id=\&quot;&quot; + id + &quot;\&quot; name=\&quot;&quot; + name + &quot;\&quot; type=\&quot;&quot; + type.toString().toLowerCase() + &quot;\&quot;&gt;\n&quot;</span>
+<span class="nc" id="L404">				+ indentSb + &quot;\t&lt;position x=\&quot;&quot; + position.getX() + &quot;\&quot; y=\&quot;&quot; + position.getY() + &quot;\&quot; z=\&quot;&quot; + position.getZ() + &quot;\&quot;/&gt;\n&quot;</span>
+<span class="nc" id="L405">				+ indentSb + &quot;\t&lt;size x=\&quot;&quot; + size.getX() + &quot;\&quot; y=\&quot;&quot; + size.getY() + &quot;\&quot; z=\&quot;&quot; + size.getZ() + &quot;\&quot;/&gt;\n&quot;</span>
+<span class="nc" id="L406">				+ indentSb + &quot;\t&lt;attributes&gt;\n&quot;</span>
+				);
+<span class="nc bnc" id="L408" title="All 2 branches missed.">		for(Attribute a : attributes) {</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">			sb.append(indentSb + &quot;\t\t&lt;attribute name=\&quot;&quot; + a.getName() + &quot;\&quot; value=\&quot;&quot; + (escape ? StringEscapeUtils.escapeXml10(a.getValue()) : a.getValue()) + &quot;\&quot;/&gt;\n&quot;);</span>
+		}
+<span class="nc" id="L411">		sb.append(</span>
+<span class="nc" id="L412">				indentSb + &quot;\t&lt;/attributes&gt;\n&quot;</span>
+<span class="nc" id="L413">				+ indentSb + &quot;\t&lt;children&gt;\n&quot;);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		for(Buildable c : children) {</span>
+<span class="nc" id="L415">			sb.append(c.toString(indent + 2, escape));</span>
+		}
+<span class="nc" id="L417">		sb.append(</span>
+<span class="nc" id="L418">				indentSb + &quot;\t&lt;/children&gt;\n&quot;</span>
+<span class="nc" id="L419">				+ indentSb + &quot;&lt;/buildable&gt;\n&quot;</span>
+				);
+<span class="nc" id="L421">		return sb.toString();</span>
+	}
+	
+	public Element toXmlElement(Document doc, boolean recursive) {
+<span class="nc" id="L425">		Element buildable = doc.createElement(&quot;buildable&quot;);</span>
+<span class="nc" id="L426">		buildable.setAttribute(&quot;id&quot;, id);</span>
+<span class="nc" id="L427">		buildable.setAttribute(&quot;name&quot;, name);</span>
+<span class="nc" id="L428">		buildable.setAttribute(&quot;type&quot;, type.toString().toLowerCase());</span>
+<span class="nc" id="L429">		buildable.setIdAttribute(&quot;id&quot;, true);</span>
+		
+<span class="nc" id="L431">		Element position = doc.createElement(&quot;position&quot;);</span>
+<span class="nc" id="L432">		position.setAttribute(&quot;x&quot;, &quot;&quot; + this.position.getX());</span>
+<span class="nc" id="L433">		position.setAttribute(&quot;y&quot;, &quot;&quot; + this.position.getY());</span>
+<span class="nc" id="L434">		position.setAttribute(&quot;z&quot;, &quot;&quot; + this.position.getZ());</span>
+<span class="nc" id="L435">		buildable.appendChild(position);</span>
+		
+<span class="nc" id="L437">		Element size = doc.createElement(&quot;size&quot;);</span>
+<span class="nc" id="L438">		size.setAttribute(&quot;x&quot;, &quot;&quot; + this.size.getX());</span>
+<span class="nc" id="L439">		size.setAttribute(&quot;y&quot;, &quot;&quot; + this.size.getY());</span>
+<span class="nc" id="L440">		size.setAttribute(&quot;z&quot;, &quot;&quot; + this.size.getZ());</span>
+<span class="nc" id="L441">		buildable.appendChild(size);</span>
+		
+<span class="nc" id="L443">		Element attributes = doc.createElement(&quot;attributes&quot;);</span>
+<span class="nc" id="L444">		buildable.appendChild(attributes);</span>
+		
+<span class="nc bnc" id="L446" title="All 2 branches missed.">		for(Attribute a : this.attributes) {</span>
+<span class="nc" id="L447">			Element attr = doc.createElement(&quot;attribute&quot;);</span>
+<span class="nc" id="L448">			attr.setAttribute(&quot;name&quot;, &quot;&quot; + a.getName());</span>
+<span class="nc" id="L449">			attr.setAttribute(&quot;value&quot;, &quot;&quot; + a.getValue());</span>
+<span class="nc" id="L450">			attributes.appendChild(attr);</span>
+		}
+
+<span class="nc" id="L453">		Element children = doc.createElement(&quot;children&quot;);</span>
+<span class="nc" id="L454">		buildable.appendChild(children);</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">		if(recursive)</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">			for(Buildable c : this.children) {</span>
+<span class="nc" id="L457">				children.appendChild(c.toXmlElement(doc, true));</span>
+			}
+		
+<span class="nc" id="L460">		return buildable;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

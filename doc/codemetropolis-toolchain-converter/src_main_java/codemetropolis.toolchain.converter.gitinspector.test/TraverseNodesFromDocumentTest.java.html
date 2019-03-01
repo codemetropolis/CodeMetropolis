@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TraverseNodesFromDocumentTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-converter</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.converter.gitinspector.test</a> &gt; <span class="el_source">TraverseNodesFromDocumentTest.java</span></div><h1>TraverseNodesFromDocumentTest.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.converter.gitinspector.test;
+
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
+import org.junit.Test;
+import org.w3c.dom.Document;
+
+import codemetropolis.toolchain.commons.cdf.CdfElement;
+import codemetropolis.toolchain.commons.cdf.CdfProperty;
+import codemetropolis.toolchain.converter.gitinspector.GitInspectorConverter;
+
+/**
+*
+* @author Zakor Gyula {@literal &lt;ZAGPAAG.SZE&gt;}
+*
+*/
+
+<span class="fc" id="L20">public class TraverseNodesFromDocumentTest {</span>
+
+    @Test
+    public void testTraverseNodesFromDocument() throws Exception {
+<span class="fc" id="L24">        GitInspectorConverter conv = TestHelper.newGitInspectorConverter();</span>
+<span class="fc" id="L25">        Document doc = TestHelper.newDocument();</span>
+<span class="fc" id="L26">        conv.traverseNodesFromDocument(doc);</span>
+<span class="fc" id="L27">        HashMap&lt;String, CdfElement&gt; elements = conv.getCdfElements();</span>
+
+<span class="fc" id="L29">        CdfElement authorMetrics = new CdfElement(&quot;Teszt Bela&quot;, &quot;author&quot;);</span>
+<span class="fc" id="L30">        CdfElement floorMetrics = new CdfElement(&quot;Teszt Bela&quot;, &quot;floor-metrics&quot;);</span>
+
+<span class="fc" id="L32">        authorMetrics.addProperty(&quot;email&quot;, &quot;becike@beciakiraly.eu&quot;, CdfProperty.Type.STRING);</span>
+<span class="fc" id="L33">        floorMetrics.addProperty(&quot;email&quot;, &quot;becike@beciakiraly.eu&quot;, CdfProperty.Type.STRING);</span>
+
+<span class="fc" id="L35">        authorMetrics.addProperty(&quot;commits&quot;, &quot;56&quot;, CdfProperty.Type.INT);</span>
+<span class="fc" id="L36">        floorMetrics.addProperty(&quot;commits&quot;, &quot;56&quot;, CdfProperty.Type.INT);</span>
+
+<span class="fc" id="L38">        authorMetrics.addProperty(&quot;insertions&quot;, &quot;67&quot;, CdfProperty.Type.INT);</span>
+<span class="fc" id="L39">        floorMetrics.addProperty(&quot;insertions&quot;, &quot;67&quot;, CdfProperty.Type.INT);</span>
+
+<span class="fc" id="L41">        authorMetrics.addProperty(&quot;deletions&quot;, &quot;54&quot;, CdfProperty.Type.INT);</span>
+<span class="fc" id="L42">        floorMetrics.addProperty(&quot;deletions&quot;, &quot;54&quot;, CdfProperty.Type.INT);</span>
+
+<span class="fc" id="L44">        authorMetrics.addProperty(&quot;POC&quot;, &quot;57.55&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L45">        floorMetrics.addProperty(&quot;POC&quot;, &quot;57.55&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L47">        authorMetrics.addProperty(&quot;rows&quot;, &quot;61&quot;, CdfProperty.Type.INT);</span>
+<span class="fc" id="L48">        floorMetrics.addProperty(&quot;rows&quot;, &quot;61&quot;, CdfProperty.Type.INT);</span>
+
+<span class="fc" id="L50">        authorMetrics.addProperty(&quot;stability&quot;, &quot;83.1&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L51">        floorMetrics.addProperty(&quot;stability&quot;, &quot;83.1&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L53">        authorMetrics.addProperty(&quot;age&quot;, &quot;0.8&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L54">        floorMetrics.addProperty(&quot;age&quot;, &quot;0.8&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L56">        authorMetrics.addProperty(&quot;PIC&quot;, &quot;4.32&quot;, CdfProperty.Type.FLOAT);</span>
+<span class="fc" id="L57">        floorMetrics.addProperty(&quot;PIC&quot;, &quot;4.32&quot;, CdfProperty.Type.FLOAT);</span>
+
+<span class="fc" id="L59">        authorMetrics.addChildElement(floorMetrics);</span>
+
+<span class="fc" id="L61">        assertTrue(TestHelper.equals(authorMetrics, elements.get(&quot;Teszt Bela&quot;)));</span>
+<span class="fc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

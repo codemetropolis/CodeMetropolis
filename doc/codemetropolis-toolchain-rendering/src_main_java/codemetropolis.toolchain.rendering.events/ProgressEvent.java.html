@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProgressEvent.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-rendering</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.rendering.events</a> &gt; <span class="el_source">ProgressEvent.java</span></div><h1>ProgressEvent.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.rendering.events;
+
+import java.util.EventObject;
+
+import codemetropolis.toolchain.commons.util.Time;
+import codemetropolis.toolchain.rendering.control.BuildPhase;
+
+public class ProgressEvent extends EventObject {
+	
+	private static final long serialVersionUID = 1L;
+	
+	public final BuildPhase PHASE;
+	public final long COUNT;
+	public final long TOTAL;
+	public final long TIME_ELAPSED_IN_MILLIS;
+
+	public ProgressEvent(Object source, BuildPhase phase, long count, long total, long timeElapsedInMillis) {
+<span class="nc" id="L18">		super(source);</span>
+<span class="nc" id="L19">		this.PHASE = phase;</span>
+<span class="nc" id="L20">		this.COUNT = count;</span>
+<span class="nc" id="L21">		this.TOTAL = total;</span>
+<span class="nc" id="L22">		this.TIME_ELAPSED_IN_MILLIS = timeElapsedInMillis;</span>
+<span class="nc" id="L23">	}</span>
+	
+	public double getPercent() {
+<span class="nc" id="L26">		return (double)COUNT / TOTAL * 100;</span>
+	}
+	
+	public long getTimeLeftInMillis() {
+<span class="nc" id="L30">		return (long) ((double)TIME_ELAPSED_IN_MILLIS / COUNT * (TOTAL - COUNT));</span>
+	}
+	
+	public Time getTimeLeft() {
+<span class="nc" id="L34">		return new Time(getTimeLeftInMillis());</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>

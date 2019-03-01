@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Linking.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Apr 21, 2018 5:41:32 PM)</a> &gt; <a href="../../index.html" class="el_group">codemetropolis-toolchain-mapping</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">codemetropolis.toolchain.mapping.model</a> &gt; <span class="el_source">Linking.java</span></div><h1>Linking.java</h1><pre class="source lang-java linenums">package codemetropolis.toolchain.mapping.model;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
+import codemetropolis.toolchain.commons.util.Resources;
+import codemetropolis.toolchain.mapping.exceptions.MissingResourceException;
+import codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Linking {
+
+<span class="fc" id="L22">    private static final Map&lt;Type, String[]&gt; SUPPORTED_PROPERTIES = new HashMap&lt;&gt;();</span>
+
+    static {
+<span class="fc" id="L25">        SUPPORTED_PROPERTIES.put(Type.FLOOR, new String[]{&quot;width&quot;, &quot;height&quot;, &quot;length&quot;, &quot;character&quot;, &quot;external_character&quot;, &quot;torches&quot;});</span>
+<span class="fc" id="L26">        SUPPORTED_PROPERTIES.put(Type.CELLAR, new String[]{&quot;width&quot;, &quot;height&quot;, &quot;length&quot;, &quot;character&quot;, &quot;external_character&quot;, &quot;torches&quot;});</span>
+<span class="fc" id="L27">        SUPPORTED_PROPERTIES.put(Type.GARDEN, new String[]{&quot;tree-ratio&quot;, &quot;mushroom-ratio&quot;, &quot;flower-ratio&quot;});</span>
+<span class="fc" id="L28">        SUPPORTED_PROPERTIES.put(Type.GROUND, new String[]{});</span>
+<span class="fc" id="L29">    }</span>
+	
+	@XmlAttribute
+	private String source;
+	
+	@XmlAttribute
+	private String target;
+	
+	@XmlElement(name=&quot;binding&quot;)
+<span class="pc" id="L38">	private List&lt;Binding&gt; bindings = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L40">	public Linking() {}</span>
+
+<span class="nc" id="L42">	public Linking(String source, String target) {</span>
+<span class="nc" id="L43">		this.source = source;</span>
+<span class="nc" id="L44">		this.target = target;</span>
+<span class="nc" id="L45">	}</span>
+
+	public String getSource() {
+<span class="fc" id="L48">		return source;</span>
+	}
+	
+	public void setSource(String source) {
+<span class="nc" id="L52">		this.source = source;</span>
+<span class="nc" id="L53">	}</span>
+
+	public String getTarget() {
+<span class="fc" id="L56">		return target;</span>
+	}
+	
+	public void setTarget(String target) {
+<span class="fc" id="L60">		this.target = target;</span>
+<span class="fc" id="L61">	}</span>
+
+	public List&lt;Binding&gt; getBindings() {
+<span class="nc" id="L64">		return Collections.unmodifiableList(bindings);</span>
+	}
+	
+	public void addBinding(Binding binding) {
+<span class="nc" id="L68">		bindings.add(binding);</span>
+<span class="nc" id="L69">	}</span>
+	
+	public void removeBinding(Binding binding) {
+<span class="nc" id="L72">		bindings.remove(binding);</span>
+<span class="nc" id="L73">	}</span>
+	
+	public static String[] getSupportedProperties(Type buildableType) {
+<span class="nc" id="L76">		return SUPPORTED_PROPERTIES.get(buildableType);</span>
+	}
+
+	public void validate(List&lt;Constant&gt; resources) throws NotSupportedLinkingException, MissingResourceException {
+		Type type;
+		try {
+<span class="fc" id="L82">			type = Type.valueOf(target.toUpperCase());</span>
+<span class="fc" id="L83">		} catch(IllegalArgumentException e) {</span>
+<span class="fc" id="L84">			throw new NotSupportedLinkingException(String.format(Resources.get(&quot;invalid_linking_target_error&quot;), target));</span>
+		}
+<span class="fc" id="L86">		String[] validTargetProps = SUPPORTED_PROPERTIES.get(type);</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		for(Binding b : bindings) {</span>
+<span class="nc" id="L88">			validateBindingResource(b, resources);</span>
+<span class="nc" id="L89">			boolean isValid = false;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">			for(String prop : validTargetProps) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">				if(prop.equalsIgnoreCase(b.getTo())) {</span>
+<span class="nc" id="L92">					isValid = true;</span>
+<span class="nc" id="L93">					break;</span>
+				}
+			}
+<span class="nc bnc" id="L96" title="All 2 branches missed.">			if(!isValid) {</span>
+<span class="nc" id="L97">				throw new NotSupportedLinkingException(String.format(Resources.get(&quot;invalid_linking_error&quot;), source, b.getFrom(), target, b.getTo()));</span>
+			}
+		}
+<span class="fc" id="L100">	}</span>
+	
+	private void validateBindingResource(Binding b, List&lt;Constant&gt; resources) throws MissingResourceException {
+<span class="nc" id="L103">		String variableId = b.getVariableId();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if(variableId != null) {</span>
+<span class="nc" id="L105">			boolean isValid = false;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">			for(Constant res : resources) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">				if(res.getId().equals(variableId)) {</span>
+<span class="nc" id="L108">					isValid = true;</span>
+<span class="nc" id="L109">					break;</span>
+				}
+			}
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			if(!isValid) {</span>
+<span class="nc" id="L113">				throw new MissingResourceException(String.format(Resources.get(&quot;missing_resource_error&quot;), variableId));</span>
+			}
+		}
+<span class="nc" id="L116">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Apr 21, 2018 5:41:32 PM)</div></body></html>
