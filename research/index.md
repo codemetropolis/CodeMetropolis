@@ -61,6 +61,6 @@ Since the 2013 release of CodeMetropolis toolkit, it has undergone significant c
 * Synchronizing: to prevent any concurrent modification with the game, it disables the user interface while building the generated city. After the conversion the target world is reloaded. We also provide informative messages to notify the user about the state of the process. 
 * Positioning the player: it allows the external processes to set the position and orientation of the player.
 
-[1stconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
-[2ndconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
-[3rdconf]: <http://geryxyz.github.io/CodeMetropolis/publications/balogh2015codemetropolis.pdf>
+[1stconf]: <http://codemetropolis.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
+[2ndconf]: <http://codemetropolis.github.io/CodeMetropolis/publications/balogh2013Bcodemetrpolis.pdf>
+[3rdconf]: <http://codemetropolis.github.io/CodeMetropolis/publications/balogh2015codemetropolis.pdf>

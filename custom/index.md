@@ -86,4 +86,4 @@ That’s all. Now you can use your converter just like the default converters:
 
 `java -jar converter.jar -t mycustom -s <source> -o <output_xml>`
 
-[ct]: <http://geryxyz.github.io/CodeMetropolis/toolchain/converter/>
+[ct]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/converter/>

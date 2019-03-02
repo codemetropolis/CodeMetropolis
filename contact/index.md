@@ -10,7 +10,7 @@ image:
 
 # How to contact us?
 
-You could use Github to [report an error](https://github.com/geryxyz/CodeMetropolis/issues/new?labels=bug) or [suggest new features or improvements](https://github.com/geryxyz/CodeMetropolis/issues/new?labels=feature).
+You could use Github to [report an error](https://github.com/codemetropolis/CodeMetropolis/issues/new?labels=bug) or [suggest new features or improvements](https://github.com/codemetropolis/CodeMetropolis/issues/new?labels=feature).
 Also feel free to join our [CodeMetropolis Google+ Community](https://plus.google.com/communities/110235162339639686953) to leave any other comment or suggestion.
 
 # Who are we?

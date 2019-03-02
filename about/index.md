@@ -127,12 +127,12 @@ This section of the documentation contains a guide for users who would like to c
 You have to follow the these steps:  
 
 1. Install [Git LFS 1.1.0](https://git-lfs.github.com/) (or newer) and [Git 2.7.0](https://git-scm.com/) (or newer).
-1. Checkout the `develop` branch from [this](https://github.com/geryxyz/CodeMetropolis) repository.
+1. Checkout the `develop` branch from [this](https://github.com/codemetropolis/CodeMetropolis) repository.
 1. Start Eclipse and set the workspace the *root* directory.
 1. Import the project with Existing Maven Projects and the root directory will be the same as the workspace path.
 1. Make your changes, improvements or fixes.
 1. Create a patch.
-1. Post the patch as attachment of a [new issue](https://github.com/geryxyz/CodeMetropolis/issues/new) with a description of your contribution.
+1. Post the patch as attachment of a [new issue](https://github.com/codemetropolis/CodeMetropolis/issues/new) with a description of your contribution.
 
 After that you can run the three tool mentioned above in Eclipse. You have to set the arguments, which is in the Installation Guide section. You can set the arguments in Run Configuration, and run the tools with Run As/Java Application.
 
@@ -147,9 +147,9 @@ CodeMetropolis converter logic has been designed to make it easy to visualize da
 [sm]: <https://www.sourcemeter.com/>
 [java]: <http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html>
 [mc]: <https://minecraft.net/download>
-[mt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/mapping/>
-[pt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/placing/>
-[rt]: <http://geryxyz.github.io/CodeMetropolis/toolchain/rendering/>
-[ct]: <http://geryxyz.github.io/CodeMetropolis/toolchain/converter/>
-[cc]: <http://geryxyz.github.io/CodeMetropolis/custom/>
-[ixmlf]: <http://geryxyz.github.io/CodeMetropolis/toolchain/interXMLformat/>
+[mt]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/mapping/>
+[pt]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/placing/>
+[rt]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/rendering/>
+[ct]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/converter/>
+[cc]: <http://codemetropolis.github.io/CodeMetropolis/custom/>
+[ixmlf]: <http://codemetropolis.github.io/CodeMetropolis/toolchain/interXMLformat/>

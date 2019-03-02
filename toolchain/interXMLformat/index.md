@@ -46,7 +46,7 @@ During placing phase, the position of simple elements (which does not contain an
 
 These XMLs are built up on the same [XML schema][XML]. 
 
-[XML]: <https://github.com/geryxyz/CodeMetropolis/blob/master/sources/codemetropolis-toolchain-commons/src/main/resources/cmxml_scheme.xsd>
+[XML]: <https://github.com/codemetropolis/CodeMetropolis/blob/master/sources/codemetropolis-toolchain-commons/src/main/resources/cmxml_scheme.xsd>
 
 
 

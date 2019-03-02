@@ -6,7 +6,7 @@ description: See your software as never before.
 logo: site-logo.png
 oglogo: site-logo-og.png
 search: true
-url: http://geryxyz.github.io/CodeMetropolis
+url: http://codemetropolis.github.io/CodeMetropolis
 
 # Jekyll configuration
 
@@ -42,7 +42,7 @@ owner:
   disqus-shortname:
   twitter: #username
   facebook: #username
-  github: geryxyz/CodeMetropolis
+  github: codemetropolis/CodeMetropolis
   stackexchange: #http://stackoverflow.com/users/123456/username
   linkedin: #username
   instagram: #username
