@@ -41,7 +41,7 @@ public class Banner implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 176, orientation.getValue()), position, color).toCSVFile(directory);
+		new Boxel(BasicBlock.get((short) 176, orientation.getValue()), position, color).toCSVFile(directory);
 		return 1;
 	}
 	@Override

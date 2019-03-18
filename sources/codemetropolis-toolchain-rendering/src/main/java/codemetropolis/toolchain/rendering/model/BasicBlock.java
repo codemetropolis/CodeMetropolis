@@ -5,91 +5,180 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
 
+import codemetropolis.toolchain.rendering.util.Colour;
 import codemetropolis.toolchain.rendering.RenderingExecutor;
 
-public class BasicBlock {
-
-	public static final BasicBlock NonBlock;
-	public static final Map<Short, String> idToName;
-	public static final Map<Short, String> idToHumanReadableName;
-	public static final Map<String, Short> nameToId;
-	public static final Map<String, Short> humanReadableNameToId;
+public class BasicBlock{
 	
-	static {
-		NonBlock = new BasicBlock((short)-1 );
-		idToName = new HashMap<Short,String>();
-		idToHumanReadableName = new HashMap<Short,String>();
-		nameToId = new HashMap<String,Short>();
-		humanReadableNameToId = new HashMap<String,Short>();
+	public static final BasicBlock											NonBlock;
+	protected static final HashMap<Short, HashMap<Integer, BasicBlock>>		idToBlock;
+	protected static final HashMap<String, HashMap<Integer, BasicBlock>>	nameToBlock;
+	protected static final HashMap<String, BasicBlock>						humanReadableNameToBlock;
+	protected static final HashMap<String, Boolean>							used;
+	
+	static{
+		NonBlock = new BasicBlock((short) -1, 0, "NonBlock", "A non-existant block", (short) 2);
+		idToBlock = new HashMap<Short, HashMap<Integer, BasicBlock>>();
+		nameToBlock = new HashMap<String, HashMap<Integer, BasicBlock>>();
+		humanReadableNameToBlock = new HashMap<String, BasicBlock>();
+		used = new HashMap<String, Boolean>();
 		
 		InputStream csvStream = RenderingExecutor.class.getClassLoader().getResourceAsStream("blocks.csv");
-		try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, "UTF-8"))) {
+		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, "UTF-8"))){
 			String line;
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null){
 				String[] blockInfo = line.split(",");
-				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
-				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
-				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));
+				BasicBlock block = new BasicBlock(
+						Short.parseShort(blockInfo[0]),
+						Short.parseShort(blockInfo[1]),
+						blockInfo[2],
+						blockInfo[3],
+						Short.parseShort(blockInfo[4])
+				);
+				
+				add(idToBlock, block.id, block);
+				add(nameToBlock, block.name, block);
+				
+				humanReadableNameToBlock.put(block.getHumanReadableName().toLowerCase(), block);
+				// System.out.println(block);
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e){
 			e.printStackTrace();
-		}	
+		}
 	}
 	
-	private short id;
-	private int data;
+	private short	id;
+	private int		data;
+	private String	name;
+	private String	humanReadableName;
+	private short	hazardous;
 	
-	public BasicBlock(short id) {
-		this(id, 0);
-	}
-
-	public BasicBlock(short id, int data) {
-		this.id = id;
-		this.data = data;
-	}
-	
-	public BasicBlock(String name) {
-		this(nameToId.get(name), 0);
-	}
-	
-	public BasicBlock(String name, int data) {
-		this(nameToId.get(name), data);
-	}
-	
-	public BasicBlock(BasicBlock original) {
+	public BasicBlock(BasicBlock original){
 		this.id = original.id;
 		this.data = original.data;
+		this.name = original.name;
+		this.humanReadableName = original.humanReadableName;
+		this.hazardous = original.hazardous;
 	}
 	
-	public String getName() {
-		return idToName.get(id);
+	protected BasicBlock(short id, int data, String name, String humanReadableName, short hazardous){
+		this.id = id;
+		this.data = data;
+		this.name = name;
+		this.humanReadableName = humanReadableName;
+		this.hazardous = hazardous;
 	}
 	
-	public String getHumanReadableName() {
-		return idToHumanReadableName.get(id);
+	protected static <K> void add(HashMap<K, HashMap<Integer, BasicBlock>> map, K key, BasicBlock block){
+		/*
+		 * This method overwrites previous key-BasicBlock pairs in the HashMap
+		 * This is intentional behaviour, since .csv may contain
+		 * "simplifications"
+		 */
+		HashMap<Integer, BasicBlock> blocks = map.get(key);
+		if (blocks == null){
+			blocks = new HashMap<Integer, BasicBlock>();
+			map.put(key, blocks);
+		}
+		blocks.put(block.data, block);
 	}
-
-	public short getId() {
+	
+	// Return block
+	// String is the human readable name
+	// This method is used on user-inputed strings and it checks if it's allowed
+	public static BasicBlock userBlock(String name, BasicBlock fallback){
+		BasicBlock block = humanReadableNameToBlock.get(name);
+		if (!used.containsKey(name)){
+			used.put(name, true);
+			if (block == null){
+				System.out.println("ERROR\tBlock \"" + name + "\" was not found!");
+				System.out.println("\tInstead, using \"" + fallback.getHumanReadableName() + "\".");
+			}
+			else{
+				switch (block.getHazardous()){
+					case 0:
+						System.out.println("SUCCESS\tUsing \"" + block.getHumanReadableName() + "\" block.");
+						break;
+					case 1:
+						System.out.println("WARNING\tUsing \"" + block.getHumanReadableName() + "\" DANGEROUS block.");
+						break;
+					default:
+						System.out.println("ILLEGAL\tUse of \"" + block.getHumanReadableName() + "\" is restricted!");
+						System.out.println("\tFalling back to \"" + fallback.getHumanReadableName() + "\".");
+						break;
+				}
+			}
+		}
+		return (block != null && block.getHazardous() != 2) ? block : fallback;
+	}
+	
+	// Return block
+	// String is the in-game name
+	public static BasicBlock get(String name, int data){
+		BasicBlock ret = nameToBlock.get(name).get(data);
+		if (ret == null)
+			System.out.println("NullPointerException incoming!\nBlock name: " + name + ", data: " + data);
+		return ret;
+	}
+	
+	public static BasicBlock get(String name, Colour clr){
+		return get(name, clr.getValue());
+	}
+	
+	public static BasicBlock get(String name){
+		return get(name, 0);
+	}
+	
+	// Return block
+	// Int is the ID
+	public static BasicBlock get(short id, int data){
+		BasicBlock ret = idToBlock.get(id).get(data);
+		if (ret == null)
+			System.out.println("NullPointerException incoming!\nBlock id: " + id + ", data: " + data);
+		return ret;
+	}
+	
+	public static BasicBlock get(short id, Colour clr){
+		return get(id, clr.getValue());
+	}
+	
+	public static BasicBlock get(short id){
+		return get(id, 0);
+	}
+	
+	public short getId(){
 		return id;
 	}
-
-	public int getData() {
+	
+	public int getData(){
 		return data;
 	}
-		
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public String getHumanReadableName(){
+		return this.humanReadableName;
+	}
+	
+	public short getHazardous(){
+		return this.hazardous;
+	}
+	
 	@Override
-	public int hashCode() {
+	public int hashCode(){
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + data;
 		result = prime * result + id;
 		return result;
 	}
-
+	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj){
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -103,10 +192,24 @@ public class BasicBlock {
 			return false;
 		return true;
 	}
-
+	
 	@Override
-	public String toString() {
-		return getHumanReadableName() + (data != 0 ? data : "");
+	public String toString(){
+		String str = "Block object: \"" + getHumanReadableName() + "\"";
+		str += " (id: " + id + ", name: " + name + ", data: " + data + ", hazard: ";
+		switch (hazardous){
+			case 0:
+				str += "safe";
+				break;
+			case 1:
+				str += "warn";
+				break;
+			default:
+				str += "forbidden";
+				break;
+		}
+		str += ")";
+		return str;
 	}
 	
 }

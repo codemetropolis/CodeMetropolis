@@ -1,171 +1,429 @@
-0,minecraft:air,Air
-1,minecraft:stone,Stone
-2,minecraft:grass,Grass Block
-3,minecraft:dirt,Dirt D B
-4,minecraft:cobblestone,Cobblestone
-5,minecraft:planks,Wood Planks D B
-6,minecraft:sapling,Saplings D B
-7,minecraft:bedrock,Bedrock
-8,minecraft:flowing_water,Water D
-9,minecraft:water,Stationary water D
-10,minecraft:flowing_lava,Lava D
-11,minecraft:lava,Stationary lava D
-12,minecraft:sand,Sand D B
-13,minecraft:gravel,Gravel
-14,minecraft:gold_ore,Gold Ore
-15,minecraft:iron_ore,Iron Ore
-16,minecraft:coal_ore,Coal Ore
-17,minecraft:log,Wood D B
-18,minecraft:leaves,Leaves D B
-19,minecraft:sponge,Sponge
-20,minecraft:glass,Glass
-21,minecraft:lapis_ore,Lapis Lazuli Ore
-22,minecraft:lapis_block,Lapis Lazuli Block
-23,minecraft:dispenser,Dispenser D T
-24,minecraft:sandstone,Sandstone D B
-25,minecraft:noteblock,Note Block T
-26,minecraft:bed,Bed D I
-27,minecraft:golden_rail,Powered Rail D
-28,minecraft:detector_rail,Detector Rail D
-29,minecraft:sticky_piston,Sticky Piston D
-30,minecraft:web,Cobweb
-31,minecraft:tallgrass,Grass D B
-32,minecraft:deadbush,Dead Bush
-33,minecraft:piston,Piston D
-34,minecraft:piston_head,Piston Extension D
-35,minecraft:wool,Wool D B
-36,minecraft:piston_extension,Block moved by Piston T
-37,minecraft:yellow_flower,Dandelion
-38,minecraft:red_flower,Poppy D B
-39,minecraft:brown_mushroom,Brown Mushroom
-40,minecraft:red_mushroom,Red Mushroom
-41,minecraft:gold_block,Block of Gold
-42,minecraft:iron_block,Block of Iron
-43,minecraft:double_stone_slab,Double Stone Slab D B
-44,minecraft:stone_slab,Stone Slab D B
-45,minecraft:brick_block,Bricks
-46,minecraft:tnt,TNT
-47,minecraft:bookshelf,Bookshelf
-48,minecraft:mossy_cobblestone,Moss Stone
-49,minecraft:obsidian,Obsidian
-50,minecraft:torch,Torch D
-51,minecraft:fire,Fire D
-52,minecraft:mob_spawner,Monster Spawner T
-53,minecraft:oak_stairs,Oak Wood Stairs D
-54,minecraft:chest,Chest D T
-55,minecraft:redstone_wire,Redstone Wire D I
-56,minecraft:diamond_ore,Diamond Ore
-57,minecraft:diamond_block,Block of Diamond
-58,minecraft:crafting_table,Crafting Table
-59,minecraft:wheat,Wheat D
-60,minecraft:farmland,Farmland D
-61,minecraft:furnace,Furnace D T
-62,minecraft:lit_furnace,Burning Furnace D T
-63,minecraft:standing_sign,Sign Post D I T
-64,minecraft:wooden_door,Wooden Door D I
-65,minecraft:ladder,Ladders D
-66,minecraft:rail,Rail D
-67,minecraft:stone_stairs,Cobblestone Stairs D
-68,minecraft:wall_sign,Wall Sign D T
-69,minecraft:lever,Lever D
-70,minecraft:stone_pressure_plate,Stone Pressure Plate D
-71,minecraft:iron_door,Iron Door D I
-72,minecraft:wooden_pressure_plate,Wooden Pressure Plate D
-73,minecraft:redstone_ore,Redstone Ore
-74,minecraft:lit_redstone_ore,Glowing Redstone Ore
-75,minecraft:unlit_redstone_torch,Redstone Torch (inactive) D
-76,minecraft:redstone_torch,Redstone Torch (active) D
-77,minecraft:stone_button,Stone Button D
-78,minecraft:snow_layer,Snow D
-79,minecraft:ice,Ice
-80,minecraft:snow,Snow
-81,minecraft:cactus,Cactus D
-82,minecraft:clay,Clay
-83,minecraft:reeds,Sugar Cane D I
-84,minecraft:jukebox,Jukebox D T
-85,minecraft:fence,Fence
-86,minecraft:pumpkin,Pumpkin D
-87,minecraft:netherrack,Netherrack
-88,minecraft:soul_sand,Soul Sand
-89,minecraft:glowstone,Glowstone
-90,minecraft:portal,Nether Portal
-91,minecraft:lit_pumpkin,Jack 'o' Lantern D
-92,minecraft:cake,Cake Block D I
-93,minecraft:unpowered_repeater,Redstone Repeater (inactive) D I
-94,minecraft:powered_repeater,Redstone Repeater (active) D I
-95,minecraft:stained_glass,Stained Glass
-96,minecraft:trapdoor,Trapdoor D
-97,minecraft:monster_egg,Monster Egg D B
-98,minecraft:stonebrick,Stone Bricks D B
-99,minecraft:brown_mushroom_block,Huge Brown Mushroom D
-100,minecraft:red_mushroom_block,Huge Red Mushroom D
-101,minecraft:iron_bars,Iron Bars
-102,minecraft:glass_pane,Glass Pane
-103,minecraft:melon_block,Melon
-104,minecraft:pumpkin_stem,Pumpkin Stem D
-105,minecraft:melon_stem,Melon Stem D
-106,minecraft:vine,Vines D
-107,minecraft:fence_gate,Fence Gate D
-108,minecraft:brick_stairs,Brick Stairs D
-109,minecraft:stone_brick_stairs,Stone Brick Stairs D
-110,minecraft:mycelium,Mycelium
-111,minecraft:waterlily,Lily Pad
-112,minecraft:nether_brick,Nether Brick
-113,minecraft:nether_brick_fence,Nether Brick Fence
-114,minecraft:nether_brick_stairs,Nether Brick Stairs D
-115,minecraft:nether_wart,Nether Wart D I
-116,minecraft:enchanting_table,Enchantment Table T
-117,minecraft:brewing_stand,Brewing Stand D T I
-118,minecraft:cauldron,Cauldron D I
-119,minecraft:end_portal,End Portal T
-120,minecraft:end_portal_frame,End Portal Block D
-121,minecraft:end_stone,End Stone
-122,minecraft:dragon_egg,Dragon Egg
-123,minecraft:redstone_lamp,Redstone Lamp (inactive)
-124,minecraft:lit_redstone_lamp,Redstone Lamp (active)
-125,minecraft:double_wooden_slab,Wooden Double Slab D B
-126,minecraft:wooden_slab,Wooden Slab D B
-127,minecraft:cocoa,Cocoa D I
-128,minecraft:sandstone_stairs,Sandstone Stairs D
-129,minecraft:emerald_ore,Emerald Ore
-130,minecraft:ender_chest,Ender Chest D T
-131,minecraft:tripwire_hook,Tripwire Hook D
-132,minecraft:tripwire,Tripwire D I
-133,minecraft:emerald_block,Block of Emerald
-134,minecraft:spruce_stairs,Spruce Wood Stairs D
-135,minecraft:birch_stairs,Birch Wood Stairs D
-136,minecraft:jungle_stairs,Jungle Wood Stairs D
-137,minecraft:command_block,Command Block T
-138,minecraft:beacon,Beacon T
-139,minecraft:cobblestone_wall,Cobblestone Wall D B
-140,minecraft:flower_pot,Flower Pot D I
-141,minecraft:carrots,Carrots D I
-142,minecraft:potatoes,Potatoes D I
-143,minecraft:wooden_button,Wooden Button D
-144,minecraft:skull,Mob Head D T I
-145,minecraft:anvil,Anvil D B
-146,minecraft:trapped_chest,Trapped Chest D T
-147,minecraft:light_weighted_pressure_plate,Weighted Pressure Plate (Light) D
-148,minecraft:heavy_weighted_pressure_plate,Weighted Pressure Plate (Heavy) D
-149,minecraft:unpowered_comparator,Redstone Comparator (inactive & active) D I
-150,,(unused)
-151,minecraft:daylight_detector,Daylight Sensor T
-152,minecraft:redstone_block,Block of Redstone
-153,minecraft:quartz_ore,Nether Quartz Ore
-154,minecraft:hopper,Hopper D T
-155,minecraft:quartz_block,Block of Quartz D B
-156,minecraft:quartz_stairs,Quartz Stairs D
-157,minecraft:activator_rail,Activator Rail D
-158,minecraft:dropper,Dropper D T
-159,minecraft:stained_hardened_clay,Stained Clay D B
-160,minecraft:stained_glass_pane,Stained Glass Pane D
-161,minecraft:leaves2,Leaves (Acacia/Dark Oak) D B
-162,minecraft:log2,Wood (Acacia/Dark Oak) D B
-163,minecraft:acacia_stairs,Acacia Wood Stairs D
-164,minecraft:dark_oak_stairs,Dark Oak Wood Stairs D
-170,minecraft:hay_block,Hay Block D
-171,minecraft:carpet,Carpet D B
-172,minecraft:hardened_clay,Hardened Clay
-173,minecraft:coal_block,Block of Coal
-174,minecraft:packed_ice,Packed Ice
-175,minecraft:double_plant,Large Flowers D B
+0,0,minecraft:air,Air,2
+1,0,minecraft:stone,Stone,0
+1,1,minecraft:stone,Granite,0
+1,2,minecraft:stone,Polished Granite,0
+1,3,minecraft:stone,Diorite,0
+1,4,minecraft:stone,Polished Diorite,0
+1,5,minecraft:stone,Andesite,0
+1,6,minecraft:stone,Polished Andesite,0
+2,0,minecraft:grass,Grass Block,0
+3,0,minecraft:dirt,Dirt,0
+3,1,minecraft:dirt,Coarse Dirt,0
+3,2,minecraft:dirt,Podzol,0
+4,0,minecraft:cobblestone,Cobblestone,0
+5,0,minecraft:planks,Planks,0
+5,0,minecraft:planks,Oak Planks,0
+5,1,minecraft:planks,Spruce Planks,0
+5,2,minecraft:planks,Birch Planks,0
+5,3,minecraft:planks,Jungle Planks,0
+5,4,minecraft:planks,Acacia Planks,0
+5,5,minecraft:planks,Dark Oak Planks,0
+6,0,minecraft:sapling,Saplings,0
+6,0,minecraft:sapling,Oak Sapling,0
+6,1,minecraft:sapling,Spruce Sapling,0
+6,2,minecraft:sapling,Birch Sapling,0
+6,3,minecraft:sapling,Jungle Sapling,0
+6,4,minecraft:sapling,Acacia Sapling,0
+6,5,minecraft:sapling,Dark Oak Sapling,0
+7,0,minecraft:bedrock,Bedrock,1
+8,0,minecraft:flowing_water,Flowing Water,2
+9,0,minecraft:water,Water,1
+10,0,minecraft:flowing_lava,Flowing Lava,2
+11,0,minecraft:lava,Lava,1
+12,0,minecraft:sand,Sand,0
+12,1,minecraft:sand,Red Sand,0
+13,0,minecraft:gravel,Gravel,0
+14,0,minecraft:gold_ore,Gold Ore,0
+15,0,minecraft:iron_ore,Iron Ore,0
+16,0,minecraft:coal_ore,Coal Ore,0
+17,0,minecraft:log,Wood,0
+17,0,minecraft:log,Oak Wood,0
+17,1,minecraft:log,Spruce Wood,0
+17,2,minecraft:log,Birch Wood,0
+17,3,minecraft:log,Jungle Wood,0
+18,0,minecraft:leaves,Leaves,0
+18,0,minecraft:leaves,Oak Leaves,0
+18,1,minecraft:leaves,Spruce Leaves,0
+18,2,minecraft:leaves,Birch Leaves,0
+18,3,minecraft:leaves,Jungle Leaves,0
+19,0,minecraft:sponge,Sponge,0
+19,1,minecraft:sponge,We Sponge,0
+20,0,minecraft:glass,Glass,0
+21,0,minecraft:lapis_ore,Lapis Lazuli Ore,0
+22,0,minecraft:lapis_block,Lapis Lazuli Block,0
+23,0,minecraft:dispenser,Dispenser,2
+24,0,minecraft:sandstone,Sandstone,0
+24,1,minecraft:sandstone,Chiseled Sandstone,0
+24,2,minecraft:sandstone,Smooth Sandstone,0
+25,0,minecraft:noteblock,Note Block,2
+26,0,minecraft:bed,Bed,2
+27,0,minecraft:golden_rail,Powered Rail,2
+28,0,minecraft:detector_rail,Detector Rail,2
+29,0,minecraft:sticky_piston,Sticky Piston,2
+30,0,minecraft:web,Cobweb,0
+31,0,minecraft:tallgrass,Grass,0
+31,0,minecraft:tallgrass,Shrub,0
+31,1,minecraft:tallgrass,Tall Grass,0
+31,2,minecraft:tallgrass,Fern,0
+32,0,minecraft:deadbush,Dead Bush,0
+33,0,minecraft:piston,Piston,2
+34,0,minecraft:piston_head,Piston Extension,2
+35,0,minecraft:wool,Wool,0
+35,0,minecraft:wool,White Wool,0
+35,1,minecraft:wool,Orange Wool,0
+35,2,minecraft:wool,Magenta Wool,0
+35,3,minecraft:wool,Light Blue Wool,0
+35,4,minecraft:wool,Yellow Wool,0
+35,5,minecraft:wool,Lime Wool,0
+35,6,minecraft:wool,Pink Wool,0
+35,7,minecraft:wool,Gray Wool,0
+35,8,minecraft:wool,Light Gray Wool,0
+35,9,minecraft:wool,Cyan Wool,0
+35,10,minecraft:wool,Purple Wool,0
+35,11,minecraft:wool,Blue Wool,0
+35,12,minecraft:wool,Brown Wool,0
+35,13,minecraft:wool,Green Wool,0
+35,14,minecraft:wool,Red Wool,0
+35,15,minecraft:wool,Black Wool,0
+36,0,minecraft:piston_extension,Block moved by Piston,2
+37,0,minecraft:yellow_flower,Dandelion,0
+38,0,minecraft:red_flower,Poppy,2
+38,1,minecraft:red_flower,Blue Orchid,2
+38,2,minecraft:red_flower,Allium,2
+38,3,minecraft:red_flower,Azure Bluet,2
+38,4,minecraft:red_flower,Red Tulip,2
+38,5,minecraft:red_flower,Orange Tulip,2
+38,6,minecraft:red_flower,White Tulip,2
+38,7,minecraft:red_flower,Pink Tulip,2
+38,8,minecraft:red_flower,Oxeye Daisy,0
+39,0,minecraft:brown_mushroom,Brown Mushroom,2
+40,0,minecraft:red_mushroom,Red Mushroom,2
+41,0,minecraft:gold_block,Block of Gold,0
+42,0,minecraft:iron_block,Block of Iron,0
+43,0,minecraft:double_stone_slab,Double Stone Slab,0
+43,1,minecraft:double_stone_slab,Double Sandstone Slab,0
+43,2,minecraft:double_stone_slab,Double Wooden Slab,0
+43,3,minecraft:double_stone_slab,Double Cobblestone Slab,0
+43,4,minecraft:double_stone_slab,Double Bricks Slab,0
+43,5,minecraft:double_stone_slab,Double Stone Brick Slab,0
+43,6,minecraft:double_stone_slab,Double Nether Brick Slab,0
+43,7,minecraft:double_stone_slab,Double Quartz Slab,0
+43,8,minecraft:double_stone_slab,Smooth Double Stone Slab,0
+43,9,minecraft:double_stone_slab,Smooth Double Sandstone Slab,0
+43,15,minecraft:double_stone_slab,Tile Double Quartz Slab,0
+44,0,minecraft:stone_slab,Stone Slab,0
+44,1,minecraft:stone_slab,Sandstone Slab,0
+44,2,minecraft:stone_slab,Wooden Slab,0
+44,3,minecraft:stone_slab,Cobblestone Slab,0
+44,4,minecraft:stone_slab,Bricks Slab,0
+44,5,minecraft:stone_slab,Stone Brick Slab,0
+44,6,minecraft:stone_slab,Nether Brick Slab,0
+44,7,minecraft:stone_slab,Quartz Slab,0
+44,8,minecraft:stone_slab,Upper Stone Slab,0
+44,9,minecraft:stone_slab,Upper Sandstone Slab,0
+44,10,minecraft:stone_slab,Upper Wooden Slab,0
+44,11,minecraft:stone_slab,Upper Cobblestone Slab,0
+44,12,minecraft:stone_slab,Upper Bricks Slab,0
+44,13,minecraft:stone_slab,Upper Stone Brick Slab,0
+44,14,minecraft:stone_slab,Upper Nether Brick Slab,0
+44,15,minecraft:stone_slab,Upper Quartz Slab,0
+45,0,minecraft:brick_block,Bricks,0
+46,0,minecraft:tnt,TNT,1
+47,0,minecraft:bookshelf,Bookshelf,0
+48,0,minecraft:mossy_cobblestone,Mossy Cobblestone,0
+49,0,minecraft:obsidian,Obsidian,0
+50,5,minecraft:torch,Torch,2
+50,1,minecraft:torch,Torch East,2
+50,2,minecraft:torch,Torch West,2
+50,3,minecraft:torch,Torch South,2
+50,4,minecraft:torch,Torch North,2
+51,0,minecraft:fire,Fire,2
+52,0,minecraft:mob_spawner,Monster Spawner,2
+53,0,minecraft:oak_stairs,Oak Wood Stairs,2
+54,0,minecraft:chest,Chest,2
+55,0,minecraft:redstone_wire,Redstone Wire,2
+56,0,minecraft:diamond_ore,Diamond Ore,0
+57,0,minecraft:diamond_block,Block of Diamond,0
+58,0,minecraft:crafting_table,Crafting Table,0
+59,0,minecraft:wheat,Wheat,2
+60,0,minecraft:farmland,Farmland,2
+60,7,minecraft:farmland,Wet Farmland,2
+61,0,minecraft:furnace,Furnace,1
+62,0,minecraft:lit_furnace,Burning Furnace,2
+63,0,minecraft:standing_sign,Sign Post,2
+63,0,minecraft:standing_sign,Sign Post (S),2
+63,1,minecraft:standing_sign,Sign Post (S-SW),2
+63,2,minecraft:standing_sign,Sign Post (SW),2
+63,3,minecraft:standing_sign,Sign Post (W-SW),2
+63,4,minecraft:standing_sign,Sign Post (W),2
+63,5,minecraft:standing_sign,Sign Post (W-NW),2
+63,6,minecraft:standing_sign,Sign Post (NW),2
+63,7,minecraft:standing_sign,Sign Post (N-NW),2
+63,8,minecraft:standing_sign,Sign Post (N),2
+63,9,minecraft:standing_sign,Sign Post (N-NE),2
+63,10,minecraft:standing_sign,Sign Post (NE),2
+63,11,minecraft:standing_sign,Sign Post (E-NE),2
+63,12,minecraft:standing_sign,Sign Post (E),2
+63,13,minecraft:standing_sign,Sign Post (E-SE),2
+63,14,minecraft:standing_sign,Sign Post (SE),2
+63,15,minecraft:standing_sign,Sign Post (S-SE),2
+64,0,minecraft:wooden_door,Wooden Door,2
+64,0,minecraft:wooden_door,Lower Wooden Door (Closed E),2
+64,1,minecraft:wooden_door,Lower Wooden Door (Closed S),2
+64,2,minecraft:wooden_door,Lower Wooden Door (Closed W),2
+64,3,minecraft:wooden_door,Lower Wooden Door (Closed N),2
+64,4,minecraft:wooden_door,Lower Wooden Door (Open E),2
+64,5,minecraft:wooden_door,Lower Wooden Door (Open S),2
+64,6,minecraft:wooden_door,Lower Wooden Door (Open W),2
+64,7,minecraft:wooden_door,Lower Wooden Door (Open N),2
+64,8,minecraft:wooden_door,Upper Wooden Door (Unpowered Left),2
+64,9,minecraft:wooden_door,Upper Wooden Door (Unpowered Right),2
+64,10,minecraft:wooden_door,Upper Wooden Door (Powered Left),2
+64,11,minecraft:wooden_door,Upper Wooden Door (Powered Right),2
+65,0,minecraft:ladder,Ladders,2
+66,0,minecraft:rail,Rail,2
+67,0,minecraft:stone_stairs,Cobblestone Stairs,2
+68,2,minecraft:wall_sign,Wall Sign,2
+68,2,minecraft:wall_sign,Wall Sign (N),2
+68,3,minecraft:wall_sign,Wall Sign (S),2
+68,4,minecraft:wall_sign,Wall Sign (W),2
+68,5,minecraft:wall_sign,Wall Sign (E),2
+69,0,minecraft:lever,Lever,2
+70,0,minecraft:stone_pressure_plate,Stone Pressure Plate,2
+71,0,minecraft:iron_door,Iron Door,2
+71,0,minecraft:iron_door,Lower Iron Door (Closed E),2
+71,1,minecraft:iron_door,Lower Iron Door (Closed S),2
+71,2,minecraft:iron_door,Lower Iron Door (Closed W),2
+71,3,minecraft:iron_door,Lower Iron Door (Closed N),2
+71,4,minecraft:iron_door,Lower Iron Door (Open E),2
+71,5,minecraft:iron_door,Lower Iron Door (Open S),2
+71,6,minecraft:iron_door,Lower Iron Door (Open W),2
+71,7,minecraft:iron_door,Lower Iron Door (Open N),2
+71,8,minecraft:iron_door,Upper Iron Door (Unpowered Left),2
+71,9,minecraft:iron_door,Upper Iron Door (Unpowered Right),2
+71,10,minecraft:iron_door,Upper Iron Door (Powered Left),2
+71,11,minecraft:iron_door,Upper Iron Door (Powered Right),2
+72,0,minecraft:wooden_pressure_plate,Wooden Pressure Plate,2
+73,0,minecraft:redstone_ore,Redstone Ore,0
+74,0,minecraft:lit_redstone_ore,Glowing Redstone Ore,0
+75,5,minecraft:unlit_redstone_torch,Redstone Torch (inactive),2
+75,1,minecraft:unlit_redstone_torch,Redstone Torch East (inactive),2
+75,2,minecraft:unlit_redstone_torch,Redstone Torch West (inactive),2
+75,3,minecraft:unlit_redstone_torch,Redstone Torch South (inactive),2
+75,4,minecraft:unlit_redstone_torch,Redstone Torch East (inactive),2
+76,5,minecraft:redstone_torch,Redstone Torch (active),2
+76,1,minecraft:unlit_redstone_torch,Redstone Torch East (active),2
+76,2,minecraft:unlit_redstone_torch,Redstone Torch West (active),2
+76,3,minecraft:unlit_redstone_torch,Redstone Torch South (active),2
+76,4,minecraft:unlit_redstone_torch,Redstone Torch East (active),2
+77,0,minecraft:stone_button,Stone Button,2
+78,0,minecraft:snow_layer,Snow,2
+79,0,minecraft:ice,Ice,1
+80,0,minecraft:snow,Snow,0
+81,0,minecraft:cactus,Cactus,2
+82,0,minecraft:clay,Clay,0
+83,0,minecraft:reeds,Sugar Cane,1
+84,0,minecraft:jukebox,Jukebox,2
+85,0,minecraft:fence,Fence,0
+86,0,minecraft:pumpkin,Pumpkin,0
+87,0,minecraft:netherrack,Netherrack,0
+88,0,minecraft:soul_sand,Soul Sand,0
+89,0,minecraft:glowstone,Glowstone,0
+90,0,minecraft:portal,Nether Portal,2
+91,0,minecraft:lit_pumpkin,Jack 'o' Lantern,0
+92,0,minecraft:cake,Cake Block,0
+93,0,minecraft:unpowered_repeater,Redstone Repeater (inactive),2
+94,0,minecraft:powered_repeater,Redstone Repeater (active),2
+95,0,minecraft:stained_glass,Stained Glass,0
+95,0,minecraft:stained_glass,White Stained Glass,0
+95,1,minecraft:stained_glass,Orange Stained Glass,0
+95,2,minecraft:stained_glass,Magenta Stained Glass,0
+95,3,minecraft:stained_glass,Light Blue Stained Glass,0
+95,4,minecraft:stained_glass,Yellow Stained Glass,0
+95,5,minecraft:stained_glass,Lime Stained Glass,0
+95,6,minecraft:stained_glass,Pink Stained Glass,0
+95,7,minecraft:stained_glass,Gray Stained Glass,0
+95,8,minecraft:stained_glass,Light Gray Stained Glass,0
+95,9,minecraft:stained_glass,Cyan Stained Glass,0
+95,10,minecraft:stained_glass,Purple Stained Glass,0
+95,11,minecraft:stained_glass,Blue Stained Glass,0
+95,12,minecraft:stained_glass,Brown Stained Glass,0
+95,13,minecraft:stained_glass,Green Stained Glass,0
+95,14,minecraft:stained_glass,Red Stained Glass,0
+95,15,minecraft:stained_glass,Black Stained Glass,0
+96,0,minecraft:trapdoor,Trapdoor,2
+97,0,minecraft:monster_egg,Monster Egg,1
+97,0,minecraft:monster_egg,Stone Monster Egg,1
+97,1,minecraft:monster_egg,Cobblestone Monster Egg,1
+97,2,minecraft:monster_egg,Stone Brick Monster Egg,1
+97,3,minecraft:monster_egg,Mossy Stone Brick Monster Egg,1
+97,4,minecraft:monster_egg,Cracked Stone Brick Monster Egg,1
+97,5,minecraft:monster_egg,Chiseled Stone Brick Monster Egg,1
+98,0,minecraft:stonebrick,Stone Bricks,0
+98,1,minecraft:stonebrick,Mossy Stone Brick,0
+98,2,minecraft:stonebrick,Cracked Stone Brick,0
+98,3,minecraft:stonebrick,Chiseled Stone Brick,0
+99,14,minecraft:brown_mushroom_block,Huge Brown Mushroom,0
+100,14,minecraft:red_mushroom_block,Huge Red Mushroom,0
+101,0,minecraft:iron_bars,Iron Bars,0
+102,0,minecraft:glass_pane,Glass Pane,0
+103,0,minecraft:melon_block,Melon,0
+104,0,minecraft:pumpkin_stem,Pumpkin Stem,2
+105,0,minecraft:melon_stem,Melon Stem,2
+106,0,minecraft:vine,Vines,2
+107,0,minecraft:fence_gate,Fence Gate,2
+108,0,minecraft:brick_stairs,Brick Stairs,2
+109,0,minecraft:stone_brick_stairs,Stone Brick Stairs,2
+110,0,minecraft:mycelium,Mycelium,0
+111,0,minecraft:waterlily,Lily Pad,2
+112,0,minecraft:nether_brick,Nether Brick,0
+113,0,minecraft:nether_brick_fence,Nether Brick Fence,0
+114,0,minecraft:nether_brick_stairs,Nether Brick Stairs,2
+115,0,minecraft:nether_wart,Nether Wart,2
+116,0,minecraft:enchanting_table,Enchantment Table,2
+117,0,minecraft:brewing_stand,Brewing Stand,2
+118,0,minecraft:cauldron,Cauldron,2
+119,0,minecraft:end_portal,End Portal,2
+120,0,minecraft:end_portal_frame,End Portal Block,1
+121,0,minecraft:end_stone,End Stone,0
+122,0,minecraft:dragon_egg,Dragon Egg,0
+123,0,minecraft:redstone_lamp,Redstone Lamp,0
+124,0,minecraft:lit_redstone_lamp,Redstone Lamp (active),2
+125,0,minecraft:double_wooden_slab,Wooden Double Slab,0
+125,0,minecraft:double_wooden_slab,Double Oak Wood Slab,0
+125,1,minecraft:double_wooden_slab,Double Spruce Wood Slab,0
+125,2,minecraft:double_wooden_slab,Double Birch Wood Slab,0
+125,3,minecraft:double_wooden_slab,Double Jungle Wood Slab,0
+125,4,minecraft:double_wooden_slab,Double Acacia Wood Slab,0
+125,5,minecraft:double_wooden_slab,Double Dark Oak Wood Slab,0
+126,0,minecraft:wooden_slab,Wooden Slab,0
+126,0,minecraft:wooden_slab,Oak Wood Slab,0
+126,1,minecraft:wooden_slab,Spruce Wood Slab,0
+126,2,minecraft:wooden_slab,Birch Wood Slab,0
+126,3,minecraft:wooden_slab,Jungle Wood Slab,0
+126,4,minecraft:wooden_slab,Acacia Wood Slab,0
+126,5,minecraft:wooden_slab,Dark Oak Wood Slab,0
+126,8,minecraft:wooden_slab,Upper Wooden Slab,0
+126,8,minecraft:wooden_slab,Upper Oak Wood Slab,0
+126,9,minecraft:wooden_slab,Upper Spruce Wood Slab,0
+126,10,minecraft:wooden_slab,Upper Birch Wood Slab,0
+126,11,minecraft:wooden_slab,Upper Jungle Wood Slab,0
+126,12,minecraft:wooden_slab,Upper Acacia Wood Slab,0
+126,13,minecraft:wooden_slab,Upper Dark Oak Wood Slab,0
+127,0,minecraft:cocoa,Cocoa,2
+128,0,minecraft:sandstone_stairs,Sandstone Stairs,2
+129,0,minecraft:emerald_ore,Emerald Ore,0
+130,0,minecraft:ender_chest,Ender Chest,2
+131,0,minecraft:tripwire_hook,Tripwire Hook,2
+132,0,minecraft:tripwire,Tripwire,2
+133,0,minecraft:emerald_block,Block of Emerald,0
+134,0,minecraft:spruce_stairs,Spruce Wood Stairs,2
+135,0,minecraft:birch_stairs,Birch Wood Stairs,2
+136,0,minecraft:jungle_stairs,Jungle Wood Stairs,2
+137,0,minecraft:command_block,Command Block,2
+138,0,minecraft:beacon,Beacon,2
+139,0,minecraft:cobblestone_wall,Cobblestone Wall,0
+139,1,minecraft:cobblestone_wall,Mossy Cobblestone Wall,0
+140,0,minecraft:flower_pot,Flower Pot,2
+141,0,minecraft:carrots,Carrots,2
+142,0,minecraft:potatoes,Potatoes,2
+143,0,minecraft:wooden_button,Wooden Button,2
+144,0,minecraft:skull,Mob Head,2
+145,0,minecraft:anvil,Anvil,2
+146,0,minecraft:trapped_chest,Trapped Chest,2
+147,0,minecraft:light_weighted_pressure_plate,Weighted Pressure Plate (Light),2
+148,0,minecraft:heavy_weighted_pressure_plate,Weighted Pressure Plate (Heavy),2
+149,0,minecraft:unpowered_comparator,Redstone Comparator (inactive & active),2
+150,0,,(unused),2
+151,0,minecraft:daylight_detector,Daylight Sensor,2
+152,0,minecraft:redstone_block,Block of Redstone,0
+153,0,minecraft:quartz_ore,Nether Quartz Ore,0
+154,0,minecraft:hopper,Hopper,2
+155,0,minecraft:quartz_block,Block of Quartz,0
+156,0,minecraft:quartz_stairs,Quartz Stairs,2
+157,0,minecraft:activator_rail,Activator Rail,2
+158,0,minecraft:dropper,Dropper,2
+159,0,minecraft:stained_hardened_clay,Stained Clay,0
+159,0,minecraft:stained_hardened_clay,White Hardened Clay,0
+159,1,minecraft:stained_hardened_clay,Orange Hardened Clay,0
+159,2,minecraft:stained_hardened_clay,Magenta Hardened Clay,0
+159,3,minecraft:stained_hardened_clay,Light Blue Hardened Clay,0
+159,4,minecraft:stained_hardened_clay,Yellow Hardened Clay,0
+159,5,minecraft:stained_hardened_clay,Lime Hardened Clay,0
+159,6,minecraft:stained_hardened_clay,Pink Hardened Clay,0
+159,7,minecraft:stained_hardened_clay,Gray Hardened Clay,0
+159,8,minecraft:stained_hardened_clay,Light Gray Hardened Clay,0
+159,9,minecraft:stained_hardened_clay,Cyan Hardened Clay,0
+159,10,minecraft:stained_hardened_clay,Purple Hardened Clay,0
+159,11,minecraft:stained_hardened_clay,Blue Hardened Clay,0
+159,12,minecraft:stained_hardened_clay,Brown Hardened Clay,0
+159,13,minecraft:stained_hardened_clay,Green Hardened Clay,0
+159,14,minecraft:stained_hardened_clay,Red Hardened Clay,0
+159,15,minecraft:stained_hardened_clay,Black Hardened Clay,0
+160,0,minecraft:stained_glass_pane,Stained Glass Pane,0
+160,0,minecraft:stained_glass_pane,White Stained Glass Pane,0
+160,1,minecraft:stained_glass_pane,Orange Stained Glass Pane,0
+160,2,minecraft:stained_glass_pane,Magenta Stained Glass Pane,0
+160,3,minecraft:stained_glass_pane,Light Blue Stained Glass Pane,0
+160,4,minecraft:stained_glass_pane,Yellow Stained Glass Pane,0
+160,5,minecraft:stained_glass_pane,Lime Stained Glass Pane,0
+160,6,minecraft:stained_glass_pane,Pink Stained Glass Pane,0
+160,7,minecraft:stained_glass_pane,Gray Stained Glass Pane,0
+160,8,minecraft:stained_glass_pane,Light Gray Stained Glass Pane,0
+160,9,minecraft:stained_glass_pane,Cyan Stained Glass Pane,0
+160,10,minecraft:stained_glass_pane,Purple Stained Glass Pane,0
+160,11,minecraft:stained_glass_pane,Blue Stained Glass Pane,0
+160,12,minecraft:stained_glass_pane,Brown Stained Glass Pane,0
+160,13,minecraft:stained_glass_pane,Green Stained Glass Pane,0
+160,14,minecraft:stained_glass_pane,Red Stained Glass Pane,0
+160,15,minecraft:stained_glass_pane,Black Stained Glass Pane,0
+161,0,minecraft:leaves2,Acacia Leaves,0
+161,1,minecraft:leaves3,Dark Oak Leaves,0
+162,0,minecraft:log2,Acacia Wood Slab,0
+162,1,minecraft:log2,Dark Oak Wood,0
+163,0,minecraft:acacia_stairs,Acacia Wood Stairs,2
+164,0,minecraft:dark_oak_stairs,Dark Oak Wood Stairs,2
+170,0,minecraft:hay_block,Hay Block,0
+171,0,minecraft:carpet,Carpet,0
+171,0,minecraft:carpet,White Carpet,0
+171,1,minecraft:carpet,Orange Carpet,0
+171,2,minecraft:carpet,Magenta Carpet,0
+171,3,minecraft:carpet,Light Blue Carpet,0
+171,4,minecraft:carpet,Yellow Carpet,0
+171,5,minecraft:carpet,Lime Carpet,0
+171,6,minecraft:carpet,Pink Carpet,0
+171,7,minecraft:carpet,Gray Carpet,0
+171,8,minecraft:carpet,Light Gray Carpet,0
+171,9,minecraft:carpet,Cyan Carpet,0
+171,10,minecraft:carpet,Purple Carpet,0
+171,11,minecraft:carpet,Blue Carpet,0
+171,12,minecraft:carpet,Brown Carpet,0
+171,13,minecraft:carpet,Green Carpet,0
+171,14,minecraft:carpet,Red Carpet,0
+171,15,minecraft:carpet,Black Carpet,0
+172,0,minecraft:hardened_clay,Hardened Clay,0
+172,0,minecraft:hardened_clay,White Hardened Clay,0
+172,1,minecraft:hardened_clay,Orange Hardened Clay,0
+172,2,minecraft:hardened_clay,Magenta Hardened Clay,0
+172,3,minecraft:hardened_clay,Light Blue Hardened Clay,0
+172,4,minecraft:hardened_clay,Yellow Hardened Clay,0
+172,5,minecraft:hardened_clay,Lime Hardened Clay,0
+172,6,minecraft:hardened_clay,Pink Hardened Clay,0
+172,7,minecraft:hardened_clay,Gray Hardened Clay,0
+172,8,minecraft:hardened_clay,Light Gray Hardened Clay,0
+172,9,minecraft:hardened_clay,Cyan Hardened Clay,0
+172,10,minecraft:hardened_clay,Purple Hardened Clay,0
+172,11,minecraft:hardened_clay,Blue Hardened Clay,0
+172,12,minecraft:hardened_clay,Brown Hardened Clay,0
+172,13,minecraft:hardened_clay,Green Hardened Clay,0
+172,14,minecraft:hardened_clay,Red Hardened Clay,0
+172,15,minecraft:hardened_clay,Black Hardened Clay,0
+173,0,minecraft:coal_block,Block of Coal,0
+174,0,minecraft:packed_ice,Packed Ice,0
+175,0,minecraft:double_plant,Large Flowers,0
+175,0,minecraft:double_plant,Sunflower,2
+175,1,minecraft:double_plant,Lilac,2
+175,2,minecraft:double_plant,Double Tallgrass,2
+175,3,minecraft:double_plant,Large Fern,2
+175,4,minecraft:double_plant,Rose Bush,2
+175,5,minecraft:double_plant,Peony,2

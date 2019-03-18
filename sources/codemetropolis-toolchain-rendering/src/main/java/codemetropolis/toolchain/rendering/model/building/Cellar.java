@@ -22,16 +22,16 @@ public class Cellar extends Floor {
 				new SolidBox(
 					position.translate( new Point( 1, 1, 1 ) ),
 					size.translate( new Point( -2, -2, -2 ) ),
-					new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air" ) } } } ),
-					new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air" ) } } } ),
+					new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air" ) } } } ),
+					new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air" ) } } } ),
 					Orientation.NearX ) );
 		
 		primitives.add(
 				new SolidBox(
 					position.translate( new Point( center.getX() - 3, size.getY() + 1, center.getZ() - 3 ) ),
 					new Point( 7, 1, 7 ),
-					new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air" ) } } } ),
-					new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:air" ) } } } ),
+					new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air" ) } } } ),
+					new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.get( "minecraft:air" ) } } } ),
 					Orientation.NearX ) );
 	}
 
