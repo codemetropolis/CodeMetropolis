@@ -3,6 +3,7 @@ package codemetropolis.toolchain.converter.control;
 import java.util.Map;
 
 import codemetropolis.toolchain.commons.cdf.converter.CdfConverter;
+import codemetropolis.toolchain.converter.gitstat.GitStatConverter;
 import codemetropolis.toolchain.converter.sonarqube.SonarQubeConverter;
 import codemetropolis.toolchain.converter.sourcemeter.GraphConverter;
 
@@ -16,6 +17,8 @@ public class ConverterLoader {
 				return new GraphConverter(params);
 			case SONARQUBE:
 				return new SonarQubeConverter(params);
+			case GITSTATS:
+				return new GitStatConverter(params);
 			default:
 				return null;
 		}
