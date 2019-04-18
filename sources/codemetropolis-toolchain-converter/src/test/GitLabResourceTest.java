@@ -79,4 +79,40 @@ public class GitLabResourceTest {
         commit.addParentID("parent_c1");
         assertEquals(true, commit.getParentIds().contains("parent_c1"));
     }
+
+    @Test
+    public void testIfReturnsTheSameValue() {
+        CdfElement element=new CdfElement();
+        CdfElement element2=new CdfElement();
+
+        try {
+            element = GitLabResource.getElement(Type.COMMIT, ID, "aaa");
+            element2 = GitLabResource.getElement(Type.COMMIT, ID, "aaa");
+        } catch (GitLabException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(element2, element);
+
+        GitLabResource.clearMainStorage();
+    }
+
+    @Rule
+    public ExpectedException thrown=ExpectedException.none();
+
+    @Test
+    public void testIfTypeNull() throws GitLabException {
+        thrown.expect(GitLabException.class);
+        thrown.expectMessage("Illegal argument added");
+        CdfElement element = GitLabResource.getElement(null, ID, "aaa");
+    }
+
+    @Test
+    public void testIfNullIDIsInserted() throws GitLabException {
+        GitLabResource.clearMainStorage();
+        CdfElement element= GitLabResource.getElement(Type.COMMIT, null, "aaa");
+        Assert.assertEquals(true, GitLabResource.getMainStorage().isEmpty());
+        GitLabResource.clearMainStorage();
+    }
+
 }
