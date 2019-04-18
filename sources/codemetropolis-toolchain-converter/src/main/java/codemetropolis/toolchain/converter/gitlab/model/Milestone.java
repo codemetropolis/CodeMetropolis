@@ -2,10 +2,7 @@ package codemetropolis.toolchain.converter.gitlab.model;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty;
-import codemetropolis.toolchain.converter.gitlab.GitLabElement;
-import codemetropolis.toolchain.converter.gitlab.GitLabResource;
-import codemetropolis.toolchain.converter.gitlab.Pair;
-import codemetropolis.toolchain.converter.gitlab.Type;
+import codemetropolis.toolchain.converter.gitlab.*;
 import org.gitlab4j.api.GitLabApiException;
 import org.gitlab4j.api.MilestonesApi;
 import org.gitlab4j.api.models.Issue;
