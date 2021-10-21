@@ -10,7 +10,7 @@
 		<version>1.4.0</version>
 	</parent>
 
-	<artifactId>codemetropolis-toolchain</artifactId>
+	<artifactId>toolchain</artifactId>
 	<packaging>pom</packaging>
 
 	<name>CodeMetropolis Toolchain</name>
