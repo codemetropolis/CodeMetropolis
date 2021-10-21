@@ -1,56 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>codemetropolis.toolchain</groupId>
-  <artifactId>codemetropolis-toolchain</artifactId>
+ 
+  <groupId>codemetropolis</groupId>
+  <artifactId>codemetropolis</artifactId>
   <packaging>pom</packaging>
   <version>1.4.0</version>
-  <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
-  <name>codemetropolis-toolchain</name>
-  <repositories>
-    <repository>
-      <id>local-repository</id>
-      <url>file://${basedir}/../../dependencies</url>
-    </repository>
-  </repositories>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  
   <modules>
-    <module>codemetropolis-toolchain-mapping</module>
-    <module>codemetropolis-toolchain-placing</module>
-    <module>codemetropolis-toolchain-rendering</module>
-    <module>codemetropolis-toolchain-commons</module>
-    <module>codemetropolis-toolchain-converter</module>
-    <module>codemetropolis-toolchain-gui</module>
+  	<module>commons</module>
+  	<module>gui</module>
+  	<module>toolchain</module>
   </modules>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.7</version>
-
-        <configuration>
-          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>emma-maven-plugin</artifactId>
-        <version>1.2</version>
-      </plugin>
-
-    </plugins>
-  </reporting>
-</project>
+ </project>

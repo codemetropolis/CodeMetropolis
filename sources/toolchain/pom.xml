@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>codemetropolis</groupId>
+  <artifactId>codemetropolis-toolchain</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4.0</version>
+  <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
+  <name>codemetropolis-toolchain</name>
+  <repositories>
+    <repository>
+      <id>local-repository</id>
+      <url>file://${basedir}/../../dependencies</url>
+    </repository>
+  </repositories>
+  <dependencies>
+	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-api</artifactId>
+	    <version>5.8.1</version>
+	    <scope>test</scope>
+	</dependency>
+  </dependencies>
+  <modules>
+    <module>codemetropolis-toolchain-mapping</module>
+    <module>codemetropolis-toolchain-placing</module>
+    <module>codemetropolis-toolchain-rendering</module>
+    <module>codemetropolis-toolchain-commons</module>
+    <module>codemetropolis-toolchain-converter</module>
+  </modules>
+</project>
