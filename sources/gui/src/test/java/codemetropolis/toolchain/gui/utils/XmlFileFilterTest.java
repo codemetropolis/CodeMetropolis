@@ -1,11 +1,13 @@
 package codemetropolis.toolchain.gui.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * Test class for testing the {@link XmlFileFilter} for properly accepting and filtering files.
@@ -25,7 +27,7 @@ public class XmlFileFilterTest {
   public void testAcceptXmlFile() throws IOException {
     File tempFile = File.createTempFile("test", ".xml");
     boolean result = instance.accept(tempFile);
-    Assert.assertEquals(result, true);
+    assertEquals(result, true);
   }
 
   /**
@@ -37,7 +39,7 @@ public class XmlFileFilterTest {
   public void testAcceptNonXmlFile() throws IOException {
     File tempFile = File.createTempFile("test", ".txt");
     boolean result = instance.accept(tempFile);
-    Assert.assertEquals(result, false);
+    assertEquals(result, false);
   }
 
   /**
@@ -49,7 +51,7 @@ public class XmlFileFilterTest {
   public void testAcceptDirectory() throws IOException {
     File tempFolder = Files.createTempDirectory("test").toFile();
     boolean result = instance.accept(tempFolder);
-    Assert.assertEquals(result, true);
+    assertEquals(result, true);
   }
 
 }
