@@ -7,8 +7,6 @@ import java.util.Stack;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import codemetropolis.toolchain.commons.cdf.CdfProperty;
-
 public class CdfElement {
 
 	private static final String SOURCE_ID_KEY = "source_id";
