@@ -1,15 +1,68 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
- 
-  <groupId>codemetropolis</groupId>
-  <artifactId>codemetropolis</artifactId>
-  <packaging>pom</packaging>
-  <version>1.4.0</version>
-  
-  <modules>
-  	<module>commons</module>
-  	<module>gui</module>
-  	<module>toolchain</module>
-  </modules>
- </project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>codemetropolis</groupId>
+	<artifactId>codemetropolis</artifactId>
+	<packaging>pom</packaging>
+	<version>1.4.0</version>
+
+	<name>CodeMetropolis</name>
+
+	<modules>
+		<module>commons</module>
+		<module>gui</module>
+		<module>toolchain</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- restricting the versions of modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>gui</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>toolchain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>5.8.1</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>local-repository</id>
+			<url>file://${project.basedir}/../dependencies</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
