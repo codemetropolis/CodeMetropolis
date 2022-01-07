@@ -15,6 +15,7 @@
 		<module>commons</module>
 		<module>gui</module>
 		<module>toolchain</module>
+		<module>integration</module>
 	</modules>
 
 	<dependencyManagement>
