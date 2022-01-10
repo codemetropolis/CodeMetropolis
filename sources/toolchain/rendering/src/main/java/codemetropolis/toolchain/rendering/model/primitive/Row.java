@@ -13,7 +13,7 @@ public class Row implements Primitive {
 		NORTH,
 		SOUTH,
 		WEST,
-		EAST;
+		EAST
 	}
 	
 	private Point position;

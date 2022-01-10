@@ -210,7 +210,7 @@ public class Floor extends Building {
 			_stroke = new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:wool", 15 ) } } } );
 		}
 		
-		RandomPattern _fallbackPattern = new RandomPattern( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.NonBlock } } } ) );
+		RandomPattern _fallbackPattern = new RandomPattern( new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.NON_BLOCK } } } ) );
 		_fallbackPattern.add( new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( "minecraft:fence" ) } } } ), .5 );
 		_sideFill = new RandomPattern( _fallbackPattern );
 		_sideFill.add(
@@ -318,7 +318,7 @@ public class Floor extends Building {
 	private BasicBlock[] createTorchPattern(int number, int data) {
 		BasicBlock[] pattern = null;
 		BasicBlock torch = new BasicBlock((short) 50, data);
-		BasicBlock space = BasicBlock.NonBlock;
+		BasicBlock space = BasicBlock.NON_BLOCK;
 		
 		switch(number) {
 			case 0:

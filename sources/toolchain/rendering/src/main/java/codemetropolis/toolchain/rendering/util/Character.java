@@ -47,7 +47,7 @@ public enum Character {
 			case DARK_PLANKS: return new BasicBlock( "minecraft:planks", 5 );
 			case METAL: return new BasicBlock( "minecraft:iron_block" );
 			case DIRT: return new BasicBlock( "minecraft:dirt" );
-			case SAND: return new BasicBlock( "minecraft:sandstone" , 2 );
+			case SAND: return new BasicBlock( "minecraft:sandstone", 2 );
 			case RED_SAND: return new BasicBlock( "minecraft:sand" );
 			case BRICK: return new BasicBlock( "minecraft:double_stone_slab", 4 );
 			case STONE_BRICK: return new BasicBlock( "minecraft:double_stone_slab", 5 );

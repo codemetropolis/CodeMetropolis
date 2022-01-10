@@ -95,13 +95,13 @@ public class House {
 	public int getSizeX() {
 		if(bottomFloor == null) return topCellar.getSizeX();
 		if(topCellar == null) return bottomFloor.getSizeX();
-		return (bottomFloor.getSizeX() > topCellar.getSizeX() ? bottomFloor.getSizeX() : topCellar.getSizeX());
+		return bottomFloor.getSizeX() > topCellar.getSizeX() ? bottomFloor.getSizeX() : topCellar.getSizeX();
 	}
 	
 	public int getSizeZ() {
 		if(bottomFloor == null) return topCellar.getSizeZ();
 		if(topCellar == null) return bottomFloor.getSizeZ();
-		return (bottomFloor.getSizeZ() > topCellar.getSizeZ() ? bottomFloor.getSizeZ() : topCellar.getSizeZ());
+		return bottomFloor.getSizeZ() > topCellar.getSizeZ() ? bottomFloor.getSizeZ() : topCellar.getSizeZ();
 	}
 	
 	public void translateNearX(int x) {
@@ -117,13 +117,13 @@ public class House {
 	public int getPositionX() {
 		if(bottomFloor == null) return topCellar.getPositionX();
 		if(topCellar == null) return bottomFloor.getPositionX();
-		return (bottomFloor.getPositionX() < topCellar.getPositionX() ? bottomFloor.getPositionX() : topCellar.getPositionX());
+		return bottomFloor.getPositionX() < topCellar.getPositionX() ? bottomFloor.getPositionX() : topCellar.getPositionX();
 	}
 	
 	public int getPositionZ() {
 		if(bottomFloor == null) return topCellar.getPositionZ();
 		if(topCellar == null) return bottomFloor.getPositionZ();
-		return (bottomFloor.getPositionZ() < topCellar.getPositionZ() ? bottomFloor.getPositionZ() : topCellar.getPositionZ());
+		return bottomFloor.getPositionZ() < topCellar.getPositionZ() ? bottomFloor.getPositionZ() : topCellar.getPositionZ();
 	}
 	
 	public void setPositionXR(int x) {

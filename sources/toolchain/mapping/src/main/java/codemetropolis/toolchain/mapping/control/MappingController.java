@@ -54,7 +54,7 @@ public class MappingController {
 		attributesByBuildables.clear();
 		
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();;
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			File xmlFile = new File(filename);
 			if(!xmlFile.exists()) {

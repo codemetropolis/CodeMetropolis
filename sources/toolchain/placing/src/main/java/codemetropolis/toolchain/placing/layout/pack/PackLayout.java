@@ -74,7 +74,7 @@ public class PackLayout extends Layout {
 				}
 				pack(buildables, sizeX, sizeZ,  space);
 				return;
-			};
+			}
 		}
 		
 		for(BuildableWrapper b : buildables) {

@@ -44,19 +44,17 @@ public class SolidBox extends Paintable implements Primitive {
 		for ( int x = 0; x < size.getX(); x++ ) {
 			for ( int y = 0; y < size.getY(); y++ ) {
 				for ( int z = 0; z < size.getZ(); z++ ) {
-					if ( (( x == 0 || x == size.getX() - 1 ) && ( y == 0 || y == size.getY() - 1 )) ||
-					     (( x == 0 || x == size.getX() - 1 ) && ( z == 0 || z == size.getZ() - 1 )) ||
-					     (( y == 0 || y == size.getY() - 1 ) && ( z == 0 || z == size.getZ() - 1 )) )
+					if ( ( x == 0 || x == size.getX() - 1 ) && ( y == 0 || y == size.getY() - 1 ) ||
+					     ( x == 0 || x == size.getX() - 1 ) && ( z == 0 || z == size.getZ() - 1 ) ||
+					     ( y == 0 || y == size.getY() - 1 ) && ( z == 0 || z == size.getZ() - 1 ) )
 					{
 						new Boxel(
 							new BasicBlock( stroke.applyTo( new Point( x, y, z ), this::flipPattern ) ),
-							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z ))
-						.toCSVFile(directory);
+							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z )).toCSVFile(directory);
 					} else {
 						new Boxel(
 							new BasicBlock( fill.applyTo( new Point( x, y, z ), this::flipPattern ) ),
-							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z ))
-						.toCSVFile(directory);
+							new Point( basePoint.getX() + x, basePoint.getY() + y, basePoint.getZ() + z )).toCSVFile(directory);
 					}
 				}
 			}

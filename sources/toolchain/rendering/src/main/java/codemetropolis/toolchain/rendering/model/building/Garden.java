@@ -28,7 +28,7 @@ public class Garden extends Building {
 	private void prepareBase( ) {
 		BasicBlock _fnc = new BasicBlock( "minecraft:fence" );
 		BasicBlock _sns = new BasicBlock( "minecraft:sandstone" );
-		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NonBlock } } } ) );
+		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NON_BLOCK } } } ) );
 		
 		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { new BasicBlock( "minecraft:yellow_flower" ) } } } ) );
 		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { new BasicBlock( "minecraft:red_flower" ) } } } ), 0.5);

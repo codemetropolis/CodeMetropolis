@@ -11,27 +11,27 @@ import codemetropolis.toolchain.rendering.RenderingExecutor;
 
 public class BasicBlock {
 
-	public static final BasicBlock NonBlock;
-	public static final Map<Short, String> idToName;
-	public static final Map<Short, String> idToHumanReadableName;
-	public static final Map<String, Short> nameToId;
-	public static final Map<String, Short> humanReadableNameToId;
+	public static final BasicBlock NON_BLOCK;
+	public static final Map<Short, String> ID_TO_NAME;
+	public static final Map<Short, String> ID_TO_HUMAN_READABLE_NAME;
+	public static final Map<String, Short> NAME_TO_ID;
+	public static final Map<String, Short> HUMAN_REAABLE_NAME_TO_ID;
 	
 	static {
-		NonBlock = new BasicBlock((short)-1 );
-		idToName = new HashMap<Short,String>();
-		idToHumanReadableName = new HashMap<Short,String>();
-		nameToId = new HashMap<String,Short>();
-		humanReadableNameToId = new HashMap<String,Short>();
+		NON_BLOCK = new BasicBlock((short)-1 );
+		ID_TO_NAME = new HashMap<Short,String>();
+		ID_TO_HUMAN_READABLE_NAME = new HashMap<Short,String>();
+		NAME_TO_ID = new HashMap<String,Short>();
+		HUMAN_REAABLE_NAME_TO_ID = new HashMap<String,Short>();
 		
 		InputStream csvStream = RenderingExecutor.class.getClassLoader().getResourceAsStream("blocks.csv");
 		try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, "UTF-8"))) {
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				String[] blockInfo = line.split(",");
-				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
-				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
-				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));
+				ID_TO_NAME.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
+				ID_TO_HUMAN_READABLE_NAME.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
+				NAME_TO_ID.put(blockInfo[1], Short.parseShort(blockInfo[0]));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,11 +51,11 @@ public class BasicBlock {
 	}
 	
 	public BasicBlock(String name) {
-		this(nameToId.get(name), 0);
+		this(NAME_TO_ID.get(name), 0);
 	}
 	
 	public BasicBlock(String name, int data) {
-		this(nameToId.get(name), data);
+		this(NAME_TO_ID.get(name), data);
 	}
 	
 	public BasicBlock(BasicBlock original) {
@@ -64,11 +64,11 @@ public class BasicBlock {
 	}
 	
 	public String getName() {
-		return idToName.get(id);
+		return ID_TO_NAME.get(id);
 	}
 	
 	public String getHumanReadableName() {
-		return idToHumanReadableName.get(id);
+		return ID_TO_HUMAN_READABLE_NAME.get(id);
 	}
 
 	public short getId() {

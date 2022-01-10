@@ -47,9 +47,9 @@ public class Boxel implements Primitive {
 	}
 	
 	public String toCSV() {
-		//if(block == BasicBlock.NonBlock) return null;
+		//if(block == BasicBlock.NON_BLOCK) return null;
 		if(block.getId() == -1) return null;
-		return String.format("%d;%d;%d;%d;%d;%s", block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), (info == null || info.equals("") ? "NULL" : info));
+		return String.format("%d;%d;%d;%d;%d;%s", block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), info == null || info.equals("") ? "NULL" : info);
 	}
 	
 	public static Boxel parseCSV(String csv) {
@@ -62,7 +62,7 @@ public class Boxel implements Primitive {
 				Integer.parseInt(parts[2]),
 				Integer.parseInt(parts[3]),
 				Integer.parseInt(parts[4])),
-			(parts[5].equals("NULL") ? "" : parts[5])
+			parts[5].equals("NULL") ? "" : parts[5]
 		);
 	}
 	

@@ -183,7 +183,7 @@ public class SonarClient {
 			if(element.isJsonObject()){
 				JsonObject jsonObject = (JsonObject) element;
 
-				if(!jsonObject.has("key") || (!jsonObject.has("val") && !jsonObject.has("data"))){
+				if(!jsonObject.has("key") || !jsonObject.has("val") && !jsonObject.has("data")){
 					continue;			
 				}
 				String name = jsonObject.get("key").getAsString();

@@ -190,8 +190,9 @@ public class TetrisLayout extends Layout {
 	    	// Upper left and lower right
 	    	if(corners.get(newX) == null || corners.get(newX) < newZ + bSizeZ)
 	    		corners.put(newX, newZ + bSizeZ);
+	    	
 	    	if (corners.get(newX + bSizeX) == null || corners.get(newX + bSizeX) < newZ)
-	    		corners.put(newX + bSizeX , newZ);
+	    		corners.put(newX + bSizeX, newZ);
 	    	
 	    	Integer lastCornerZ = null;
 	    	
@@ -209,7 +210,7 @@ public class TetrisLayout extends Layout {
 	    	
 	    	if(lastCornerZ != null)
 	    		if(corners.get(newX + bSizeX) == null)
-	    			corners.put(newX + bSizeX , lastCornerZ);
+	    			corners.put(newX + bSizeX, lastCornerZ);
 		}
 		
 		if(buildables.iterator().next().getParent() != null) {

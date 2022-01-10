@@ -17,7 +17,7 @@ public class Time {
 	}
 	
 	public int getSeconds() {
-		return (int) (milliseconds / 1000) % 60 ;
+		return (int) (milliseconds / 1000) % 60;
 	}
 
 }

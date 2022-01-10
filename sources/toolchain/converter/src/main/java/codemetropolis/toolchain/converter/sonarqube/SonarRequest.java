@@ -60,7 +60,7 @@ public class SonarRequest {
 				throw new RuntimeException("HTTP request returned an error. HTTP error code : " + connection.getResponseCode());
 			} 
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line = br.readLine();
 			connection.disconnect();	
 			return line;
