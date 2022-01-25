@@ -1,59 +1,80 @@
-# Site wide configuration
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
 title: CodeMetropolis
-locale: en_US
-description: See your software as never before.
-logo: site-logo.png
-oglogo: site-logo-og.png
+email: geryxyz@inf.u-szeged.hu
+description: >- # this means to ignore newlines until "baseurl:"
+  See your software as never before
+minimal_mistakes_skin: default
 search: true
-url: http://codemetropolis.github.io/CodeMetropolis
 
-# Jekyll configuration
+# Build settings
+markdown: kramdown
+remote_theme: mmistakes/minimal-mistakes
+# Outputting
+permalink: /:categories/:title/
+paginate: 5 # amount of posts to show
+paginate_path: /page:num/
+timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-permalink:   /:categories/:title/
-markdown:    kramdown
-#highlighter: pygments
-sass:
-  sass_dir: _sass
-  style: compressed
-gems:
+include:
+  - _pages
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+
+# Plugins (previously gems:)
+plugins:
+  - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-gist
+  - jemoji
+  - jekyll-include-cache
 
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..2
-  enable_coderay: false
+footer:
+  links:
+    - label: "University of Szeged, Institute of Informatics"
+      icon: "fas fa-university"
+      url: "https://inf.u-szeged.hu/en"
 
-mathjax: true
+defaults:
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: splash
+      author_profile: false
+      header:
+        overlay_color: "#000"
+        overlay_filter: "0.5"
+        overlay_image: /assets/images/outpost-landscape.png
+      excerpt: "Software visualization in Minecraft"
 
-include: [".htaccess"]
-exclude: ["__*", "lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "vendor"]
-
-
-# Site owner
-owner:
-  name: CodeMetropolis Team
-  avatar: site-logo.png
-  email: you@email.com
-  disqus-shortname:
-  twitter: #username
-  facebook: #username
-  github: codemetropolis/CodeMetropolis
-  stackexchange: #http://stackoverflow.com/users/123456/username
-  linkedin: #username
-  instagram: #username
-  flickr: #username
-  tumblr: #username
-  pinterest: #username
-  weibo: #userid
-  google:
-    plus: #username
-    analytics:
-    verify:
-    ad-client:
-    ad-slot:
-  bing-verify:
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
