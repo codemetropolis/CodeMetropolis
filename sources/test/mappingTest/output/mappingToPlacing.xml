@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="mapping" to="placing" version="1.0">
+    <buildable id="c59477d2-e480-4ddb-9a98-2cca3bf3034e" name="" type="container">
+        <position x="0" y="0" z="0"/>
+        <size x="9" y="9" z="9"/>
+        <attributes/>
+        <children>
+            <buildable id="eb3e354a-c8f5-48d3-ac42-d8e8ede7b63f" name="&lt;root_package&gt;" type="ground">
+                <position x="0" y="0" z="0"/>
+                <size x="9" y="9" z="9"/>
+                <attributes/>
+                <children>
+                    <buildable id="ca1cfb31-3d3a-444f-aa9f-19608d75cb5a" name="unnamed package" type="ground">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="8565cf92-a189-4cbd-9d9d-52a2e863c15d" name="HelloWorld" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="1.0"/>
+                                </attributes>
+                                <children>
+                                    <buildable id="80cfb19a-aa17-4b12-9a4a-1fc35f795c5c" name="void main(String[] args)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

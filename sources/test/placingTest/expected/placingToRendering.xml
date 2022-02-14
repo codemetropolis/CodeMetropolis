@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="placing" to="rendering" version="1.0">
+<buildable id="1" name="" type="container">
+<position x="0" y="60" z="0"/>
+<size x="33" y="9" z="33"/>
+<attributes/>
+<children>
+<buildable id="2" name="&lt;root_package&gt;" type="ground">
+<position x="3" y="61" z="3"/>
+<size x="27" y="9" z="27"/>
+<attributes/>
+<children>
+<buildable id="3" name="unnamed package" type="ground">
+<position x="6" y="62" z="6"/>
+<size x="21" y="9" z="21"/>
+<attributes/>
+<children>
+<buildable id="4" name="HelloWorld" type="garden">
+<position x="9" y="63" z="9"/>
+<size x="15" y="9" z="15"/>
+<attributes>
+<attribute name="flower-ratio" value="1.0"/>
+</attributes>
+<children>
+<buildable id="5" name="void main(String[] args)" type="floor">
+<position x="12" y="64" z="12"/>
+<size x="9" y="13" z="9"/>
+<attributes>
+<attribute name="character" value="glass"/>
+<attribute name="external_character" value="metal"/>
+<attribute name="torches" value="1"/>
+</attributes>
+<children/>
+</buildable>
+</children>
+</buildable>
+</children>
+</buildable>
+</children>
+</buildable>
+</children>
+</buildable>
+</buildables>

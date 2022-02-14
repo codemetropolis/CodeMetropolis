@@ -1,0 +1,1 @@
+amikor végigfut egy fájlon a for, akkor azon belül legyen mégegy, hogy a sorrendje az esetleges dolgoknak ne feltétlen legyen akadálya az elakadásnak

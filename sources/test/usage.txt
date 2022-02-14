@@ -1,0 +1,9 @@
+The tester.py file is help to convert an input file with the right CodeMetropolis jar file and run test wich compare the output file with an excepted file.
+To run tester.py you need: 
+- Python 3.9
+- Pytest 6.2.5
+
+Steps: 
+Open the command line (cmd)
+Navigate to the tester.py file folder
+Run the tester.py file with Python: python tester.py -h 
