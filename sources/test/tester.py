@@ -1,3 +1,4 @@
+from queue import Empty
 import pytest
 import subprocess
 import os
@@ -7,25 +8,35 @@ import argparse
 
 parser = argparse.ArgumentParser(description='CodeMetropolis tester')
 
+parser.add_argument('folder', metavar='F', type=str,
+                    help='specific name of the folder from the pytests folder (converter/mapping/placing/rendering)')
 parser.add_argument('--pyfile', dest='pyfile', type=str,
                     help='a specific pytest file to test from pytests folder')
-
-parser.add_argument('--convtype', dest='segment', type=str,
-                    help='multiple tests grouped by the converter type (converter/mapping/placing/rendering)')
-
+parser.add_argument('--all', dest='pyfile', type=str,
+                    help='run all pytest file from the selected folder')
 parser.add_argument('input', metavar='I', type=str,
                     help='input file name')                  
 
+#pelda
+# python tester.py --pyfile converter/elementNameMatch_test sanyi
+
+#arguments
 args = parser.parse_args()
 input = args.input
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'pytests/'))
+#pytest_directory_split
+pytestFolder = args.folder
+pytestPath = 'pytests/' + pytestFolder + "/"
+sys.path.append(os.path.join(os.path.dirname(__file__), pytestPath))
 
-pyFile = __import__(args.pyfile)
-
-#run_pytest
+#import_pytest
+pyFileName = args.pyfile
+if (pyFileName is not Empty):
+    pyFile = __import__(pyFileName)
+if (pyFileName is Empty):
 jarFile = pyFile.jar
 
+#run jars
 if('converter' in jarFile):
     subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + pyFile.input + input + ".graph"]),
     shutil.move('converterToMapping.xml', '' + pyFile.output)
