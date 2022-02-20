@@ -6,17 +6,18 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='CodeMetropolis tester')
-"""
-parser.add_argument('pyfile', metavar='P', type=str,
-                    help='test file')
-"""
+
 parser.add_argument('--pyfile', dest='pyfile', type=str,
                     help='a specific pytest file to test from pytests folder')
 
 parser.add_argument('--convtype', dest='segment', type=str,
                     help='multiple tests grouped by the converter type (converter/mapping/placing/rendering)')
 
+parser.add_argument('input', metavar='I', type=str,
+                    help='input file name')                  
+
 args = parser.parse_args()
+input = args.input
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'pytests/'))
 
@@ -26,7 +27,7 @@ pyFile = __import__(args.pyfile)
 jarFile = pyFile.jar
 
 if('converter' in jarFile):
-    subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + pyFile.input]),
+    subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + pyFile.input + input + ".graph"]),
     shutil.move('converterToMapping.xml', '' + pyFile.output)
     pytest.main(['-x', './pytests/' + args.pyfile + '.py'])
 
