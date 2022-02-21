@@ -1,10 +1,10 @@
 import pytest
 from pathlib import Path
 
-jar = "converter"
-input = "converter_IO\inputs\input.graph"
-expected = "converter_IO\expected\converterToMapping.xml"
-output = "converter_IO\output\converterToMapping.xml"
+jar = 'converter'
+input = 'IO/inputs/'
+expected = 'IO/expected/converterToMapping.xml'
+output = 'IO/output/converterToMapping.xml'
 
 def testOutputFileExist():
     fileExist = False
