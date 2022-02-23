@@ -1,7 +1,12 @@
 import pytest
 from xml.dom import minidom
 
-output_file = minidom.parse('mappingTest\\output\\mappingToPlacing.xml')
+jar = 'converter'
+input = 'IO/inputs/'
+expected = 'IO/expected/mappingToPlacing.xml'
+output = 'IO/output/mappingToPlacing.xml'
+
+output_file = minidom.parse('output')
 
 def testPositionCoordinatesZero():
     positionOutput = output_file.getElementsByTagName('position')

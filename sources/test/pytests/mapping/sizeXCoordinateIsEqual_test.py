@@ -1,10 +1,14 @@
 import pytest
 from xml.dom import minidom
 
-excpected_file = minidom.parse('mappingTest\\expected\\mappingToPlacing.xml')
-output_file = minidom.parse('mappingTest\\output\\mappingToPlacing.xml')
+jar = 'mapping'
+input = 'IO/inputs/'
+expected = 'IO/expected/mappingToPlacing.xml'
+output = 'IO/output/mappingToPlacing.xml'
 
 def testSizeXCoordinateIsEqual():
+    excpected_file = minidom.parse(expected)
+    output_file = minidom.parse(output)
     sizeXExpected = excpected_file.getElementsByTagName('size')
     sizeXOutput = output_file.getElementsByTagName('size')
     

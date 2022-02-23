@@ -59,12 +59,19 @@ if('converter' in jarFile):
 
 
 if('mapping' in jarFile):
+    javaPathFile = open("javapath.bat","w")
+    javaPathLine = """setlocal 
+    SET PATH=C:/Program Files/Java/jre1.8.0_301/bin;%PATH%
+    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + pyFile.input + input + ".xml -m mapping_IO/inputs/sourcemeter_mapping_example.xml"
+    javaPathFile.write(javaPathLine)
+    javaPathFile.close();
     subprocess.call([r'javapath.bat'])
     shutil.move("mappingToPlacing.xml", '' + pyFile.output)
     if (allPytestRun is None):
         pytestRunner(args.pyfile)
     if (allPytestRun is not None):
         pytest.main(["-x", pytestPath])  
+
 
 if('placing' in jarFile):
     subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + pyFile.input])
@@ -88,49 +95,3 @@ if('rendering' in jarFile):
 
 
 
-
-"""
-#use_jars
-if ("converterTest" in args.input):
-    subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , ''+ args.input])
-    shutil.move("converterToMapping.xml", "converterTest/output/converterToMapping.xml")
-    pytestFolder = "converterTest/"
-    
-    
-if ("mappingTest" in args.input):
-    if("mappingTest\inputs" not in args.input):
-        shutil.copy("" + args.input, "mappingTest/inputs/converterToMapping.xml")
-    subprocess.call([r'javapath.bat'])
-    shutil.move("mappingToPlacing.xml", "mappingTest/output/mappingToPlacing.xml")
-    pytestFolder = "mappingTest/"
-
-if ("mappingTest" in args.input):
-    subprocess.call(['java.exe', '-jar', '../distro/mapping-1.4.0.jar', '-i' , ''+ args.input, '-m', 'mappingTest/inputs/sourcemeter_mapping_example.xml'])
-    #shutil.move("mappingToPlacing.xml", "mappingTest/output/mappingToPlacing.xml")
-    pytestFolder = "mappingTest/"
-
-
-
-if ("placingTest" in args.input):
-    subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + args.input])
-    shutil.move("placingToRendering.xml", "placingTest/output/placingToRendering.xml")
-    pytestFolder = "PlacingTest/"  
-
-
-if ("renderingTest" in args.input):
-    subprocess.call(['java.exe', '-jar', '../distro/rendering-1.4.0.jar', '-i', '' + args.input, '-world', 'world'])
-    worldExist = os.path.exists("renderingTest/output/world")
-    if (worldExist == True):
-        shutil.rmtree("renderingTest/output/world")  
-    shutil.move("world", "renderingTest/output/world")
-    pytestFolder = "RenderingTest/"    
-
-
-#run_pyfiles
-if(type(args.pyfile) == str):
-    pytest.main(["-x", pytestFolder + args.pyfile])   
-else:
-    pytest.main(["-x", pytestFolder])
-
-
-"""

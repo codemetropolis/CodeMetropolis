@@ -1,10 +1,14 @@
 import pytest
 from xml.dom import minidom
 
-excpected_file = minidom.parse('mappingTest\\expected\\mappingToPlacing.xml')
-output_file = minidom.parse('mappingTest\\output\\mappingToPlacing.xml')
+jar = 'converter'
+input = 'IO/inputs/'
+expected = 'IO/expected/mappingToPlacing.xml'
+output = 'IO/output/mappingToPlacing.xml'
 
 def testSameVersion():
+    excpected_file = minidom.parse(expected)
+    output_file = minidom.parse(output)
     buildablesExpected = excpected_file.getElementsByTagName('buildables')
     buildablesOutput = output_file.getElementsByTagName('buildables')
     

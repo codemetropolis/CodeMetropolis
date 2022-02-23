@@ -1,9 +1,14 @@
 import pytest
 from pathlib import Path
 
+jar = 'mapping'
+input = 'IO/inputs/'
+expected = 'IO/expected/mappingToPlacing.xml'
+output = 'IO/output/mappingToPlacing.xml'
+
 def testOutputFileExist():
     fileExist = False
-    outputFile = Path('mappingTest\\output\\mappingToPlacing.xml')
+    outputFile = Path(output)
     if (outputFile.is_file() == True):
         fileExist = True
         
