@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <buildables from="mapping" to="placing" version="1.0">
-    <buildable id="f9fc3da9-4cbb-4fd6-bf96-b8207359130e" name="" type="container">
+    <buildable id="f31265e8-d3d8-48ab-8307-7653aab8fcb6" name="" type="container">
         <position x="0" y="0" z="0"/>
         <size x="9" y="9" z="9"/>
         <attributes/>
         <children>
-            <buildable id="2fb71f0f-93a4-49ad-aee8-9bde76cec921" name="&lt;root_package&gt;" type="ground">
+            <buildable id="aaaac4b2-3b35-4506-86c5-5323852e6587" name="&lt;root_package&gt;" type="ground">
                 <position x="0" y="0" z="0"/>
                 <size x="9" y="9" z="9"/>
                 <attributes/>
                 <children>
-                    <buildable id="a3125851-8977-42f6-9d2f-11864bcd6791" name="unnamed package" type="ground">
+                    <buildable id="02283374-17ce-44cc-bace-2e3e2ce80f14" name="unnamed package" type="ground">
                         <position x="0" y="0" z="0"/>
                         <size x="9" y="9" z="9"/>
                         <attributes/>
                         <children>
-                            <buildable id="5e730821-1b90-4430-933e-70d0466acff1" name="HelloWorld" type="garden">
+                            <buildable id="e4d71705-9160-452b-b33f-1cceee34bc5e" name="HelloWorld" type="garden">
                                 <position x="0" y="0" z="0"/>
                                 <size x="9" y="9" z="9"/>
                                 <attributes>
                                     <attribute name="flower-ratio" value="1.0"/>
                                 </attributes>
                                 <children>
-                                    <buildable id="6ef4756a-2493-487b-b786-73fc5aa0adc6" name="void main(String[] args)" type="floor">
+                                    <buildable id="959ad18b-3e2d-401d-8d53-f1782618aca5" name="void main(String[] args)" type="floor">
                                         <position x="0" y="0" z="0"/>
                                         <size x="9" y="13" z="9"/>
                                         <attributes>
