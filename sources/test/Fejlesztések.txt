@@ -1,5 +1,0 @@
-AMit szeretnék még:
-- pyfile elérési útvonalnál a pytests mappán belüli útvonalból szedi ki a mappanevet (elhagyva az F-et)
-- az excepted filenevet is nekünk kelljen megadni
-- kivételkezelések, fájlkiterjesztésekre vonatkozó kezelések
-

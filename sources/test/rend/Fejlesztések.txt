@@ -1,0 +1,9 @@
+AMit szeretnék még:
+- pyfile elérési útvonalnál a pytests mappán belüli útvonalból szedi ki a mappanevet (elhagyva az F-et)
+- az excepted filenevet is nekünk kelljen megadni
+- kivételkezelések, fájlkiterjesztésekre vonatkozó kezelések
+
+parser.add_argument('--pyfile', dest='pyfile', type=str,
+                    help='Path to the selected pytest starting from the pytests folder')
+parser.add_argument('--all', dest='all', type=str,
+                    help='Path to the selected folder starting from the pytests folder')     
