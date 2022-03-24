@@ -12,22 +12,17 @@ parser.add_argument('--pyfile', dest='pyfile', type=str,
                     help='If you want run one specific pytest file from pytests folder')
 parser.add_argument('--all', dest='all', type=str,
                     help='If you want run all pytest file from a selected folder from pytests')                   
-#parser.add_argument('folder', metavar='F', type=str,
-#                    help='If use --pyfile: the specific folder name in pytests folder where the selected pytest(s) exist\n ')
 parser.add_argument('input', metavar='I', type=str,
                     help='Selected input file name and extension from input directory')                  
 
 #pelda
-# python tester.py --pyfile elementNameMatch_test converter inputFile
-# python tester.py --all all converter inputFile
-#python tester.py --pyfile converter/elementNameMatch_test inputFile
+#python tester.py --pyfile converter/elementNameMatch_test inputFile.graph
 #python tester.py --all converter inputFile.graph
 
 #arguments
 args = parser.parse_args()
 input = args.input
 #pytest_directory_split
-#pytestFolder = args.folder
 def PathSet(PyFilePathArray):
     pytestPath = 'pytests/' + PyFilePathArray + "/"
     sys.path.append(os.path.join(os.path.dirname(__file__), pytestPath))
