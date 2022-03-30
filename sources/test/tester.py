@@ -5,108 +5,105 @@ import os
 import shutil
 import sys
 import argparse
+import os.path
+from os import path
+from os import walk
 
-parser = argparse.ArgumentParser(description='CodeMetropolis tester wich generate an output from selected input file and compare it with an excepted file')
+parser = argparse.ArgumentParser(description=' A program to define the compare between the expected output and fresly generated output of Codemetropolis')
 
-parser.add_argument('--pyfile', dest='pyfile', type=str,
-                    help='If you want run one specific pytest file from pytests folder')
-parser.add_argument('--all', dest='all', type=str,
-                    help='If you want run all pytest file from a selected folder from pytests')                   
+parser.add_argument('pytest_folder', metavar='F', type=str,
+                    help='Run all pytest files from the selected folder')      
+parser.add_argument('--pytest_file', dest='pytest_file', type=str,
+                    help='Run one selected pytest file from the selected folder')                
 parser.add_argument('input', metavar='I', type=str,
-                    help='Selected input file name and extension from input directory')                  
-
-#pelda
-#python tester.py --pyfile converter/elementNameMatch_test inputFile.graph
-#python tester.py --all converter inputFile.graph
+                    help='Selected input file')       
+parser.add_argument('expected_output', metavar='E', type=str,
+                    help='Selected expected output')             
 
 #arguments
-args = parser.parse_args()
-input = args.input
-#pytest_directory_split
-def PathSet(PyFilePathArray):
-    pytestPath = 'pytests/' + PyFilePathArray + "/"
-    sys.path.append(os.path.join(os.path.dirname(__file__), pytestPath))
+arguments = parser.parse_args()
+argPytestFolder = arguments.pytest_folder
+argPytestFile = arguments.pytest_file
+argInput = arguments.input
+argExpectedoutput = arguments.expected_output
+pathToPytestFile = argPytestFolder + "/" + str(argPytestFile)
 
-def ExtensionRemover(pyFileName):
-    if ("." in pyFileName):
-        splitted = pyFileName.split('.')
-        return splitted[0]
-    else:
-        return pyFileName
-#import_pytest
-#if_--pytest
-pyFilePath = args.pyfile
-if (pyFilePath is not None):
-    if ("/" in pyFilePath):
-        PyFilePathArray = pyFilePath.split('/')
-        pyFileName = PyFilePathArray[1]   
-        #pyFileName = ExtensionRemover(pyFileName)     
-        PathSet(PyFilePathArray[0])
-        pyFile = __import__(pyFileName)
-    elif ("\\" in pyFilePath):
-        PyFilePathArray = pyFilePath.split('\\')
-        pyFileName = PyFilePathArray[1]
-        #pyFileName = ExtensionRemover(pyFileName)
-        PathSet(PyFilePathArray[0])
-        pyFile = __import__(pyFileName)  
-    else :
-        print("Not valid path to the pytest file")
-if (pyFilePath is None):
-    from os import walk
-    pytestPathAll = 'pytests/' + args.all + "/"
-    sys.path.append(os.path.join(os.path.dirname(__file__), pytestPathAll))
-    print(pytestPathAll)
-    fileNames = next(walk(pytestPathAll), (None, None, []))[2]
-    fileNameSplit = fileNames[0].split('.')
-    fileName = fileNameSplit[0]
-    pyFile = __import__(fileName)
-
-jarFile = pyFile.jar
-
-#run_pytest_function
-allPytestRun = args.all
-def pytestRunner(pyFile):
-    pytest.main(['-x', 'pytests/' + pyFile + '.py'])
-    print(pyFile)
-
-def allPytestRunCheck(allPytestRunFunc):
-    if (allPytestRunFunc is None):
-        pytestRunner(args.pyfile)
-    if (allPytestRunFunc is not None):
-        pytest.main(["-x", pytestPathAll])
-
-#run jars
-if('converter' in jarFile):
-    subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + pyFile.input + input]),
-    shutil.move('converterToMapping.xml', '' + pyFile.output)
-    allPytestRunCheck(allPytestRun)
+#WARNINGS_function
+def warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput):
+    #paths_and files_exist
+    if (path.exists(argPytestFolder) == False):
+        print("Warning: Nincs ilyen nevű pytest mappa vagy hibás az elérési útvonal!")
+        return -1
+    if (str(argPytestFile) != "None" and path.exists(pathToPytestFile) == False):
+        print("Warning: Nincs ilyen nevű pytest fájl vagy hibás az elérési útvonal!")
+        return -1
+    if (path.exists(argInput) == False):
+        print("Warning: Nincs ilyen nevű input fájl vagy hibás az elérési útvonal!")
+        return -1
+    if (path.exists(argExpectedoutput) == False):
+        print("Warning: Nincs ilyen nevű expected output fájl vagy hibás az elérési útvonal!")
+        return -1 
+    #directory_empty
+    if (len(os.listdir(argPytestFolder)) == 0):
+        print("Warning: Directory is empty")
+        return -1
+    #no_py_file_in_directory
+    directoryFiles = next(walk(argPytestFolder), (None, None, []))[2]
+    if (".py" not in str(directoryFiles)):
+        print("Warning: No pytests on the selected folder")
+        return -1
 
 
-if('mapping' in jarFile):
-    javaPathFile = open("javapath.bat","w")
-    javaPathLine = """setlocal 
-    SET PATH=C:/Program Files/Java/jre1.8.0_301/bin;%PATH%
-    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + pyFile.input + input + " -m mapping_IO/inputs/sourcemeter_mapping_example.xml"
-    javaPathFile.write(javaPathLine)
-    javaPathFile.close();
-    subprocess.call([r'javapath.bat'])
-    shutil.move("mappingToPlacing.xml", '' + pyFile.output)
-    os.remove('javapath.bat')
-    allPytestRunCheck(allPytestRun)
+
+#._splitter_function
+def dotSplitter(fileNames):
+    fileNamesSplit = fileNames.split('.')
+    fileName = fileNamesSplit[0]
+    return fileName
 
 
-if('placing' in jarFile):
-    subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + pyFile.input + input])
-    shutil.move("placingToRendering.xml", '' + pyFile.output)
-    allPytestRunCheck(allPytestRun)
 
-if('rendering' in jarFile):
-    subprocess.call(['java.exe', '-jar', '../distro/rendering-1.4.0.jar', '-i', '' + pyFile.input + input, '-world', 'world'])
-    worldExist = os.path.exists(pyFile.output)
-    if (worldExist == True):
-        shutil.rmtree(pyFile.output)  
-    shutil.move("world", '' + pyFile.output)
-    allPytestRunCheck(allPytestRun)
+#import_pytest_file_function
+def randomPytestFileSelect(argPytestFolder):
+    sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
+    fileNames = next(walk(argPytestFolder), (None, None, []))[2]
+    fileName = dotSplitter(fileNames[0])
+    return fileName
+
+
+    
+
+#MAIN
+while True:
+    #warnings
+    if (warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput) == -1):
+        break
+
+    #import_pytest_file
+    if (str(argPytestFile) != "None"):
+        sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
+        importPytestFile = __import__(dotSplitter(argPytestFile))
+    if (str(argPytestFile) == "None"):
+        importPytestFile = __import__(randomPytestFileSelect(argPytestFolder))
+
+    #Converter_jars_runner
+    selectedJar = importPytestFile.jar
+
+    #converter
+    if('converter' in selectedJar):
+        subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + argInput]),
+        shutil.move('converterToMapping.xml', '' + importPytestFile.output)
+        pytest.main(["-x", pathToPytestFile, '--expected', argExpectedoutput])
+        #allPytestRunCheck(allPytestRun)
+
+        #TODO
+        #megcsinálni, hogy akkor is menjen a pytest dolog, amikor csak mappát adunk meg. 
+        #átírni a pytest fájlokban az expected részt
+        #kiszervezni a jar futtatásokat is functionbe.
+
+
+    print("Végigfutott") 
+    break
 
 
 

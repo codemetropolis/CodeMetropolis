@@ -3,10 +3,9 @@ from xml.dom import minidom
 
 jar = 'converter'
 input = 'inputs/'
-expected = 'expected/converterToMapping.xml'
 output = 'output/converterToMapping.xml'
 
-def testElementNameMatch():
+def testElementNameMatch(expected):
     excpected_file = minidom.parse(expected)
     output_file = minidom.parse(output)
     elementNameExpected = excpected_file.getElementsByTagName('element')
