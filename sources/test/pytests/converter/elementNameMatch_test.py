@@ -2,12 +2,11 @@ import pytest
 from xml.dom import minidom
 
 jar = 'converter'
-input = 'inputs/'
-output = 'output/converterToMapping.xml'
 
-def testElementNameMatch(expected):
+def testElementNameMatch(expected, output):
+    outputFullPath = output + "/converterToMapping.xml"
     excpected_file = minidom.parse(expected)
-    output_file = minidom.parse(output)
+    output_file = minidom.parse(outputFullPath)
     elementNameExpected = excpected_file.getElementsByTagName('element')
     elementNameOutput = output_file.getElementsByTagName('element')
     
