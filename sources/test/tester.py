@@ -68,6 +68,11 @@ def dotSplitter(fileNames):
     fileName = fileNamesSplit[0]
     return fileName
 
+#output_folder_check_function
+def generatedOutputFolderExist(generatedOutputPath):
+    if (os.path.exists(generatedOutputPath) == False):
+        os.mkdir(generatedOutputPath)
+
 #import_pytest_file_function
 def randomPytestFileSelect(argPytestFolder):
     sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
@@ -87,19 +92,20 @@ def runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutp
 #converter_jar_function
 def converterJar(argInput, generatedOutputPath):
         subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t' ,'sourcemeter', '-s' , '' + argInput]),
-        shutil.move(os.path.join('./', 'converterToMapping.xml'), os.path.join(generatedOutputPath, 'converterToMapping.xml'))      
-        
-
+        generatedOutputFolderExist(generatedOutputPath)
+        shutil.move(os.path.join('./', 'converterToMapping.xml'), os.path.join(generatedOutputPath, 'converterToMapping.xml'))   
+           
 #mapping_jar_function
 def mappingJar(argInput, generatedOutputPath):
     javaPathFile = open("javapath.bat","w")
     javaPathContent = """setlocal 
     SET PATH=C:/Program Files/Java/jre1.8.0_301/bin;%PATH%
-    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + argInput + " -m mapping_IO/inputs/sourcemeter_mapping_example.xml"
+    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + argInput + " -m ./sourcemeter_mapping_example.xml"
     javaPathFile.write(javaPathContent)
     javaPathFile.close();
     subprocess.call([r'javapath.bat'])
     #shutil.move("mappingToPlacing.xml", '' + generatedOutputPath)
+    generatedOutputFolderExist(generatedOutputPath)
     shutil.move(os.path.join('./', 'mappingToPlacing.xml'), os.path.join(generatedOutputPath, 'mappingToPlacing.xml'))
     os.remove('javapath.bat')
 
@@ -107,6 +113,7 @@ def mappingJar(argInput, generatedOutputPath):
 def placingJar(argInput, generatedOutputPath):
     subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + argInput])
     #shutil.move("placingToRendering.xml", '' + generatedOutputPath)
+    generatedOutputFolderExist(generatedOutputPath)
     shutil.move(os.path.join('./', 'placingToRendering.xml'), os.path.join(generatedOutputPath, 'placingToRendering.xml'))
 
 #rendering_jar_function
@@ -116,12 +123,11 @@ def renderingJar(argInput, generatedOutputPath):
     if (worldExist == True):
         shutil.rmtree(generatedOutputPath)  
     #shutil.move("world", '' + generatedOutputPath)
+    generatedOutputFolderExist(generatedOutputPath)
     shutil.move(os.path.join('./', 'world'), os.path.join(generatedOutputPath, 'world'))
-
 
 #MAIN
 while True:
-
     #warnings
     if (warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput, argGeneratedOutputPath) == -1):
         break
@@ -159,25 +165,6 @@ while True:
     if('rendering' in selectedJar):
         renderingJar(argInput, generatedOutputPath)
         runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #TODO
-        #átírni a pytest fájlokban az expected részt
-
-
-    print("Végigfutott") 
     break
 
 
