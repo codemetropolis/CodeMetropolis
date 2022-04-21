@@ -100,7 +100,7 @@ def mappingJar(argInput, generatedOutputPath):
     javaPathFile = open("javapath.bat","w")
     javaPathContent = """setlocal 
     SET PATH=C:/Program Files/Java/jre1.8.0_301/bin;%PATH%
-    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + argInput + " -m ./sourcemeter_mapping_example.xml"
+    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + argInput + " -m ./others/sourcemeter_mapping_example.xml"
     javaPathFile.write(javaPathContent)
     javaPathFile.close();
     subprocess.call([r'javapath.bat'])
