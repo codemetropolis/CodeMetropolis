@@ -21,5 +21,5 @@ def testNumberOfPackages(expected, output):
             numberOfPackagesOutput = numberOfPackagesOutput + 1
                         
              
-    assert numberOfPackagesExcepted == numberOfPackagesOutput, 'The numbers of package types of elements are not the same'
+    assert numberOfPackagesExcepted == numberOfPackagesOutput, "numberOfPackages_test: The number of attributes where 'type = package' does not match with the expected value"
         

@@ -21,5 +21,5 @@ def testNumberOfClasses(expected, output):
             numberOfClassesOutput = numberOfClassesOutput + 1
                         
              
-    assert numberOfClassesExcepted == numberOfClassesOutput, 'The numbers of class types of elements are not the same'
+    assert numberOfClassesExcepted == numberOfClassesOutput, "numberOfClasses_test: The number of attributes where 'type = class' does not match with the expected value"
         

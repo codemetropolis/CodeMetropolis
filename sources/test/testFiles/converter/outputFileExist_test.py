@@ -10,5 +10,5 @@ def testOutputFileExist(output):
     if (outputFile.is_file() == True):
         fileExist = True
         
-    assert fileExist == True, "Output file is not exist"
+    assert fileExist == True, "outputFileExist_test: Output file not exist"
     

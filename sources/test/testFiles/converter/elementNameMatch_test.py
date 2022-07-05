@@ -18,5 +18,5 @@ def testElementNameMatch(expected, output):
         if(elementNameExpected[i].attributes['name'].value == elementNameOutput[i].attributes['name'].value):
             passed = passed + 1
     
-    assert passed == length, "Not every name attribute matches with excepted file attributes"
+    assert passed == length, "Not every output name attribute matches with expected name attributes"
     

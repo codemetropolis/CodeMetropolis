@@ -18,5 +18,5 @@ def testPropertyNameMatch(expected, output):
         if(propertyNameExpected[i].attributes['type'].value == propertyNameOutput[i].attributes['type'].value):
             passed = passed + 1
     
-    assert passed == length, "Not every name attribute of property tag matches with excepted file attributes"
+    assert passed == length, "propertyNameMatch_test: The number of attributes where 'type = package' does not match with the expected value" "Not every name attribute of property tag matches with excepted file attributes"
     

@@ -18,5 +18,5 @@ def testElementTypeMatch(expected, output):
         if(elementTypeExpected[i].attributes['type'].value == elementTypeOutput[i].attributes['type'].value):
             passed = passed + 1
     
-    assert passed == length, "Not every type attribute matches with the excepted file attributes"
+    assert passed == length, "elementTypeMatch_test: Not all 'type' attribute values ​​match with the expected 'type' attribute values"
     

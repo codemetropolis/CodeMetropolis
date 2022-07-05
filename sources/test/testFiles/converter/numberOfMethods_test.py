@@ -21,5 +21,5 @@ def testNumberOfMethods(expected, output):
             numberOfMethodsOutput = numberOfMethodsOutput + 1
                         
              
-    assert numberOfMethodsExcepted == numberOfMethodsOutput, 'The numbers of methods types of elements are not the same'
+    assert numberOfMethodsExcepted == numberOfMethodsOutput, "numberOfMethods_test: The number of attributes where 'type = method' does not match with the expected value"
         
