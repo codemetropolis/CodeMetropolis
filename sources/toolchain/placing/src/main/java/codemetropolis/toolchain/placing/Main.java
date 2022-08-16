@@ -20,7 +20,20 @@ public class Main {
 	        parser.parseArgument(args);
 	        if(options.getInputFile() == null && !options.showHelp())
 	        	throw new IllegalArgumentException();
+
+
 	    } catch (CmdLineException | IllegalArgumentException e) {
+
+			/**
+			 * Warns the user that the layout file parameter value is missing and exits normally without creating the layout file
+			 * and shows usage help message
+			 */
+			String exceptionMessage = e.getMessage();
+			if (exceptionMessage.contains(Resources.get("layout_exception"))) {
+				System.err.println(Resources.get("missing_layout_error"));
+				System.err.println(Resources.get("placing_usage"));
+				return;
+			}
 	    	String message = Resources.get("command_line_error");
 	    	FileLogger.logError(message, e);
 	    	System.err.println(message);
