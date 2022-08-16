@@ -1,8 +1,8 @@
 package codemetropolis.toolchain.gui.metricgenerators;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Map;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
@@ -42,6 +42,8 @@ public class SourceMeterGenerator extends CMMetricPanel {
 
     addProjectRootField();
     addSourceMeterExecutableField();
+    addSourceMeterDownloadButton();
+    
   }
 
   /**
@@ -66,10 +68,31 @@ public class SourceMeterGenerator extends CMMetricPanel {
     sourceMeterPath = new CMTextField(130, 40, 225, 30);
     CMButton browseButton = new CMButton(Translations.t("gui_b_browse"), 360, 40, 100, 30);
     browseButton.addActionListener(new BrowseListener(sourceMeterPath, JFileChooser.FILES_ONLY, EXE_FILTER));
-
+    
     add(label);
     add(sourceMeterPath);
     add(browseButton);
+    
+  }
+  
+  /***
+   * Adds the Download SourceMeter button to the panel which opens the user default browser.
+   * @author Taskovics Lorinc Karoly {@literal <IT4VZW>} 
+   */
+  public void addSourceMeterDownloadButton() {
+	  CMButton downloadSrcM = new CMButton("Download SourceMeter", 30, 100, 300, 30);
+	    downloadSrcM.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            try {
+	                String url = "https://sourcemeter.com/download";
+	                java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+	            } catch (java.io.IOException exp) {
+	                System.out.println(exp.getMessage());
+	            }
+	        }
+	    });
+	    add(downloadSrcM);
   }
 
   /**
