@@ -15,7 +15,7 @@
 *.bak
 *.swp
 *~.nib
-
+*.idea
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java
@@ -115,3 +115,6 @@ hs_err_pid*
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
 
 logs/
+
+/*/.idea
+sources/distro

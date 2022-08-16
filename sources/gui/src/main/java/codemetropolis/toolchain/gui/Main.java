@@ -1,12 +1,16 @@
 package codemetropolis.toolchain.gui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.io.IOException;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  * Main class for the CodeMetropolis' GUI module. Initializes some globals, like fonts and look-and-feel, and
@@ -62,3 +66,7 @@ public class Main {
   }
 
 }
+
+
+
+
