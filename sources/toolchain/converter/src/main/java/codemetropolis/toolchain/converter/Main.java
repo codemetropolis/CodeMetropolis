@@ -13,6 +13,22 @@ import codemetropolis.toolchain.converter.control.ConverterType;
 
 public class Main {
 
+	/**
+	 * If there is no parameter given, the system will print out the 'without_param' string from the resources,
+	 * which tells the user that no parameter was given,
+	 * and also print the 'converter_usage' string.
+	 */
+	public static boolean checkWithoutParam(CommandLineOptions options) {
+		if(options.getType() == null || options.getSource() == null ) {
+
+			System.err.println(Resources.get("without_param"));
+			System.err.println(Resources.get("converter_usage"));
+
+			return true;
+		}
+		return false;
+	}
+
 	public static void main(String[] args) {
 		
 		FileLogger.load(Settings.get("converter_log_file"));
@@ -22,9 +38,14 @@ public class Main {
 
 	    try {
 	        parser.parseArgument(args);
+
+			if(checkWithoutParam(options)) {
+				return;
+			}
+
 	        if(options.getType() == null || options.getSource() == null ){
-	        	throw new IllegalArgumentException();
-	        }
+				throw new IllegalArgumentException();
+			}
 	    } catch (CmdLineException | IllegalArgumentException e) {
 	    	String message = Resources.get("command_line_error");
 	    	FileLogger.logError(message, e);
