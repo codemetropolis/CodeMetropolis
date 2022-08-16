@@ -1,0 +1,336 @@
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format...
+
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format done.
+
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document...
+
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document done.
+
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file...
+
+Apr 14, 2022 8:40:16 PM codemetropolis.toolchain.commons.util.FileLogger logError
+SEVERE: Error: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 58; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+
+codemetropolis.toolchain.mapping.exceptions.MappingReaderException: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 58; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:117)
+	at codemetropolis.toolchain.mapping.MappingExecutor.execute(MappingExecutor.java:35)
+	at codemetropolis.toolchain.mapping.Main.main(Main.java:40)
+Caused by: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 58; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.createUnmarshalException(AbstractUnmarshallerImpl.java:335)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.createUnmarshalException(UnmarshallerImpl.java:563)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:249)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal(UnmarshallerImpl.java:214)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:157)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:162)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:171)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:189)
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:114)
+	... 2 more
+Caused by: org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 58; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:204)
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:178)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:400)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
+	at com.sun.org.apache.xerces.internal.impl.XMLScanner.reportFatalError(XMLScanner.java:1472)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanEndElement(XMLDocumentFragmentScannerImpl.java:1751)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2969)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:605)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:113)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:507)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:867)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:796)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:142)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1216)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:644)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:243)
+	... 8 more
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file...
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file done.
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions...
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions done.
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering...
+
+Apr 14, 2022 8:40:17 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering done.
+
+Apr 14, 2022 8:40:37 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format...
+
+Apr 14, 2022 8:40:37 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format done.
+
+Apr 14, 2022 8:40:37 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document...
+
+Apr 14, 2022 8:40:38 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document done.
+
+Apr 14, 2022 8:40:38 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file...
+
+Apr 14, 2022 8:40:38 PM codemetropolis.toolchain.commons.util.FileLogger logError
+SEVERE: Error: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 51; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+
+codemetropolis.toolchain.mapping.exceptions.MappingReaderException: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 51; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:117)
+	at codemetropolis.toolchain.mapping.MappingExecutor.execute(MappingExecutor.java:35)
+	at codemetropolis.toolchain.mapping.Main.main(Main.java:40)
+Caused by: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 51; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.createUnmarshalException(AbstractUnmarshallerImpl.java:335)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.createUnmarshalException(UnmarshallerImpl.java:563)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:249)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal(UnmarshallerImpl.java:214)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:157)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:162)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:171)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:189)
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:114)
+	... 2 more
+Caused by: org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 51; columnNumber: 4; The element type "mapping" must be terminated by the matching end-tag "</mapping>".
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:204)
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:178)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:400)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
+	at com.sun.org.apache.xerces.internal.impl.XMLScanner.reportFatalError(XMLScanner.java:1472)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanEndElement(XMLDocumentFragmentScannerImpl.java:1751)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2969)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:605)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:113)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:507)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:867)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:796)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:142)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1216)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:644)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:243)
+	... 8 more
+
+Apr 14, 2022 8:40:38 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file...
+
+Apr 14, 2022 8:40:39 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file done.
+
+Apr 14, 2022 8:40:39 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions...
+
+Apr 14, 2022 8:40:39 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions done.
+
+Apr 14, 2022 8:40:39 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering...
+
+Apr 14, 2022 8:40:39 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering done.
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format...
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format done.
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document...
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document done.
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file...
+
+Apr 14, 2022 8:41:02 PM codemetropolis.toolchain.commons.util.FileLogger logError
+SEVERE: Error: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 62; columnNumber: 3; The element type "linking" must be terminated by the matching end-tag "</linking>".]
+
+codemetropolis.toolchain.mapping.exceptions.MappingReaderException: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 62; columnNumber: 3; The element type "linking" must be terminated by the matching end-tag "</linking>".]
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:117)
+	at codemetropolis.toolchain.mapping.MappingExecutor.execute(MappingExecutor.java:35)
+	at codemetropolis.toolchain.mapping.Main.main(Main.java:40)
+Caused by: javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 62; columnNumber: 3; The element type "linking" must be terminated by the matching end-tag "</linking>".]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.createUnmarshalException(AbstractUnmarshallerImpl.java:335)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.createUnmarshalException(UnmarshallerImpl.java:563)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:249)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal(UnmarshallerImpl.java:214)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:157)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:162)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:171)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:189)
+	at codemetropolis.toolchain.mapping.model.Mapping.readFromXML(Mapping.java:114)
+	... 2 more
+Caused by: org.xml.sax.SAXParseException; systemId: file:/C:/Users/Gustyff/Documents/CodeMetropolis/sources/distro/../../examples/mapping/sourcemeter_mapping_example_2_0.xml; lineNumber: 62; columnNumber: 3; The element type "linking" must be terminated by the matching end-tag "</linking>".
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:204)
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:178)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:400)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
+	at com.sun.org.apache.xerces.internal.impl.XMLScanner.reportFatalError(XMLScanner.java:1472)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanEndElement(XMLDocumentFragmentScannerImpl.java:1751)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2969)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:605)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:113)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:507)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:867)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:796)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:142)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1216)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:644)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:243)
+	... 8 more
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file...
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file done.
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions...
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions done.
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering...
+
+Apr 14, 2022 8:41:03 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering done.
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format...
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format done.
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document...
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document done.
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file...
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file done.
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Validating mapping...
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Validating mapping done.
+
+Apr 14, 2022 8:42:12 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading CDF file...
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading CDF file done.
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Linking metrics to buildables...
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Linking metrics to buildables done.
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Generating input for placing...
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Generating input for placing done.
+
+Apr 14, 2022 8:42:13 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file...
+
+Apr 14, 2022 8:42:14 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file done.
+
+Apr 14, 2022 8:42:14 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions...
+
+Apr 14, 2022 8:42:14 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions done.
+
+Apr 14, 2022 8:42:14 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering...
+
+Apr 14, 2022 8:42:14 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering done.
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format...
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Converting input to CDF format done.
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document...
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Converter: Printing CDF document done.
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file...
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Reading map file done.
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Mapping: Validating mapping...
+
+Apr 14, 2022 8:42:41 PM codemetropolis.toolchain.commons.util.FileLogger logError
+SEVERE: Error: Linking ( method, TCLOC -> floor, self-destructs ) is not supported.
+
+codemetropolis.toolchain.mapping.exceptions.NotSupportedLinkingException: Linking ( method, TCLOC -> floor, self-destructs ) is not supported.
+	at codemetropolis.toolchain.mapping.model.Linking.validate(Linking.java:97)
+	at codemetropolis.toolchain.mapping.model.Mapping.validate(Mapping.java:138)
+	at codemetropolis.toolchain.mapping.MappingExecutor.execute(MappingExecutor.java:47)
+	at codemetropolis.toolchain.mapping.Main.main(Main.java:40)
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file...
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Reading input file done.
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions...
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Calculating building sizes and positions done.
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering...
+
+Apr 14, 2022 8:42:42 PM codemetropolis.toolchain.commons.util.FileLogger logInfo
+INFO: Placing: Generating input for rendering done.
+

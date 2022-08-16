@@ -32,6 +32,10 @@ public class Boxel implements Primitive {
 		if(position.getY() < 0 || position.getY() >= 255) return;
 		
 		switch(block.getId()) {
+		    // If the generated block's ID is 54(that means it's a chest), it will always spawn with one piece of stone(block id: 1) inside it.
+			case 54:
+				world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[] {1, 1});
+				break;
 			case 63:
 				world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(), info);
 				break;

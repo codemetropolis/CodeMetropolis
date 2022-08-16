@@ -17,9 +17,17 @@ public class CMLabel extends JLabel {
 
   /**
    * Constructs a {@link CMLabel} instance.
+   */
+  public CMLabel() {
+    super();
+  }
+
+  /**
+   * Constructs a {@link CMLabel} instance.
    *
    * @param label The text for this label.
    */
+
   public CMLabel(String label) {
     super(label);
 

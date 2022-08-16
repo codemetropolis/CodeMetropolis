@@ -5,6 +5,10 @@
 **/.settings/**
 **/.recommenders/**
 **/RemoteSystemsTempFiles/**
+**/sources/.scannerwork/**
+**/sources/gui/sonar-project.properties/**
+**/sources/gui/.scannerwork/**
+
 
 **/.codemetropolis/**
 **/.columbus_java/**
