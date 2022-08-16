@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import codemetropolis.toolchain.commons.cmxml.CmxmlValidator;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlValidationFailedException;
+import codemetropolis.toolchain.commons.exceptions.SchemeNotSetException;
 import codemetropolis.toolchain.commons.executor.AbstractExecutor;
 import codemetropolis.toolchain.commons.executor.ExecutorArgs;
 import codemetropolis.toolchain.commons.util.FileUtils;
@@ -18,6 +19,8 @@ import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.exceptions.RenderingException;
 import codemetropolis.toolchain.rendering.exceptions.TooLongRenderDurationException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 public class RenderingExecutor extends AbstractExecutor {
 	
@@ -60,7 +63,7 @@ public class RenderingExecutor extends AbstractExecutor {
 			printError(e, Resources.get("missing_input_xml_error"));
 			return false;
 		} catch (CmxmlValidationFailedException e) {
-			printError(e, Resources.get("invalid_input_xml_error"));
+			print(Resources.get("invalid_xml_input_type_error")); // 2022.04.24. Tajti Sándor
 			return false;
 		}
 		
