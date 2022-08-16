@@ -20,6 +20,7 @@
 		<module>placing</module>
 		<module>rendering</module>
 		<module>converter</module>
+		<module>cdfreducer</module>
 	</modules>
 
 	<dependencyManagement>
