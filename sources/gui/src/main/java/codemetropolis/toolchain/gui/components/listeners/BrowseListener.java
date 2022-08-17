@@ -40,6 +40,7 @@ public class BrowseListener implements ActionListener {
   public void actionPerformed(ActionEvent event) {
     if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
       fileNameTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+      fileNameTextField.requestFocus();
     }
   }
 
