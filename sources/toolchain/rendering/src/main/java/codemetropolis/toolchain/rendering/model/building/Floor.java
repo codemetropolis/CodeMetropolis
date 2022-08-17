@@ -9,6 +9,7 @@ import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.primitive.Door;
 import codemetropolis.toolchain.rendering.model.primitive.EmptyBox;
+import codemetropolis.toolchain.rendering.model.primitive.Ladder;
 import codemetropolis.toolchain.rendering.model.primitive.Row;
 import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
 import codemetropolis.toolchain.rendering.model.primitive.WallSign;
@@ -28,8 +29,21 @@ public class Floor extends Building {
 		prepareDoor();
 		prepareSigns();
 		prepareTorches();
+		prepareLadders();
 	}
 	
+	/**
+	 * Puts ladders on the four corners of the floor all along the edges.
+	 */
+	private void prepareLadders() {
+		for(int i = 0; i < size.getY(); i++){
+			primitives.add(new Ladder(position.getX(), position.getY() + i, position.getZ() - 1, Ladder.Orientation.NORTH));	
+			primitives.add(new Ladder(position.getX() - 1, position.getY() + i, position.getZ() + size.getZ() - 1, Ladder.Orientation.WEST));
+			primitives.add(new Ladder(position.getX() + size.getX() - 1, position.getY() + i, position.getZ() + size.getZ(), Ladder.Orientation.SOUTH));
+			primitives.add(new Ladder(position.getX() + size.getX(), position.getY() + i, position.getZ(), Ladder.Orientation.EAST));
+		}
+	}
+
 	protected void prepareDoor() {
 		BasicBlock _red = new BasicBlock( "minecraft:redstone_block" );
 		BasicBlock _lgt = new BasicBlock( "minecraft:lit_redstone_lamp" );

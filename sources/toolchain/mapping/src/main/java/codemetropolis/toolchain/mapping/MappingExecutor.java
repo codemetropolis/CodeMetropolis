@@ -19,7 +19,7 @@ public class MappingExecutor extends AbstractExecutor {
 
 	public static final double MIN_SCALE = 0.01;
 	public static final double MAX_SCALE = 100;
-	
+
 	@Override
 	public boolean execute(ExecutorArgs args) {
 		MappingExecutorArgs mappingArgs = (MappingExecutorArgs)args;
@@ -28,7 +28,12 @@ public class MappingExecutor extends AbstractExecutor {
 			printError(null, Resources.get("invalid_scale_error"), MIN_SCALE, MAX_SCALE);
 			return false;
 		}
-		
+
+		 /**
+		 * try-catch blocks to handle invalid XML inputs.
+		 * @param mapping XML file content
+		 * @param MappingReaderException Invalid XML content
+		 */
 		print(Resources.get("reading_mapping"));
 		Mapping mapping;
 		try {
@@ -36,8 +41,8 @@ public class MappingExecutor extends AbstractExecutor {
 		} catch (FileNotFoundException e) {
 			printError(e, Resources.get("mapping_not_found_error"));
 			return false;
-		} catch (MappingReaderException e) {
-			printError(e, e.getMessage());
+		} catch (MappingReaderException e) { //we print a warning, instead of a long error message.
+			System.out.println("The XML file's content is invalid.");
 			return false;
 		}
 		print(Resources.get("reading_mapping_done"));
@@ -85,8 +90,7 @@ public class MappingExecutor extends AbstractExecutor {
 			return false;
 		}
 		print(Resources.get("mapping_printing_output_done"));
-		
+
 		return true;
 	}
-	
 }

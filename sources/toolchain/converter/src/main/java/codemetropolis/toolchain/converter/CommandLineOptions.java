@@ -10,8 +10,11 @@ public class CommandLineOptions {
 	
 	@Option(name="-t", aliases = {"--type"})
 	private String type = null;
-	
-	@Option(name="-s", aliases = { "--source", "-i", "--input" })
+
+	/**
+	 * Option [-i], input, the path of the input graph file. Required
+	 */
+	@Option(name="-i", aliases = { "--input" })//overwrote [-s] to [-i], delete "--source, -s"
 	private String source = null;
 	
 	@Option(name="-o", aliases = {"--output"})

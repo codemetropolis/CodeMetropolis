@@ -1,10 +1,17 @@
 package codemetropolis.toolchain.gui.metricgenerators;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
+import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
@@ -28,6 +35,9 @@ public class SourceMeterGenerator extends CMMetricPanel {
 
   private static final FileFilter EXE_FILTER = new ExeFileFilter();
 
+  private static final Color colorGreen = Color.decode(Translations.t("color_green"));
+  private static final Color colorRed = Color.decode(Translations.t("color_red"));
+
   private CMTextField projectRootPath;
   private CMTextField sourceMeterPath;
 
@@ -44,12 +54,63 @@ public class SourceMeterGenerator extends CMMetricPanel {
     addSourceMeterExecutableField();
   }
 
+  public boolean validatePath(String path) {
+    if (path.isEmpty())
+      return false;
+    try {
+      return Files.exists(Paths.get(path));
+    } catch (InvalidPathException | NullPointerException ex) {
+      return false;
+    }
+  }
+
+  /**
+   * Function for checking the project root field, if the file is correct, the field turns green, otherwise it turns red.
+   *
+   * @return Return with focuslistener.
+   */
+  public FocusListener getFocusListener() {
+    FocusListener focusListener = new FocusListener() {
+      public void focusGained(FocusEvent focusEvent) {
+        try {
+          JTextField src = (JTextField) focusEvent.getSource();
+          if (!src.getText().isEmpty()) {
+            if (validatePath(src.getText())) {
+              src.setBackground(colorGreen);
+            } else {
+              src.setBackground(colorRed);
+            }
+          }
+        } catch (ClassCastException ignored) {
+          GuiUtils.showError(Translations.t("gui_err_unexpected_err"));
+        }
+      }
+
+      public void focusLost(FocusEvent focusEvent) {
+        try {
+          JTextField src = (JTextField) focusEvent.getSource();
+          if (validatePath(src.getText())) {
+            src.setBackground(colorGreen);
+          } else {
+            src.setBackground(colorRed);
+          }
+        } catch (ClassCastException ignored) {
+          GuiUtils.showError(Translations.t("gui_err_unexpected_err"));
+        }
+      }
+    };
+    return focusListener;
+  }
+
   /**
    * Adds the project root browser to the panel.
    */
   public void addProjectRootField() {
     CMLabel label = new CMLabel(Translations.t("gui_l_project_root"), 5, 5, 120, 30);
     projectRootPath = new CMTextField(130, 5, 225, 30);
+
+    projectRootPath.addFocusListener(getFocusListener());
+
     CMButton browseButton = new CMButton(Translations.t("gui_b_browse"), 360, 5, 100, 30);
     browseButton.addActionListener(new BrowseListener(projectRootPath, JFileChooser.DIRECTORIES_ONLY, null));
 

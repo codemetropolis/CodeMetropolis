@@ -29,8 +29,13 @@ public class PlacingExecutor extends AbstractExecutor {
 		} catch (IOException e) {
 			printError(e, Resources.get("missing_input_xml_error"));
 			return false;
+
 		} catch (CmxmlValidationFailedException e) {
-			printError(e, Resources.get("invalid_input_xml_error"));
+			/** Warns the user that the input file content is invalid 
+			 *  and exits normally without creating the output file.
+			 */
+			printError(e, "\nmappingToPlacing.xml is invalid," +
+					     " please check the content of the input file or generate new mappingToPlacing.xml.");
 			return false;
 		}
 		
@@ -61,7 +66,9 @@ public class PlacingExecutor extends AbstractExecutor {
 		try {
 			buildables.writeToFile(placingArgs.getOutputFile(), "placing", "rendering", "1.0");
 		} catch (CmxmlWriterException e) {
-			printError(e, Resources.get("cmxml_writer_error"));
+			// Warns the user that the output file parameter value is invalid in placing and exits normally without creating the output file.
+			printError(e, "\nThe output file parameter is invalid!" +
+					"Please check that the drive exist!");
 			return false;
 		}
 		print(Resources.get("placing_printing_output_done"));
