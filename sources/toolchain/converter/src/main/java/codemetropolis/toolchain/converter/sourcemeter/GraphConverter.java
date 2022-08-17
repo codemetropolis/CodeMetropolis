@@ -1,5 +1,6 @@
 package codemetropolis.toolchain.converter.sourcemeter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,18 +22,29 @@ import graphlib.Node;
 
 public class GraphConverter extends CdfConverter {
 	
-	public GraphConverter(Map<String, String> params) {
-		super(params);
+	public GraphConverter(Map<String, String> params, boolean verboseMode) {
+		super(params, verboseMode);
 	}
 
 	private static final String ROOT_NODE_ID = "L100";
 	
 	@Override
 	public CdfTree createElements(String graphPath) {
+		boolean verboseMode = super.getVerboseMode();
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating elements.\r\n" : "");
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating empty graph.\r\n" : "");
 		Graph graph = new Graph();
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating empty graph done.\r\n" : "");
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Loading path into graph.\r\n" : "");
 		graph.loadBinary(graphPath);
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Loading path into graph done.\r\n" : "");
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Finding root node.\r\n" : "");
 		Node root = graph.findNode(ROOT_NODE_ID);
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Finding root node done.\r\n" : "");
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating child elements recursively.\r\n" : "");
 		CdfElement rootElement = createElementsRecursively(root);
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating child elements recursively done.\r\n" : "");
+		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating elements done.\r\n" : "");
 		return new CdfTree(rootElement);
 	}
 	

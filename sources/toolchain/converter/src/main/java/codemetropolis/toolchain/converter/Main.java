@@ -32,6 +32,13 @@ public class Main {
 	    	System.err.println(Resources.get("converter_usage"));
 	    	return;
 	    }
+
+		/**
+		 * Prints out for user if verbose mode is enabled
+		 */
+		if(options.getVerboseMode()) {
+	    	System.out.println(Resources.get("verbose_mode_enabled"));
+	    }
 	    
 	    ConverterType converterType = null;
 	    try {
@@ -72,7 +79,8 @@ public class Main {
 	    			converterType,
 		    		options.getSource(),
 		    		options.getOutputFile(),
-		    		params
+		    		params,
+					options.getVerboseMode()
 	    		));	
 		
 	}

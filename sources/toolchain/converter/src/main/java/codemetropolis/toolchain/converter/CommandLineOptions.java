@@ -20,6 +20,9 @@ public class CommandLineOptions {
 	@Option(name="-p", handler = StringArrayOptionHandler.class, aliases = {"--params"})
 	private String[] params = null;
 	
+	@Option(name="-v", aliases = {"--verbose"})
+	private boolean verboseMode = false;
+	
 	public String getOutputFile(){
 		return outputFile;
 	}
@@ -38,6 +41,13 @@ public class CommandLineOptions {
 
 	public String[] getParams() {
 		return params;
+	}
+
+	/**
+	 * @return is verbose mode argument given
+	 */
+	public boolean getVerboseMode() {
+		return verboseMode;
 	}
 	
 }

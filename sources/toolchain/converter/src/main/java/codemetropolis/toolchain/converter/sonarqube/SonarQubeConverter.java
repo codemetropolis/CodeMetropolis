@@ -28,8 +28,8 @@ public class SonarQubeConverter extends CdfConverter {
 	private Map<Integer, SonarResource> resources;
 	private Map<Integer, CdfElement> cdfElements;
 	
-	public SonarQubeConverter(Map<String, String> params) {
-		super(params);
+	public SonarQubeConverter(Map<String, String> params, boolean verboseMode) {
+		super(params, verboseMode);
 		resources = new HashMap<>();
 		cdfElements = new HashMap<>();
 	}
