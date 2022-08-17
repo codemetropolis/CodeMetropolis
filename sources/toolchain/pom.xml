@@ -20,6 +20,7 @@
 		<module>placing</module>
 		<module>rendering</module>
 		<module>converter</module>
+		<module>ixmlfiltering</module>
 	</modules>
 
 	<dependencyManagement>
@@ -43,6 +44,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>converter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>ixmlfiltering</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
