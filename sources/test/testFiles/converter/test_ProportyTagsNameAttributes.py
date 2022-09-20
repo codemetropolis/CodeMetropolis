@@ -3,13 +3,13 @@ import xml.etree.ElementTree as ET
 
 jar = 'converter'
 
-def test_PropertyTagsIntTypeValueAttribute(expected, output):
+def test_PropertyTagsNameAttributes(expected, output):
 
     outputFilePath = output + "/converterToMapping.xml"
     expectedFilePath = expected
     
-    expectedPropertyValueAttr = []
-    outputPropertyValueAttr = []
+    expectedPropertyNameAttr = []
+    outputPropertyNameAttr = []
 
     try:
         expectedFile = ET.parse(expectedFilePath)
@@ -21,23 +21,22 @@ def test_PropertyTagsIntTypeValueAttribute(expected, output):
         for propertys in expectedRootTag.iter('properties'):
             length = len(propertys)
             for i in range(length):
-                if(propertys[i].get('type') == 'int'):
-                    expectedPropertyValueAttr.append(propertys[i].get('value'))            
+                expectedPropertyNameAttr.append(propertys[i].get('name'))            
 
         for propertys in outputRootTag.iter('properties'):
             length = len(propertys)
             for i in range(length):
-                if(propertys[i].get('type') == 'int'):
-                    outputPropertyValueAttr.append(propertys[i].get('value')) 
+                outputPropertyNameAttr.append(propertys[i].get('name')) 
                 
-        length = len(expectedPropertyValueAttr)
+        length = len(expectedPropertyNameAttr)
         passCounter = length
         
         for i in range(length):
-            if(expectedPropertyValueAttr[i] != outputPropertyValueAttr[i]):
+            if(expectedPropertyNameAttr[i] != outputPropertyNameAttr[i]):
                 passCounter = length - 1
-                     
-        assert length == passCounter, "One or more value attribute of the property tags are not same!"
+        
+              
+        assert length == passCounter, "One or more name attribute of the property tags are not same!"
         
     except ET.ParseError as exception:
         pytest.fail("Missing or mystyped tag or tags!")

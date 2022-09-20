@@ -8,8 +8,8 @@ def testElementTagCounter(expected, output):
     outputFilePath = output + "/converterToMapping.xml"
     expectedFilePath = expected
     
-    expectedElementTagList = []
-    outputElementTagList = []
+    expectedElementTagCounter = 0
+    outputElementTagCounter = 0
 
     try:
         expectedFile = ET.parse(outputFilePath)
@@ -19,11 +19,11 @@ def testElementTagCounter(expected, output):
         outputRoot = outputFile.getroot()
         
         for elements in outputRoot.iter('element'):
-            outputElementTagList.append(elements.get('name'))
+            expectedElementTagCounter = expectedElementTagCounter + 1
         for elements in expectedRoot.iter('element'):
-            expectedElementTagList.append(elements.get('name'))   
+            outputElementTagCounter = outputElementTagCounter + 1
             
-        assert expectedElementTagList == outputElementTagList, "The number of 'element' tags are not same!"
+        assert outputElementTagCounter == outputElementTagCounter, "The number of 'element' tags are not same!"
     except ET.ParseError as exception:
         pytest.fail("Missing or mystyped tag or tags!")
     
