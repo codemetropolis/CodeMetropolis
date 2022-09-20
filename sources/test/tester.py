@@ -109,7 +109,7 @@ def runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutp
         pytest.main(["-x", argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath])
         
     if (argPytestFile != None):
-        pytest.main(["-x", pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath])
+        pytest.main(["-x", pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
     
 #jars_functions
 #converter_jar_function
