@@ -1,14 +1,15 @@
 import pytest
 import xml.etree.ElementTree as ET
 
-jar = 'converter'
+jar = 'mapping'
 
-def nameAttribute(RootTag, List):
-    List.append(RootTag.get('name'))  
+def nameAttributesWalk(RootTag, List):
+    for elements in RootTag.iter('buildable'):
+        List.append(elements.get('name')) 
             
-def testRootTagsNameAttribute(expected, output):
+def testBuildableTagsNameAttributes(expected, output):
 
-    outputFilePath = output + "/converterToMapping.xml"
+    outputFilePath = output + "/mappingToPlacing.xml"
     expectedFilePath = expected
     expectedNameAttributesList = []
     outputNameAttributesList = []
@@ -27,9 +28,9 @@ def testRootTagsNameAttribute(expected, output):
     except ET.ParseError as exception:
         pytest.fail("Missing or mistyped tag or tags.")    
 
-    nameAttribute(expectedRootTag, expectedNameAttributesList)
+    nameAttributesWalk(expectedRootTag, expectedNameAttributesList)
     
-    nameAttribute(outputRootTag, outputNameAttributesList)   
+    nameAttributesWalk(outputRootTag, outputNameAttributesList)   
     
     expectedListLength = len(expectedNameAttributesList)
     passCounter = expectedListLength
@@ -41,14 +42,14 @@ def testRootTagsNameAttribute(expected, output):
                 errorName = outputNameAttributesList[i]
                 passCounter = expectedListLength - 1
                 break
-
+                
     except IndexError as exception:
         pytest.fail("The structure of the xml tree does not match.")
     
     try:
         assert expectedListLength == passCounter
     except AssertionError as exception:
-        pytest.fail("Mismatched name atribute in root tag. Name attribute is '" + str(errorName) + "' but the correct should be '" + str(correctName) + "'.")    
+        pytest.fail("Mismatched name atributes. One name is '" + str(errorName) + "' but the correct should be '" + str(correctName) + "'.")    
     
     
     
