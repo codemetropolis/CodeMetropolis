@@ -3,20 +3,20 @@ import xml.etree.ElementTree as ET
 
 jar = 'converter'
 
-def nameAttributesWalk(RootTag, List):
-    for elements in RootTag.iter('element'):
-        List.append(elements.get('name')) 
+def typeAttributesWalk(RootTag, List):
+    for elements in RootTag.iter('property'):
+        List.append(elements.get('type')) 
             
-def testElementTagsNameAttributes(expected, output):
+def testPropertyTagsTypeAttributes(expected, output):
 
     outputFilePath = output + "/converterToMapping.xml"
     expectedFilePath = expected
-    expectedNameAttributesList = []
-    outputNameAttributesList = []
+    expectedPropertyAttributesList = []
+    outputPropertyAttributesList = []
     expectedRootTag = ""
     outputRootTag = ""
-    correctName = 0 
-    errorName = 0
+    correctType = 0 
+    errorType = 0
     
     try:    
         expectedFile = ET.parse(expectedFilePath)
@@ -28,29 +28,28 @@ def testElementTagsNameAttributes(expected, output):
     except ET.ParseError as exception:
         pytest.fail("Missing or mistyped tag or tags.")    
 
-    nameAttributesWalk(expectedRootTag, expectedNameAttributesList)
+    typeAttributesWalk(expectedRootTag, expectedPropertyAttributesList)
     
-    nameAttributesWalk(outputRootTag, outputNameAttributesList)   
+    typeAttributesWalk(outputRootTag, outputPropertyAttributesList)   
     
-    expectedListLength = len(expectedNameAttributesList)
+    expectedListLength = len(expectedPropertyAttributesList)
     passCounter = expectedListLength
     
     try:
         for i in range(expectedListLength):
-            if(expectedNameAttributesList[i] != outputNameAttributesList[i]):
-                correctName = expectedNameAttributesList[i]
-                errorName = outputNameAttributesList[i]
+            if(expectedPropertyAttributesList[i] != outputPropertyAttributesList[i]):
+                correctType = expectedPropertyAttributesList[i]
+                errorType = outputPropertyAttributesList[i]
                 passCounter = expectedListLength - 1
                 break
-                
     except IndexError as exception:
         pytest.fail("The structure of the xml tree does not match.")
     
     try:
         assert expectedListLength == passCounter
     except AssertionError as exception:
-        pytest.fail("Mismatched name atributes. One name is '" + str(errorName) + "' but the correct should be '" + str(correctName) + "'.")    
-    
+        pytest.fail("Mismatched type atributes. One type is '" + str(errorType) + "' but the correct should be '" + str(correctType) + "'.")    
+        
     
     
     

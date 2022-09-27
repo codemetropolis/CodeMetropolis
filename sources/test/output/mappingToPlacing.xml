@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <buildables from="mapping" to="placing" version="1.0">
-    <buildable id="cef57776-1d10-47c1-b5cc-0cabce6219f6" name="" type="container">
+    <buildable id="7be03e79-8eaf-46ac-8e9f-0fa3cbb5266c" name="" type="container">
         <position x="0" y="0" z="0"/>
         <size x="9" y="9" z="9"/>
         <attributes/>
         <children>
-            <buildable id="3292b45c-08cc-4817-9a41-36acd09ea4c3" name="&lt;root_package&gt;" type="ground">
+            <buildable id="2a80fecf-bab8-4bcb-9287-a76a877909d6" name="&lt;root_package&gt;" type="ground">
                 <position x="0" y="0" z="0"/>
                 <size x="9" y="9" z="9"/>
                 <attributes/>
                 <children>
-                    <buildable id="da6ae6c3-6b0a-4c8e-95a9-b38945b96f22" name="unnamed package" type="ground">
+                    <buildable id="4280def3-b03c-4f52-80fc-a1c092431ce6" name="unnamed package" type="ground">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children/>
+                    </buildable>
+                    <buildable id="2f5418db-4718-424d-8cee-e8176126d696" name="SimpleHelloWorld" type="ground">
                         <position x="0" y="0" z="0"/>
                         <size x="9" y="9" z="9"/>
                         <attributes/>
                         <children>
-                            <buildable id="ae26c079-4255-4904-9689-6cfe6324ec97" name="HelloWorld" type="garden">
+                            <buildable id="06a536f3-b15c-472b-9b91-fd4636eac210" name="HelloWorld" type="garden">
                                 <position x="0" y="0" z="0"/>
                                 <size x="9" y="9" z="9"/>
                                 <attributes>
                                     <attribute name="flower-ratio" value="1.0"/>
                                 </attributes>
                                 <children>
-                                    <buildable id="5957fcd8-61d8-4195-8990-938b771843fe" name="void main(String[] args)" type="floor">
+                                    <buildable id="30470fc5-83e0-4ce4-8c36-67bb61bc6811" name="void main(String[] args)" type="floor">
                                         <position x="0" y="0" z="0"/>
                                         <size x="9" y="13" z="9"/>
                                         <attributes>

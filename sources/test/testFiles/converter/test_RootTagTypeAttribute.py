@@ -3,20 +3,55 @@ import xml.etree.ElementTree as ET
 
 jar = 'converter'
 
-def testRootTagTypeAttribute(expected, output):
+def typeAttribute(RootTag, List):
+    List.append(RootTag.get('type'))  
+            
+def testElementTagsTypeAttributes(expected, output):
 
     outputFilePath = output + "/converterToMapping.xml"
     expectedFilePath = expected
+    expectedTypeAttributesList = []
+    outputTypeAttributesList = []
+    expectedRootTag = ""
+    outputRootTag = ""
+    correctType = 0 
+    errorType = 0
     
-    expectedFile = ET.parse(outputFilePath)
-    outputFile = ET.parse(expectedFilePath)
+    try:    
+        expectedFile = ET.parse(expectedFilePath)
+        outputFile = ET.parse(outputFilePath)
+    
+        expectedRootTag = expectedFile.getroot()
+        outputRootTag = outputFile.getroot()
+    
+    except ET.ParseError as exception:
+        pytest.fail("Missing or mistyped tag or tags.")    
 
-    expectedName = expectedFile.getroot().get('type')
-    outputName = outputFile.getroot().get('type')
+    typeAttribute(expectedRootTag, expectedTypeAttributesList)
     
-    assert expectedName == outputName, "The 'type' attribute of the root tag is not same!"
+    typeAttribute(outputRootTag, outputTypeAttributesList)   
+    
+    expectedListLength = len(expectedTypeAttributesList)
+    passCounter = expectedListLength
+    
+    try:
+        for i in range(expectedListLength):
+            if(expectedTypeAttributesList[i] != outputTypeAttributesList[i]):
+                correctType = expectedTypeAttributesList[i]
+                errorType = outputTypeAttributesList[i]
+                passCounter = expectedListLength - 1
+                break
+
+    except IndexError as exception:
+        pytest.fail("The structure of the xml tree does not match.")
+    
+    try:
+        assert expectedListLength == passCounter
+    except AssertionError as exception:
+        pytest.fail("Mismatched type atributes in root tag. One type is '" + str(errorType) + "' but the correct should be '" + str(correctType) + "'.")    
     
     
     
     
     
+

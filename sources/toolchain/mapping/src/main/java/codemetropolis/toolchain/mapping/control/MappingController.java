@@ -49,7 +49,7 @@ public class MappingController {
 		this.scale = scale;
 		this.skipInvalidStructures = skipInvalidStructures;
 	}
-	
+	//ez a rész építi fel az első root buildable-t
 	public void createBuildablesFromCdf(String filename) throws CdfReaderException {
 		attributesByBuildables.clear();
 		
@@ -81,7 +81,7 @@ public class MappingController {
 			throw new CdfReaderException(e);
 		}
 	}
-	
+	//sztem ez linkeli össze a buildables tageket a metrikekkel, amik a property adatok voltak
 	public BuildableTree linkBuildablesToMetrics() {
 		
 		List<Linking> linkings = mapping.getLinkings();
@@ -90,6 +90,7 @@ public class MappingController {
 		for(Map.Entry<Buildable, Map<String, String>> entry : attributesByBuildables.entrySet()) {
 			
 			Buildable b = entry.getKey();
+			//itt kéri ki sztem a propertykből a valuet
 			Map<String, String> attributes = entry.getValue();
 			
 			Linking linking = null;
@@ -136,7 +137,8 @@ public class MappingController {
 		prepareBuildables(buildableTree);
 		return buildableTree;
 	}
-	
+	//eddig legenerálta a buildable-eket, gyermekeket is, és hozzárendelte a metric értékeket.
+	//itt sztem propertyként a buildable position és size tagjára gondol, azoknak állítja be az értéket
 	private void setProperty(Buildable b, String propertyName, Object value, boolean adjustSize) {
 
 		switch(propertyName) {
@@ -144,10 +146,12 @@ public class MappingController {
 			case "width":
 			case "length":
 				value = Conversion.toInt(value);
+				// itt van az, hogy ha az adjustSize (tehát méretbeállítás) igaz, akkor állít méretet. Ha nem, akkor default 9 sztem. az még nem tiszta, hogy az a value milyen érték, de valahol itt fent van.
 				if(adjustSize) value = Conversion.toInt(MIN_SIZE + (int)value * scale);
 				break;
 		}
 		
+		//sztem itt állítja be ténylegesen az értékeket
 		switch(propertyName) {
 			case "height":
 				b.setSizeY((int)value);
@@ -162,10 +166,10 @@ public class MappingController {
 				b.addAttribute(propertyName, String.valueOf(value));
 		}	
 	}
-	
+	//itt állítja be sztem a gyermek buildables attribútumait
 	private void setChildren(Buildable buildable, Element element){
 		if(buildableStack.isEmpty()){
-			buildable.setCdfNames(buildable.getName());
+			buildable.setCdfNames(buildable.getName()); //itt állítja be a buildable name attribútumát
 		} else {
 			Buildable top = buildableStack.peek();
 			if(buildable.getCdfNames() == null){
@@ -174,6 +178,7 @@ public class MappingController {
 				buildable.setCdfNames(sb.toString());
 			}
 		}
+	//itt rakja össze a buildables gyermekek sorrendjét
 		buildableStack.add(buildable);
 		Node children = element.getChildNodes().item(1);
 		NodeList childrenNodes = children.getChildNodes();
@@ -204,7 +209,7 @@ public class MappingController {
 		}
 		attributesByBuildables.put(buildable, attributes);
 	}
-	
+	//itt szedi össze konkrétan a buildable az attribútumainak értékeit
 	private Buildable createBuildable(Element element) {
 		String id = UUID.randomUUID().toString();
 		String name = element.getAttribute("name");
@@ -229,6 +234,7 @@ public class MappingController {
 				Element propElement = (Element) propNode;
 				Object value;
 				Double doubleValue = null;
+				// itt állítja be a valuenak a propertyk értékeit 
 				switch(propElement.getAttribute("type")) {
 					case "string":
 						value = propElement.getAttribute("value");
@@ -249,6 +255,7 @@ public class MappingController {
 					Element parentElement = (Element)element.getParentNode();
 					limitController.add(parentElement.getAttribute("type").toLowerCase(), propElement.getAttribute("name"), doubleValue);				
 				}
+				//itt szedi be a property nevét és a hozzá tartozó értéket
 				String name = propElement.getAttribute("name");
 				attributes.put(
 						name,
@@ -269,11 +276,11 @@ public class MappingController {
 		Iterator it = buildables.iterator();
 		while(it.hasNext()) {
 			Buildable b = it.next();
-			
+			//oké, az alap 9-ről mindig 3-mal nő a belső gyermekeknél a size és hozzá van adva + 1
 			if(b.getSizeX() % 2 == 0) b.setSizeX(b.getSizeX() + 1);
 			if(b.getSizeY() % 2 == 0) b.setSizeY(b.getSizeY() + 1);
 			if(b.getSizeZ() % 2 == 0) b.setSizeZ(b.getSizeZ() + 1);
-			
+			//és itt van, ha ez kisebb mint a minimum érték, akkor beállítja 9-re.
 			if(b.getSizeX() < MIN_SIZE) b.setSizeX(MIN_SIZE);
 			if(b.getSizeY() < MIN_SIZE) b.setSizeY(MIN_SIZE);
 			if(b.getSizeZ() < MIN_SIZE) b.setSizeZ(MIN_SIZE);
@@ -283,7 +290,7 @@ public class MappingController {
 			}
 		}
 	}
-	
+	//sztem itt építi fel a fát
 	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
 
 		BuildableTree.Iterator iterator = buildableTree.iterator();

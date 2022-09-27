@@ -106,7 +106,7 @@ def randomPytestFileSelect(argPytestFolder):
 #run_pytests_function
 def runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath):
     if (argPytestFile == None):
-        pytest.main(["-x", argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath])
+        pytest.main(["-x", argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
         
     if (argPytestFile != None):
         pytest.main(["-x", pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])

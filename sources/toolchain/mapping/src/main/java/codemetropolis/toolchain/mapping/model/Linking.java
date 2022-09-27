@@ -71,7 +71,7 @@ public class Linking {
 	public void removeBinding(Binding binding) {
 		bindings.remove(binding);
 	}
-	
+	//sztem itt lesz az, hogy milyen típusú blokkból épül fel az épület
 	public static String[] getSupportedProperties(Type buildableType) {
 		return SUPPORTED_PROPERTIES.get(buildableType);
 	}

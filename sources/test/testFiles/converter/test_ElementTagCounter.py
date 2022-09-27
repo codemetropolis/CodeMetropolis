@@ -3,29 +3,36 @@ import xml.etree.ElementTree as ET
 
 jar = 'converter'
 
+def elementWalk(RootTag, Counter):
+    for elements in RootTag.iter('element'):
+        Counter = Counter + 1
+    return Counter
+
 def testElementTagCounter(expected, output):
 
     outputFilePath = output + "/converterToMapping.xml"
     expectedFilePath = expected
-    
     expectedElementTagCounter = 0
     outputElementTagCounter = 0
 
     try:
-        expectedFile = ET.parse(outputFilePath)
-        outputFile = ET.parse(expectedFilePath)
+        expectedFile = ET.parse(expectedFilePath)
+        outputFile = ET.parse(outputFilePath)
         
         expectedRoot = expectedFile.getroot()
         outputRoot = outputFile.getroot()
-        
-        for elements in outputRoot.iter('element'):
-            expectedElementTagCounter = expectedElementTagCounter + 1
-        for elements in expectedRoot.iter('element'):
-            outputElementTagCounter = outputElementTagCounter + 1
-            
-        assert outputElementTagCounter == outputElementTagCounter, "The number of 'element' tags are not same!"
+
     except ET.ParseError as exception:
-        pytest.fail("Missing or mystyped tag or tags!")
+        pytest.fail("Missing or mistyped tag or tags.")
+
+    expectedElementTagCounter = elementWalk(expectedRoot, expectedElementTagCounter)
+    
+    outputElementTagCounter = elementWalk(outputRoot, outputElementTagCounter)
+    
+    try:
+        assert expectedElementTagCounter == outputElementTagCounter
+    except AssertionError as exception:
+        pytest.fail("The number of element tags does not match. There are " + str(outputElementTagCounter) + " in the output, while the expected number is " + str(expectedElementTagCounter) + ".") 
     
     
     
