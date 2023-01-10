@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="placing" to="rendering" version="1.0">
+    <buildable id="bc181f4e-cf49-4a62-bf19-ba1f50f6f524" name="" type="container">
+        <position x="0" y="60" z="0"/>
+        <size x="48" y="9" z="33"/>
+        <attributes/>
+        <children>
+            <buildable id="40475b12-c3b0-4832-a4a0-d831ca9a1100" name="&lt;root_package&gt;" type="ground">
+                <position x="3" y="61" z="3"/>
+                <size x="42" y="9" z="27"/>
+                <attributes/>
+                <children>
+                    <buildable id="e8b410aa-ff27-4a82-8016-a81d6e591c80" name="unnamed package" type="ground">
+                        <position x="33" y="62" z="6"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children/>
+                    </buildable>
+                    <buildable id="e732a6af-ad62-4c89-bc91-6cb8aa79d15f" name="SimpleHelloWorld" type="ground">
+                        <position x="6" y="62" z="6"/>
+                        <size x="21" y="9" z="21"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="728dedc2-586e-4126-9439-26d3cf60a91e" name="HelloWorld" type="garden">
+                                <position x="9" y="63" z="9"/>
+                                <size x="15" y="9" z="15"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="1.0"/>
+                                </attributes>
+                                <children>
+                                    <buildable id="b8c5bde1-4cf9-4e93-b49a-77eb4cc184cf" name="void main(String[] args)" type="floor">
+                                        <position x="12" y="64" z="12"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

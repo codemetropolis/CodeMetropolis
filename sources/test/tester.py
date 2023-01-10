@@ -13,9 +13,7 @@ from os import walk
 parser = argparse.ArgumentParser(description=' A program to define the compare between the expected output and fresly generated output of Codemetropolis')
 
 parser.add_argument('pytest_path', metavar='F', type=str,
-                    help='Run a specific pytest file or more from a folder')      
-#parser.add_argument('--pytest_file', dest='pytest_file_path', type=str,
-#                    help='Run one selected pytest file from the selected folder')                
+                    help='Run a specific pytest file or more from a folder')                
 parser.add_argument('input_path', metavar='I', type=str,
                     help='Selected input file path')       
 parser.add_argument('expected_output_path', metavar='E', type=str,
@@ -63,10 +61,10 @@ def warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput, argGene
         print("1Warning: There is no folder with this name or the path is invalid!")
         return -1
     if (str(argPytestFile) != "None" and path.exists(pathToPytestFile) == False):
-        print("2Warning: There is no pytest file with this name or the path is invalid!")
+        print("Warning: There is no pytest file with this name or the path is invalid!")
         return -1
     if (path.exists(argInput) == False):
-        print("3Warning: There is no file with this name or the path is invalid!")
+        print("Warning: There is no file with this name or the path is invalid!")
         return -1
     if (path.exists(argExpectedoutput) == False):
         print("Warning: There is no expected output file with this name or the path is invalid!")
