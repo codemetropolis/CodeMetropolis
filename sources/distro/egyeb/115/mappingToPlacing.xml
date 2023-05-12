@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="mapping" to="placing" version="1.0">
+    <buildable id="4c703c57-9f62-4efb-967f-41b346726aa9" name="" type="container">
+        <position x="0" y="0" z="0"/>
+        <size x="9" y="9" z="9"/>
+        <attributes/>
+        <children>
+            <buildable id="" name="root" type="ground">
+                <position x="0" y="0" z="0"/>
+                <size x="9" y="9" z="9"/>
+                <attributes/>
+                <children>
+                    <buildable id="" name="Row_9" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="txt" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_8" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="properties" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_11" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="xsd" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_7" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="project" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_10" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="xml" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="11"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="1"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_6" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="md" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_5" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="java" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="11" y="11" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="1"/>
+                                    <attribute name="BuiltMetric2" value="1"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="obsidian"/>
+                                    <attribute name="external_character" value="obsidian"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_4" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="jar" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_3" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="csv" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_2" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="classpath" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="" name="Row_1" type="garden">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="" name="" type="floor">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="BuiltMetric1" value="0"/>
+                                    <attribute name="BuiltMetric2" value="0"/>
+                                    <attribute name="BuiltMetric3" value="0"/>
+                                    <attribute name="character" value="glass"/>
+                                    <attribute name="external_character" value="metal"/>
+                                </attributes>
+                                <children/>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

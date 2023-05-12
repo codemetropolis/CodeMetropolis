@@ -64,6 +64,11 @@ def rendering_output_path(request):
     output_full_path = f"{output}/world"
     return output_full_path
 
+@pytest.fixture
+def expected_rendering_path(request):
+    expected_rendering = request.config.getoption("--expected")
+    return expected_rendering
+
 def count_tags(xml, tag):
     root = xml.getroot()
     return len(list(root.iter(tag)))
@@ -73,7 +78,6 @@ def root_tag(xml, attribute):
     return root.attrib.get(attribute)
 
 
-#Itt még ki lehetne az ismétlődő kódokat szervezni
 def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, selected_elem, selected_attr):
     root = tree.getroot()
 
@@ -118,7 +122,6 @@ def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, sele
                 diction[parents] = [tuple(sub_names)]
 
     return diction
-
 
 
 def extract_tags_and_attributes(tree, parent_path_elem, selected_attr):

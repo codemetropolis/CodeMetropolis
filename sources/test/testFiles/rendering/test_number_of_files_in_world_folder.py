@@ -2,9 +2,9 @@ import os
 
 jar = 'rendering'
 
-def test_number_of_files_in_world_folder(expected, rendering_output_path):
+def test_number_of_files_in_world_folder(expected_rendering_path, rendering_output_path):
     expected_files = []
-    for root, dirs, files in os.walk(expected):
+    for root, dirs, files in os.walk(expected_rendering_path):
         for file in files:
             expected_files.append(os.path.join(root, file))
 

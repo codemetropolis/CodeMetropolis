@@ -13,17 +13,23 @@ from os import walk
 parser = argparse.ArgumentParser(description='This is a Python script that uses command line arguments to perform regression tests by comparing expected output files with CodeMetropolis output files.')
 
 parser.add_argument('test_path', metavar='F', type=str,
-                    help='Specifies the path of one or multiple test files. Required argument!')                
+                    help='Specifies the path of one or multiple test files. Required argument!')  
+
 parser.add_argument('input_path', metavar='I', type=str,
-                    help='Specifies the path of the input files used for testing. Required argument!')       
+                    help='Specifies the path of the input files used for testing. Required argument!')  
+
 parser.add_argument('expected_output_path', metavar='E', type=str,
                     help='Specifies the path of the expected output files. Required argument!') 
+
 parser.add_argument('generated_output_path', metavar='O', type=str,
-                    help='Specifies the path of the generated output files by tools. Required argument!')                     
+                    help='Specifies the path of the generated output files by tools. Required argument!')  
+
 parser.add_argument('--mapping_file_path', dest='mapping_file_path', type=str,
-                    help='Specifies the path of the mapping file. Required argument, if you test mapping tool output!')     
+                    help='Specifies the path of the mapping file. Required argument, if you test mapping tool output!') 
+
 parser.add_argument('--type', dest='types', type=str,
                     help='Specifies the type for tool. Required argument, if you test converter or rendering tool output!')  
+                    
 parser.add_argument('--parameters', dest='parameters', type=str,
                     help='Optional parameters. You can use it if supported by the tool')                 
 
@@ -35,7 +41,6 @@ pathToPytestFile = None
 argInput = arguments.input_path
 mapping_path = arguments.mapping_file_path
 argExpectedoutput = arguments.expected_output_path
-#argGeneratedOutputPath = arguments.generated_output_path
 generatedOutputPath = arguments.generated_output_path
 parameters = arguments.parameters
 types = arguments.types
@@ -103,11 +108,6 @@ def dotSplitter(fileNames):
     fileName = fileNamesSplit[0]
     return fileName
 
-#output_folder_check_function
-#def generatedOutputFolderExist(generatedOutputPath):
-#    if (os.path.exists(generatedOutputPath) == False):
-#        os.mkdir(generatedOutputPath)
-
 #import_pytest_file_function
 def randomPytestFileSelect(argPytestFolder):
     sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
@@ -118,10 +118,10 @@ def randomPytestFileSelect(argPytestFolder):
 #run_pytests_function
 def runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath):
     if (argPytestFile == None):
-        pytest.main(["-x", argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
+        pytest.main([argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
         
     if (argPytestFile != None):
-        pytest.main(["-x", pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
+        pytest.main([pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
     
 #jars_functions
 #converter_jar_function
@@ -160,19 +160,18 @@ def renderingJar(argInput, types, generatedOutputPath):
     worldExist = os.path.exists(generatedOutputPath)
     if (worldExist == True):
         shutil.rmtree(generatedOutputPath)  
-    #shutil.move("world", '' + generatedOutputPath)
-    #generatedOutputFolderExist(generatedOutputPath)
+
     shutil.move(os.path.join('./', 'world'), os.path.join(generatedOutputPath, 'world'))
+    runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
 
 #MAIN
 while True:
-
 
     #import_pytest_file
     if (str(argPytestFile) != "None"):
         sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
         importPytestFile = __import__(dotSplitter(argPytestFile))
-        #ezt a random választást átalakítani, legalább azt nézze, hogy tesztfájlok vannak e benne
+        
     if (str(argPytestFile) == "None"):
         importPytestFile = __import__(randomPytestFileSelect(argPytestFolder))
 
@@ -201,7 +200,7 @@ while True:
     #rendering
     if('rendering' in selectedJar):
         renderingJar(argInput, types, generatedOutputPath)
-        runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
+        
     break
 
 

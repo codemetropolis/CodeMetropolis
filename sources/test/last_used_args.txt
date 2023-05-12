@@ -1,6 +1,4 @@
-C:/Users/Zoli/CodeMetropolis/sources/test/testFiles/converter
-C:/Users/Zoli/Documents/forrasok/115-116/gitstats
-C:/Users/Zoli/CodeMetropolis/sources/distro/egyeb/115/converterToMapping.xml
+C:/Users/Zoli/CodeMetropolis/sources/test/testFiles/rendering
+C:/Users/Zoli/CodeMetropolis/sources/distro/egyeb/115/placingToRendering.xml
+C:/Users/Zoli/CodeMetropolis/sources/distro/egyeb/115/world
 C:/Users/Zoli/CodeMetropolis/sources/distro/egyeb/out
-GitStats
-

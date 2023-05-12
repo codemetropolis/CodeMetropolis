@@ -9,7 +9,7 @@ entries = []
 entries_converter = []
 entries_mapping = []
 PROGRAM_NAME = "CodeMetropolis Tester Interface "
-VERSION = "v0.4.5"
+VERSION = "v0.5"
 
 #choose_file
 def select_file(entry):
