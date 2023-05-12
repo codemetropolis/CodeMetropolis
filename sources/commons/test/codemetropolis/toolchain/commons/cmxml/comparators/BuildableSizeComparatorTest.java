@@ -1,4 +1,4 @@
-/*
+
 package codemetropolis.toolchain.commons.cmxml.comparators;
 
 import static org.junit.Assert.assertTrue;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
-*/
+
 /** Test class for {@link Tunnel}, to test size comparator.
  * 
  * @author Csuvik Viktor {@literal D1YZL5}
@@ -16,7 +16,7 @@ import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
  *
  */
 
-/*
+
 public class BuildableSizeComparatorTest {
 
 	@Test
@@ -34,4 +34,4 @@ public class BuildableSizeComparatorTest {
 	}
 	
 }
-*/
+
