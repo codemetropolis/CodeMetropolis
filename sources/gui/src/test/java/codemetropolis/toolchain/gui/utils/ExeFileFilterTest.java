@@ -1,13 +1,11 @@
 package codemetropolis.toolchain.gui.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.jupiter.api.Test;
-
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test class for testing the {@link ExeFileFilter} for properly accepting and filtering files.
@@ -27,7 +25,7 @@ public class ExeFileFilterTest {
   public void testAcceptExeFile() throws IOException {
     File tempFile = File.createTempFile("test", ".exe");
     boolean result = instance.accept(tempFile);
-    assertEquals(result, true);
+    Assert.assertEquals(result, true);
   }
 
   /**
@@ -39,7 +37,7 @@ public class ExeFileFilterTest {
   public void testAcceptNonExeFile() throws IOException {
     File tempFile = File.createTempFile("test", ".xml");
     boolean result = instance.accept(tempFile);
-    assertEquals(result, false);
+    Assert.assertEquals(result, false);
   }
 
   /**
@@ -51,7 +49,7 @@ public class ExeFileFilterTest {
   public void testAcceptDirectory() throws IOException {
     File tempFolder = Files.createTempDirectory("test").toFile();
     boolean result = instance.accept(tempFolder);
-    assertEquals(result, true);
+    Assert.assertEquals(result, true);
   }
 
 }

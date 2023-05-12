@@ -8,7 +8,7 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 	private String worldPath;
 	private boolean overwriteSilently;
 	private int maxTime;
-	
+
 	public RenderingExecutorArgs(String inputFile, String worldPath) {
 		this(inputFile, worldPath, false);
 	}
@@ -16,7 +16,7 @@ public class RenderingExecutorArgs extends ExecutorArgs {
 	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently) {
 		this(inputFile, worldPath, overwriteSilently, Integer.MAX_VALUE);
 	}
-	
+
 	public RenderingExecutorArgs(String inputFile, String worldPath, boolean overwriteSilently, int maxTime) {
 		super();
 		this.inputFile = inputFile;

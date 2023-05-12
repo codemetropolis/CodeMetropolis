@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="mapping" to="placing" version="1.0">
+    <buildable id="0b8b0075-e055-4af4-86c6-918869f574bb" name="" type="container">
+        <position x="0" y="0" z="0"/>
+        <size x="9" y="9" z="9"/>
+        <attributes/>
+        <children>
+            <buildable id="65e11025-c77c-4d7a-b673-7f2e355a67f8" name="&lt;root_package&gt;" type="ground">
+                <position x="0" y="0" z="0"/>
+                <size x="9" y="9" z="9"/>
+                <attributes/>
+                <children>
+                    <buildable id="9fb5dc65-41ce-4e8b-b126-545e9e46df3a" name="com" type="ground">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="ad05eb19-8734-4a79-b196-dc9f487fab8b" name="example" type="ground">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes/>
+                                <children>
+                                    <buildable id="ff523220-6c62-424b-abcd-a8e6775652ac" name="HelloWorld" type="garden">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="0.25"/>
+                                        </attributes>
+                                        <children>
+											<buildable id="zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
+												<position x="0" y="0" z="0"/>
+												<size x="10" y="10" z="10"/>
+												<attributes>
+													<attribute name="target" value="b4fe74b8-5b18-44df-b410-3716d56ee125"/>
+													<attribute name="torches" value="6"/>
+												</attributes>
+												<children/>
+											</buildable>
+                                            <buildable id="b3385d36-037a-4863-9fa6-96aa9d55339a" name="void main(String[] args)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="13" z="11"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                    <buildable id="fd21461f-2eb4-4dfd-826f-67907b0bd011" name="MessagePrinter" type="garden">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="0.0"/>
+                                        </attributes>
+                                        <children>
+										
+                                            <buildable id="1d60e3e2-c623-41d1-97ec-0d41434f367c" name="msg" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="41d37705-05db-422e-bd05-ddce89d52874" name="MessagePrinter(String msg)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="11" y="13" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="d163b10e-207e-413b-9899-b0867b174f15" name="void printMessage()" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="11" y="13" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                    <buildable id="f1e4fc9c-ab8a-493f-b9da-455b0134ff93" name="productcatalogdemo" type="ground">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="fc963b27-b03b-4cb5-9ac0-bb7760e550b9" name="Book" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="0.25"/>
+                                </attributes>
+                                <children>
+									<buildable id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE1" type="tunnel">
+										<position x="0" y="0" z="0"/>
+										<size x="10" y="10" z="10"/>
+										<attributes>
+											<attribute name="target" value="fd21461f-2eb4-4dfd-826f-67907b0bd011"/>
+											<attribute name="torches" value="6"/>
+										</attributes>
+										<children/>
+									</buildable>
+                                    <buildable id="12e1152c-459a-4175-a0fb-2e96d771efb7" name="isbn" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="b69fe366-3857-45cd-b2da-27ab6557d3da" name="pages" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="907bb7cb-eedd-44d0-9a0b-31a90a229a76" name="Book(String name, double price, String isbn, int pages)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="15" z="11"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="3"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="a9def37f-3246-4611-8356-981bdfe4b1af" name="String getIsbn()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="a35cc254-59e6-4fed-90ed-86e960d28465" name="String setIsbn(String isbn)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="d29d7b5d-b354-40ad-902e-29ceedf06d66" name="int getPages()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="1b63e71b-9a1c-4c54-86ca-e19f9e98b983" name="int setPages(int pages)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="18c0cda9-d0ed-4032-8581-b7dc9945ac76" name="String getType()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                            <buildable id="11e7ef0e-c626-4b79-86df-bf88bec98a9d" name="Movie" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="0.25"/>
+                                </attributes>
+                                <children>
+									<buildable id="yxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
+										<position x="0" y="0" z="0"/>
+										<size x="10" y="10" z="10"/>
+										<attributes>
+											<attribute name="target" value="2d17e5e8-8dfc-43f3-9435-b0babcd6401f"/>
+											<attribute name="torches" value="6"/>
+										</attributes>
+										<children/>
+									</buildable>
+                                    <buildable id="7642a944-4b0e-4c02-a8f7-3619ead84796" name="runlength" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="907372d5-d07c-45d2-8750-6f2ee93df0ba" name="Movie(String name, double price, int runlength)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="13" z="11"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="3"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="6b417b63-11d3-4e79-98a0-7078fd1ede19" name="int getRunlength()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="21d9c4e8-663c-409b-b30e-74caf9d0f01c" name="int setRunlength(int runlength)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="7e935a4f-bd83-4200-a480-8bbe08e03571" name="String getType()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                            <buildable id="ee4d4231-3608-4ad7-bf17-f9c98b87cea7" name="Pants" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="0.25"/>
+                                </attributes>
+                                <children>
+                                    <buildable id="c6c0593e-bb5d-4c69-8611-df6bdd5f7934" name="waist" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="dc9a0678-c5e9-4590-852c-0010054abff4" name="inseam" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="14d2629e-3ef5-4d14-bec9-ed92e4de6fcf" name="Pants(String name, double price, int waist, int inseam)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="15" z="11"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="3"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="18c97842-6aae-48bf-8160-d5a78af77426" name="int getWaist()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="665b68fe-1e59-4967-a45e-8959e09b02b0" name="int setWaist(int waist)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="febcd31e-c666-4a70-9e5b-d620fbb294f4" name="int getInseam()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="a1aa580e-1ce5-4055-a0c9-d3cee23a5440" name="int setInseam(int inseam)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="1ea3c995-8155-49ae-81b2-4ce4154fa879" name="String getType()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                            <buildable id="2d17e5e8-8dfc-43f3-9435-b0babcd6401f" name="Product" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="0.0"/>
+                                </attributes>
+                                <children>
+									<buildable id="zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" name="SAMPLE_BRIDGE2" type="tunnel">
+										<position x="0" y="0" z="0"/>
+										<size x="10" y="10" z="10"/>
+										<attributes>
+											<attribute name="target" value="fd21461f-2eb4-4dfd-826f-67907b0bd011"/>
+											<attribute name="torches" value="6"/>
+										</attributes>
+										<children/>
+									</buildable>
+                                    <buildable id="a6d4d8c3-3e67-443b-b750-c13fd72db265" name="name" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="71a8d083-4079-4823-b3f8-981cb3b386c4" name="price" type="cellar">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="planks"/>
+                                            <attribute name="external_character" value="wood"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="233538a5-a1d0-43e3-83ef-57e7531291b0" name="Product(String name, double price)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="13" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="2"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="c02b375a-3d7a-461c-8f8d-66d1f7cb0bbb" name="String getName()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="d4e2a564-3eb6-4501-a5df-a9e795e6f1df" name="String setName(String name)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="5817aa43-c016-420f-b1eb-5670a7cf4efa" name="double getPrice()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="a2f6df8e-b724-4d63-bd32-439c99a71c12" name="double setPrice(double price)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                    <buildable id="2cf03768-2936-4017-94f1-e938affcf5d8" name="String getType()" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="11" y="13" z="9"/>
+                                        <attributes>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                            <buildable id="b4fe74b8-5b18-44df-b410-3716d56ee125" name="ProductCatalogDemo" type="garden">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="1.0"/>
+                                </attributes>
+                                <children>
+									
+                                    <buildable id="0a5b2a06-932c-4b96-a74f-7c76e9aa9927" name="void main(String[] args)" type="floor">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="21" z="17"/>
+                                        <attributes>
+                                            <attribute name="character" value="obsidian"/>
+                                            <attribute name="external_character" value="obsidian"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

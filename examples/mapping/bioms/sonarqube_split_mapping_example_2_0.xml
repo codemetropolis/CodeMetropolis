@@ -1,0 +1,59 @@
+<mapping version="2.0">
+	<linking source="prj" target="ground"/>
+		<binding from="directories" to="biome-id">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="12"/>
+					<parameter name="level1" value="5"/>
+					<parameter name="level2" value="1"/>
+					<parameter name="level3" value="2"/>
+				</conversion>
+			</conversions>
+		</binding>
+	</linking>
+	<linking source="dir" target="garden">
+		<binding from="complexity" to="flower-ratio">
+			<conversions>
+				<conversion type="normalize"/>
+			</conversions>
+		</binding>
+		<binding from="bugs" to="pig" default="1">
+		<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="1"/>
+					<parameter name="level1" value="2"/>
+					<parameter name="level2" value="3"/>
+					<parameter name="level3" value="4"/>
+					<parameter name="level4" value="5"/>
+				</conversion>
+			</conversions>
+		</binding>
+	</linking>
+	<linking source="fil" target="floor">
+		<binding from="functions" to="height"/>
+		<binding from="comment_lines" to="width"/>
+		<binding from="comment_lines" to="length"/>
+		<binding from="violations" to="character" default="glass">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="glass"/>
+					<parameter name="level1" value="sand"/>
+					<parameter name="level2" value="planks"/>
+					<parameter name="level3" value="stone"/>
+					<parameter name="level4" value="obsidian"/>
+				</conversion>
+			</conversions>
+		</binding>
+		<binding from="violations" to="external_character" default="metal">
+			<conversions>
+				<conversion type="quantization">
+					<parameter name="level0" value="metal"/>
+					<parameter name="level1" value="sandstone"/>
+					<parameter name="level2" value="wood"/>
+					<parameter name="level3" value="cobblestone"/>
+					<parameter name="level4" value="obsidian"/>
+				</conversion>
+			</conversions>
+		</binding>
+	</linking>
+</mapping>

@@ -1,10 +1,10 @@
 package codemetropolis.toolchain.gui.utils;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test class for GuiUtils. Automatically find minecraft root on the computer

@@ -15,7 +15,7 @@ public class CommandLineOptions {
 
 	@Option(name="-s", aliases = { "-ow", "--overwrite", "--silent" })
 	private boolean overwriteSilently = false;
-	
+
 	public boolean showHelp() {
 		return showHelp;
 	}
@@ -31,5 +31,4 @@ public class CommandLineOptions {
 	public boolean overwriteSilently() {
 		return overwriteSilently;
 	}
-
 }

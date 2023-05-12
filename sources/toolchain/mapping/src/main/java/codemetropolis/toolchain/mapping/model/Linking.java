@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.util.Resources;
@@ -22,10 +22,10 @@ public class Linking {
     private static final Map<Type, String[]> SUPPORTED_PROPERTIES = new HashMap<>();
 
     static {
-        SUPPORTED_PROPERTIES.put(Type.FLOOR, new String[]{"width", "height", "length", "character", "external_character", "torches"});
+        SUPPORTED_PROPERTIES.put(Type.FLOOR, new String[]{"width","BuiltMetric1", "height","BuiltMetric2", "length","BuiltMetric3", "character", "external_character", "torches"});
         SUPPORTED_PROPERTIES.put(Type.CELLAR, new String[]{"width", "height", "length", "character", "external_character", "torches"});
-        SUPPORTED_PROPERTIES.put(Type.GARDEN, new String[]{"tree-ratio", "mushroom-ratio", "flower-ratio"});
-        SUPPORTED_PROPERTIES.put(Type.GROUND, new String[]{});
+        SUPPORTED_PROPERTIES.put(Type.GARDEN, new String[]{"tree-ratio", "mushroom-ratio", "flower-ratio", "tunnel", "bridge", "monster-count", "monster-label", "pig"});
+		SUPPORTED_PROPERTIES.put(Type.GROUND, new String[]{"biome-id"});
     }
 	
 	@XmlAttribute
@@ -71,7 +71,6 @@ public class Linking {
 	public void removeBinding(Binding binding) {
 		bindings.remove(binding);
 	}
-	//sztem itt lesz az, hogy milyen típusú blokkból épül fel az épület
 	public static String[] getSupportedProperties(Type buildableType) {
 		return SUPPORTED_PROPERTIES.get(buildableType);
 	}

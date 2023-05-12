@@ -42,12 +42,45 @@
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
-			<version>2.32</version>
 		</dependency>
 		<dependency>
 			<groupId>sed</groupId>
 			<artifactId>graphlib</artifactId>
-			<version>1.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+
+		<dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <scope>test</scope>
+    	</dependency>
+		<dependency>
+			<groupId>org.gitlab4j</groupId>
+			<artifactId>gitlab4j-api</artifactId>
+			<version>4.9.19</version>
+    	</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>args4j</groupId>
+				<artifactId>args4j</artifactId>
+				<version>2.32</version>
+			</dependency>
+			<dependency>
+				<groupId>sed</groupId>
+				<artifactId>graphlib</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>commons</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+		</dependencies>
+  	</dependencyManagement>
 </project>

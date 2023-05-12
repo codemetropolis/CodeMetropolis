@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<element name="root" type="root">
+    <children>
+        <element name="Row_9" type="row">
+            <children>
+                <element name="txt" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="4"/>
+                        <property name="Lines" type="int" value="864"/>
+                        <property name="Lines/file" type="int" value="216"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_8" type="row">
+            <children>
+                <element name="properties" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="2"/>
+                        <property name="Lines" type="int" value="93"/>
+                        <property name="Lines/file" type="int" value="46"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_11" type="row">
+            <children>
+                <element name="xsd" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="1"/>
+                        <property name="Lines" type="int" value="49"/>
+                        <property name="Lines/file" type="int" value="49"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_7" type="row">
+            <children>
+                <element name="project" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="6"/>
+                        <property name="Lines" type="int" value="132"/>
+                        <property name="Lines/file" type="int" value="22"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_10" type="row">
+            <children>
+                <element name="xml" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="13"/>
+                        <property name="Lines" type="int" value="2856"/>
+                        <property name="Lines/file" type="int" value="219"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_6" type="row">
+            <children>
+                <element name="md" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="1"/>
+                        <property name="Lines" type="int" value="8"/>
+                        <property name="Lines/file" type="int" value="8"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_5" type="row">
+            <children>
+                <element name="java" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="122"/>
+                        <property name="Lines" type="int" value="7925"/>
+                        <property name="Lines/file" type="int" value="64"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_4" type="row">
+            <children>
+                <element name="jar" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="2"/>
+                        <property name="Lines" type="int" value="355"/>
+                        <property name="Lines/file" type="int" value="177"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_3" type="row">
+            <children>
+                <element name="csv" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="1"/>
+                        <property name="Lines" type="int" value="170"/>
+                        <property name="Lines/file" type="int" value="170"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_2" type="row">
+            <children>
+                <element name="classpath" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="5"/>
+                        <property name="Lines" type="int" value="178"/>
+                        <property name="Lines/file" type="int" value="35"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="Row_1" type="row">
+            <children>
+                <element name="" type="extension">
+                    <children/>
+                    <properties>
+                        <property name="Files" type="int" value="6"/>
+                        <property name="Lines" type="int" value="30"/>
+                        <property name="Lines/file" type="int" value="5"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="commits by year" type="stat">
+            <children>
+                <element name="commits by year" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year.dat 2014" type="int" value="1"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year.dat 2016" type="int" value="73"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year.dat 2017" type="int" value="2"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2014-04" type="int" value="1"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2016-01" type="int" value="7"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2016-02" type="int" value="30"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2016-03" type="int" value="25"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2016-04" type="int" value="11"/>
+                        <property name="ocuments\forrasok\115-116\gitstats\commits by year month.dat 2017-02" type="int" value="2"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="hour of day" type="stat">
+            <children>
+                <element name="hour of day" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 1" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 2" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 3" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 4" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 5" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 6" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 7" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 8" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 9" type="int" value="2"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 10" type="int" value="7"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 11" type="int" value="17"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 12" type="int" value="7"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 13" type="int" value="6"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 14" type="int" value="4"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 15" type="int" value="9"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 16" type="int" value="8"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 17" type="int" value="8"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 18" type="int" value="3"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 19" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 20" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 21" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 22" type="int" value="3"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 23" type="int" value="0"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\hour of day.dat 24" type="int" value="2"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="files by date" type="stat">
+            <children>
+                <element name="files by date" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2014-04-08" type="int" value="1"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-01-11" type="int" value="1"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-01-17" type="int" value="115"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-01-18" type="int" value="111"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-01-18" type="int" value="115"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-01-18" type="int" value="117"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-02" type="int" value="130"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-04" type="int" value="130"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-04" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-05" type="int" value="130"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-17" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-22" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-22" type="int" value="132"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-23" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-24" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-24" type="int" value="136"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-25" type="int" value="131"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-25" type="int" value="138"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-25" type="int" value="139"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-26" type="int" value="139"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-27" type="int" value="139"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-27" type="int" value="142"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-02-28" type="int" value="142"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-01" type="int" value="141"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-01" type="int" value="142"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-04" type="int" value="143"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-09" type="int" value="145"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-11" type="int" value="145"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-11" type="int" value="146"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-16" type="int" value="147"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-16" type="int" value="149"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-16" type="int" value="152"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-17" type="int" value="152"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-17" type="int" value="153"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-18" type="int" value="153"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-30" type="int" value="157"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-31" type="int" value="158"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-31" type="int" value="159"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-31" type="int" value="160"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-03-31" type="int" value="162"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-04-01" type="int" value="162"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-04-04" type="int" value="163"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-04-07" type="int" value="163"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-04-08" type="int" value="163"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2016-04-14" type="int" value="163"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\files by date.dat 2017-02-16" type="int" value="163"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="month of year" type="stat">
+            <children>
+                <element name="month of year" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 1" type="int" value="7"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 2" type="int" value="32"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 3" type="int" value="25"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 4" type="int" value="12"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 5" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 6" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 7" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 8" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 9" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 10" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 11" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\month of year.dat 12" type="int" value="0"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="lines of code" type="stat">
+            <children>
+                <element name="lines of code" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1396941921" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1452504811" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453060938" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453068424" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453102121" type="int" value="0"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453104098" type="int" value="-217"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453126093" type="int" value="-217"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1453130990" type="int" value="-217"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454405253" type="int" value="442"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454427553" type="int" value="434"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454576709" type="int" value="434"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454579063" type="int" value="462"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454582958" type="int" value="431"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454594118" type="int" value="401"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454597133" type="int" value="415"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454598586" type="int" value="415"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454678086" type="int" value="415"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1454679615" type="int" value="415"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1455709118" type="int" value="518"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456136886" type="int" value="582"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456141544" type="int" value="2837"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456242593" type="int" value="2874"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456316164" type="int" value="2987"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456327721" type="int" value="2990"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456392069" type="int" value="3098"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456392194" type="int" value="3098"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456393248" type="int" value="3098"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456409001" type="int" value="3076"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456412351" type="int" value="3076"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456416701" type="int" value="3062"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456418280" type="int" value="3062"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456484025" type="int" value="3074"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456485496" type="int" value="3074"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456489011" type="int" value="3074"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456519663" type="int" value="3106"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456580378" type="int" value="3156"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456603758" type="int" value="3256"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456696878" type="int" value="3276"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456842492" type="int" value="3276"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1456849729" type="int" value="3399"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1457080285" type="int" value="3548"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1457533152" type="int" value="3595"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1457703860" type="int" value="3662"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1457707720" type="int" value="3713"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458128143" type="int" value="3727"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458131273" type="int" value="3739"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458132805" type="int" value="3795"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458141379" type="int" value="3795"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458142029" type="int" value="3795"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458204586" type="int" value="3814"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458205356" type="int" value="3813"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458222783" type="int" value="3880"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458226862" type="int" value="3944"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458292814" type="int" value="3944"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1458297739" type="int" value="3944"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459327406" type="int" value="3921"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459413328" type="int" value="3989"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459414771" type="int" value="4010"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459416626" type="int" value="4010"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459418656" type="int" value="4058"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459420073" type="int" value="4058"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459426128" type="int" value="4063"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459430029" type="int" value="4093"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459498049" type="int" value="4088"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459499948" type="int" value="4088"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459502395" type="int" value="4106"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459503115" type="int" value="4106"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1459758884" type="int" value="4185"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460016249" type="int" value="4185"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460101920" type="int" value="4197"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460616408" type="int" value="4197"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460619190" type="int" value="4204"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460619943" type="int" value="4205"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1460620999" type="int" value="4205"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1487253511" type="int" value="4205"/>
+                        <property name="\Documents\forrasok\115-116\gitstats\lines of code.dat 1487253521" type="int" value="4205"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+        <element name="day of week" type="stat">
+            <children>
+                <element name="day of week" type="statistics">
+                    <children/>
+                    <properties>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 1" type="int" value="8"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 2" type="int" value="6"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 3" type="int" value="10"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 4" type="int" value="31"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 5" type="int" value="16"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 6" type="int" value="2"/>
+                        <property name="li\Documents\forrasok\115-116\gitstats\day of week.dat 7" type="int" value="3"/>
+                    </properties>
+                </element>
+            </children>
+            <properties/>
+        </element>
+    </children>
+    <properties>
+        <property name="Total files" type="int" value="164"/>
+        <property name="Total lines" type="int" value="4205"/>
+        <property name="Average file size" type="string" value="2564.02 bytes"/>
+        <property name="Project name" type="string" value="RF2"/>
+        <property name="Generated" type="string" value="2018-03-22 09:49:02 (in 26 seconds)"/>
+        <property name="Generator" type="string" value="&lt;a href=&quot;http://gitstats.sourceforge.net/&quot;&gt;GitStats&lt;/a&gt; (version 0432da3)"/>
+        <property name="Report Period" type="string" value="2014-04-08 09:25:21 to 2017-02-16 14:58:41"/>
+        <property name="Age" type="string" value="1046 days, 30 active days (2.87%)"/>
+        <property name="Total Files" type="int" value="164"/>
+        <property name="Total Lines of Code" type="string" value="4205 (6412 added, 2207 removed)"/>
+        <property name="Total Commits" type="string" value="76 (average 2.5 commits per active day, 0.1 per all days)"/>
+        <property name="Authors" type="int" value="4"/>
+        <property name="Total lines" type="int" value="4205"/>
+        <property name="Total tags" type="int" value="5"/>
+        <property name="Average commits per tag" type="string" value="15.20"/>
+        <property name="C:\Users\Zoli\Documents\forrasok\115-116\gitstats\domains.dat inf.u-szeged.hu" type="int" value="1"/>
+        <property name="C:\Users\Zoli\Documents\forrasok\115-116\gitstats\domains.dat gmail.com" type="int" value="2"/>
+    </properties>
+</element>

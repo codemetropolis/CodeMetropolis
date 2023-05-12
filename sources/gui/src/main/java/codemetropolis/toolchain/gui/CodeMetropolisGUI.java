@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.PipedOutputStream;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
-
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
@@ -33,7 +31,6 @@ import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
 import codemetropolis.toolchain.placing.layout.LayoutAlgorithm;
-
 /**
  * GUI window for the CodeMetropolis toolchain.
  *
@@ -202,13 +199,13 @@ public class CodeMetropolisGUI extends JFrame {
     mappingPath = new CMTextField(145, 555, 235, 30);
     CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 100, 30);
     mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));
-
+    
     CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 590, 120, 30);
     scaleSpinner = new CMSpinner(145, 590, 120, 30);
 
     validateStructure = new CMCheckBox(275, 590, 20, 30);
     CMLabel validateStructureLabel = new CMLabel(Translations.t("gui_l_validate_structure"), 300, 590, 185, 30);
-
+    
     panel.add(mappingLabel);
     panel.add(mappingPath);
     panel.add(mappingBrowse);

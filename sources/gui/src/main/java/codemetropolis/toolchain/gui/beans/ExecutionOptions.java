@@ -108,7 +108,7 @@ public class ExecutionOptions {
   public void setLayoutAlgorithm(LayoutAlgorithm layoutAlgorithm) {
     this.layoutAlgorithm = layoutAlgorithm;
   }
-
+  
   public void setShowMap(boolean showMap) {
     this.showMap = showMap;
   }
