@@ -3,13 +3,16 @@ from tkinter import filedialog
 from tkinter import ttk
 import subprocess
 import os
+from PIL import Image, ImageTk
 
 #global_variables
 entries = []
 entries_converter = []
 entries_mapping = []
 PROGRAM_NAME = "CodeMetropolis Tester Interface "
-VERSION = "v0.5"
+VERSION = "v0.6"
+BG_COLOR = "#CBEFF9"
+
 
 #choose_file
 def select_file(entry):
@@ -48,14 +51,18 @@ def run_cmd_command():
         cmd += f" {arg5}"
 
     subprocess.call(cmd, shell=True)
-    #entries_converter.clear()
-    #entries_mapping.clear()
 
 #window
 window = tk.Tk()
 window.geometry("800x400")
 window.title( PROGRAM_NAME + VERSION)
 window.resizable(width=False, height=False)
+window.iconbitmap('icon.ico')
+
+#logo
+image = Image.open("logo_transparent.png")
+image = image.resize((150, 150))
+photo = ImageTk.PhotoImage(image)
 
 #dict
 gridNSEW = {"padx": 10, "pady": 10, "sticky": "nsew"}
@@ -83,14 +90,16 @@ helpmenu.add_command(label="About", command=lambda: change_main_page("About"))
 menubar.add_cascade(label="Help", menu=helpmenu)
 
 #display the menubar
-window.config(menu=menubar)
+window.config(menu=menubar, bg=BG_COLOR)
+
+#label_config
 
 def basic_for_every_tool():
     arg_labels = ["Pytest file or folder:", "Input file or folder:", "Expected file or folder:", "Output folder:"]
     row_index = 1
 
     for i, label_text in enumerate(arg_labels):
-        label = tk.Label(window, text=label_text)
+        label = tk.Label(window, text=label_text, bg=BG_COLOR)
         label.grid(row=row_index+i, column=0, **gridNSEW)
 
         entry = tk.Entry(window, name="entry" + str(i))
@@ -110,7 +119,7 @@ def basic_for_every_tool():
 def converter_tool_plus_arguments():
 
     converter_cb_options = ["SourceMeter", "Pmd", "Gitlab", "GitStats"]
-    label = tk.Label(window, text="Type:")
+    label = tk.Label(window, text="Type:", bg=BG_COLOR)
     label.grid(row=5, column=0, **gridNSEW)
 
     entry = ttk.Combobox(window, values=converter_cb_options, state='readonly', name="entry4")
@@ -119,7 +128,7 @@ def converter_tool_plus_arguments():
 
     entry.current(0)
 
-    label = tk.Label(window, text="Parameters: (Optional)")
+    label = tk.Label(window, text="Parameters: (Optional)", bg=BG_COLOR)
     label.grid(row=6, column=0, **gridNSEW)
 
     entry = tk.Entry(window, name="entry5")
@@ -127,7 +136,7 @@ def converter_tool_plus_arguments():
     entries_converter.append(entry)
 
 def mapping_tool_plus_arguments():
-    label = tk.Label(window, text="Mapping file example:")
+    label = tk.Label(window, text="Mapping file example:", bg=BG_COLOR)
     label.grid(row=5, column=0, **gridNSEW)
 
     entry = tk.Entry(window, name="entry4")
@@ -139,17 +148,22 @@ def mapping_tool_plus_arguments():
 
 
 def about_page():
-    label = tk.Label(window, text= PROGRAM_NAME + VERSION, font=("Arial", 20))
+    label = tk.Label(window, text= PROGRAM_NAME + VERSION, font=("Arial", 20), bg=BG_COLOR)
     label.grid(row=0, column=2, **gridNSEW)
 
-    label = tk.Label(window, text="A visual interface to perform regression tests by comparing expected output files with CodeMetropolis output files.\n\n Made by: Zoltan Banyai \n 2023", font=("Arial", 10))
-    label.grid(row=1, column=2, **gridNSEW)
+    label = tk.Label(window, image=photo, bg=BG_COLOR)
+    label.grid(row=1, column=2)
+
+    label = tk.Label(window, text="A visual interface to perform regression tests by comparing expected output files with CodeMetropolis output files.\n\n Made by: Zoltan Banyai \n 2023", font=("Arial", 10), bg=BG_COLOR)
+    label.grid(row=2, column=2, **gridNSEW)
+    
+
 
 def how_to_page():
-    label = tk.Label(window, text= "How to use " + PROGRAM_NAME, font=("Arial", 20))
+    label = tk.Label(window, text= "How to use " + PROGRAM_NAME, font=("Arial", 20), bg=BG_COLOR)
     label.grid(row=0, column=2, **gridNSEW)
 
-    label = tk.Label(window, text=" 1. Step - Choose a tool from \"tool\" menu \n 2. Step - Select a specific test file or a folder wich contain tests \n 3. Step - Select an input file wich compatible with tool \n 4. Step - Select an expected output file wich will be compare with tool output  \n 5. Step - Select a folder where tool will save it output \n 6. Step - If the converter tool is selected, you must specify the input type \n 7. Step - You can give optional parameters if have to and it's supported by tool \n 8. Step - Press run to use selected tool and run test", font=("Arial", 10), justify="left", anchor="w")
+    label = tk.Label(window, text=" 1. Step - Choose a tool from \"tool\" menu \n 2. Step - Select a specific test file or a folder wich contain tests \n 3. Step - Select an input file wich compatible with tool \n 4. Step - Select an expected output file wich will be compare with tool output  \n 5. Step - Select a folder where tool will save it output \n 6. Step - If the converter tool is selected, you must specify the input type \n 7. Step - You can give optional parameters if have to and it's supported by tool \n 8. Step - Press run to use selected tool and run test", font=("Arial", 10), justify="left", anchor="w", bg=BG_COLOR)
     label.grid(row=1, column=2, sticky = "w")
 
 def show_run_button(page_name):
