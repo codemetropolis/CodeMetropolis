@@ -1,6 +1,4 @@
-import pytest
 from conftest import count_tags
-from xml.etree import ElementTree as ET
 from conftest import ATTRIBUTE
 
 jar = 'mapping'

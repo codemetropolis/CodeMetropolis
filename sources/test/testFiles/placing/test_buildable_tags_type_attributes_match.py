@@ -1,5 +1,3 @@
-import pytest
-import xml.etree.ElementTree as ET
 from conftest import extract_tags_and_attributes
 from conftest import BUILDABLE
 from conftest import TYPE
@@ -10,7 +8,6 @@ def test_buildable_tags_type_attributes_match(expected_xml, placing_output_xml):
     result_expected = extract_tags_and_attributes(expected_xml, BUILDABLE, TYPE)
     result_output = extract_tags_and_attributes(placing_output_xml, BUILDABLE, TYPE)
 
-    # Szülő_útvonal_ell
     assert set(result_expected.keys()) == set(result_output.keys()), f"test_buildable_tags_type_attributes_match: The parent map is different between the expected and generated output"
 
     for key in result_expected.keys():

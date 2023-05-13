@@ -22,18 +22,17 @@ TO = "to"
 VERSION = "version"
 NONE = None
 
-# arguments
+# get arguments
 def pytest_addoption(parser):
     parser.addoption("--expected")
     parser.addoption("--output")
 
-
+#fixures to parse xml
 @pytest.fixture
 def expected_xml(request):
     expected = request.config.getoption("--expected")
     tree = ET.parse(expected)
     return tree
-
 
 @pytest.fixture
 def converter_output_xml(request):
@@ -42,14 +41,12 @@ def converter_output_xml(request):
     tree = ET.parse(output_full_path)
     return tree
 
-
 @pytest.fixture
 def mapping_output_xml(request):
     output = request.config.getoption("--output")
     output_full_path = f"{output}/mappingToPlacing.xml"
     tree = ET.parse(output_full_path)
     return tree
-
 
 @pytest.fixture
 def placing_output_xml(request):
@@ -69,6 +66,8 @@ def expected_rendering_path(request):
     expected_rendering = request.config.getoption("--expected")
     return expected_rendering
 
+
+#functions for testing
 def count_tags(xml, tag):
     root = xml.getroot()
     return len(list(root.iter(tag)))
@@ -77,14 +76,11 @@ def root_tag(xml, attribute):
     root = xml.getroot()
     return root.attrib.get(attribute)
 
-
 def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, selected_elem, selected_attr):
     root = tree.getroot()
 
-    # szulo_map
+    #parent map
     parent_map = {child: parent for parent in tree.iter() for child in parent}
-
-    #dict
     diction = {}
 
     for elem in root.iter():
@@ -92,7 +88,7 @@ def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, sele
             name = elem.attrib.get(NAME)
             if name == "":
                 name = None 
-            #szülőt és aktuális_tagot tartalmazó tupple
+            #tupple
             parents = ()
             parent = parent_map.get(elem)
             while parent is not None:
@@ -100,10 +96,9 @@ def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, sele
                 if parent_name:
                     parents = (parent_name,) + parents
                 parent = parent_map.get(parent, None)
-            #kulcs-érték párok beállítása
+            #key set
             parents = parents + (name,)
 
-            #property nevek kigyűjtése
             if parent_elem != None:
                 properties = elem.find(parent_elem)
                 if properties != None:
@@ -115,7 +110,7 @@ def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, sele
                 sub_names = [sub_tags.attrib.get(selected_attr)]
 
             sub_names.sort()
-            #property nevek hozzáfűzése
+
             if parents in diction:
                 diction[parents].append(tuple(sub_names))
             else:
@@ -127,10 +122,8 @@ def extract_tags_and_attributes_nested(tree, parent_path_elem, parent_elem, sele
 def extract_tags_and_attributes(tree, parent_path_elem, selected_attr):
     root = tree.getroot()
 
-    # szulo_map
-    parent_map = {child: parent for parent in tree.iter() for child in parent}
 
-    #dict
+    parent_map = {child: parent for parent in tree.iter() for child in parent}
     diction = {}
 
     for elem in root.iter():

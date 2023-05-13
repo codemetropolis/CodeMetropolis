@@ -10,6 +10,7 @@ import os.path
 from os import path
 from os import walk
 
+#args
 parser = argparse.ArgumentParser(description='This is a Python script that uses command line arguments to perform regression tests by comparing expected output files with CodeMetropolis output files.')
 
 parser.add_argument('test_path', metavar='F', type=str,
@@ -33,175 +34,150 @@ parser.add_argument('--type', dest='types', type=str,
 parser.add_argument('--parameters', dest='parameters', type=str,
                     help='Optional parameters. You can use it if supported by the tool')                 
 
-#arguments_and_variables
+#arguments and variables
 arguments = parser.parse_args()
-argPytestFolder = arguments.test_path
-argPytestFile = None
-pathToPytestFile = None
-argInput = arguments.input_path
+
+test_file_path = arguments.test_path
+test_file = None
+modified_test_file_path = None
+
+input_path = arguments.input_path
+expected_output_path = arguments.expected_output_path
+output_path = arguments.generated_output_path
 mapping_path = arguments.mapping_file_path
-argExpectedoutput = arguments.expected_output_path
-generatedOutputPath = arguments.generated_output_path
-parameters = arguments.parameters
 types = arguments.types
-splittedPathSlash = argPytestFolder.split('/')
-splittedPathBackslash = argPytestFolder.split('\\')
+parameters = arguments.parameters
 
-if '.py' in str(splittedPathSlash[len(splittedPathSlash)-1]) and len(splittedPathSlash)!=1:
-    argPytestFile = splittedPathSlash[len(splittedPathSlash)-1]
-    pathToPytestFile = argPytestFolder
-    argPytestFolder = ""
-    for i in range(len(splittedPathSlash)-1):
-        argPytestFolder = argPytestFolder + splittedPathSlash[i] + '/'
+splitted_test_file_path = test_file_path.split('/')
+splitted_test_file_backslash = test_file_path.split('\\')
 
-if '.py' in str(splittedPathBackslash[len(splittedPathBackslash)-1]) and len(splittedPathBackslash)!=1:
-    argPytestFile = splittedPathBackslash[len(splittedPathBackslash)-1]
-    pathToPytestFile = argPytestFolder
+if '.py' in str(splitted_test_file_path[len(splitted_test_file_path)-1]) and len(splitted_test_file_path)!=1:
+    test_file = splitted_test_file_path[len(splitted_test_file_path)-1]
+    modified_test_file_path = test_file_path
+    test_file_path = ""
+    for i in range(len(splitted_test_file_path)-1):
+        test_file_path = test_file_path + splitted_test_file_path[i] + '/'
 
-    argPytestFolder = ""
-    for i in range(len(splittedPathBackslash)-1):
-        argPytestFolder = argPytestFolder + splittedPathBackslash[i] + '\\'
+if '.py' in str(splitted_test_file_backslash[len(splitted_test_file_backslash)-1]) and len(splitted_test_file_backslash)!=1:
+    test_file = splitted_test_file_backslash[len(splitted_test_file_backslash)-1]
+    modified_test_file_path = test_file_path
+
+    test_file_path = ""
+    for i in range(len(splitted_test_file_backslash)-1):
+        test_file_path = test_file_path + splitted_test_file_backslash[i] + '\\'
 
 
+#warning functions
+def warning(test_file_path, test_file, input_path, expected_output_path, output_path, selected_tool):
+    error_messages = {
+        "Invalid test file path!": not path.exists(test_file_path),
+        "Invalid test file!": str(test_file) != "None" and not path.exists(modified_test_file_path),
+        "Invalid input file path!": not path.exists(input_path),
+        "Invalid expected output file path!": not path.exists(expected_output_path),
+        "Test file directory is empty!": len(os.listdir(test_file_path)) == 0,
+        "No test on the selected folder!": ".py" not in str(next(walk(test_file_path), (None, None, []))[2]),
+        "Invalid output path!": output_path is not None and not path.exists(output_path),
+        "Converter tool requires type argument!": types is None and "converter" in selected_tool,
+        "Mapping tool requires mapping_file_path argument!": mapping_path is None and "mapping" in selected_tool
+    }
 
-#FUNCTIONS
-#WARNINGS_function
-def warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput, generatedOutputPath, selectedJar):
-    #converter_type_required
-    if (types is None and "converter" in selectedJar):
-        print("Error: Converter tool require type argument!")
-        return -1
-    #mapping_file_required
-    if (mapping_path is None and "mapping" in selectedJar):
-        print("Error: Mapping tool require mapping_file_path argument!")
-        return -1
-    #paths_and files_not_exist
-    if (path.exists(argPytestFolder) == False):
-        print("Warning: There is no folder with this name or the path is invalid!")
-        return -1
-    if (str(argPytestFile) != "None" and path.exists(pathToPytestFile) == False):
-        print("Warning: There is no pytest file with this name or the path is invalid!")
-        return -1
-    if (path.exists(argInput) == False):
-        print("Warning: There is no file with this name or the path is invalid!")
-        return -1
-    if (path.exists(argExpectedoutput) == False):
-        print("Warning: There is no expected output file with this name or the path is invalid!")
-        return -1 
-    #directory_empty
-    if (len(os.listdir(argPytestFolder)) == 0):
-        print("Warning: Directory is empty!")
-        return -1
-    #no_py_file_in_directory
-    directoryFiles = next(walk(argPytestFolder), (None, None, []))[2]
-    if (".py" not in str(directoryFiles)):
-        print("Warning: No pytests on the selected folder!")
-        return -1
-    #generatedOutputPath_not_exist
-    if (generatedOutputPath != None and path.exists(generatedOutputPath) == False):
-        print("Warning: There is no folder with this name or the path is invalid!")
-        return -1 
+    for error, condition in error_messages.items():
+        if condition:
+            print(f"Error: {error}")
+            return -1
+    
+    return 0
 
-#._splitter_function
-def dotSplitter(fileNames):
+#._splitter function
+def splitter(fileNames):
     fileNamesSplit = fileNames.split('.')
     fileName = fileNamesSplit[0]
     return fileName
 
-#import_pytest_file_function
-def randomPytestFileSelect(argPytestFolder):
-    sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
-    fileNames = next(walk(argPytestFolder), (None, None, []))[2]
-    fileName = dotSplitter(fileNames[0])
+#import pytest file function
+def random_test_file_select(test_file_path):
+    sys.path.append(os.path.join(os.path.dirname(__file__), test_file_path))
+    fileNames = next(walk(test_file_path), (None, None, []))[2]
+    fileName = splitter(fileNames[0])
     return fileName
 
-#run_pytests_function
-def runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath):
-    if (argPytestFile == None):
-        pytest.main([argPytestFolder, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
+#run pytest function
+def run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path):
+    if (test_file == None):
+        pytest.main([test_file_path, '--expected', expected_output_path, '--output', output_path, "-s"])
         
-    if (argPytestFile != None):
-        pytest.main([pathToPytestFile, '--expected', argExpectedoutput, '--output', generatedOutputPath, "-s"])
+    if (test_file != None):
+        pytest.main([modified_test_file_path, '--expected', expected_output_path, '--output', output_path, "-s"])
     
-#jars_functions
-#converter_jar_function
-def converterJar(argInput, types, parameters, generatedOutputPath):
+#jars functions
+
+#converter tool
+def converter_tool(input_path, types, parameters, output_path):
     if parameters == "None" or parameters is None:
-        subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t', '' + types , '-s' , '' + argInput]),
+        subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t', '' + types , '-s' , '' + input_path]),
     else:
-        subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t', '' + types , '-s' , '' + argInput , '-p' , '' + parameters]),
-    #generatedOutputFolderExist(generatedOutputPath)
-    shutil.move(os.path.join('./', 'converterToMapping.xml'), os.path.join(generatedOutputPath, 'converterToMapping.xml'))   
+        subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t', '' + types , '-s' , '' + input_path , '-p' , '' + parameters]),
+
+    shutil.move(os.path.join('./', 'converterToMapping.xml'), os.path.join(output_path, 'converterToMapping.xml'))   
+
+    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
            
-#mapping_jar_function
-def mappingJar(argInput, mapping_path, generatedOutputPath):
-    javaPathFile = open("javapath.bat","w")
-    javaPathContent = """setlocal 
-    SET PATH=C:/Program Files/Java/jre1.8.0_301/bin;%PATH%
-    java.exe -jar ../distro/mapping-1.4.0.jar -i """ + argInput + " -m " + mapping_path
-    javaPathFile.write(javaPathContent)
-    javaPathFile.close()
-    subprocess.call([r'javapath.bat'])
-    #shutil.move("mappingToPlacing.xml", '' + generatedOutputPath)
-    #generatedOutputFolderExist(generatedOutputPath)
-    shutil.move(os.path.join('./', 'mappingToPlacing.xml'), os.path.join(generatedOutputPath, 'mappingToPlacing.xml'))
-    os.remove('javapath.bat')
+#mapping tool 
+def mapping_tool(input_path, mapping_path, output_path):
+    subprocess.call(['java.exe', '-jar', '../distro/mapping-1.4.0.jar', '-i', '' + input_path , "-m", '' + mapping_path])
+    shutil.move(os.path.join('./', 'mappingToPlacing.xml'), os.path.join(output_path, 'mappingToPlacing.xml'))
 
-#placing_jar_function
-def placingJar(argInput, generatedOutputPath):
-    subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + argInput])
-    #shutil.move("placingToRendering.xml", '' + generatedOutputPath)
-    #generatedOutputFolderExist(generatedOutputPath)
-    shutil.move(os.path.join('./', 'placingToRendering.xml'), os.path.join(generatedOutputPath, 'placingToRendering.xml'))
+    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
 
-#rendering_jar_function
-def renderingJar(argInput, types, generatedOutputPath):
-    subprocess.call(['java.exe', '-jar', '../distro/rendering-1.4.0.jar', '-i', '' + argInput, '-world', 'world'])
-    worldExist = os.path.exists(generatedOutputPath)
+#placing tool
+def placing_tool(input_path, output_path):
+    subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + input_path])
+    shutil.move(os.path.join('./', 'placingToRendering.xml'), os.path.join(output_path, 'placingToRendering.xml'))
+
+    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
+
+#rendering tool
+def rendering_tool(input_path, types, output_path):
+    subprocess.call(['java.exe', '-jar', '../distro/rendering-1.4.0.jar', '-i', '' + input_path, '-world', 'world'])
+    worldExist = os.path.exists(output_path)
     if (worldExist == True):
-        shutil.rmtree(generatedOutputPath)  
+        shutil.rmtree(output_path)  
 
-    shutil.move(os.path.join('./', 'world'), os.path.join(generatedOutputPath, 'world'))
-    runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
+    shutil.move(os.path.join('./', 'world'), os.path.join(output_path, 'world'))
+
+    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
 
 #MAIN
 while True:
 
-    #import_pytest_file
-    if (str(argPytestFile) != "None"):
-        sys.path.append(os.path.join(os.path.dirname(__file__), argPytestFolder))
-        importPytestFile = __import__(dotSplitter(argPytestFile))
+    #import test file
+    if (str(test_file) != "None"):
+        sys.path.append(os.path.join(os.path.dirname(__file__), test_file_path))
+        importPytestFile = __import__(splitter(test_file))
         
-    if (str(argPytestFile) == "None"):
-        importPytestFile = __import__(randomPytestFileSelect(argPytestFolder))
+    if (str(test_file) == "None"):
+        importPytestFile = __import__(random_test_file_select(test_file_path))
 
-    #Converter_jars_runner
-    selectedJar = importPytestFile.jar
+    #selected tool from test
+    selected_tool = importPytestFile.jar
 
     #warnings
-    if (warning(argPytestFolder, argPytestFile, argInput, argExpectedoutput, generatedOutputPath, selectedJar) == -1):
+    if (warning(test_file_path, test_file, input_path, expected_output_path, output_path, selected_tool) == -1):
         break
 
-    #converter
-    if('converter' in selectedJar):
-        converterJar(argInput, types, parameters, generatedOutputPath)
-        runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
-
-    #mapping
-    if('mapping' in selectedJar):
-        mappingJar(argInput, mapping_path, generatedOutputPath)
-        runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
+    match selected_tool:
+        case "converter": 
+            converter_tool(input_path, types, parameters, output_path)
+        case "mapping": 
+            mapping_tool(input_path, mapping_path, output_path)
+        case "placing": 
+            placing_tool(input_path, output_path)
+        case "rendering": 
+            rendering_tool(input_path, types, output_path)
     
-    #placing
-    if('placing' in selectedJar):
-        placingJar(argInput, generatedOutputPath)
-        runPytests(argPytestFile, argPytestFolder, pathToPytestFile, argExpectedoutput, generatedOutputPath)
-
-    #rendering
-    if('rendering' in selectedJar):
-        renderingJar(argInput, types, generatedOutputPath)
-        
     break
+   
+    
 
 
 

@@ -1,5 +1,3 @@
-import pytest
-import xml.etree.ElementTree as ET
 from conftest import extract_tags_and_attributes
 from conftest import ELEMENT
 from conftest import TYPE

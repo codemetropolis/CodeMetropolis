@@ -1,6 +1,4 @@
-import pytest
 from conftest import root_tag
-from xml.etree import ElementTree as ET
 from conftest import TYPE
 
 jar = 'converter'
