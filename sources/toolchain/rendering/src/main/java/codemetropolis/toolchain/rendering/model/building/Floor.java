@@ -7,13 +7,11 @@ import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchExcepti
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
-import codemetropolis.toolchain.rendering.model.primitive.Door;
-import codemetropolis.toolchain.rendering.model.primitive.EmptyBox;
-import codemetropolis.toolchain.rendering.model.primitive.Row;
-import codemetropolis.toolchain.rendering.model.primitive.SolidBox;
-import codemetropolis.toolchain.rendering.model.primitive.WallSign;
+import codemetropolis.toolchain.rendering.model.primitive.*;
 import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
+
+import java.util.LinkedList;
 
 public class Floor extends Building {
 
@@ -28,6 +26,7 @@ public class Floor extends Building {
 		prepareDoor();
 		prepareSigns();
 		prepareTorches();
+		prepareLanterns();
 	}
 	
 	protected void prepareDoor() {
@@ -260,21 +259,23 @@ public class Floor extends Building {
 		
 		int numberOfTorches = Integer.parseInt(innerBuildable.getAttributeValue("torches"));
 		BasicBlock[] pattern;
-		
-		pattern = createTorchPattern(numberOfTorches, 3);
+
+		//creating pattern of the torches
+		pattern = createPattern(50, numberOfTorches, 3);
 		primitives.add(new Row(
 				new Point(position.getX() + size.getX() / 2 + 2, position.getY() + 2, position.getZ() + 1),
 				size.getX() / 2 - 2,
 				Row.Direction.WEST,
 				pattern));
-		
+
 		primitives.add(new Row(
 				new Point(position.getX() + size.getX() / 2 - 2, position.getY() + 2, position.getZ() + 1),
 				size.getX() / 2 - 2,
 				Row.Direction.EAST,
 				pattern));
-		
-		pattern = createTorchPattern(numberOfTorches, 4);
+
+		//creating pattern of the torches
+		pattern = createPattern(50, numberOfTorches, 4);
 		primitives.add(new Row(
 				new Point(position.getX() + size.getX() / 2 + 2, position.getY() + 2, position.getZ()  + size.getZ() - 2),
 				size.getX() / 2 - 2,
@@ -286,8 +287,9 @@ public class Floor extends Building {
 				size.getX() / 2 - 2,
 				Row.Direction.EAST,
 				pattern));
-		
-		pattern = createTorchPattern(numberOfTorches, 1);
+
+		//creating pattern of the torches
+		pattern = createPattern(50, numberOfTorches, 1);
 		primitives.add(new Row(
 				new Point(position.getX() + 1, position.getY() + 2, position.getZ() + size.getZ() / 2 + 2),
 				size.getZ() / 2 - 2,
@@ -299,8 +301,9 @@ public class Floor extends Building {
 				size.getZ() / 2 - 2,
 				Row.Direction.SOUTH,
 				pattern));
-		
-		pattern = createTorchPattern(numberOfTorches, 2);
+
+		//creating pattern of the torches
+		pattern = createPattern(50, numberOfTorches, 2);
 		primitives.add(new Row(
 				new Point(position.getX() + size.getX() - 2, position.getY() + 2, position.getZ() + size.getZ() / 2 + 2),
 				size.getZ() / 2 - 2,
@@ -314,31 +317,165 @@ public class Floor extends Building {
 				pattern));
 		
 	}
-	
-	private BasicBlock[] createTorchPattern(int number, int data) {
+
+	/**
+	 * The function returns the position of the door at the given side,
+	 * which is specified based on the lantern's rotation
+	 * @param lanternData rotation of the lantern
+	 *                    = 1: the lantern faces west
+	 *                    = 2: the lantern faces north
+	 *                    = 3: the lantern faces east
+	 *                    = 4: the lantern faces south
+	 * @return int[] the array with the [xCoord,yCoord,zCoord] coordinates
+	 */
+	private int[] getSideDoorCoords(int lanternData) {
+		int xCoord = position.getX();
+		int yCoord = position.getY();
+		int zCoord = position.getZ();
+
+		switch (lanternData) {
+			case 1:
+				xCoord -= 1;
+				zCoord += size.getZ() / 2;
+				break;
+			case 2:
+				xCoord += size.getX() / 2;
+				zCoord -= 1;
+				break;
+			case 3:
+				xCoord += size.getX();
+				zCoord += size.getZ() / 2;
+				break;
+			case 4:
+				xCoord += size.getX() / 2;
+				zCoord += size.getZ();
+				break;
+			default:
+				throw new IllegalArgumentException("The lantern's rotation data is incorrect");
+		}
+		return new int[]{xCoord, yCoord, zCoord};
+	}
+
+	/**
+	 * The function is responsible for the creation of the lantern attribute's
+	 * design and the placement of them to a single side of the building.
+	 * The function iterates from 1 to 3 which are the
+	 * three layers of design where 1 is the fence 2 is the lantern and
+	 * 3 is the slab
+	 *
+	 * @param number the density of the lanterns in 6 categories 0-5
+	 * @param data the rotation of the lantern
+	 * @return returns a linked list containing the "row" type primitives
+	 */
+	private LinkedList<Row> createLanternDesign(int number, int data) {
+		int[] doorCoords = getSideDoorCoords(data);
+		int xCoord = doorCoords[0];
+		int yCoord = doorCoords[1];
+		int zCoord = doorCoords[2];
+
+		BasicBlock[] pumpkinPattern = createPattern(91, number, data);
+		BasicBlock[] slabPattern = createPattern(126, number, 0);
+		BasicBlock[] fencePattern = createPattern(85, number, 0);
 		BasicBlock[] pattern = null;
-		BasicBlock torch = new BasicBlock((short) 50, data);
+		LinkedList<Row> rows = new LinkedList<>();
+
+		//The i variable is used to determine the placement on the
+		// y axis relative to the bottom of the floor
+		for (int i = 1; i <= 3; i++) {
+			if (i == 1) {
+				pattern = fencePattern;
+			}
+			if (i == 2) {
+				pattern = pumpkinPattern;
+			}
+			if (i == 3) {
+				pattern = slabPattern;
+			}
+			//the two categories were separated based on the pairing of row directions
+			// (east-west, south-north)
+			if (data == 1 || data == 3) {
+				rows.add(new Row(
+						new Point(xCoord, yCoord + i, zCoord + 2),
+						size.getZ() / 2 - 2,
+						Row.Direction.NORTH,
+						pattern));
+
+				rows.add(new Row(
+						new Point(xCoord, yCoord + i, zCoord - 2),
+						size.getZ() / 2 - 2,
+						Row.Direction.SOUTH,
+						pattern));
+			}
+
+			if (data == 2 || data == 4) {
+				rows.add(new Row(
+						new Point(xCoord + 2, yCoord + i, zCoord),
+						size.getX() / 2 - 2,
+						Row.Direction.WEST,
+						pattern));
+
+				rows.add(new Row(
+						new Point(xCoord - 2, yCoord + i, zCoord),
+						size.getX() / 2 - 2,
+						Row.Direction.EAST,
+						pattern));
+			}
+		}
+		return rows;
+	}
+
+/**
+ * The method is responsible for the actual placement of the blocks
+ * which is done by concatenating the returned list from @createLanternDesign
+ * to the primitives.
+ * */
+	private void prepareLanterns() {
+		if (!innerBuildable.hasAttribute( "lanterns" )) return;
+
+		int numberOfLanterns = Integer.parseInt(innerBuildable.getAttributeValue("lanterns"));
+		primitives.addAll(createLanternDesign(numberOfLanterns, 1));
+		primitives.addAll(createLanternDesign(numberOfLanterns, 2));
+		primitives.addAll(createLanternDesign(numberOfLanterns, 3));
+		primitives.addAll(createLanternDesign(numberOfLanterns, 4));
+	}
+
+/**
+ * This method is responsible for creating a pattern for objects to place.
+ * The pattern will tell how densely they are placed from each other.
+ *
+ * @param object_id the id of the minecraft object from the blocks.csv
+ * @param number the density of the lanterns in 6 categories 0-5
+ * @param data the rotation of the lantern
+ * @return returns an array containing BasicBlock type objects.
+ * */
+
+	private BasicBlock[] createPattern(int object_id, int number, int data) {
+		BasicBlock[] pattern = null;
+		BasicBlock object = new BasicBlock((short) object_id, data);
 		BasicBlock space = BasicBlock.NonBlock;
-		
-		switch(number) {
+
+		switch (number) {
 			case 0:
 				pattern = new BasicBlock[] { space };
 				break;
 			case 1:
-				pattern = new BasicBlock[] { torch, space, space, space, space };
+				pattern = new BasicBlock[] { object, space, space, space, space };
 				break;
 			case 2:
-				pattern = new BasicBlock[] { torch, space, space, space };
+				pattern = new BasicBlock[] { object, space, space, space };
 				break;
 			case 3:
-				pattern = new BasicBlock[] { torch, space, space };
+				pattern = new BasicBlock[] { object, space, space };
 				break;
 			case 4:
-				pattern = new BasicBlock[] { torch, space };
+				pattern = new BasicBlock[] { object, space };
 				break;
 			case 5:
-				pattern = new BasicBlock[] { torch };
+				pattern = new BasicBlock[] { object };
 				break;
+			default:
+				throw new IllegalArgumentException("The number argument should be between 0-5");
+
 		}
 		return pattern;
 	}
