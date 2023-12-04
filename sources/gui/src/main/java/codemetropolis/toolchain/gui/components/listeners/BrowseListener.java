@@ -35,7 +35,7 @@ public class BrowseListener implements ActionListener {
       this.fileChooser.setFileFilter(filter);
     }
   }
-
+  
   @Override
   public void actionPerformed(ActionEvent event) {
     if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {

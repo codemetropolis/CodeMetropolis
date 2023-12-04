@@ -21,7 +21,7 @@ public class SolidBox extends Paintable implements Primitive {
 		this.orientation = orientation;
 	}
 	
-	private Point flipPattern(Point original, Point size) {
+	protected Point flipPattern(Point original, Point size) {
 		switch ( orientation ) {
 			case NearX:
 				return original;

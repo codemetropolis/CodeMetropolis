@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import codemetropolis.toolchain.commons.cmxml.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,6 +41,7 @@ public class MappingController {
 	private boolean skipInvalidStructures;
 	private Stack<Buildable> buildableStack = new Stack<>();
 	private Mapping mapping;
+	protected int metricValue;
 	
 	public MappingController(Mapping mapping) {
 		this(mapping, 1.0, false);
@@ -49,7 +52,7 @@ public class MappingController {
 		this.scale = scale;
 		this.skipInvalidStructures = skipInvalidStructures;
 	}
-	
+	//ez a rész építi fel az első root buildable-t
 	public void createBuildablesFromCdf(String filename) throws CdfReaderException {
 		attributesByBuildables.clear();
 		
@@ -81,7 +84,7 @@ public class MappingController {
 			throw new CdfReaderException(e);
 		}
 	}
-	
+	//sztem ez linkeli össze a buildables tageket a metrikekkel, amik a property adatok voltak
 	public BuildableTree linkBuildablesToMetrics() {
 		
 		List<Linking> linkings = mapping.getLinkings();
@@ -90,6 +93,7 @@ public class MappingController {
 		for(Map.Entry<Buildable, Map<String, String>> entry : attributesByBuildables.entrySet()) {
 			
 			Buildable b = entry.getKey();
+			//itt kéri ki sztem a propertykből a valuet
 			Map<String, String> attributes = entry.getValue();
 			
 			Linking linking = null;
@@ -105,6 +109,12 @@ public class MappingController {
 			}
 				
 			for(Binding binding : linking.getBindings()) {
+				if ("ChildClasses".equals(binding.getFrom()) || "AttributeClasses".equals(binding.getFrom())
+						 || ("tunnel".equals(binding.getTo()) && (!"ChildClasses".equals(binding.getFrom()) || !"AttributeClasses".equals(binding.getFrom())))
+						 || ("bridge".equals(binding.getTo()) && (!"ChildClasses".equals(binding.getFrom()) || !"AttributeClasses".equals(binding.getFrom())))) {
+					continue;
+				}
+
 				String variableId = binding.getVariableId();
 				if(variableId != null) {
 					String resource = resources.get(variableId);
@@ -136,19 +146,39 @@ public class MappingController {
 		prepareBuildables(buildableTree);
 		return buildableTree;
 	}
-	
+	//eddig legenerálta a buildable-eket, gyermekeket is, és hozzárendelte a metric értékeket.
+	//itt sztem propertyként a buildable position és size tagjára gondol, azoknak állítja be az értéket
 	private void setProperty(Buildable b, String propertyName, Object value, boolean adjustSize) {
 
 		switch(propertyName) {
 			case "height":
 			case "width":
 			case "length":
+			case "BuiltMetric1":
+			case "BuiltMetric2":
+			case "BuiltMetric3":
+
 				value = Conversion.toInt(value);
-				if(adjustSize) value = Conversion.toInt(MIN_SIZE + (int)value * scale);
+				metricValue=(int)value;
+
+				if(adjustSize){ value = Conversion.toInt(MIN_SIZE + (int)value * scale);}
 				break;
 		}
 		
+		//sztem itt állítja be ténylegesen az értékeket
 		switch(propertyName) {
+			case "BuiltMetric1":
+				b.setBuiltMetric1(metricValue);
+				b.addAttribute(propertyName, String.valueOf(metricValue));
+				break;
+			case "BuiltMetric2":
+				b.setBuiltMetric2(metricValue);
+				b.addAttribute(propertyName, String.valueOf(metricValue));
+				break;
+			case "BuiltMetric3":
+				b.setBuiltMetric3(metricValue);
+				b.addAttribute(propertyName, String.valueOf(metricValue));
+				break;	
 			case "height":
 				b.setSizeY((int)value);
 				break;
@@ -162,10 +192,10 @@ public class MappingController {
 				b.addAttribute(propertyName, String.valueOf(value));
 		}	
 	}
-	
+	//itt állítja be sztem a gyermek buildables attribútumait
 	private void setChildren(Buildable buildable, Element element){
 		if(buildableStack.isEmpty()){
-			buildable.setCdfNames(buildable.getName());
+			buildable.setCdfNames(buildable.getName()); //itt állítja be a buildable name attribútumát
 		} else {
 			Buildable top = buildableStack.peek();
 			if(buildable.getCdfNames() == null){
@@ -174,6 +204,7 @@ public class MappingController {
 				buildable.setCdfNames(sb.toString());
 			}
 		}
+	//itt rakja össze a buildables gyermekek sorrendjét
 		buildableStack.add(buildable);
 		Node children = element.getChildNodes().item(1);
 		NodeList childrenNodes = children.getChildNodes();
@@ -204,9 +235,17 @@ public class MappingController {
 		}
 		attributesByBuildables.put(buildable, attributes);
 	}
-	
+	//itt szedi össze konkrétan a buildable az attribútumainak értékeit
 	private Buildable createBuildable(Element element) {
-		String id = UUID.randomUUID().toString();
+		String id = null;
+		NodeList nodeList = element.getElementsByTagName("property");
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node n = nodeList.item(i);
+			if (n instanceof Element && "source_id".equals(((Element) n).getAttribute("name"))) {
+				id = ((Element) n).getAttribute("value");
+			}
+		}
+
 		String name = element.getAttribute("name");
 		String typeStr = mapping.getTargetTypeOf(element.getAttribute("type"));
 		
@@ -215,7 +254,80 @@ public class MappingController {
 		}
 		
 		Type type = Type.valueOf(typeStr);
-		return new Buildable(id, name, type);
+		
+		Buildable temp = new Buildable(id, name, type);
+
+		Buildable buildableForInheritence = null;
+		Buildable buildableForAttributes = null;
+
+		if ("class".equals(element.getAttribute("type"))) {
+
+			NodeList classNodeList = element.getElementsByTagName("property");
+			for (int i = 0; i < classNodeList.getLength(); i++) {
+				Node n = classNodeList.item(i);
+
+				Type childType = null;
+				Type attributueType = null;
+
+
+				for (Linking l : mapping.getLinkings()) {
+					if ("class".equals(l.getSource())) {
+						for (Binding b : l.getBindings()) {
+							if ("ChildClasses".equals(b.getFrom())) {
+								if ("tunnel".equals(b.getTo())) {
+									childType = Type.TUNNEL;
+								} else if ("bridge".equals(b.getTo())) {
+									childType = Type.BRIDGE;
+								}
+							} else if ("AttributeClasses".equals(b.getFrom())) {
+								if ("tunnel".equals(b.getTo())) {
+									attributueType = Type.TUNNEL;
+								} else if ("bridge".equals(b.getTo())) {
+									attributueType = Type.BRIDGE;
+								}
+							}
+						}
+					}
+				}
+				if (n instanceof Element && "ChildClasses".equals(((Element) n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value")) && childType != null) {
+					String children = ((Element) n).getAttribute("value");
+					children =  children.replaceAll("\\[", "").replaceAll("\\]", "" );
+					List<String> childrenList = Arrays.asList(children.split(", "));
+
+					for (String s : childrenList) {
+						buildableForInheritence = new Buildable (
+								"zxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+								"Relation_based_on_inheritance",
+								childType,
+								new Point(0,0,0),
+								new Point(0,0,0)
+						);
+						buildableForInheritence.addAttribute("target", s);
+						buildableForInheritence.addAttribute("torches", "6");
+						temp.addChild(buildableForInheritence);
+					}
+				} else if (n instanceof Element && "AttributeClasses".equals(((Element)n).getAttribute("name")) && !"".equals(((Element) n).getAttribute("value")) && attributueType != null) {
+					String attributes = ((Element) n).getAttribute("value");
+					attributes =  attributes.replaceAll("\\[", "").replaceAll("\\]", "" );
+					List<String> attributeList = Arrays.asList(attributes.split(", "));
+					for (String s : attributeList) {
+						buildableForAttributes = new Buildable (
+								"yxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+								"Relation_based_on_attributes",
+								attributueType,
+								new Point(0,0,0),
+								new Point(0,0,0)
+						);
+						buildableForAttributes.addAttribute("target", s);
+						buildableForAttributes.addAttribute("torches", "6");
+						temp.addChild(buildableForAttributes);
+					}
+
+				}
+			}
+		}
+
+		return temp;
 	}
 	
 	private Map<String, String> createAttributeMap(Element element) {
@@ -229,6 +341,7 @@ public class MappingController {
 				Element propElement = (Element) propNode;
 				Object value;
 				Double doubleValue = null;
+				// itt állítja be a valuenak a propertyk értékeit 
 				switch(propElement.getAttribute("type")) {
 					case "string":
 						value = propElement.getAttribute("value");
@@ -249,6 +362,7 @@ public class MappingController {
 					Element parentElement = (Element)element.getParentNode();
 					limitController.add(parentElement.getAttribute("type").toLowerCase(), propElement.getAttribute("name"), doubleValue);				
 				}
+				//itt szedi be a property nevét és a hozzá tartozó értéket
 				String name = propElement.getAttribute("name");
 				attributes.put(
 						name,
@@ -269,11 +383,11 @@ public class MappingController {
 		Iterator it = buildables.iterator();
 		while(it.hasNext()) {
 			Buildable b = it.next();
-			
+			//oké, az alap 9-ről mindig 3-mal nő a belső gyermekeknél a size és hozzá van adva + 1
 			if(b.getSizeX() % 2 == 0) b.setSizeX(b.getSizeX() + 1);
 			if(b.getSizeY() % 2 == 0) b.setSizeY(b.getSizeY() + 1);
 			if(b.getSizeZ() % 2 == 0) b.setSizeZ(b.getSizeZ() + 1);
-			
+			//és itt van, ha ez kisebb mint a minimum érték, akkor beállítja 9-re.
 			if(b.getSizeX() < MIN_SIZE) b.setSizeX(MIN_SIZE);
 			if(b.getSizeY() < MIN_SIZE) b.setSizeY(MIN_SIZE);
 			if(b.getSizeZ() < MIN_SIZE) b.setSizeZ(MIN_SIZE);
@@ -283,7 +397,7 @@ public class MappingController {
 			}
 		}
 	}
-	
+	//sztem itt építi fel a fát
 	public boolean validateBuildableStructure(BuildableTree buildableTree) throws NotValidBuildableStructure{
 
 		BuildableTree.Iterator iterator = buildableTree.iterator();

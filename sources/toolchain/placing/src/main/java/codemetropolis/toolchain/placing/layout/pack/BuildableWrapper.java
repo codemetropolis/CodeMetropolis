@@ -68,7 +68,7 @@ public class BuildableWrapper implements Comparable<BuildableWrapper> {
 		for(Buildable c : ((Buildable)buildable).getChildren()) {
 			if(c.getType() == Buildable.Type.FLOOR || c.getType() == Buildable.Type.CELLAR) continue;
 			result.add(new BuildableWrapper(c));
-		}
+			}
 		if(houses.get((Buildable)buildable) != null) {
 			for(House h : houses.get((Buildable)buildable)) {
 				result.add(new BuildableWrapper(h));

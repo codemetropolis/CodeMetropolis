@@ -23,13 +23,34 @@
 					<archive>
 						<manifest>
 							<mainClass>codemetropolis.toolchain.gui.Main</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
+						<manifestEntries>
+							<Class-Path>.</Class-Path>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+				  <execution>
+					<id>copy-dependencies</id>
+					<phase>package</phase>
+					<goals>
+					  <goal>copy-dependencies</goal>
+					</goals>
+					<configuration>
+					  <outputDirectory>${project.build.directory}/lib</outputDirectory>
+					  <overWriteReleases>false</overWriteReleases>
+					  <overWriteSnapshots>false</overWriteSnapshots>
+					  <overWriteIfNewer>true</overWriteIfNewer>
+					  <excludeArtifactIds>junit</excludeArtifactIds>
+					</configuration>
+				  </execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -59,6 +80,11 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rendering</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

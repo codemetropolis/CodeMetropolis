@@ -2,7 +2,6 @@ package codemetropolis.toolchain.converter;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 

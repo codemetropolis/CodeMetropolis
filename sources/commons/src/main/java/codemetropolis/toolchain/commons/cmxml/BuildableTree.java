@@ -132,6 +132,10 @@ public class BuildableTree {
 						break;
 						case "container": type = Type.CONTAINER;
 						break;
+						case "tunnel": type = Type.TUNNEL;
+						break;
+						case "bridge": type = Type.BRIDGE;
+						break;
 					}
 					
 					Point position;
@@ -148,11 +152,12 @@ public class BuildableTree {
 					Point size;
 					if(eElement.getElementsByTagName("size").item(0) != null && eElement.getElementsByTagName("size").item(0).getParentNode() == nNode) {
 						size = new Point(
-							Integer.parseInt(((Element)eElement.getElementsByTagName("size").item(0)).getAttribute("x")),
-							Integer.parseInt(((Element)eElement.getElementsByTagName("size").item(0)).getAttribute("y")),
-							Integer.parseInt(((Element)eElement.getElementsByTagName("size").item(0)).getAttribute("z"))
-							);
-					} else {
+							Integer.parseInt(((Element) eElement.getElementsByTagName("size").item(0)).getAttribute("x")),
+							Integer.parseInt(((Element) eElement.getElementsByTagName("size").item(0)).getAttribute("y")),
+							Integer.parseInt(((Element) eElement.getElementsByTagName("size").item(0)).getAttribute("z"))
+						);
+					}
+					 else {
 						size = new Point();
 					}
 					

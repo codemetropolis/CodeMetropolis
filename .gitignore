@@ -1,6 +1,7 @@
 **/bin/**
 **/target/**
 **/tmp/**
+**/.idea/**
 **/.metadata/**
 **/.settings/**
 **/.recommenders/**
@@ -15,7 +16,7 @@
 *.bak
 *.swp
 *~.nib
-
+/bin/
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java

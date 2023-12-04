@@ -18,7 +18,7 @@ public class House {
 	private Buildable bottomFloor;
 	private Buildable topCellar;
 	private Buildable bottomCellar;
-	
+
 	public House(int minHeight, int maxHeight) {
 		this.minHeight = minHeight;
 		this.maxHeight = maxHeight;
@@ -151,5 +151,5 @@ public class House {
 	public Buildable getParent() {
 		return parent;
 	}
-	
+
 }
