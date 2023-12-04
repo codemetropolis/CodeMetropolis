@@ -15,32 +15,24 @@ parser = argparse.ArgumentParser(description='This is a Python script that uses 
 
 parser.add_argument('test_path', metavar='F', type=str,
                     help='Specifies the path of one or multiple test files. Required argument!')  
-
 parser.add_argument('input_path', metavar='I', type=str,
                     help='Specifies the path of the input files used for testing. Required argument!')  
-
 parser.add_argument('expected_output_path', metavar='E', type=str,
                     help='Specifies the path of the expected output files. Required argument!') 
-
 parser.add_argument('generated_output_path', metavar='O', type=str,
                     help='Specifies the path of the generated output files by tools. Required argument!')  
-
 parser.add_argument('--mapping_file_path', dest='mapping_file_path', type=str,
                     help='Specifies the path of the mapping file. Required argument, if you test mapping tool output!') 
-
 parser.add_argument('--type', dest='types', type=str,
-                    help='Specifies the type for tool. Required argument, if you test converter or rendering tool output!')  
-                    
+                    help='Specifies the type for tool. Required argument, if you test converter or rendering tool output!')               
 parser.add_argument('--parameters', dest='parameters', type=str,
                     help='Optional parameters. You can use it if supported by the tool')                 
 
 #arguments and variables
 arguments = parser.parse_args()
-
 test_file_path = arguments.test_path
 test_file = None
 modified_test_file_path = None
-
 input_path = arguments.input_path
 expected_output_path = arguments.expected_output_path
 output_path = arguments.generated_output_path
@@ -95,14 +87,14 @@ def splitter(fileNames):
     return fileName
 
 #import pytest file function
-def random_test_file_select(test_file_path):
+def randomTestFileSelect(test_file_path):
     sys.path.append(os.path.join(os.path.dirname(__file__), test_file_path))
     fileNames = next(walk(test_file_path), (None, None, []))[2]
     fileName = splitter(fileNames[0])
     return fileName
 
 #run pytest function
-def run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path):
+def runPytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path):
     if (test_file == None):
         pytest.main([test_file_path, '--expected', expected_output_path, '--output', output_path, "-s"])
         
@@ -110,9 +102,8 @@ def run_pytest(test_file, test_file_path, modified_test_file_path, expected_outp
         pytest.main([modified_test_file_path, '--expected', expected_output_path, '--output', output_path, "-s"])
     
 #jars functions
-
 #converter tool
-def converter_tool(input_path, types, parameters, output_path):
+def converterTool(input_path, types, parameters, output_path):
     if parameters == "None" or parameters is None:
         subprocess.call(['java.exe', '-jar', '../distro/converter-1.4.0.jar', '-t', '' + types , '-s' , '' + input_path]),
     else:
@@ -120,24 +111,24 @@ def converter_tool(input_path, types, parameters, output_path):
 
     shutil.move(os.path.join('./', 'converterToMapping.xml'), os.path.join(output_path, 'converterToMapping.xml'))   
 
-    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
+    runPytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
            
 #mapping tool 
-def mapping_tool(input_path, mapping_path, output_path):
+def mappingTool(input_path, mapping_path, output_path):
     subprocess.call(['java.exe', '-jar', '../distro/mapping-1.4.0.jar', '-i', '' + input_path , "-m", '' + mapping_path])
     shutil.move(os.path.join('./', 'mappingToPlacing.xml'), os.path.join(output_path, 'mappingToPlacing.xml'))
 
-    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
+    runPytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
 
 #placing tool
-def placing_tool(input_path, output_path):
+def placingTool(input_path, output_path):
     subprocess.call(['java.exe', '-jar', '../distro/placing-1.4.0.jar', '-i', '' + input_path])
     shutil.move(os.path.join('./', 'placingToRendering.xml'), os.path.join(output_path, 'placingToRendering.xml'))
 
-    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
+    runPytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
 
 #rendering tool
-def rendering_tool(input_path, types, output_path):
+def renderingTool(input_path, types, output_path):
     subprocess.call(['java.exe', '-jar', '../distro/rendering-1.4.0.jar', '-i', '' + input_path, '-world', 'world'])
     worldExist = os.path.exists(output_path)
     if (worldExist == True):
@@ -145,18 +136,17 @@ def rendering_tool(input_path, types, output_path):
 
     shutil.move(os.path.join('./', 'world'), os.path.join(output_path, 'world'))
 
-    run_pytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
+    runPytest(test_file, test_file_path, modified_test_file_path, expected_output_path, output_path)
 
 #MAIN
 while True:
-
     #import test file
     if (str(test_file) != "None"):
         sys.path.append(os.path.join(os.path.dirname(__file__), test_file_path))
         importPytestFile = __import__(splitter(test_file))
         
     if (str(test_file) == "None"):
-        importPytestFile = __import__(random_test_file_select(test_file_path))
+        importPytestFile = __import__(randomTestFileSelect(test_file_path))
 
     #selected tool from test
     selected_tool = importPytestFile.jar
@@ -167,13 +157,13 @@ while True:
 
     match selected_tool:
         case "converter": 
-            converter_tool(input_path, types, parameters, output_path)
+            converterTool(input_path, types, parameters, output_path)
         case "mapping": 
-            mapping_tool(input_path, mapping_path, output_path)
+            mappingTool(input_path, mapping_path, output_path)
         case "placing": 
-            placing_tool(input_path, output_path)
+            placingTool(input_path, output_path)
         case "rendering": 
-            rendering_tool(input_path, types, output_path)
+            renderingTool(input_path, types, output_path)
     
     break
    

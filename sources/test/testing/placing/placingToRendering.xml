@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="placing" to="rendering" version="1.0">
+    <buildable id="a8eaa3bb-44ca-447e-9e37-9cad71f4b1ff" name="" type="container">
+        <position x="0" y="60" z="0"/>
+        <size x="48" y="9" z="33"/>
+        <attributes/>
+        <children>
+            <buildable id="L100" name="&lt;root_package&gt;" type="ground">
+                <position x="3" y="61" z="3"/>
+                <size x="42" y="9" z="27"/>
+                <attributes/>
+                <children>
+                    <buildable id="L104" name="unnamed package" type="ground">
+                        <position x="33" y="62" z="6"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children/>
+                    </buildable>
+                    <buildable id="L118" name="TestProject_Simple1" type="ground">
+                        <position x="6" y="62" z="6"/>
+                        <size x="21" y="9" z="21"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="L121" name="HelloWorld" type="garden">
+                                <position x="9" y="63" z="9"/>
+                                <size x="15" y="9" z="15"/>
+                                <attributes>
+                                    <attribute name="flower-ratio" value="1.0"/>
+                                </attributes>
+                                <children>
+                                    <buildable id="L128" name="void main(String[] args)" type="floor">
+                                        <position x="12" y="64" z="12"/>
+                                        <size x="9" y="11" z="9"/>
+                                        <attributes>
+                                            <attribute name="BuiltMetric1" value="4"/>
+                                            <attribute name="BuiltMetric2" value="0"/>
+                                            <attribute name="BuiltMetric3" value="0"/>
+                                            <attribute name="character" value="glass"/>
+                                            <attribute name="external_character" value="metal"/>
+                                            <attribute name="torches" value="1"/>
+                                        </attributes>
+                                        <children/>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

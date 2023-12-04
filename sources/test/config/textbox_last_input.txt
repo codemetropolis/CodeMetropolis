@@ -1,0 +1,6 @@
+C:/Users/Zoli/CodeMetropolis/sources/test/testFiles/converter
+C:/Users/Zoli/CodeMetropolis/sources/test/testing/converter/TestProject_Simple1.graph
+C:/Users/Zoli/CodeMetropolis/sources/test/testing/converter/expected.xml
+C:/Users/Zoli/CodeMetropolis/sources/test/testing/converter
+SourceMeter
+

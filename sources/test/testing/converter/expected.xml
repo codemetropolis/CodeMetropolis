@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<element name="&lt;root_package&gt;" type="package">
+    <children>
+        <element name="unnamed package" type="package">
+            <children/>
+            <properties>
+                <property name="source_id" type="string" value="L104"/>
+                <property name="Name" type="string" value="unnamed package"/>
+                <property name="LongName" type="string" value="unnamed package"/>
+                <property name="CC" type="float" value="0.0"/>
+                <property name="CI" type="int" value="0"/>
+                <property name="CCL" type="int" value="0"/>
+                <property name="CCO" type="int" value="0"/>
+                <property name="CLLC" type="float" value="0.0"/>
+                <property name="LLDC" type="int" value="0"/>
+                <property name="LDC" type="int" value="0"/>
+                <property name="CLC" type="float" value="0.0"/>
+                <property name="LLOC" type="int" value="2"/>
+                <property name="LOC" type="int" value="9"/>
+                <property name="TLLOC" type="int" value="2"/>
+                <property name="TLOC" type="int" value="9"/>
+                <property name="NA" type="int" value="0"/>
+                <property name="NCL" type="int" value="0"/>
+                <property name="NEN" type="int" value="0"/>
+                <property name="NIN" type="int" value="0"/>
+                <property name="NM" type="int" value="0"/>
+                <property name="NPA" type="int" value="0"/>
+                <property name="NPM" type="int" value="0"/>
+                <property name="NS" type="int" value="0"/>
+                <property name="PDA" type="int" value="0"/>
+                <property name="PUA" type="int" value="0"/>
+                <property name="AD" type="float" value="0.0"/>
+                <property name="CLOC" type="int" value="0"/>
+                <property name="NG" type="int" value="0"/>
+                <property name="CD" type="float" value="0.0"/>
+                <property name="NPKG" type="int" value="0"/>
+                <property name="TAD" type="float" value="0.0"/>
+                <property name="TNA" type="int" value="0"/>
+                <property name="TNCL" type="int" value="0"/>
+                <property name="TNEN" type="int" value="0"/>
+                <property name="TNFI" type="int" value="1"/>
+                <property name="TNG" type="int" value="0"/>
+                <property name="TNIN" type="int" value="0"/>
+                <property name="TNM" type="int" value="0"/>
+                <property name="TNOS" type="int" value="0"/>
+                <property name="TNPA" type="int" value="0"/>
+                <property name="TNPCL" type="int" value="0"/>
+                <property name="TNPEN" type="int" value="0"/>
+                <property name="TNPIN" type="int" value="0"/>
+                <property name="TNPKG" type="int" value="0"/>
+                <property name="TNPM" type="int" value="0"/>
+                <property name="TNS" type="int" value="0"/>
+                <property name="TPDA" type="int" value="0"/>
+                <property name="TPUA" type="int" value="0"/>
+                <property name="TCLOC" type="int" value="0"/>
+                <property name="TNDI" type="int" value="10"/>
+                <property name="TCD" type="float" value="0.0"/>
+                <property name="WarningBlocker" type="int" value="0"/>
+                <property name="WarningCritical" type="int" value="0"/>
+                <property name="WarningMajor" type="int" value="0"/>
+                <property name="WarningMinor" type="int" value="0"/>
+                <property name="WarningInfo" type="int" value="0"/>
+            </properties>
+        </element>
+        <element name="TestProject_Simple1" type="package">
+            <children>
+                <element name="HelloWorld" type="class">
+                    <children>
+                        <element name="void main(String[] args)" type="method">
+                            <children/>
+                            <properties>
+                                <property name="source_id" type="string" value="L128"/>
+                                <property name="Name" type="string" value="void main(String[] args)"/>
+                                <property name="LongName" type="string" value="TestProject_Simple1.HelloWorld.main([Ljava/lang/String;)V"/>
+                                <property name="CLLC" type="float" value="0.0"/>
+                                <property name="CC" type="float" value="0.0"/>
+                                <property name="CI" type="int" value="0"/>
+                                <property name="CCL" type="int" value="0"/>
+                                <property name="CCO" type="int" value="0"/>
+                                <property name="LLDC" type="int" value="0"/>
+                                <property name="LDC" type="int" value="0"/>
+                                <property name="CLC" type="float" value="0.0"/>
+                                <property name="DLOC" type="int" value="0"/>
+                                <property name="HCPL" type="float" value="13.60964"/>
+                                <property name="HDIF" type="float" value="2.5"/>
+                                <property name="HEFF" type="float" value="49.12871"/>
+                                <property name="HNDB" type="float" value="13.413959"/>
+                                <property name="HPL" type="int" value="7"/>
+                                <property name="HPV" type="int" value="7"/>
+                                <property name="HTRP" type="float" value="2.7293727"/>
+                                <property name="HVOL" type="float" value="19.651484"/>
+                                <property name="LLOC" type="int" value="2"/>
+                                <property name="LOC" type="int" value="4"/>
+                                <property name="McCC" type="int" value="1"/>
+                                <property name="NII" type="int" value="0"/>
+                                <property name="NL" type="int" value="0"/>
+                                <property name="NLE" type="int" value="0"/>
+                                <property name="NOI" type="int" value="0"/>
+                                <property name="NOS" type="int" value="0"/>
+                                <property name="NUMPAR" type="int" value="1"/>
+                                <property name="TLLOC" type="int" value="2"/>
+                                <property name="TLOC" type="int" value="4"/>
+                                <property name="CLOC" type="int" value="1"/>
+                                <property name="CD" type="float" value="0.33333334"/>
+                                <property name="MI" type="float" value="144.05463"/>
+                                <property name="MIMS" type="float" value="84.24247"/>
+                                <property name="MISEI" type="float" value="171.22038"/>
+                                <property name="MISM" type="float" value="100.12888"/>
+                                <property name="TNOS" type="int" value="0"/>
+                                <property name="TCLOC" type="int" value="1"/>
+                                <property name="TCD" type="float" value="0.33333334"/>
+                                <property name="WarningBlocker" type="int" value="0"/>
+                                <property name="WarningCritical" type="int" value="0"/>
+                                <property name="WarningMajor" type="int" value="0"/>
+                                <property name="WarningMinor" type="int" value="0"/>
+                                <property name="WarningInfo" type="int" value="0"/>
+                            </properties>
+                        </element>
+                    </children>
+                    <properties>
+                        <property name="source_id" type="string" value="L121"/>
+                        <property name="Name" type="string" value="HelloWorld"/>
+                        <property name="LongName" type="string" value="TestProject_Simple1.HelloWorld"/>
+                        <property name="Anonymous" type="int" value="0"/>
+                        <property name="CC" type="float" value="0.0"/>
+                        <property name="CI" type="int" value="0"/>
+                        <property name="CCL" type="int" value="0"/>
+                        <property name="CCO" type="int" value="0"/>
+                        <property name="CLLC" type="float" value="0.0"/>
+                        <property name="LLDC" type="int" value="0"/>
+                        <property name="LDC" type="int" value="0"/>
+                        <property name="CLC" type="float" value="0.0"/>
+                        <property name="CBO" type="int" value="0"/>
+                        <property name="DIT" type="int" value="0"/>
+                        <property name="LCOM5" type="int" value="1"/>
+                        <property name="LLOC" type="int" value="4"/>
+                        <property name="LOC" type="int" value="8"/>
+                        <property name="NA" type="int" value="0"/>
+                        <property name="NL" type="int" value="0"/>
+                        <property name="NLE" type="int" value="0"/>
+                        <property name="NM" type="int" value="1"/>
+                        <property name="NOA" type="int" value="0"/>
+                        <property name="NOC" type="int" value="0"/>
+                        <property name="NOD" type="int" value="0"/>
+                        <property name="NOP" type="int" value="0"/>
+                        <property name="TLLOC" type="int" value="4"/>
+                        <property name="TLOC" type="int" value="8"/>
+                        <property name="WMC" type="int" value="1"/>
+                        <property name="DLOC" type="int" value="0"/>
+                        <property name="NII" type="int" value="0"/>
+                        <property name="NLA" type="int" value="0"/>
+                        <property name="NLPA" type="int" value="0"/>
+                        <property name="NOI" type="int" value="0"/>
+                        <property name="NOS" type="int" value="0"/>
+                        <property name="NPA" type="int" value="0"/>
+                        <property name="NPM" type="int" value="1"/>
+                        <property name="NS" type="int" value="0"/>
+                        <property name="PDA" type="int" value="0"/>
+                        <property name="PUA" type="int" value="2"/>
+                        <property name="AD" type="float" value="0.0"/>
+                        <property name="CLOC" type="int" value="1"/>
+                        <property name="NG" type="int" value="0"/>
+                        <property name="NLG" type="int" value="0"/>
+                        <property name="NLM" type="int" value="1"/>
+                        <property name="NLPM" type="int" value="1"/>
+                        <property name="NLS" type="int" value="0"/>
+                        <property name="RFC" type="int" value="1"/>
+                        <property name="CD" type="float" value="0.2"/>
+                        <property name="CBOI" type="int" value="0"/>
+                        <property name="TNA" type="int" value="0"/>
+                        <property name="TNG" type="int" value="0"/>
+                        <property name="TNLA" type="int" value="0"/>
+                        <property name="TNLG" type="int" value="0"/>
+                        <property name="TNLM" type="int" value="1"/>
+                        <property name="TNLPA" type="int" value="0"/>
+                        <property name="TNLPM" type="int" value="1"/>
+                        <property name="TNLS" type="int" value="0"/>
+                        <property name="TNM" type="int" value="1"/>
+                        <property name="TNOS" type="int" value="0"/>
+                        <property name="TNPA" type="int" value="0"/>
+                        <property name="TNPM" type="int" value="1"/>
+                        <property name="TNS" type="int" value="0"/>
+                        <property name="TCLOC" type="int" value="1"/>
+                        <property name="TCD" type="float" value="0.2"/>
+                        <property name="WarningBlocker" type="int" value="0"/>
+                        <property name="WarningCritical" type="int" value="0"/>
+                        <property name="WarningMajor" type="int" value="0"/>
+                        <property name="WarningMinor" type="int" value="0"/>
+                        <property name="WarningInfo" type="int" value="3"/>
+                        <property name="AD_warning_Class" type="int" value="1"/>
+                        <property name="CD_warning_Class" type="int" value="1"/>
+                        <property name="TCD_warning_Class" type="int" value="1"/>
+                        <property name="Documentation Metric Rules" type="int" value="3"/>
+                    </properties>
+                </element>
+            </children>
+            <properties>
+                <property name="source_id" type="string" value="L118"/>
+                <property name="Name" type="string" value="TestProject_Simple1"/>
+                <property name="LongName" type="string" value="TestProject_Simple1"/>
+                <property name="CC" type="float" value="0.0"/>
+                <property name="CI" type="int" value="0"/>
+                <property name="CCL" type="int" value="0"/>
+                <property name="CCO" type="int" value="0"/>
+                <property name="CLLC" type="float" value="0.0"/>
+                <property name="LLDC" type="int" value="0"/>
+                <property name="LDC" type="int" value="0"/>
+                <property name="CLC" type="float" value="0.0"/>
+                <property name="PMD_PC" type="int" value="1"/>
+                <property name="Code Style Rules" type="int" value="1"/>
+                <property name="LLOC" type="int" value="5"/>
+                <property name="LOC" type="int" value="10"/>
+                <property name="TLLOC" type="int" value="5"/>
+                <property name="TLOC" type="int" value="10"/>
+                <property name="NA" type="int" value="0"/>
+                <property name="NCL" type="int" value="1"/>
+                <property name="NEN" type="int" value="0"/>
+                <property name="NIN" type="int" value="0"/>
+                <property name="NM" type="int" value="1"/>
+                <property name="NPA" type="int" value="0"/>
+                <property name="NPM" type="int" value="1"/>
+                <property name="NS" type="int" value="0"/>
+                <property name="PDA" type="int" value="0"/>
+                <property name="PUA" type="int" value="2"/>
+                <property name="AD" type="float" value="0.0"/>
+                <property name="CLOC" type="int" value="1"/>
+                <property name="NG" type="int" value="0"/>
+                <property name="CD" type="float" value="0.16666667"/>
+                <property name="NPKG" type="int" value="0"/>
+                <property name="TAD" type="float" value="0.0"/>
+                <property name="TNA" type="int" value="0"/>
+                <property name="TNCL" type="int" value="1"/>
+                <property name="TNEN" type="int" value="0"/>
+                <property name="TNFI" type="int" value="1"/>
+                <property name="TNG" type="int" value="0"/>
+                <property name="TNIN" type="int" value="0"/>
+                <property name="TNM" type="int" value="1"/>
+                <property name="TNOS" type="int" value="0"/>
+                <property name="TNPA" type="int" value="0"/>
+                <property name="TNPCL" type="int" value="1"/>
+                <property name="TNPEN" type="int" value="0"/>
+                <property name="TNPIN" type="int" value="0"/>
+                <property name="TNPKG" type="int" value="0"/>
+                <property name="TNPM" type="int" value="1"/>
+                <property name="TNS" type="int" value="0"/>
+                <property name="TPDA" type="int" value="0"/>
+                <property name="TPUA" type="int" value="2"/>
+                <property name="TCLOC" type="int" value="1"/>
+                <property name="TNDI" type="int" value="11"/>
+                <property name="TCD" type="float" value="0.16666667"/>
+                <property name="WarningBlocker" type="int" value="0"/>
+                <property name="WarningCritical" type="int" value="0"/>
+                <property name="WarningMajor" type="int" value="0"/>
+                <property name="WarningMinor" type="int" value="1"/>
+                <property name="WarningInfo" type="int" value="3"/>
+                <property name="AD_warning_Class" type="int" value="1"/>
+                <property name="CD_warning_Class" type="int" value="1"/>
+                <property name="TCD_warning_Class" type="int" value="1"/>
+                <property name="Documentation Metric Rules" type="int" value="3"/>
+            </properties>
+        </element>
+    </children>
+    <properties>
+        <property name="source_id" type="string" value="L100"/>
+        <property name="Name" type="string" value="&lt;root_package&gt;"/>
+        <property name="LongName" type="string" value="&lt;root_package&gt;"/>
+        <property name="CC" type="float" value="0.0"/>
+        <property name="CI" type="int" value="0"/>
+        <property name="CCL" type="int" value="0"/>
+        <property name="CCO" type="int" value="0"/>
+        <property name="CLLC" type="float" value="0.0"/>
+        <property name="LLDC" type="int" value="0"/>
+        <property name="LDC" type="int" value="0"/>
+        <property name="CLC" type="float" value="0.0"/>
+        <property name="PMD_PC" type="int" value="1"/>
+        <property name="Code Style Rules" type="int" value="1"/>
+        <property name="LLOC" type="int" value="0"/>
+        <property name="LOC" type="int" value="0"/>
+        <property name="TLLOC" type="int" value="7"/>
+        <property name="TLOC" type="int" value="19"/>
+        <property name="NA" type="int" value="0"/>
+        <property name="NCL" type="int" value="0"/>
+        <property name="NEN" type="int" value="0"/>
+        <property name="NIN" type="int" value="0"/>
+        <property name="NM" type="int" value="0"/>
+        <property name="NPA" type="int" value="0"/>
+        <property name="NPM" type="int" value="0"/>
+        <property name="NS" type="int" value="0"/>
+        <property name="PDA" type="int" value="0"/>
+        <property name="PUA" type="int" value="0"/>
+        <property name="AD" type="float" value="0.0"/>
+        <property name="CLOC" type="int" value="0"/>
+        <property name="NG" type="int" value="0"/>
+        <property name="CD" type="float" value="0.0"/>
+        <property name="NPKG" type="int" value="2"/>
+        <property name="TAD" type="float" value="0.0"/>
+        <property name="TNA" type="int" value="0"/>
+        <property name="TNCL" type="int" value="1"/>
+        <property name="TNEN" type="int" value="0"/>
+        <property name="TNFI" type="int" value="2"/>
+        <property name="TNG" type="int" value="0"/>
+        <property name="TNIN" type="int" value="0"/>
+        <property name="TNM" type="int" value="1"/>
+        <property name="TNOS" type="int" value="0"/>
+        <property name="TNPA" type="int" value="0"/>
+        <property name="TNPCL" type="int" value="1"/>
+        <property name="TNPEN" type="int" value="0"/>
+        <property name="TNPIN" type="int" value="0"/>
+        <property name="TNPKG" type="int" value="2"/>
+        <property name="TNPM" type="int" value="1"/>
+        <property name="TNS" type="int" value="0"/>
+        <property name="TPDA" type="int" value="0"/>
+        <property name="TPUA" type="int" value="2"/>
+        <property name="TCLOC" type="int" value="1"/>
+        <property name="TNDI" type="int" value="11"/>
+        <property name="TCD" type="float" value="0.125"/>
+        <property name="WarningBlocker" type="int" value="0"/>
+        <property name="WarningCritical" type="int" value="0"/>
+        <property name="WarningMajor" type="int" value="0"/>
+        <property name="WarningMinor" type="int" value="1"/>
+        <property name="WarningInfo" type="int" value="3"/>
+        <property name="AD_warning_Class" type="int" value="1"/>
+        <property name="CD_warning_Class" type="int" value="1"/>
+        <property name="TCD_warning_Class" type="int" value="1"/>
+        <property name="Documentation Metric Rules" type="int" value="3"/>
+    </properties>
+</element>
