@@ -71,13 +71,26 @@ public class Boxel implements Primitive {
         int x = position.getX() >> 9;
         int z = position.getZ() >> 9;
 
-        directory.mkdirs();
-        String filename = String.format("blocks.%d.%d.csv", x, z);
-        File file = new File(directory, filename);
+        File file = null;
 
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
-            String csv = toCSV();
-            if (csv != null) writer.println(csv);
+        if (directory.exists()) {
+            System.out.println("Directory already exists.");
+        } else {
+            boolean isDirectoryCreated = directory.mkdirs();
+            if (isDirectoryCreated) {
+                String filename = String.format("blocks.%d.%d.csv", x, z);
+                file = new File(directory, filename);
+            } else {
+                System.err.println("Failed to create the directory.");
+            }
+        }
+
+        try {
+            assert file != null;
+            try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
+                String csv = toCSV();
+                if (csv != null) writer.println(csv);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e1) {
