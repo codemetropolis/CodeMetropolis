@@ -42,7 +42,7 @@ public class Boxel implements Primitive {
 
         switch (block.getId()) {
             case 52:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getData());
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), info);
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
