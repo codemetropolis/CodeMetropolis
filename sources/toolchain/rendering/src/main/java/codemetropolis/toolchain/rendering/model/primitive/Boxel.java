@@ -2,6 +2,7 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
 import java.io.*;
@@ -71,22 +72,23 @@ public class Boxel implements Primitive {
         int x = position.getX() >> 9;
         int z = position.getZ() >> 9;
 
-        File file = null;
+        File file;
 
-        if (directory.exists()) {
-            System.out.println("Directory already exists.");
-        } else {
-            boolean isDirectoryCreated = directory.mkdirs();
-            if (isDirectoryCreated) {
-                String filename = String.format("blocks.%d.%d.csv", x, z);
-                file = new File(directory, filename);
-            } else {
-                System.err.println("Failed to create the directory.");
+        if (!directory.exists()) {
+            try {
+                EU.tryUnchecked(directory::mkdirs);
+            } catch (Exception e) {
+                throw new RuntimeException("Directory creation failed.",
+                        e.getClass().getName().equals("java.nio.file.FileAlreadyExistsException") ? null : e);
             }
         }
 
+        //TODO: Blockmodifier NBT tag fix
+        String filename = String.format("blocks.%d.%d.csv", x, z);
+        file = new File(directory, filename);
+
+        //TODO: Fix IoException catch
         try {
-            assert file != null;
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
                 String csv = toCSV();
                 if (csv != null) writer.println(csv);
