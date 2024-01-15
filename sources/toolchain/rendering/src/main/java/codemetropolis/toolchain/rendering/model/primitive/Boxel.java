@@ -12,6 +12,7 @@ public class Boxel implements Primitive {
     public BasicBlock block;
     public Point position;
     public String info;
+    public Short dangerLevel;
 
     public Boxel(BasicBlock block, Point position) {
         super();
@@ -19,9 +20,19 @@ public class Boxel implements Primitive {
         this.position = position;
     }
 
+    //TODO: better constructor handling for danger value and make render() work with it
     public Boxel(BasicBlock block, Point position, String info) {
         this(block, position);
         this.info = info;
+    }
+
+    public Boxel(BasicBlock block, Point position, String info, Short dangerLvl) {
+        this(block, position, info);
+        if (dangerLvl != null) {
+            this.dangerLevel = dangerLvl;
+        } else {
+            this.dangerLevel = 0;
+        }
     }
 
     public static Boxel parseCSV(String csv) {
@@ -34,8 +45,10 @@ public class Boxel implements Primitive {
                         Integer.parseInt(parts[2]),
                         Integer.parseInt(parts[3]),
                         Integer.parseInt(parts[4])),
-                (parts[5].equals("NULL") ? "" : parts[5])
+                (parts[5].equals("NULL") ? "" : parts[5]),
+                (parts.length > 6 ? Short.parseShort(parts[6]) : null)
         );
+
     }
 
     public void render(World world) {
@@ -43,7 +56,7 @@ public class Boxel implements Primitive {
 
         switch (block.getId()) {
             case 52:
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), info);
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), info, dangerLevel);
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
@@ -83,7 +96,6 @@ public class Boxel implements Primitive {
             }
         }
 
-        //TODO: Blockmodifier NBT tag fix
         String filename = String.format("blocks.%d.%d.csv", x, z);
         file = new File(directory, filename);
 

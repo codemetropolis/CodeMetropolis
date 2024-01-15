@@ -11,6 +11,7 @@ public class SingleBlock implements Primitive {
     private String name;
     private Orientation orientation;
     private String entityId;
+    private short dangerLvl;
 
     public SingleBlock(String name, int x, int y, int z) {
         super();
@@ -19,11 +20,13 @@ public class SingleBlock implements Primitive {
         this.orientation = Orientation.NORTH;
     }
 
-    public SingleBlock(String name, Point position, String entitiId) {
+    //TODO: better constructor handling for danger value and make toCSVFile() work with it
+    public SingleBlock(String name, Point position, String entitiId, short dangerValue) {
         super();
         this.position = position;
         this.name = name;
         this.entityId = entitiId;
+        this.dangerLvl = dangerValue;
     }
 
     public SingleBlock(String name, Point position) {
@@ -43,7 +46,7 @@ public class SingleBlock implements Primitive {
     @Override
     public int toCSVFile(File directory) {
         if (name.equals("minecraft:mob_spawner")) {
-            new Boxel(new BasicBlock((short) 52), position, entityId).toCSVFile(directory);
+            new Boxel(new BasicBlock((short) 52), position, entityId, dangerLvl).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(name, orientation.getValue()), position).toCSVFile(directory);
         }
