@@ -45,11 +45,12 @@ public class Boxel implements Primitive {
         switch (block.getId()) {
             case 52:
                 int hyphenIndex = info.indexOf("-");
-                String prefix = hyphenIndex != -1 ? info.substring(0, hyphenIndex) : info;
-                String suffix = hyphenIndex != -1 ? info.substring(hyphenIndex + 1) : "";
+                String monster = hyphenIndex != -1 ? info.substring(0, hyphenIndex) : info;
+                short dangerValue = (short) Math.min(10, Math.max(1, Short.parseShort(hyphenIndex != -1 ? info.
+                        substring(hyphenIndex + 1) : "0")));
 
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), prefix,
-                        Short.parseShort(suffix));
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), monster,
+                        dangerValue);
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
