@@ -12,7 +12,6 @@ public class Boxel implements Primitive {
     public BasicBlock block;
     public Point position;
     public String info;
-    public short dangerLevel;
 
     public Boxel(BasicBlock block, Point position) {
         super();
@@ -20,17 +19,10 @@ public class Boxel implements Primitive {
         this.position = position;
     }
 
-    //TODO: better constructor handling for danger value and make render() work with it
     public Boxel(BasicBlock block, Point position, String info) {
         this(block, position);
         this.info = info;
     }
-
-//    public Boxel(BasicBlock block, Point position, String info, short dangerLvl) {
-//        this(block, position);
-//        this.info = info;
-//        this.dangerLevel = dangerLvl;
-//    }
 
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
@@ -43,7 +35,6 @@ public class Boxel implements Primitive {
                         Integer.parseInt(parts[3]),
                         Integer.parseInt(parts[4])),
                 (parts[5].equals("NULL") ? "" : parts[5])
-//                (parts.length > 6 ? Short.parseShort(parts[6]) : (short) 0)
         );
 
     }

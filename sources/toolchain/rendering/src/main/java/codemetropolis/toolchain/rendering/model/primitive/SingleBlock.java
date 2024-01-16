@@ -11,7 +11,6 @@ public class SingleBlock implements Primitive {
     private String name;
     private Orientation orientation;
     private String entityId;
-    private short dangerLvl;
 
     public SingleBlock(String name, int x, int y, int z) {
         super();
@@ -20,13 +19,11 @@ public class SingleBlock implements Primitive {
         this.orientation = Orientation.NORTH;
     }
 
-    //TODO: better constructor handling for danger value and make toCSVFile() work with it
     public SingleBlock(String name, Point position, String entitiId) {
         super();
         this.position = position;
         this.name = name;
         this.entityId = entitiId;
-//        this.dangerLvl = dangerValue;
     }
 
     public SingleBlock(String name, Point position) {
