@@ -33,11 +33,10 @@ public class Floor extends Building {
 
     //TODO: create handling for spawner danger attribute and value
 
-//    short dangerValue = Short.parseShort(innerBuildable.getAttributeValue("danger"));
+    //    short dangerValue = Short.parseShort(innerBuildable.getAttributeValue("danger"));
     private void prepareSpawner() {
         SingleBlock spawner = new SingleBlock("minecraft:mob_spawner", position.translate(new Point(center.getX(),
-                0, center.getZ())), "minecraft:zombie",
-                Short.parseShort(innerBuildable.getAttributeValue("danger")));
+                0, center.getZ())), "minecraft:zombie" + "-" + innerBuildable.getAttributeValue("danger"));
         primitives.add(spawner);
 
     }

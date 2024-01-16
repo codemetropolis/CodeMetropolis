@@ -12,7 +12,7 @@ public class Boxel implements Primitive {
     public BasicBlock block;
     public Point position;
     public String info;
-    public Short dangerLevel;
+    public short dangerLevel;
 
     public Boxel(BasicBlock block, Point position) {
         super();
@@ -26,14 +26,11 @@ public class Boxel implements Primitive {
         this.info = info;
     }
 
-    public Boxel(BasicBlock block, Point position, String info, Short dangerLvl) {
-        this(block, position, info);
-        if (dangerLvl != null) {
-            this.dangerLevel = dangerLvl;
-        } else {
-            this.dangerLevel = 0;
-        }
-    }
+//    public Boxel(BasicBlock block, Point position, String info, short dangerLvl) {
+//        this(block, position);
+//        this.info = info;
+//        this.dangerLevel = dangerLvl;
+//    }
 
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
@@ -45,8 +42,8 @@ public class Boxel implements Primitive {
                         Integer.parseInt(parts[2]),
                         Integer.parseInt(parts[3]),
                         Integer.parseInt(parts[4])),
-                (parts[5].equals("NULL") ? "" : parts[5]),
-                (parts.length > 6 ? Short.parseShort(parts[6]) : null)
+                (parts[5].equals("NULL") ? "" : parts[5])
+//                (parts.length > 6 ? Short.parseShort(parts[6]) : (short) 0)
         );
 
     }
@@ -56,7 +53,12 @@ public class Boxel implements Primitive {
 
         switch (block.getId()) {
             case 52:
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), info, dangerLevel);
+                int hyphenIndex = info.indexOf("-");
+                String prefix = hyphenIndex != -1 ? info.substring(0, hyphenIndex) : info;
+                String suffix = hyphenIndex != -1 ? info.substring(hyphenIndex + 1) : "";
+
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), prefix,
+                        Short.parseShort(suffix));
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
