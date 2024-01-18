@@ -42,8 +42,13 @@ public class Boxel implements Primitive {
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
 
-        switch (block.getId()) {
+        createBlocks(world, block.getId());
+    }
+
+    private void createBlocks(World world, short blockID){
+        switch (blockID) {
             case 52:
+                //TODO: delete this when the new version of spawner creation is made
                 int hyphenIndex = info.indexOf("-");
                 String monster = hyphenIndex != -1 ? info.substring(0, hyphenIndex) : info;
                 short dangerValue = (short) Math.min(10, Math.max(1, Short.parseShort(hyphenIndex != -1 ? info.
@@ -81,6 +86,16 @@ public class Boxel implements Primitive {
 
         File file;
 
+        createDirectory(directory);
+
+        String filename = String.format("blocks.%d.%d.csv", x, z);
+        file = new File(directory, filename);
+
+        writeBlocksToFile(file);
+        return 1;
+    }
+
+    private void createDirectory(File directory) {
         if (!directory.exists()) {
             try {
                 EU.tryUnchecked(directory::mkdirs);
@@ -89,10 +104,9 @@ public class Boxel implements Primitive {
                         e.getClass().getName().equals("java.nio.file.FileAlreadyExistsException") ? null : e);
             }
         }
+    }
 
-        String filename = String.format("blocks.%d.%d.csv", x, z);
-        file = new File(directory, filename);
-
+    private void writeBlocksToFile(File file){
         //TODO: Fix IoException catch
         try {
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
@@ -104,7 +118,6 @@ public class Boxel implements Primitive {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        return 1;
     }
 
     @Override
