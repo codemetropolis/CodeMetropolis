@@ -4,8 +4,11 @@ import codemetropolis.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.util.Map;
 
 public class Boxel implements Primitive {
 
@@ -48,14 +51,10 @@ public class Boxel implements Primitive {
     private void createBlocks(World world, short blockID){
         switch (blockID) {
             case 52:
-                //TODO: delete this when the new version of spawner creation is made
-                int hyphenIndex = info.indexOf("-");
-                String monster = hyphenIndex != -1 ? info.substring(0, hyphenIndex) : info;
-                short dangerValue = (short) Math.min(10, Math.max(1, Short.parseShort(hyphenIndex != -1 ? info.
-                        substring(hyphenIndex + 1) : "0")));
+                Map<String, String> spawnData = jsonToMap(this.info);
 
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(), monster,
-                        dangerValue);
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(),
+                        spawnData.get("idOfEntity"), Short.parseShort(spawnData.get("dangerValue")));
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
@@ -71,6 +70,17 @@ public class Boxel implements Primitive {
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());
+        }
+    }
+
+    private Map<String, String> jsonToMap(String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            TypeReference<Map<String, String>> typeRef = new TypeReference<Map<String, String>>() {};
+            return objectMapper.readValue(json, typeRef);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
