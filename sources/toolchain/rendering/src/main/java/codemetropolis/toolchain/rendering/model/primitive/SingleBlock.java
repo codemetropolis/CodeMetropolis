@@ -2,15 +2,17 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.util.Map;
 
 public class SingleBlock implements Primitive {
 
     private Point position;
     private String name;
     private Orientation orientation;
-    private String entityId;
+    private Map<String, String> spawnerData;
 
     public SingleBlock(String name, int x, int y, int z) {
         super();
@@ -19,11 +21,11 @@ public class SingleBlock implements Primitive {
         this.orientation = Orientation.NORTH;
     }
 
-    public SingleBlock(String name, Point position, String entitiId) {
+    public SingleBlock(String name, Point position, Map<String, String> spawnData) {
         super();
         this.position = position;
         this.name = name;
-        this.entityId = entitiId;
+        this.spawnerData = spawnData;
     }
 
     public SingleBlock(String name, Point position) {
@@ -43,12 +45,25 @@ public class SingleBlock implements Primitive {
     @Override
     public int toCSVFile(File directory) {
         if (name.equals("minecraft:mob_spawner")) {
-            new Boxel(new BasicBlock((short) 52), position, entityId).toCSVFile(directory);
+            String jsonString = convertMapToJson(spawnerData);
+
+            new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(name, orientation.getValue()), position).toCSVFile(directory);
         }
 
         return 1;
+    }
+
+    private static String convertMapToJson(Map<String, String> map) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

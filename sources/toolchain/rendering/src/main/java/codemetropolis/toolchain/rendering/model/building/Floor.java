@@ -11,6 +11,9 @@ import codemetropolis.toolchain.rendering.model.primitive.*;
 import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Floor extends Building {
 
     public Floor(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -33,12 +36,21 @@ public class Floor extends Building {
 
     //TODO: create handling for spawner danger attribute and value
 
-    //    short dangerValue = Short.parseShort(innerBuildable.getAttributeValue("danger"));
     private void prepareSpawner() {
-        SingleBlock spawner = new SingleBlock("minecraft:mob_spawner", position.translate(new Point(center.getX(),
-                0, center.getZ())), "minecraft:zombie" + "-" + innerBuildable.getAttributeValue("danger"));
-        primitives.add(spawner);
+        Map<String, String> spawnerAttributes = getSpawnerData();
 
+        SingleBlock spawner = new SingleBlock("minecraft:mob_spawner", position.translate(new Point(center.getX(),
+                0, center.getZ())), spawnerAttributes);
+        primitives.add(spawner);
+    }
+
+    private Map<String, String> getSpawnerData() {
+        Map<String, String> spawnerMap = new HashMap<>();
+        spawnerMap.put("idOfEntity", "minecraft:zombie");
+        spawnerMap.put("dangerValue", innerBuildable.getAttributeValue("danger"));
+        spawnerMap.put("mobType", "enemy"); //TODO: delete this line when json solution done, only for testing purposes
+
+        return spawnerMap;
     }
 
     private void prepareChest() {
