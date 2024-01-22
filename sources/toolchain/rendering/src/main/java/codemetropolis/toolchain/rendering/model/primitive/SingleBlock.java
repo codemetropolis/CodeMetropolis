@@ -58,6 +58,8 @@ public class SingleBlock implements Primitive {
         if (name.equals("minecraft:mob_spawner")) {
             String jsonString = convertMapToJson(spawnerData);
 
+            assertJsonString(jsonString);
+
             new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(name, orientation.getValue()), position).toCSVFile(directory);
@@ -77,6 +79,16 @@ public class SingleBlock implements Primitive {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * This method checks if the string that contains spawner data contains ; character, if it does, it throws an exception
+     * @param jsonString the string that contains spawner data and need to be checked for ; character
+     */
+    private void assertJsonString(String jsonString) {
+        if (jsonString.contains(";")) {
+            throw new IllegalArgumentException("Json string cannot contain semicolons!");
         }
     }
 
