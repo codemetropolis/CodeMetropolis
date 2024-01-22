@@ -34,8 +34,11 @@ public class Floor extends Building {
         }
     }
 
-    //TODO: create handling for spawner danger attribute and value
 
+    /**
+     * This method prepares through creating a SingleBlock object based on spawner data from the placingToRendering.xml
+     * file, and adds it to the list of primitives
+     */
     private void prepareSpawner() {
         Map<String, String> spawnerAttributes = getSpawnerData();
 
@@ -44,6 +47,10 @@ public class Floor extends Building {
         primitives.add(spawner);
     }
 
+    /**
+     * This method creates a map of spawner data got from the innerBuildable, which is then passed to the SingleBlock
+     * constructor in prepareSpawner() method
+     */
     private Map<String, String> getSpawnerData() {
         Map<String, String> spawnerMap = new HashMap<>();
         spawnerMap.put("idOfEntity", "minecraft:zombie");

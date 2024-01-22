@@ -42,12 +42,21 @@ public class Boxel implements Primitive {
 
     }
 
+    /**
+     * This method renders the world between 0 and 255 y coordinates based on pre collected world data from the csv file
+     * @param world World object in which all the data, for example blocks and their data, needs for the creation of the Minecraft world is stored
+     */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
 
         createBlocks(world, block.getId());
     }
 
+    /**
+     * This creates the individual blocks based on the block id
+     * @param world World object which contains all the information of the Minecraft world
+     * @param blockID the id of the block that is being created
+     */
     private void createBlocks(World world, short blockID){
         switch (blockID) {
             case 52:
@@ -73,6 +82,10 @@ public class Boxel implements Primitive {
         }
     }
 
+    /**
+     * This method converts the json string of a block's info data into a map object which is then returned
+     * @param json the json string that contains the block's extra data
+     */
     private Map<String, String> jsonToMap(String json) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -89,6 +102,11 @@ public class Boxel implements Primitive {
         return String.format("%d;%d;%d;%d;%d;%s", block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), (info == null || info.equals("") ? "NULL" : info));
     }
 
+    /**
+     * This method creates a directory based on directory parameter path and then, in this directory
+     * writes the blocks' data into a csv file
+     * @param directory the directory where the csv containing blocks' data will be created
+     */
     @Override
     public int toCSVFile(File directory) {
         int x = position.getX() >> 9;
@@ -105,6 +123,10 @@ public class Boxel implements Primitive {
         return 1;
     }
 
+    /**
+     * This method checks if the directory for the block csv file exists and if it doesn't it creates it
+     * @param directory directory path where the subdirectory will be created
+     */
     private void createDirectory(File directory) {
         if (!directory.exists()) {
             try {
@@ -116,6 +138,10 @@ public class Boxel implements Primitive {
         }
     }
 
+    /**
+     * This method writes the blocks' data in a predefined style into a csv file
+     * @param file where teh blocks' data will be written into
+     */
     private void writeBlocksToFile(File file){
         //TODO: Fix IoException catch
         try {

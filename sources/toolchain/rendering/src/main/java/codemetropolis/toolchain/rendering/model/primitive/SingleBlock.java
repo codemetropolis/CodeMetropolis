@@ -21,6 +21,12 @@ public class SingleBlock implements Primitive {
         this.orientation = Orientation.NORTH;
     }
 
+    /**
+     * This is a constructor for SingleBlock class which is used to create individual blocks
+     * @param name name of the block
+     * @param position position of the block using a Point object which contains x, y and z coordinates
+     * @param spawnData spawnData map object which contains the data needed for spawner blocks
+     */
     public SingleBlock(String name, Point position, Map<String, String> spawnData) {
         super();
         this.position = position;
@@ -42,6 +48,11 @@ public class SingleBlock implements Primitive {
         this.orientation = orientation;
     }
 
+    /**
+     * This method, based on block type (default or spawner), creates a csv file which stores the data of the block as
+     * numbers separated by semicolons
+     * @param directory directory where the csv file will be created
+     */
     @Override
     public int toCSVFile(File directory) {
         if (name.equals("minecraft:mob_spawner")) {
@@ -55,11 +66,14 @@ public class SingleBlock implements Primitive {
         return 1;
     }
 
+    /**
+     * This method converts a map of spawner block data into a json string which is then returned
+     * @param map map object in which the spawner data is stored
+     */
     private static String convertMapToJson(Map<String, String> map) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(map);
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
