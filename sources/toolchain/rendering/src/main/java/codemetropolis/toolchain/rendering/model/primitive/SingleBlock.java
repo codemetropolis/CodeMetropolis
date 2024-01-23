@@ -88,7 +88,9 @@ public class SingleBlock implements Primitive {
      */
     private void assertJsonString(String jsonString) {
         if (jsonString.contains(";")) {
-            throw new IllegalArgumentException("Json string cannot contain semicolons!");
+            throw new IllegalArgumentException("Json string cannot contain semicolons! The blocks' individual " +
+                    "data such as position and block type are separated by semicolons in the csv file. A semicolon in " +
+                    "the json would break the structure of the csv file.");
         }
     }
 
