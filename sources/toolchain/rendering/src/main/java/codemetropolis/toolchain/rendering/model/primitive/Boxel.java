@@ -72,7 +72,10 @@ public class Boxel implements Primitive {
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
                 break;
             case 63:
-                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(), info);
+                blockData = jsonToMap(this.info);
+
+                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(),
+                        blockData.get("textOnSign"));
                 break;
             case 68:
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(), info);
