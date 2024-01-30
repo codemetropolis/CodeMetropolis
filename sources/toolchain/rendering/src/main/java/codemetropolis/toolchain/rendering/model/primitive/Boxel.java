@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Boxel implements Primitive {
@@ -58,12 +59,14 @@ public class Boxel implements Primitive {
      * @param blockID the id of the block that is being created
      */
     private void createBlocks(World world, short blockID){
+        Map<String, String> blockData = new HashMap<>();
+
         switch (blockID) {
             case 52:
-                Map<String, String> spawnData = jsonToMap(this.info);
+                blockData = jsonToMap(this.info);
 
                 world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(),
-                        spawnData.get("idOfEntity"), Short.parseShort(spawnData.get("dangerValue")));
+                        blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
             case 54:
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
