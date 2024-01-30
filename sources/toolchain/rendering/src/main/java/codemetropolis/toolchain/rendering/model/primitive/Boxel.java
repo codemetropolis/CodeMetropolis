@@ -78,7 +78,10 @@ public class Boxel implements Primitive {
                         blockData.get("textOnSign"));
                 break;
             case 68:
-                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(), info);
+                blockData = jsonToMap(this.info);
+
+                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(),
+                        blockData.get("textOnSign"));
                 break;
             case 176:
                 world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(), World.BannerColor.valueOf(info.toUpperCase()));
