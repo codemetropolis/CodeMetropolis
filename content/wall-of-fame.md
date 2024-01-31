@@ -11,10 +11,6 @@ Szeged, Hungary
 
 # Supporter
 
-<img src="../images/logo/boni.jpg" style="width: 20ex"/><br/>
-**[Bonifert Domonkos Primary School](https://sites.google.com/a/bonifert.sulinet.hu/www/)**<br/>
-Szeged, Hungary
-
 <img src="../images/logo/fea.png" style="width: 20ex"/><br/>
 **[FrontEndART Ltd.](https://frontendart.com/)**<br/>
 Szeged, Hungary
