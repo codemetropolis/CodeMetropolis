@@ -1,0 +1,22 @@
+site_name: CodeMetropolis
+docs_dir: "content"
+site_dir: "docs"
+nav:
+  - "index.md"
+  - "about.md"
+  - "Toolchain":
+      - "toolchain/converter.md"
+      - "toolchain/interXMLformat.md"
+      - "toolchain/mapping.md"
+      - "toolchain/placing.md"
+      - "toolchain/rendering.md"
+  - "custom.md"
+  - "research.md"
+  - "wall-of-fame.md"
+  - "contact.md"
+theme:
+  name: material
+  favicon: images/favicon.png
+  logo: images/site-logo.png
+plugins:
+  - search
