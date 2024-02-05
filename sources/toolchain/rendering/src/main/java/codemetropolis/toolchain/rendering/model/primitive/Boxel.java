@@ -135,10 +135,6 @@ public class Boxel implements Primitive {
         return 1;
     }
 
-    /**
-     * This method checks if the directory for the block csv file exists and if it doesn't it creates it
-     * @param directory directory path where the subdirectory will be created
-     */
     private void createDirectory(File directory) {
         if (!directory.exists()) {
             try {

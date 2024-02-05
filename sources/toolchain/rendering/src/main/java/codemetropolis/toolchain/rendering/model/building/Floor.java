@@ -36,8 +36,8 @@ public class Floor extends Building {
 
 
     /**
-     * This method prepares through creating a SingleBlock object based on spawner data from the placingToRendering.xml
-     * file, and adds it to the list of primitives
+     * This method prepares a SingleBlock type spawner block with the data got from placingToRendering.xml,
+     * and adds it to the list of primitives
      */
     private void prepareSpawner() {
         Map<String, String> spawnerAttributes = getSpawnerData();
@@ -48,14 +48,13 @@ public class Floor extends Building {
     }
 
     /**
-     * This method creates a map of spawner data got from the innerBuildable, which is then passed to the SingleBlock
-     * constructor in prepareSpawner() method
+     * This method creates a map for the spawner's data, got from the innerBuildable,
+     * which is then passed to the SingleBlock constructor in prepareSpawner() method
      */
     private Map<String, String> getSpawnerData() {
         Map<String, String> spawnerMap = new HashMap<>();
         spawnerMap.put("idOfEntity", "minecraft:zombie");
         spawnerMap.put("dangerValue", innerBuildable.getAttributeValue("danger"));
-        spawnerMap.put("mobType", "enemy"); //TODO: delete this line when json solution done, only for testing purposes
 
         return spawnerMap;
     }

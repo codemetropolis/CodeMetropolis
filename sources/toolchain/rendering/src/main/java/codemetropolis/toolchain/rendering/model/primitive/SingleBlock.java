@@ -83,7 +83,8 @@ public class SingleBlock implements Primitive {
     }
 
     /**
-     * This method checks if the string that contains spawner data contains ; character, if it does, it throws an exception
+     * This method checks if the string that contains spawner data contains ; character, if it does, it throws an
+     * exception
      * @param jsonString the string that contains spawner data and need to be checked for ; character
      */
     private void assertJsonString(String jsonString) {
