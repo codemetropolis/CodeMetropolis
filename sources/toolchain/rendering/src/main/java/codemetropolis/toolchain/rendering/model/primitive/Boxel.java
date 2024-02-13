@@ -44,7 +44,9 @@ public class Boxel implements Primitive {
 
     /**
      * This method renders the world between 0 and 255 y coordinates based on pre collected world data from the csv file
-     * @param world World object in which all the data, for example blocks and their data, needs for the creation of the Minecraft world is stored
+     *
+     * @param world World object in which all the data, for example blocks and their data, needs for the creation of the
+     *              Minecraft world is stored
      */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
@@ -54,6 +56,7 @@ public class Boxel implements Primitive {
 
     /**
      * This creates the individual blocks based on the block id
+     *
      * @param world World object which contains all the information of the Minecraft world
      * @param blockID the id of the block that is being created
      */
@@ -101,6 +104,7 @@ public class Boxel implements Primitive {
     /**
      * This method creates a directory based on directory parameter path and then, in this directory
      * writes the blocks' data into a csv file
+     *
      * @param directory the directory where the csv containing blocks' data will be created
      */
     @Override
@@ -132,6 +136,7 @@ public class Boxel implements Primitive {
 
     /**
      * This method writes the blocks' data in a predefined style into a csv file
+     *
      * @param file where teh blocks' data will be written into
      */
     private void writeBlocksToFile(File file){

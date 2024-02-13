@@ -51,6 +51,7 @@ public class SingleBlock implements Primitive {
     /**
      * This method, based on block type (default or spawner), creates a csv file which stores the data of the block as
      * numbers separated by semicolons
+     *
      * @param directory directory where the csv file will be created
      */
     @Override
