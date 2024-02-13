@@ -2,7 +2,7 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 import java.io.File;
 import java.util.Map;
