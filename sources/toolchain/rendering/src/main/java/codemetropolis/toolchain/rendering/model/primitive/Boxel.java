@@ -4,8 +4,7 @@ import codemetropolis.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 import java.io.*;
 import java.util.HashMap;
@@ -63,7 +62,7 @@ public class Boxel implements Primitive {
 
         switch (blockID) {
             case 52:
-                blockData = jsonToMap(this.info);
+                blockData = JsonUtil.convertJsonStringToMap(this.info);
 
                 world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(),
                         blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
@@ -72,40 +71,25 @@ public class Boxel implements Primitive {
                 world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
                 break;
             case 63:
-                blockData = jsonToMap(this.info);
+                blockData = JsonUtil.convertJsonStringToMap(this.info);
 
                 world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(),
                         blockData.get("textOnSign"));
                 break;
             case 68:
-                blockData = jsonToMap(this.info);
+                blockData = JsonUtil.convertJsonStringToMap(this.info);
 
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(),
                         blockData.get("textOnSign"));
                 break;
             case 176:
-                blockData = jsonToMap(this.info);
+                blockData = JsonUtil.convertJsonStringToMap(this.info);
 
                 world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(),
                         World.BannerColor.valueOf(blockData.get("bannerColor").toUpperCase()));
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());
-        }
-    }
-
-    /**
-     * This method converts the json string of a block's info data into a map object which is then returned
-     * @param json the json string that contains the block's extra data
-     */
-    private Map<String, String> jsonToMap(String json) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            TypeReference<Map<String, String>> typeRef = new TypeReference<Map<String, String>>() {};
-            return objectMapper.readValue(json, typeRef);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

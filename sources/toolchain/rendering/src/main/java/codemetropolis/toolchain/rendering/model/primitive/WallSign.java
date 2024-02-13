@@ -6,7 +6,7 @@ import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 public class WallSign implements Primitive {
 	
@@ -44,35 +44,10 @@ public class WallSign implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		//todo: mindegyik boxel blockba a json megoldast atalakitani, hogy egy mapa konvertalja az extra infot es azt adja at a boxelnek
-		String jsonString = convertMapToJson(wallSignText);
-		assertJsonString(jsonString);
+		String jsonString = JsonUtil.convertMapToJson(wallSignText);
 
 		new Boxel(new BasicBlock((short) 68, orientation.getValue()), position, jsonString).toCSVFile(directory);
 		return 1;
-	}
-
-	private static String convertMapToJson(Map<String, String> map) {
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.writeValueAsString(map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * This method checks if the string that contains spawner data contains ; character, if it does, it throws an
-	 * exception
-	 * @param jsonString the string that contains spawner data and need to be checked for ; character
-	 */
-	private void assertJsonString(String jsonString) {
-		if (jsonString.contains(";")) {
-			throw new IllegalArgumentException("Json string cannot contain semicolons! The blocks' individual " +
-					"data such as position and block type are separated by semicolons in the csv file. A semicolon in " +
-					"the json would break the structure of the csv file.");
-		}
 	}
 
 	@Override
