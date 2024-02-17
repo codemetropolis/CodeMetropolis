@@ -54,5 +54,4 @@ public class Banner implements Primitive {
 	public int getNumberOfBlocks() {
 		return 1;
 	}
-	//todo: issuet letrehozni megnezni mi az ami basic blocknal extra es mi az ami alap, refaktoralas
 }
