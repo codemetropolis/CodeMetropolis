@@ -30,22 +30,49 @@ public class GraphConverter extends CdfConverter {
 	
 	@Override
 	public CdfTree createElements(String graphPath) {
-		boolean verboseMode = super.getVerboseMode();
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating elements.\r\n" : "");
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating empty graph.\r\n" : "");
-		Graph graph = new Graph();
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating empty graph done.\r\n" : "");
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Loading path into graph.\r\n" : "");
-		graph.loadBinary(graphPath);
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Loading path into graph done.\r\n" : "");
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Finding root node.\r\n" : "");
-		Node root = graph.findNode(ROOT_NODE_ID);
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Finding root node done.\r\n" : "");
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating child elements recursively.\r\n" : "");
-		CdfElement rootElement = createElementsRecursively(root);
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating child elements recursively done.\r\n" : "");
-		System.out.print(verboseMode ? "[" + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new java.util.Date()) + "]:Creating elements done.\r\n" : "");
+		logVerbose("Creating elements.");
+
+		Graph graph = createEmptyGraph();
+		loadGraph(graph, graphPath);
+		Node root = findRootNode(graph);
+		CdfElement rootElement = createChildElements(root);
+
+		logVerbose("Creating elements done.");
 		return new CdfTree(rootElement);
+	}
+
+	private Graph createEmptyGraph() {
+		logVerbose("Creating empty graph.");
+		Graph graph = new Graph();
+		logVerbose("Creating empty graph done.");
+		return graph;
+	}
+
+	private void loadGraph(Graph graph, String graphPath) {
+		logVerbose("Loading path into graph.");
+		graph.loadBinary(graphPath);
+		logVerbose("Loading path into graph done.");
+	}
+
+	private Node findRootNode(Graph graph) {
+		logVerbose("Finding root node.");
+		Node root = graph.findNode(ROOT_NODE_ID);
+		logVerbose("Finding root node done.");
+		return root;
+	}
+
+	private CdfElement createChildElements(Node root) {
+		logVerbose("Creating child elements recursively.");
+		CdfElement rootElement = createElementsRecursively(root);
+		logVerbose("Creating child elements recursively done.");
+		return rootElement;
+	}
+
+	private void logVerbose(String message) {
+		if (super.getVerboseMode()) {
+			String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new java.util.Date());
+			System.out.println("[" + timestamp + "]:" + message);
+		}
 	}
 	
 	private CdfElement createElementsRecursively(Node root) {
