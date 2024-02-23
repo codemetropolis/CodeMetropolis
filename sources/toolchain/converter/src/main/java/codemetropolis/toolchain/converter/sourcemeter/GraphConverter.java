@@ -75,11 +75,16 @@ public class GraphConverter extends CdfConverter {
 	private CdfElement createElementsRecursively(Node root) {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
+		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type);
 		CdfElement element = new CdfElement(name, type);
+		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type + " done.");
+		logVerbose("Setting source id to: " + root.getUID());
 		element.setSourceId(root.getUID());
+        logVerbose("Setting source id to: " + root.getUID() + " done.");
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
 			element.addChildElement(createElementsRecursively(child));
+            logVerbose("Adding child element: " + child.getUID() + " to parent: " + root.getUID());
 		}
 		return element;
 	}
@@ -87,6 +92,7 @@ public class GraphConverter extends CdfConverter {
 	private Node[] getChildNodes(Node node) {
 		List<Node> childList = new ArrayList<Node>();
 		EdgeIterator it = node.findOutEdges(new EdgeType("LogicalTree", eDirectionType.edtDirectional));
+        logVerbose("Getting child nodes for: " + node.getUID());
 		while(it.hasNext()) {
 			Node childNode = it.next().getToNode();
 			if(!node.getUID().equals(childNode.getUID())) 
