@@ -42,10 +42,7 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private Graph createEmptyGraph() {
-		logVerbose("Creating empty graph.");
-		Graph graph = new Graph();
-		logVerbose("Creating empty graph done.");
-		return graph;
+		return new Graph();
 	}
 
 	private void loadGraph(Graph graph, String graphPath) {
