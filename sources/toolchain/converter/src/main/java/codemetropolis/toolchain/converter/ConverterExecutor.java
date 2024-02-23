@@ -14,7 +14,7 @@ public class ConverterExecutor extends AbstractExecutor {
 	@Override
 	public boolean execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
-		CdfConverter converter = createConverter(converterArgs);
+		CdfConverter converter = createConverterBasedOnTerminalArgs(converterArgs);
 
 		print(Resources.get("converting_to_cdf"));
 		CdfTree cdfTree = createElements(converter, converterArgs);
@@ -32,7 +32,7 @@ public class ConverterExecutor extends AbstractExecutor {
 		return true;
 	}
 
-	private CdfConverter createConverter(ConverterExecutorArgs converterArgs) {
+	private CdfConverter createConverterBasedOnTerminalArgs(ConverterExecutorArgs converterArgs) {
 		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams(),
 				converterArgs.getVerboseMode());
 		converter.addConverterEventListener(event -> print(event.getMessage()));
