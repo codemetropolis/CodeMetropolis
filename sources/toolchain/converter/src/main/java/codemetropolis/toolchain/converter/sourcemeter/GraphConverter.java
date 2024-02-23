@@ -30,14 +30,14 @@ public class GraphConverter extends CdfConverter {
 	
 	@Override
 	public CdfTree createElements(String graphPath) {
-		logVerbose("Creating elements.");
+		logVerbose("Creating CodeMetropolis CdfTree.");
 
 		Graph graph = createEmptyGraph();
 		loadGraph(graph, graphPath);
 		Node root = findRootNode(graph);
 		CdfElement rootElement = createChildElements(root);
 
-		logVerbose("Creating elements done.");
+		logVerbose("Creating CodeMetropolis CdfTree done.");
 		return new CdfTree(rootElement);
 	}
 
@@ -49,15 +49,15 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private void loadGraph(Graph graph, String graphPath) {
-		logVerbose("Loading path into graph.");
+		logVerbose("Loading in SourceMeter graph.");
 		graph.loadBinary(graphPath);
-		logVerbose("Loading path into graph done.");
+		logVerbose("Loading in SourceMeter graph done.");
 	}
 
 	private Node findRootNode(Graph graph) {
-		logVerbose("Finding root node.");
+		logVerbose("Finding root node of SourceMeter graph.");
 		Node root = graph.findNode(ROOT_NODE_ID);
-		logVerbose("Finding root node done.");
+		logVerbose("Finding root node of SourceMeter graph done.");
 		return root;
 	}
 
