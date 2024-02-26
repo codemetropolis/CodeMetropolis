@@ -5,6 +5,7 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SingleBlock implements Primitive {
@@ -12,7 +13,7 @@ public class SingleBlock implements Primitive {
     private Point position;
     private String name;
     private Orientation orientation;
-    private Map<String, String> spawnerData;
+    private String dangerValue;
 
     public SingleBlock(String name, int x, int y, int z) {
         super();
@@ -25,13 +26,13 @@ public class SingleBlock implements Primitive {
      * This is a constructor for SingleBlock class which is used to create individual blocks
      * @param name name of the block
      * @param position position of the block using a Point object which contains x, y and z coordinates
-     * @param spawnData spawnData map object which contains the data needed for spawner blocks
+     * @param dangerAttrValue the value related to the danger attribute of spawners
      */
-    public SingleBlock(String name, Point position, Map<String, String> spawnData) {
+    public SingleBlock(String name, Point position, String dangerAttrValue) {
         super();
         this.position = position;
         this.name = name;
-        this.spawnerData = spawnData;
+        this.dangerValue = dangerAttrValue;
     }
 
     public SingleBlock(String name, Point position) {
@@ -57,7 +58,7 @@ public class SingleBlock implements Primitive {
     @Override
     public int toCSVFile(File directory) {
         if (name.equals("minecraft:mob_spawner")) {
-            String jsonString = JsonUtil.convertMapToJson(spawnerData);
+            String jsonString = JsonUtil.convertMapToJson(setSpawnerData(dangerValue));
 
             new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
         } else {
@@ -65,6 +66,18 @@ public class SingleBlock implements Primitive {
         }
 
         return 1;
+    }
+
+    /**
+     * This method creates a map for the spawner's data. It consists of the monster type the spawner should spawn,
+     * and its related danger value to control max spawn able entities
+     */
+    private Map<String, String> setSpawnerData(String dangerValue) {
+        Map<String, String> spawnerMap = new HashMap<>();
+        spawnerMap.put("idOfEntity", "minecraft:zombie");
+        spawnerMap.put("dangerValue", dangerValue);
+
+        return spawnerMap;
     }
 
     @Override

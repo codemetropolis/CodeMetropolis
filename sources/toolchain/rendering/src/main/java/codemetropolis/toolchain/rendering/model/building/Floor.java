@@ -40,23 +40,9 @@ public class Floor extends Building {
      * and adds it to the list of primitives
      */
     private void prepareSpawner() {
-        Map<String, String> spawnerAttributes = getSpawnerData();
-
         SingleBlock spawner = new SingleBlock("minecraft:mob_spawner", position.translate(new Point(center.getX(),
-                0, center.getZ())), spawnerAttributes);
+                0, center.getZ())), innerBuildable.getAttributeValue("danger"));
         primitives.add(spawner);
-    }
-
-    /**
-     * This method creates a map for the spawner's data, got from the innerBuildable,
-     * which is then passed to the SingleBlock constructor in prepareSpawner() method
-     */
-    private Map<String, String> getSpawnerData() {
-        Map<String, String> spawnerMap = new HashMap<>();
-        spawnerMap.put("idOfEntity", "minecraft:zombie");
-        spawnerMap.put("dangerValue", innerBuildable.getAttributeValue("danger"));
-
-        return spawnerMap;
     }
 
     private void prepareChest() {
