@@ -20,11 +20,12 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	}
 
 	/**
-	 * Class contstructor when verbose mode is needed but no parameters given
-	 * @param type
-	 * @param source
-	 * @param outputFile
-	 * @param verboseMode
+	 * Constructs ConverterExecutorArgs object without any specified parameters, when verbose mode is enabled.
+	 *
+	 * @param type The type of converter to be used.
+	 * @param source The source file or data to be converted.
+	 * @param outputFile The output file where the converted data will be saved.
+	 * @param verboseMode A boolean flag indicating whether verbose mode is enabled.
 	 */
 	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, boolean verboseMode) {
 		this(type, source, outputFile, new HashMap<String, String>(), verboseMode);
@@ -39,12 +40,13 @@ public class ConverterExecutorArgs extends ExecutorArgs {
 	}
 
 	/**
-	 * Class constructor when verbose mode is needed and there are parameters given
-	 * @param type
-	 * @param source
-	 * @param outputFile
-	 * @param params
-	 * @param verboseMode
+	 * Constructs ConverterExecutorArgs object with specified parameters, when verbose mode is enabled.
+	 *
+	 * @param type The type of converter to be used.
+	 * @param source The source file or data to be converted.
+	 * @param outputFile The output file where the converted data will be saved.
+	 * @param params Additional parameters for the conversion process, provided as key-value pairs.
+	 * @param verboseMode A boolean flag indicating whether verbose mode is enabled.
 	 */
 	public ConverterExecutorArgs(ConverterType type, String source, String outputFile, Map<String, String> params, boolean verboseMode) {
 		super();
