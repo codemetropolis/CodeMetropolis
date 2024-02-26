@@ -50,22 +50,36 @@ public class GraphConverter extends CdfConverter {
 
 	private void loadGraph(Graph graph, String graphPath) {
 		logVerbose("Loading in SourceMeter graph.");
-		graph.loadBinary(graphPath);
-		logVerbose("Loading in SourceMeter graph done.");
+		try {
+			graph.loadBinary(graphPath);
+			logVerbose("Loading in SourceMeter graph done.");
+		} catch (Exception e) {
+			logVerbose("Error loading SourceMeter graph: " + e.getMessage());
+		}
 	}
 
 	private Node findRootNode(Graph graph) {
 		logVerbose("Finding root node of SourceMeter graph.");
-		Node root = graph.findNode(ROOT_NODE_ID);
-		logVerbose("Finding root node of SourceMeter graph done.");
-		return root;
+		try {
+			Node root = graph.findNode(ROOT_NODE_ID);
+			logVerbose("Finding root node of SourceMeter graph done.");
+			return root;
+		} catch (Exception e) {
+			logVerbose("Error loading SourceMeter graph: " + e.getMessage());
+			return null;
+		}
 	}
 
 	private CdfElement createChildElements(Node root) {
 		logVerbose("Creating child elements recursively.");
-		CdfElement rootElement = createElementsRecursively(root);
-		logVerbose("Creating child elements recursively done.");
-		return rootElement;
+		try {
+			CdfElement rootElement = createElementsRecursively(root);
+			logVerbose("Creating child elements recursively done.");
+			return rootElement;
+		} catch (Exception e) {
+			logVerbose("Error creating child elements recursively: " + e.getMessage());
+			return null;
+		}
 	}
 
 	private void logVerbose(String message) {
