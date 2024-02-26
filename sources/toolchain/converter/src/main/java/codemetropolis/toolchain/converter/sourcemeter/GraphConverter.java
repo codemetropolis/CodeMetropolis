@@ -111,14 +111,20 @@ public class GraphConverter extends CdfConverter {
 				case atString:
 					value = ((AttributeString)a).getValue();
 					type = CdfProperty.Type.STRING;
+					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
+							element.getName());
 					break;
 				case atInt:
 					value = ((AttributeInt)a).getValue();
 					type = CdfProperty.Type.INT;
+					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
+							element.getName());
 					break;
 				case atFloat:
 					value = ((AttributeFloat)a).getValue();
 					type = CdfProperty.Type.FLOAT;
+					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
+							element.getName());
 					break;
 				default:
 					continue;
