@@ -42,7 +42,10 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private Graph createEmptyGraph() {
-		return new Graph();
+		logVerbose("Creating empty graph in which SourceMeter graph will load into.");
+		Graph graph = new Graph();
+		logVerbose("Empty graph creation done.");
+		return graph;
 	}
 
 	private void loadGraph(Graph graph, String graphPath) {
@@ -84,20 +87,20 @@ public class GraphConverter extends CdfConverter {
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
 			element.addChildElement(createElementsRecursively(child));
-            logVerbose("Adding child element: " + child.getUID() + " to parent: " + root.getUID());
 		}
 		return element;
 	}
 
 	private Node[] getChildNodes(Node node) {
+		logVerbose("Getting child nodes of: " + node.getUID());
 		List<Node> childList = new ArrayList<Node>();
 		EdgeIterator it = node.findOutEdges(new EdgeType("LogicalTree", eDirectionType.edtDirectional));
-        logVerbose("Getting child nodes for: " + node.getUID());
 		while(it.hasNext()) {
 			Node childNode = it.next().getToNode();
 			if(!node.getUID().equals(childNode.getUID())) 
 				childList.add(childNode);
 		}
+		logVerbose("Getting child nodes of: " + node.getUID() + " done.");
 		return childList.toArray(new Node[childList.size()]);
 	}
 	
@@ -111,20 +114,14 @@ public class GraphConverter extends CdfConverter {
 				case atString:
 					value = ((AttributeString)a).getValue();
 					type = CdfProperty.Type.STRING;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
-							element.getName());
 					break;
 				case atInt:
 					value = ((AttributeInt)a).getValue();
 					type = CdfProperty.Type.INT;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
-							element.getName());
 					break;
 				case atFloat:
 					value = ((AttributeFloat)a).getValue();
 					type = CdfProperty.Type.FLOAT;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " to element: " +
-							element.getName());
 					break;
 				default:
 					continue;
