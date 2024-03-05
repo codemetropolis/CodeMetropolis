@@ -133,26 +133,22 @@ public class GraphConverter extends CdfConverter {
 				case atString:
 					value = ((AttributeString)a).getValue();
 					type = CdfProperty.Type.STRING;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " and type: " + type + " " +
-							"to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
 					break;
 				case atInt:
 					value = ((AttributeInt)a).getValue();
 					type = CdfProperty.Type.INT;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " and type: " + type + " " +
-							"to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
 					break;
 				case atFloat:
 					value = ((AttributeFloat)a).getValue();
 					type = CdfProperty.Type.FLOAT;
-					logVerbose("Adding property: " + a.getName() + " with value: " + value + " and type: " + type + " " +
-							"to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
 					break;
 				default:
 					continue;
 			}
-		    element.addProperty(a.getName(), String.valueOf(value), type);
-			logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
+			element.addProperty(a.getName(), String.valueOf(value), type);
+			logVerbose("Adding property: " + a.getName() + " with value: " + value + " and type: " + type + " " +
+					"to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
 		}
+		logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
 	}
 }
