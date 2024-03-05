@@ -1,11 +1,14 @@
 package codemetropolis.toolchain.converter.sonarqube;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import codemetropolis.toolchain.commons.cdf.CdfElement;
 import codemetropolis.toolchain.commons.cdf.CdfProperty.Type;
@@ -33,11 +36,17 @@ public class SonarQubeConverter extends CdfConverter {
 		resources = new HashMap<>();
 		cdfElements = new HashMap<>();
 	}
-
+/**
+ * Method for getting the projects and turning them into cdfelements, returning a tree
+ * containing them all.
+ * */
 	@Override
 	public CdfTree createElements(String url) throws CodeMetropolisException {
 		resources.putAll(getResources(url));
-		
+
+		List<SonarResource> projectResources = new ArrayList<>();
+		List<CdfElement> processedProjects;
+
 		CdfTree cdfTree = new CdfTree();	
 		Iterator<Integer> iterator = resources.keySet().iterator();
 		
@@ -48,11 +57,24 @@ public class SonarQubeConverter extends CdfConverter {
 			Integer rootId = iterator.next();
 			SonarResource res = resources.get(rootId);
 			if(Scope.PRJ.equals(res.getScope())){
-				CdfElement projectElement = createCdfElement(res);
-				rootElement.addChildElement(projectElement);
+				projectResources.add(res);
 			}
 		}
-		
+		Stream<SonarResource> resourceStream = projectResources.stream();
+		if(projectResources.size() > (Runtime.getRuntime().availableProcessors()) * 10){ // not a computationally intensive process, parallelization only provides an advantage when a large number of projects is being processed
+			resourceStream = resourceStream.parallel();
+		}
+		processedProjects = resourceStream.map(this::createCdfElement).collect(Collectors.toList());
+		// in some cases, a SonarResource in projectResources may have a null element in childIdList causing the above line to fail. This is (most likely) caused by parallel downloading resulting in faulty data. Rerunning the tool usually fixes this issue
+
+		for (CdfElement projectElement : processedProjects) {
+			rootElement.addChildElement(projectElement);
+		}
+		System.gc();
+		// when ran in parallel, threads sometimes free up slowly, making the next step in the converting process slow
+		// (in some cases making it take longer to finish printing the result to file, negating the advantage won with parallel processing the projects)
+		// calling gc fixes this issue in most cases
+
 		String splitDirsParam = getParameter(SPLIT_DIRS_PARAM_NAME);
 		if(splitDirsParam != null && Boolean.valueOf(splitDirsParam)) {
 			processDirHierarchy(cdfTree);
@@ -68,32 +90,42 @@ public class SonarQubeConverter extends CdfConverter {
 	}
 	
 	private Map<Integer, SonarResource> getResources(String url) throws SonarConnectException {
-		Map<Integer, SonarResource> result = new HashMap<>();
-		
+		Map<Integer, SonarResource> result;
+
 		SonarClient sonarClient = new SonarClient(url, getParameter(USERNAME_PARAM_NAME), getParameter(PASSWORD_PARAM_NAME));
 		sonarClient.init();
 		
 		String[] projectRegexList = getProjectsInParams();
 		List<String> allProjects = sonarClient.getProjectKeys();
-		Set<String> projects = new LinkedHashSet<>();
-		
+		Set<String> projects;
+
 		if(projectRegexList.length == 0) {
-			projects.addAll(allProjects);
+			projects = new LinkedHashSet<>(allProjects);
 		} else {
-			for(String p : allProjects) {
-				for(String regex : projectRegexList) {
-					if(p.matches(regex)) {
-						projects.add(p);
-						break;
-					}
+			projects = allProjects.stream().filter(p -> {
+				for (String regex : projectRegexList) {
+					if(p.matches(regex))
+						return true;
 				}
-			}
+				return false;
+			}).collect(Collectors.toSet());
 		}
-		
-		for(String key : projects) {
-			fireConverterEvent(String.format(Resources.get("sonar_downloading_project"), key));
-			result.putAll(sonarClient.getProject(key));
+
+		Stream<String> projectStream = projects.stream();
+		if(projects.size() > (Runtime.getRuntime().availableProcessors() * 2)){
+			// usefulness of parallelization heavily depends on project size, which is unknown at this point.
+			projectStream = projectStream.parallel();
 		}
+		result = projectStream
+				.peek(projectKey -> fireConverterEvent(String.format(Resources.get("sonar_downloading_project"), projectKey)))
+				.map(projectKey -> {
+					try {
+						return sonarClient.getProject(projectKey);
+					} catch (SonarConnectException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.collect(HashMap::new, HashMap::putAll, Map::putAll);
 		
 		return result;
 	}
