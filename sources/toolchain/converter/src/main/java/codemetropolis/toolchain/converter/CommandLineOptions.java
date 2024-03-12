@@ -46,4 +46,15 @@ public class CommandLineOptions {
 	public boolean getVerboseMode() {
 		return verboseMode;
 	}
+
+	public boolean checkIfHelpModeIsEnabled(String[] commandLineArgs) {
+		if (commandLineArgs != null) {
+			for (String param : commandLineArgs) {
+				if (param.equals("-h") || param.equals("--help")) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
