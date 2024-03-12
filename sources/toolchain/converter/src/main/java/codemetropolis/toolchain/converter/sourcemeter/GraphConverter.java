@@ -21,48 +21,48 @@ import graphlib.Graph;
 import graphlib.Node;
 
 public class GraphConverter extends CdfConverter {
-	
+
 	public GraphConverter(Map<String, String> params, boolean verboseMode) {
 		super(params, verboseMode);
 	}
 
 	private static final String ROOT_NODE_ID = "L100";
-	
+
 	@Override
 	public CdfTree createElements(String graphPath) {
-		logVerbose("Creating CodeMetropolis CdfTree.",false);
+		logVerbose("Creating CodeMetropolis CdfTree.");
 
 		Graph graph = createEmptyGraph();
 		loadGraph(graph, graphPath);
 		Node root = findRootNode(graph);
 		CdfElement rootElement = createChildElements(root);
 
-		logVerbose("Creating CodeMetropolis CdfTree done.", false);
+		logVerbose("Creating CodeMetropolis CdfTree done.");
 		return new CdfTree(rootElement);
 	}
 
 	private Graph createEmptyGraph() {
-		logVerbose("Creating empty graph in which SourceMeter graph will load into.", false);
+		logVerbose("Creating empty graph in which SourceMeter graph will load into.");
 		Graph graph = new Graph();
-		logVerbose("Empty graph creation done.", false);
+		logVerbose("Empty graph creation done.");
 		return graph;
 	}
 
 	private void loadGraph(Graph graph, String graphPath) {
-		logVerbose("Loading in SourceMeter graph.", false);
+		logVerbose("Loading in SourceMeter graph.");
 		try {
 			graph.loadBinary(graphPath);
-			logVerbose("Loading in SourceMeter graph done.", false);
+			logVerbose("Loading in SourceMeter graph done.");
 		} catch (Exception e) {
 			logVerbose("Error loading SourceMeter graph: " + e.getMessage(), true);
 		}
 	}
 
 	private Node findRootNode(Graph graph) {
-		logVerbose("Finding root node of SourceMeter graph.", false);
+		logVerbose("Finding root node of SourceMeter graph.");
 		try {
 			Node root = graph.findNode(ROOT_NODE_ID);
-			logVerbose("Finding root node of SourceMeter graph done.",false);
+			logVerbose("Finding root node of SourceMeter graph done.");
 			return root;
 		} catch (NullPointerException e) {
 			logVerbose("Error loading SourceMeter graph: " + e.getMessage(), true);
@@ -71,10 +71,10 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private CdfElement createChildElements(Node root) {
-		logVerbose("Creating child elements recursively.", false);
+		logVerbose("Creating child elements recursively.");
 		try {
 			CdfElement rootElement = createElementsRecursively(root);
-			logVerbose("Creating child elements recursively done.", false);
+			logVerbose("Creating child elements recursively done.");
 			return rootElement;
 		} catch (NullPointerException e) {
 			logVerbose("Error creating child elements recursively: " + e.getMessage(), true);
@@ -82,26 +82,15 @@ public class GraphConverter extends CdfConverter {
 		}
 	}
 
-	private void logVerbose(String message, boolean isError) {
-		if (super.getVerboseMode()) {
-			String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new java.util.Date());
-			if (isError) {
-				System.err.println("[" + timestamp + "]:" + message);
-			} else {
-				System.out.println("[" + timestamp + "]:" + message);
-			}
-		}
-	}
-	
 	private CdfElement createElementsRecursively(Node root) {
 		String name = ((AttributeString)root.findAttributeByName("Name").next()).getValue();
 		String type = root.getType().getType();
-		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type, false);
+		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type);
 		CdfElement element = new CdfElement(name, type);
-		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type + " done.", false);
-		logVerbose("Setting source id to: " + root.getUID(), false);
+		logVerbose("Creating CodeMetropolis CdfElement: " + name + " of type: " + type + " done.");
+		logVerbose("Setting source id to: " + root.getUID());
 		element.setSourceId(root.getUID());
-        logVerbose("Setting source id to: " + root.getUID() + " done.", false);
+        logVerbose("Setting source id to: " + root.getUID() + " done.");
 		addProperties(root, element);
 		for(Node child : getChildNodes(root)) {
 			element.addChildElement(createElementsRecursively(child));
@@ -110,21 +99,20 @@ public class GraphConverter extends CdfConverter {
 	}
 
 	private Node[] getChildNodes(Node node) {
-		logVerbose("Getting child nodes of: " + node.getUID(), false);
+		logVerbose("Getting child nodes of: " + node.getUID());
 		List<Node> childList = new ArrayList<Node>();
 		EdgeIterator it = node.findOutEdges(new EdgeType("LogicalTree", eDirectionType.edtDirectional));
 		while(it.hasNext()) {
 			Node childNode = it.next().getToNode();
-			if(!node.getUID().equals(childNode.getUID())) 
+			if(!node.getUID().equals(childNode.getUID()))
 				childList.add(childNode);
 		}
-		logVerbose("Getting child nodes of: " + node.getUID() + " done.", false);
+		logVerbose("Getting child nodes of: " + node.getUID() + " done.");
 		return childList.toArray(new Node[childList.size()]);
 	}
-	
+
 	private void addProperties(Node node, CdfElement element) {
-		logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName(), false);
-		AttributeIterator attributeIterator = node.getAttributes();
+		logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName() + " done.");		AttributeIterator attributeIterator = node.getAttributes();
 		while(attributeIterator.hasNext()) {
 			Object value;
 			CdfProperty.Type type;
@@ -147,8 +135,23 @@ public class GraphConverter extends CdfConverter {
 			}
 			element.addProperty(a.getName(), String.valueOf(value), type);
 			logVerbose("Adding property: " + a.getName() + " with value: " + value + " and type: " + type + " " +
-					"to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
+					"to CodeMetropolis CdfElement: " + element.getName() + " done.");
 		}
-		logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName() + " done.", false);
+		logVerbose("Adding properties to CodeMetropolis CdfElement: " + element.getName() + " done.");
+	}
+
+	private void logVerbose(String message, boolean isError) {
+		if (super.getVerboseMode()) {
+			String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new java.util.Date());
+			if (isError) {
+				System.err.println("[" + timestamp + "]:" + message);
+			} else {
+				System.out.println("[" + timestamp + "]:" + message);
+			}
+		}
+	}
+
+	private void logVerbose(String message) {
+		logVerbose(message, false);
 	}
 }
