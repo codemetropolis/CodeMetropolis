@@ -19,10 +19,8 @@ public class Main {
 	    try {
 	        parser.parseArgument(args);
 
-	        // If no input file or mapping file is specified and there is no help parameter,
-			// the tool will print an informative help message on how to use the parameters.
-	        if((options.getInputFile() == null || options.getMappingFile() == null) && !options.showHelp()) {
-				System.err.println(Resources.get("mapping_usage"));
+	        if(args.length == 0) {
+				System.out.println(Resources.get("mapping_help_message_when_no_args"));
 				return;
 			}
 	    } catch (CmdLineException | IllegalArgumentException e) {
