@@ -11,12 +11,6 @@ import codemetropolis.toolchain.converter.control.ConverterLoader;
 
 public class ConverterExecutor extends AbstractExecutor {
 
-	/**
-	 * Executes the converter module
-	 *
-	 * @param args the terminal arguments
-	 * @return true if the execution was successful, false otherwise
-	 */
 	@Override
 	public boolean execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
@@ -45,14 +39,7 @@ public class ConverterExecutor extends AbstractExecutor {
 		return converter;
 	}
 
-	/**
-	 * Creates the CdfTree object, which contains the converted elements, using the converter module
-	 *
-	 * @param converter the converter module
-	 * @param converterArgs the terminal arguments
-	 * @return the CdfTree object which contains the converted elements
-	 */
-	private CdfTree createElements(CdfConverter converter, ConverterExecutorArgs converterArgs) {
+	private CdfTree createCdfTree(CdfConverter converter, ConverterExecutorArgs converterArgs) {
 		try {
 			return converter.createElements(converterArgs.getSource());
 		} catch (CodeMetropolisException e) {
@@ -64,14 +51,7 @@ public class ConverterExecutor extends AbstractExecutor {
 		}
 	}
 
-	/**
-	 * Writes the CdfTree object, which contains the converted elements, created during converter module's lifecycle to a file
-	 *
-	 * @param cdfTree the CdfTree object which contains the converted elements
-	 * @param converterArgs the terminal arguments
-	 * @return true if the writing was successful, false otherwise
-	 */
-	private boolean writeCdfToFile(CdfTree cdfTree, ConverterExecutorArgs converterArgs) {
+	private boolean writeCdfTreeToFile(CdfTree cdfTree, ConverterExecutorArgs converterArgs) {
 		try {
 			cdfTree.writeToFile(converterArgs.getOutputFile());
 			return true;

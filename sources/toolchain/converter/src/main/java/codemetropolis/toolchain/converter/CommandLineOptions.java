@@ -26,7 +26,7 @@ public class CommandLineOptions {
 	public String getOutputFile(){
 		return outputFile;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
@@ -43,11 +43,7 @@ public class CommandLineOptions {
 		return params;
 	}
 
-	/**
-	 * @return is verbose mode argument given
-	 */
 	public boolean getVerboseMode() {
 		return verboseMode;
 	}
-	
 }

@@ -33,14 +33,11 @@ public class Main {
 	    	return;
 	    }
 
-		/**
-		 * Prints out for user if verbose mode is enabled
-		 */
 		if(options.getVerboseMode()) {
 	    	System.out.println(Resources.get("verbose_mode_enabled"));
 	    }
-	    
-	    ConverterType converterType = null;
+
+	    ConverterType converterType;
 	    try {
 	    	converterType = ConverterType.valueOf(options.getType().toUpperCase());
 	    } catch(IllegalArgumentException e) {
