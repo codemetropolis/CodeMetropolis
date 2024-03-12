@@ -14,25 +14,34 @@ public class ConverterExecutor extends AbstractExecutor {
 	@Override
 	public boolean execute(ExecutorArgs args) {
 		ConverterExecutorArgs converterArgs = (ConverterExecutorArgs) args;
-		CdfConverter converter = createConverterBasedOnTerminalArgs(converterArgs);
+		CdfConverter converter = createConverter(converterArgs);
 
-		print(Resources.get("converting_to_cdf"));
-		CdfTree cdfTree = createElements(converter, converterArgs);
+		CdfTree cdfTree = convertToCdf(converter, converterArgs);
 		if (cdfTree == null) {
 			return false;
 		}
-		print(Resources.get("converting_to_cdf_done"));
 
-		print(Resources.get("printing_cdf"));
-		if (!writeCdfToFile(cdfTree, converterArgs)) {
-			return false;
-		}
-		print(Resources.get("printing_cdf_done"));
-
-		return true;
+		return printCdf(cdfTree, converterArgs);
 	}
 
-	private CdfConverter createConverterBasedOnTerminalArgs(ConverterExecutorArgs converterArgs) {
+	private CdfTree convertToCdf(CdfConverter converter, ConverterExecutorArgs converterArgs) {
+		print(Resources.get("converting_to_cdf"));
+		CdfTree cdfTree = createCdfTree(converter, converterArgs);
+		if (cdfTree == null) {
+			return null;
+		}
+		print(Resources.get("converting_to_cdf_done"));
+		return cdfTree;
+	}
+
+	private boolean printCdf(CdfTree cdfTree, ConverterExecutorArgs converterArgs) {
+		print(Resources.get("printing_cdf"));
+		boolean isWritten = writeCdfTreeToFile(cdfTree, converterArgs);
+		print(Resources.get("printing_cdf_done"));
+		return isWritten;
+	}
+
+	private CdfConverter createConverter(ConverterExecutorArgs converterArgs) {
 		CdfConverter converter = ConverterLoader.load(converterArgs.getType(), converterArgs.getParams(),
 				converterArgs.getVerboseMode());
 		converter.addConverterEventListener(event -> print(event.getMessage()));
