@@ -33,7 +33,7 @@ public class Main {
 	    	return;
 	    }
 
-		if(options.getVerboseMode() && !options.checkIfHelpModeIsEnabled(args)) {
+		if(options.getVerboseMode() && !options.showHelp()) {
 	    	System.out.println(Resources.get("verbose_mode_enabled"));
 	    }
 
