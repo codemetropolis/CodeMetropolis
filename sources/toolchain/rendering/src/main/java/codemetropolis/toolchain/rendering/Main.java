@@ -10,7 +10,15 @@ import codemetropolis.toolchain.rendering.events.ProgressEvent;
 import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 
 public class Main {
-	
+
+	/**
+	 * The Executor for the IXMLFiltering
+	 * This class make the process of rendering and showing specific errors if the render command is wrong
+	 * If world parameter is empty, show a specific error message and do not log error, only exits normaly
+	 * @author Bicskei Dániel B0IAS9 h642581
+	 * @param args  from command line, it's a String array
+	 */
+
 	public static void main(String[] args) {
 		
 		FileLogger.load(Settings.get("rendering_log_file"));
@@ -23,11 +31,16 @@ public class Main {
 	        if((options.getInputFile()== null || options.getWorld() == null) && !options.showHelp())
 	        	throw new IllegalArgumentException();
 	    } catch (CmdLineException | IllegalArgumentException e) {
-	    	String message = Resources.get("command_line_error");
-	    	FileLogger.logError(message, e);
-	    	System.err.println(message);
-	    	System.err.println(Resources.get("rendering_usage"));
-	    	return;
+			String message = Resources.get("command_line_error") + System.lineSeparator() + Resources.get("rendering_usage");
+			//If isset e.getMessage() error message contain "-w (-world, --world)" string only if world param is empty
+			if (e.getMessage() != null && e.getMessage().contains("-w (-world, --world)")) {
+				message = Resources.get("empty_world_parameter");
+			} else {
+				FileLogger.logError(message, e);
+			}
+			
+			System.err.println(message);
+			return;
 	    }
 	    
 	    if(options.showHelp()) {
