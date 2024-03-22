@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="mapping" to="placing" version="1.0">
+    <buildable id="22b1bc48-63b0-4fd4-87cb-2dfb957392af" name="" type="container">
+        <position x="0" y="0" z="0"/>
+        <size x="9" y="9" z="9"/>
+        <attributes/>
+        <children>
+            <buildable id="50ce8d54-6302-47a2-9126-3e1420365fd3" name="&lt;root_package&gt;" type="ground">
+                <position x="0" y="0" z="0"/>
+                <size x="9" y="9" z="9"/>
+                <attributes/>
+                <children>
+                    <buildable id="4b2baa60-ce56-4a4f-9f53-2cab7dff15cd" name="org" type="ground">
+                        <position x="0" y="0" z="0"/>
+                        <size x="9" y="9" z="9"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="6931c9c8-f763-4c22-bee3-0628f16652ce" name="example" type="ground">
+                                <position x="0" y="0" z="0"/>
+                                <size x="9" y="9" z="9"/>
+                                <attributes/>
+                                <children>
+                                    <buildable id="b42f00d5-261b-40d3-9689-ab4a346d5b05" name="Main" type="garden">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="1.0"/>
+                                        </attributes>
+                                        <children>
+                                            <buildable id="6602cd06-b9c1-436b-a419-a3aae4585b1f" name="a" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="87922630-78be-4ff0-b83f-e674827e90ea" name="b" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="b3a8ea05-3920-4fd0-a59c-32298cbf1e39" name="c" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="22808afa-209c-4f51-9c4d-077a5bb68e8c" name="d" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="12287e28-33dc-4602-88ad-b9d2d312f419" name="int Smth(int a, int b)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="3"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="208f3098-9694-42fd-8749-82e3f557f410" name="int doSmth(boolean a)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="obsidian"/>
+                                                    <attribute name="external_character" value="obsidian"/>
+                                                    <attribute name="torches" value="2"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                    <buildable id="a5dc6ef2-6512-416a-a446-60698da9a940" name="Pair" type="garden">
+                                        <position x="0" y="0" z="0"/>
+                                        <size x="9" y="9" z="9"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="0.0"/>
+                                        </attributes>
+                                        <children>
+                                            <buildable id="b703c181-d744-4a11-925a-5dd40a8d47f9" name="x" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="b9723e38-b8ee-4afe-aa78-2cbda4bfb207" name="y" type="cellar">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="93278544-ca9c-4aa9-a7dc-158deee9e1ea" name="Pair(int x, int y)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="3"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="d4bfadcb-cb46-4db2-96a5-03aeb38083b2" name="int getX()" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="20227022-edc4-4267-9877-7c330bc8b237" name="void setX(int x)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="2"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="7d8c67a3-4d67-497d-b0e1-c3cc9944131d" name="int getY()" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="a8b8fa00-1c0a-469f-96d4-dbf91027ff9d" name="void setY(int y)" type="floor">
+                                                <position x="0" y="0" z="0"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="glass"/>
+                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="torches" value="2"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>
