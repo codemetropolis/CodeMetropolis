@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.StopWatch;
 
-import codemetropolis.blockmodifier.World;
+import codemetropolis.toolchain.commons.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.BuildableTree;
 import codemetropolis.toolchain.commons.cmxml.exceptions.CmxmlReaderException;
