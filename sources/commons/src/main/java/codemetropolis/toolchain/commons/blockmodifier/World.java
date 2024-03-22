@@ -1,4 +1,4 @@
-package codemetropolis.blockmodifier;
+package codemetropolis.toolchain.commons.blockmodifier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import codemetropolis.blockmodifier.ext.NBTException;
+import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 
 public class World {
 	

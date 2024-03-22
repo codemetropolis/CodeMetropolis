@@ -1,10 +1,10 @@
-package codemetropolis.blockmodifier;
+package codemetropolis.toolchain.commons.blockmodifier;
 
 import java.io.File;
 import java.io.IOException;
 
-import codemetropolis.blockmodifier.ext.LevelFile;
-import codemetropolis.blockmodifier.ext.NBTTag;
+import codemetropolis.toolchain.commons.blockmodifier.ext.LevelFile;
+import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 
 public class Level {
 

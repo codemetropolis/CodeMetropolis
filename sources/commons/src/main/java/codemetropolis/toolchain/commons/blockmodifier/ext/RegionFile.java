@@ -1,4 +1,4 @@
-package codemetropolis.toolchain.commons.ext;
+package codemetropolis.toolchain.commons.blockmodifier.ext;
 
 /*
  ** 2011 January 5

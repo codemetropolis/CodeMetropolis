@@ -1,7 +1,7 @@
-package codemetropolis.blockmodifier;
+package codemetropolis.toolchain.commons.blockmodifier;
 
-import codemetropolis.blockmodifier.ext.NBTException;
-import codemetropolis.blockmodifier.ext.NBTTag;
+import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
+import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 
 import java.util.Arrays;
 import java.util.HashSet;
