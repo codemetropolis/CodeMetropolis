@@ -1,4 +1,4 @@
-package codemetropolis.blockmodifier.ext;
+package codemetropolis.toolchain.commons.ext;
 
 public class NBTException extends Exception {
 	
