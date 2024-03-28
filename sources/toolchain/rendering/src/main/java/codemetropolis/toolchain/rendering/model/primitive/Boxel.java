@@ -1,6 +1,6 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
-import codemetropolis.blockmodifier.World;
+import codemetropolis.toolchain.commons.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
