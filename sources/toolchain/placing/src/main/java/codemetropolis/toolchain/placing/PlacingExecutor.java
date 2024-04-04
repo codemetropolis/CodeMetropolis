@@ -29,8 +29,11 @@ public class PlacingExecutor extends AbstractExecutor {
 		} catch (IOException e) {
 			printError(e, Resources.get("missing_input_xml_error"));
 			return false;
+
 		} catch (CmxmlValidationFailedException e) {
-			printError(e, Resources.get("invalid_input_xml_error"));
+			// Warns the user that the input file content is invalid and exits normally without creating the output file.
+			printError(e, "\nmappingToPlacing.xml is invalid," +
+					     " please check the content of the input file or generate new mappingToPlacing.xml.");
 			return false;
 		}
 		

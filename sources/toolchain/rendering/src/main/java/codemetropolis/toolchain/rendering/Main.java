@@ -12,7 +12,12 @@ import codemetropolis.toolchain.rendering.events.ProgressEventListener;
 public class Main {
 	
 	public static void main(String[] args) {
-		
+		int javaVersion = parseJavaVersion(System.getProperty("java.version"));
+
+		if(javaVersion != 8) {	// Works with only Java 8 version.
+			throw new RuntimeException("The required Java version is 8, you have Java " + javaVersion);	// Warns the user if the Java version is not 8. 
+		}
+
 		FileLogger.load(Settings.get("rendering_log_file"));
 		
 		CommandLineOptions options = new CommandLineOptions();
@@ -79,4 +84,23 @@ public class Main {
 	    
 	}
 
+	/**
+	* java.version is a system property that exists in every JVM.
+	* There are two possible formats for it, because the version format changed after Java 8:
+	* Java 8 or lower: 1.6.0_12, 1.7.0, 1.7.0_22, 1.8.0_201
+	* Java 9 or higher: 9.0.1, 10.1.4, 12, 12.0.1
+	* @param version string of version numbers formatted in 'x.y.z' or '1.x.y_z'
+	* @return parsed version number in integer
+	*/
+	private static int parseJavaVersion(String version) {
+		if(version.startsWith("1.")) { // Under Java 8 and Java 8 version. Parse 1.x.y_z format string.
+			version = version.substring(2, 3);
+
+		} else {	// After Java 8 version. Parse x.y.z format string.
+			int dot = version.indexOf(".");
+			if(dot != -1) {
+				version = version.substring(0, dot);
+			}
+		} return Integer.parseInt(version);
+	}
 }

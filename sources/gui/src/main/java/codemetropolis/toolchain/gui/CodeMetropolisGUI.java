@@ -7,8 +7,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PipedOutputStream;
-import java.util.Random;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -46,10 +50,12 @@ public class CodeMetropolisGUI extends JFrame {
   private static final FileFilter XML_FILTER = new XmlFileFilter();
   private static final int COVER_IMAGE_COUNT = 4;
   private static final Random rng = new Random();
+  private static List<String> protips;
 
   private GUIController controller;
 
   private CMTextField projectName;
+  private CMTextField protipsField;
   private JTabbedPane metricTabbedPane;
   private CMTextField mappingPath;
   private CMTextField mcRootPath;
@@ -70,6 +76,8 @@ public class CodeMetropolisGUI extends JFrame {
     JPanel panel = createBasePanel();
     addHeaderImages(panel);
     addTitle(panel);
+    addProTip(panel);
+    addProTipImage(panel);
     addProjectNameField(panel);
     addMetricTabs(panel);
     addMappingOptions(panel);
@@ -157,7 +165,7 @@ public class CodeMetropolisGUI extends JFrame {
     JLabel title = new JLabel(Translations.t("gui_title"));
     title.setFont(new Font("Source Sans Pro", Font.BOLD, 26));
     title.setHorizontalAlignment(SwingConstants.CENTER);
-    title.setBounds(0, 280, 500, 30);
+    title.setBounds(0, 270, 500, 30);
 
     panel.add(title);
   }
@@ -174,6 +182,8 @@ public class CodeMetropolisGUI extends JFrame {
     panel.add(label);
     panel.add(projectName);
   }
+
+
 
   /**
    * Adds the metric generation tabbed pane to the {@code panel}
@@ -313,6 +323,66 @@ public class CodeMetropolisGUI extends JFrame {
     executionOptions.setLayoutAlgorithm((LayoutAlgorithm) layoutSelector.getSelectedItem());
     executionOptions.setShowMap(showMap.isSelected());
     executionOptions.setMinecraftRoot(new File(mcRootPath.getText()));
+  }
+
+  private final void readProTipsJSON() {
+    protips = new ArrayList<>();
+
+    try {
+      File myObj = new File("..\\src\\main\\resources\\protips.json");
+
+      Scanner myReader = new Scanner(myObj);
+      StringBuilder data = new StringBuilder();
+
+      while (myReader.hasNextLine()) {
+        data.append(myReader.nextLine());
+      }
+
+      Matcher m = Pattern.compile("\".+?\"").matcher(data.toString());
+      while (m.find()) {
+        protips.add(m.group());
+      }
+
+      protips.remove(0);
+
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Adds the lightbulb image next to the pro tip.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addProTipImage(JPanel panel) {
+    // Load the cover and logo images
+    ImageIcon bulbIcon = new ImageIcon(ClassLoader.getSystemResource("images/cm-lightbulb.png"));
+    Image bulbLogo = bulbIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+
+    JLabel logoImageContainer = new JLabel(new ImageIcon(bulbLogo));
+    logoImageContainer.setBounds(60, 290, 30, 30);
+
+    panel.add(logoImageContainer);
+  }
+
+  /**
+   * Adds a random pro tip to the {@code panel}
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
+  private final void addProTip(JPanel panel) {
+    readProTipsJSON();
+
+    JLabel tip = new JLabel(protips.get(rng.nextInt(protips.size())));
+    tip.setFont(new Font("Source Sans Pro", Font.BOLD, 10));
+    tip.setHorizontalAlignment(SwingConstants.CENTER);
+    tip.setBounds(100, 300, 300, 20);
+    tip.setOpaque(true);
+    tip.setBackground(Color.orange);
+
+    panel.add(tip);
   }
 
 }
