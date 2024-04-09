@@ -28,38 +28,19 @@
 
 # Pull request tags
 
-#pullRequest_304 - Tests associated with changes or new features introduced in pull request 304.
-
-#pullRequest_301 - Tests associated with changes or new features introduced in pull request 301.
-
-#pullRequest_225 - Tests associated with changes or new features introduced in pull request 225.
-
-#pullRequest_203 - Tests associated with changes or new features introduced in pull request 203.
-
-#pullRequest_199 - Tests associated with changes or new features introduced in pull request 199.
-
-#pullRequest_195 - Tests associated with changes or new features introduced in pull request 195.
-
-#pullRequest_176 - Tests associated with changes or new features introduced in pull request 176.
-
-#pullRequest_163 - Tests associated with changes or new features introduced in pull request 163.
-
-# Type tags
-#triage
-
-#type_bug - Tests designed to identify, replicate, or verify the fix of a bug in the system.
-
-#type_feature - Tests that validate the functionality, usability, and integration of new features.
-
-#type_refactoring - Tests ensuring that refactoring efforts have not altered the existing functionality or introduced new issues.
-
-#type_performance - 
+#pullRequest_{Pr.'s number} - Tests associated with changes or new features introduced in pull request {number}. For example: #pullRequest_25
 
 # Category tags
 
 #category_input - Tests focused on how the system handles, validates, and processes input data.
 
 #category_output - Tests that evaluate the accuracy, completeness, and format of the system's outputs.
+
+#category_performance - Tests the tool's efficiency, focusing on speed and resource usage during large data handling.
+
+#category_error_handling - Evaluates how the tool manages errors, including error message clarity and system resilience.
+
+#category_correct_working - Confirms the tool works as intended, accurately applying exclusions without side effects.
 
 # Status tags
 
