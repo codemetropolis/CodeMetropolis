@@ -10,9 +10,9 @@ import codemetropolis.toolchain.commons.util.Settings;
 public class Main {
 
     private static final String MAPPING_LOG_FILE = "mapping_log_file";
-    private static final String MAPPING_HELP_MESSAGE_WHEN_NO_ARGS = "mapping_help_message_when_no_args";
+    private static final String MAPPING_HELP_MESSAGE_WHEN_NO_ARGS = "mapping_usage_and_help";
     private static final String COMMAND_LINE_ERROR = "command_line_error";
-    private static final String MAPPING_USAGE = "mapping_usage";
+    private static final String MAPPING_USAGE = "mapping_usage_and_help";
     private static final String MAPPING_INTRODUCTION = "mapping_introduction";
     private static final String MAPPING_PREFIX = "mapping_prefix";
     private static final String ERROR_PREFIX = "error_prefix";
