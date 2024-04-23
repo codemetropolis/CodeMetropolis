@@ -4,7 +4,7 @@
 **Purpose:** This is a general test that needs to be run before any other kind of test is run when testing an issue's solution. When the tester selects a new issue to test its solution through different kinds of tests this needs to be the first one to be done, in order to see if the project on the isssue's branch can still be complied and no error will be given back regarding this matter.
 
 **Pre-requisites:**		
-- Java runtime 1.8
+- Java runtime 22
 
 **Steps:**
 1. Create an arbitrary folder on your PC and navigate into it

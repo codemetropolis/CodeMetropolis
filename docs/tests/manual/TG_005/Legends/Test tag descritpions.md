@@ -28,7 +28,7 @@
 
 # Pull request tags
 
-#pullRequest_{Pr.'s number} - Tests associated with changes or new features introduced in pull request {number}. For example: #pullRequest_25
+#pullRequest_{Pull Request's number} - Tests associated with changes or new features introduced in pull request {number}. For example: #pullRequest_25
 
 # Category tags
 
