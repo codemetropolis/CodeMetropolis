@@ -3,8 +3,7 @@ package codemetropolis.toolchain.commons.blockmodifier;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 
@@ -28,7 +27,7 @@ public class World {
 		level.writeToFile();
 	}
 
-    private Chunk setBlockInChunk(int x, int y, int z, int type, int data) {
+    private Chunk setBlockInChunk(int x, int y, int z, int type, Map<String, String> data) {
         checkCoordinateYBoundaries(y);
 
         int regionX = getRegionCoordinate(x);
@@ -44,7 +43,7 @@ public class World {
 
         Chunk activeChunk = locateChunk(chunkIndexX, chunkIndexZ, chunkX, chunkZ, regionX, regionZ, blockX, y, blockZ, type, data);
 
-        int[] blockTypes = new int[]{63, 68, 54, 176, 52};
+        int[] blockTypes = new int[]{63, 68, 54, 176, 52}; //standing sign, wallsign, chest, standing banner, mob spawner
         Arrays.sort(blockTypes);
         if (Arrays.binarySearch(blockTypes, type) >= 0) {
             activeChunk.clearTileEntitiesAt(blockX, y, blockZ);
@@ -76,7 +75,7 @@ public class World {
     }
 
     private Chunk locateChunk(int xChunkIndex, int zChunkIndex, int chunkX, int chunkZ, int regionX, int regionZ,
-                              int blockX, int y, int blockZ, int type, int data) {
+                              int blockX, int y, int blockZ, int type, Map<String, String> data) {
         Region region = getRegion(regionX, regionZ);
         Chunk chunk = region.getChunk(xChunkIndex, zChunkIndex);
         if (chunk == null) {
@@ -86,7 +85,7 @@ public class World {
             region.setChunk(xChunkIndex, zChunkIndex, chunk);
         }
 
-        chunk.setBlock(blockX, y, blockZ, (byte) type, (byte) data);
+        chunk.setBlock(blockX, y, blockZ, (byte) type, data);
 
         return chunk;
     }
@@ -111,7 +110,7 @@ public class World {
      * @param type The type of the block.
      * @param data The data of the block.
      */
-    public void setBlock(int x, int y, int z, int type, int data) {
+    public void setBlock(int x, int y, int z, int type, Map<String,String> data) {
         setBlockInChunk(x, y, z, type, data);
     }
 
@@ -125,7 +124,7 @@ public class World {
      * @param type The type of the block.
      */
     public void setBlock(int x, int y, int z, int type) {
-        setBlock(x, y, z, type, 0);
+        setBlock(x, y, z, type, null);
     }
 
     /**
@@ -149,8 +148,8 @@ public class World {
      * @param data The data of the sign post block.
      * @param text The text to be displayed on the sign post.
      */
-    public void setSignPost(int x, int y, int z, int data, String text) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 63, data);
+    public void setSignPost(int x, int y, int z, Map<String, String> data, String text) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, 63, data); //signPost id = 63
         currentChunk.setSignText(x, y, z, text);
     }
 
@@ -164,7 +163,7 @@ public class World {
      * @param text The text to be displayed on the sign post.
      */
     public void setSignPost(int x, int y, int z, String text) {
-        setSignPost(x, y, z, 0, text);
+        setSignPost(x, y, z, null, text);
     }
 
     /**
@@ -177,8 +176,8 @@ public class World {
      * @param data The data of the wall sign block.
      * @param text The text to be displayed on the wall sign.
      */
-    public void setWallSign(int x, int y, int z, int data, String text) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 68, data);
+    public void setWallSign(int x, int y, int z, Map<String, String> data, String text) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, 68, data); //wallSign id = 68
         currentChunk.setSignText(x, y, z, text);
     }
 
@@ -192,7 +191,7 @@ public class World {
      * @param text The text to be displayed on the wall sign.
      */
     public void setWallSign(int x, int y, int z, String text) {
-        setWallSign(x, y, z, 0, text);
+        setWallSign(x, y, z, null, text);
     }
 
     /**
@@ -204,8 +203,8 @@ public class World {
      * @param data The data of the spawner block.
      * @param dangerLevel The danger level associated with the spawner.
      */
-    public void setSpawner(int x, int y, int z, int data, String entityId, Short dangerLevel) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 52, data);
+    public void setSpawner(int x, int y, int z, Map<String, String> data, String entityId, Short dangerLevel) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, 52, data); // mobSpawner id = 52
         currentChunk.setSpawnerContent(x, y, z, entityId, dangerLevel);
     }
 
@@ -220,7 +219,7 @@ public class World {
      * @param dangerLevel The danger level associated with the spawner.
      */
     public void setSpawner(int x, int y, int z, String entityId, Short dangerLevel) {
-        setSpawner(x, y, z, 0, entityId, dangerLevel);
+        setSpawner(x, y, z, null, entityId, dangerLevel);
     }
 
     /**
@@ -233,8 +232,8 @@ public class World {
      * @param items An array representing the items to be placed in the chest.
      *              The array should contain pairs of values: item ID followed by quantity.
      */
-    public void setChest(int x, int y, int z, int data, int[] items) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 54, data);
+    public void setChest(int x, int y, int z, Map<String, String> data, int[] items) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, 54, data); // chest id = 54
         for (int i = 0; i < items.length; i += 2)
             currentChunk.addChestItem(x, y, z, items[i], items[i + 1]);
     }
@@ -250,7 +249,7 @@ public class World {
      *              The array should contain pairs of values: item ID followed by quantity.
      */
     public void setChest(int x, int y, int z, int[] items) {
-        setChest(x, y, z, 0, items);
+        setChest(x, y, z, null, items);
     }
 
     /**
@@ -262,8 +261,8 @@ public class World {
      * @param data The data of the banner block.
      * @param color The color of the banner represented by a BannerColor enum value.
      */
-    public void setBanner(int x, int y, int z, int data, BannerColor color) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 176, data);
+    public void setBanner(int x, int y, int z, Map<String, String> data, BannerColor color) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
         currentChunk.setBannerColor(x, y, z, color.ordinal());
     }
 

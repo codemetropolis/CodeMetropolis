@@ -6,22 +6,21 @@ import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 public class WallSign implements Primitive {
-	
+
 	public enum Orientation {
 		NORTH(2),
 		SOUTH(3),
 		WEST(4),
 		EAST(5);
-		
+
 		private final int value;
-		
+
 		Orientation(int v) {
 			value = v;
 		}
-		
+
 		public int getValue() {
 			return value;
 		}
@@ -29,7 +28,7 @@ public class WallSign implements Primitive {
 	
 	private Point position;
 	private Orientation orientation;
-	private Map<String, String> wallSignText = new HashMap<>();
+	private String text;
 
 	public WallSign(int x, int y, int z, Orientation orientation, String text) {
 		this(new Point(x,y,z), orientation, text);
@@ -39,14 +38,18 @@ public class WallSign implements Primitive {
 		super();
 		this.position = position;
 		this.orientation = orientation;
-		this.wallSignText.put("textOnSign", text);
+		this.text = text;
 	}
 	
 	@Override
 	public int toCSVFile(File directory) {
-		String jsonString = JsonUtil.convertMapToJson(wallSignText);
+		Map<String, String> properties = new HashMap<>();
+		properties.put("rotation", orientation.getValue() + "");
 
-		new Boxel(new BasicBlock((short) 68, orientation.getValue()), position, jsonString).toCSVFile(directory);
+		BasicBlock wallSign = new BasicBlock(BasicBlock.WALL_SIGN.getStringId(), properties);
+
+
+		new Boxel(wallSign, position, text).toCSVFile(directory);
 		return 1;
 	}
 

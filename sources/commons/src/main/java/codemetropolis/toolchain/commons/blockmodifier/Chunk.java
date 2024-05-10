@@ -3,17 +3,19 @@ package codemetropolis.toolchain.commons.blockmodifier;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 
 //TODO: Refactor this class
 public class Chunk {
 
     public NBTTag tag;
+
+    public enum Properties {
+        ROTATION,
+        VALAMI,
+        COLOR
+    }
 
 
     //TODO: Fix RuntimeException to make it NBTException
@@ -81,7 +83,7 @@ public class Chunk {
         return tag;
     }
 
-    public void setBlock(int x, int y, int z, byte type, byte data) {
+    public void setBlock(int x, int y, int z, byte type, Map<String, String> data) {
         int index = y >> 4;
         NBTTag section = getSection(index);
         if (section == null) {
@@ -91,12 +93,18 @@ public class Chunk {
         int blockIndex = (y % 16) * 256 + z * 16 + x;
         ((byte[]) section.getSubtagByName("Blocks").getValue())[blockIndex] = type;
 
-        boolean lastBits = ((double) x / 2) % 1 == 0 ? true : false;
+        boolean lastBits = ((double) x / 2) % 1 == 0;
         byte value = ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex / 2];
-        if (lastBits) {
-            value = (byte) ((value & 0xF0) | data);
-        } else {
-            value = (byte) ((value & 0x0F) | (data << 4));
+        for (Properties prop : Properties.values()) {
+            if (data.containsKey(prop.toString().toLowerCase())){
+                if (lastBits) {
+                    value = (byte) ((value & 0xF0) | (byte)(Integer.parseInt(data.get(prop.toString().toLowerCase()))));
+                    break;
+                } else {
+                    value = (byte) ((value & 0x0F) | (byte)(Integer.parseInt(data.get(prop.toString().toLowerCase()))) << 4);
+                    break;
+                }
+            }
         }
         ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex / 2] = value;
 

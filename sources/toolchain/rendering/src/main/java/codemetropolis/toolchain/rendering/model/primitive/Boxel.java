@@ -7,8 +7,11 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Boxel implements Primitive {
 
@@ -29,17 +32,18 @@ public class Boxel implements Primitive {
 
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
-        return new Boxel(
-                new BasicBlock(
-                        Short.parseShort(parts[0]),
-                        Integer.parseInt(parts[1])),
-                new Point(
-                        Integer.parseInt(parts[2]),
-                        Integer.parseInt(parts[3]),
-                        Integer.parseInt(parts[4])),
-                (parts[5].equals("NULL") ? "" : parts[5])
-        );
+        Map<String, String> properties = Collections.emptyMap();
+        try {
+            String[] rawProperties = parts[1].split("&");
+            properties = Arrays.stream(rawProperties)
+                    .collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
+        } catch (Exception e2) {
 
+        }
+
+        return new Boxel(new BasicBlock(parts[0], properties),
+                new Point(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])),
+                (parts[5].equals("NULL") ? "" : parts[5]));
     }
 
     /**
@@ -51,54 +55,74 @@ public class Boxel implements Primitive {
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
 
-        createBlocks(world, block.getId());
+        switch (block.getStringId()) {
+
+            case "minecraft:sign":
+                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
+                break;
+            case "minecraft:wall_sign":
+                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
+                break;
+            case "minecraft:white_banner":
+                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
+                        World.BannerColor.valueOf(info.toUpperCase()));
+                break;
+            default:
+                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
+        }
     }
 
     /**
      * This creates the individual blocks based on the block id
      *
-     * @param world World object which contains all the information of the Minecraft world
+     * @param world   World object which contains all the information of the Minecraft world
      * @param blockID the id of the block that is being created
      */
-    private void createBlocks(World world, short blockID){
+    private void createBlocks(World world, short blockID) {
         Map<String, String> blockData = new HashMap<>();
 
         switch (blockID) {
             case 52:
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(),
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
                         blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
             case 54:
-                world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
+                world.setChest(position.getX(), position.getY(), position.getZ(), block.getProperties(), new int[]{276, 1});
                 break;
             case 63:
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(),
+                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getProperties(),
                         blockData.get("textOnSign"));
                 break;
             case 68:
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(),
+                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(),
                         blockData.get("textOnSign"));
                 break;
             case 176:
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(),
+                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
                         World.BannerColor.valueOf(blockData.get("bannerColor").toUpperCase()));
                 break;
             default:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());
+                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
         }
     }
 
     public String toCSV() {
-        if (block.getId() == -1) return null;
-        return String.format("%d;%d;%d;%d;%d;%s", block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), (info == null || info.equals("") ? "NULL" : info));
+        if (block.getStringId().equals("")) {
+            return null;
+        }
+        String fancyProperties = block.getProperties().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining("&"));
+
+        return String.format("%s;%s;%d;%d;%d;%s", block.getStringId(), fancyProperties, position.getX(), position.getY(),
+                position.getZ(), (info == null || info.equals("") ? "NULL" : info));
     }
 
     /**
@@ -139,7 +163,7 @@ public class Boxel implements Primitive {
      *
      * @param file where teh blocks' data will be written into
      */
-    private void writeBlocksToFile(File file){
+    private void writeBlocksToFile(File file) {
         //TODO: Fix IoException catch
         try {
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
@@ -158,4 +182,45 @@ public class Boxel implements Primitive {
         return 1;
     }
 
+    @Override
+    public String toString() {
+        return "Boxel [block=" + block + ", position=" + position + ", info=" + info + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((block == null) ? 0 : block.hashCode());
+        result = prime * result + ((info == null) ? 0 : info.hashCode());
+        result = prime * result + ((position == null) ? 0 : position.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Boxel other = (Boxel) obj;
+        if (block == null) {
+            if (other.block != null)
+                return false;
+        } else if (!block.equals(other.block))
+            return false;
+        if (info == null) {
+            if (other.info != null)
+                return false;
+        } else if (!info.equals(other.info))
+            return false;
+        if (position == null) {
+            if (other.position != null)
+                return false;
+        } else if (!position.equals(other.position))
+            return false;
+        return true;
+    }
 }

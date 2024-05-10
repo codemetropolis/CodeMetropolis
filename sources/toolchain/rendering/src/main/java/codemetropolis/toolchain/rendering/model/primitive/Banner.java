@@ -6,7 +6,6 @@ import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 public class Banner implements Primitive {
 	
@@ -44,9 +43,12 @@ public class Banner implements Primitive {
 	
 	@Override
 	public int toCSVFile(File directory) {
-		String jsonString = JsonUtil.convertMapToJson(bannerColor);
+		Map<String, String> properties = new HashMap<>();
+		properties.put("facing", orientation.getValue() + "");
 
-		new Boxel(new BasicBlock((short) 176, orientation.getValue()), position, jsonString).toCSVFile(directory);
+		BasicBlock banner = new BasicBlock(BasicBlock.BANNER.getStringId(), properties);
+
+		new Boxel(banner, position).toCSVFile(directory);
 		return 1;
 	}
 

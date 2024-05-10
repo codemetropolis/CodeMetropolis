@@ -62,7 +62,9 @@ public class SingleBlock implements Primitive {
 
             new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
         } else {
-            new Boxel(new BasicBlock(name, orientation.getValue()), position).toCSVFile(directory);
+            new Boxel(new BasicBlock(
+                    name, new HashMap<>() {{put("orientation", orientation.toString().toLowerCase());}}),
+                    position).toCSVFile(directory);
         }
 
         return 1;
