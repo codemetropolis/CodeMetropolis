@@ -11,13 +11,6 @@ public class Chunk {
 
     public NBTTag tag;
 
-    public enum Properties {
-        ROTATION,
-        VALAMI,
-        COLOR
-    }
-
-
     //TODO: Fix RuntimeException to make it NBTException
     private Chunk(NBTTag tag) {
         if (tag.getType() != NBTTag.Type.TAG_Compound) {
@@ -95,13 +88,13 @@ public class Chunk {
 
         boolean lastBits = ((double) x / 2) % 1 == 0;
         byte value = ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex / 2];
-        for (Properties prop : Properties.values()) {
-            if (data.containsKey(prop.toString().toLowerCase())){
+        for (String dataToString : data.keySet()) {
+            if(isNumeric(data.get(dataToString))) {
                 if (lastBits) {
-                    value = (byte) ((value & 0xF0) | (byte)(Integer.parseInt(data.get(prop.toString().toLowerCase()))));
+                    value = (byte) ((value & 0xF0) | (byte) (Integer.parseInt(data.get(dataToString.toLowerCase()))));
                     break;
                 } else {
-                    value = (byte) ((value & 0x0F) | (byte)(Integer.parseInt(data.get(prop.toString().toLowerCase()))) << 4);
+                    value = (byte) ((value & 0x0F) | (byte) (Integer.parseInt(data.get(dataToString.toLowerCase()))) << 4);
                     break;
                 }
             }
@@ -112,6 +105,15 @@ public class Chunk {
 
         if (heightMap[z * 16 + x] < y + 1)
             heightMap[z * 16 + x] = y + 1;
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            int i = Integer.parseInt(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**

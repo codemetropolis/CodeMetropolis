@@ -35,10 +35,12 @@ public class Boxel implements Primitive {
         Map<String, String> properties = Collections.emptyMap();
         try {
             String[] rawProperties = parts[1].split("&");
-            properties = Arrays.stream(rawProperties)
-                    .collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
+            if(parts[1].length() > 1) {
+                properties = Arrays.stream(rawProperties)
+                        .collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
+            }
         } catch (Exception e2) {
-
+            throw new RuntimeException(e2);
         }
 
         return new Boxel(new BasicBlock(parts[0], properties),

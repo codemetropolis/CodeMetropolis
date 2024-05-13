@@ -92,7 +92,7 @@ public class BasicBlock {
 		return stringId;
 	}
 
-	public int getShortId(){
+	public short getShortId(){
 		return shortId;
 	}
 
