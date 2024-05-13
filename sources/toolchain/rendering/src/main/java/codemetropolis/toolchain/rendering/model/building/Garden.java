@@ -34,8 +34,8 @@ public class Garden extends Building {
 		LinkedList<Primitive> repeatPattern = new LinkedList<>();
 		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NON_BLOCK } } } ) );
 		
-		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.DANDELION } } } ) );
-		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.POPPY } } } ), 0.5);
+		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.POPPY } } } ) );
+		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.DANDELION } } } ), 0.5);
 		_flowers.add(
 			_redOrYellow,
 			innerBuildable.hasAttribute( "flower-ratio" )

@@ -259,11 +259,9 @@ public class World {
      * @param y The y-coordinate index of the banner.
      * @param z The z-coordinate index of the banner.
      * @param data The data of the banner block.
-     * @param color The color of the banner represented by a BannerColor enum value.
      */
-    public void setBanner(int x, int y, int z, Map<String, String> data, BannerColor color) {
+    public void setBanner(int x, int y, int z, Map<String, String> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
-        currentChunk.setBannerColor(x, y, z, color.ordinal());
     }
 
 	private Region getRegion(int x, int z) {
@@ -348,7 +346,7 @@ public class World {
 		LIGHT_BLUE,
 		LIGHT_PURPLE,
 		ORANGE,
-		WHITE;
+		WHITE
 	}
 	
 }

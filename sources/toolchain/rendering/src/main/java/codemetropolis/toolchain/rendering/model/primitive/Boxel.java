@@ -66,8 +66,7 @@ public class Boxel implements Primitive {
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
                 break;
             case "minecraft:white_banner":
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
-                        World.BannerColor.valueOf(info.toUpperCase()));
+                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties());
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
@@ -106,10 +105,7 @@ public class Boxel implements Primitive {
                         blockData.get("textOnSign"));
                 break;
             case 176:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
-                        World.BannerColor.valueOf(blockData.get("bannerColor").toUpperCase()));
+                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties());
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
