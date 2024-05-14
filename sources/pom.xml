@@ -7,7 +7,7 @@
 	<groupId>codemetropolis</groupId>
 	<artifactId>codemetropolis</artifactId>
 	<packaging>pom</packaging>
-	<version>1.4.0</version>
+	<version>1.5.0</version>
 
 	<name>CodeMetropolis</name>
 
@@ -47,18 +47,18 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<repositories>
 		<repository>
 			<id>local-repository</id>
 			<url>file://${user.dir}/../dependencies</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<maven.compiler.target>22</maven.compiler.target>
+		<maven.compiler.source>22</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
 		<dependency>

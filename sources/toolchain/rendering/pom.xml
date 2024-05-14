@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>codemetropolis</groupId>
 		<artifactId>toolchain</artifactId>
-		<version>1.4.0</version>
+		<version>1.5.0</version>
 	</parent>
 
 	<artifactId>rendering</artifactId>
@@ -49,14 +49,14 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>codemetropolis</groupId>
-			<artifactId>cmblockmodifier</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.0</version>
 		</dependency>
 	</dependencies>
 </project>

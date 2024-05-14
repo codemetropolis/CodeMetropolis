@@ -1,9 +1,12 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 public class Banner implements Primitive {
 	
@@ -30,23 +33,25 @@ public class Banner implements Primitive {
 	
 	private Point position;
 	private Orientation orientation;
-	private String color;
+	private Map<String, String> bannerColor = new HashMap<>();
 
 	public Banner(int x, int y, int z, Orientation orientation, String color) {
 		super();
 		this.position = new Point(x, y, z);
 		this.orientation = orientation;
-		this.color = color;
+		this.bannerColor.put("bannerColor", color);
 	}
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 176, orientation.getValue()), position, color).toCSVFile(directory);
+		String jsonString = JsonUtil.convertMapToJson(bannerColor);
+
+		new Boxel(new BasicBlock((short) 176, orientation.getValue()), position, jsonString).toCSVFile(directory);
 		return 1;
 	}
+
 	@Override
 	public int getNumberOfBlocks() {
 		return 1;
 	}
-	
 }
