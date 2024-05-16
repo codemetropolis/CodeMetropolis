@@ -46,7 +46,7 @@ public class Banner implements Primitive {
 		Map<String, String> properties = new HashMap<>();
 		properties.put("facing", orientation.getValue() + "");
 
-		BasicBlock banner = new BasicBlock(BasicBlock.BANNER.getStringId(), properties);
+		BasicBlock banner = new BasicBlock(BasicBlock.BANNER.getStringId(), BasicBlock.BANNER.getShortId(), properties);
 
 		new Boxel(banner, position).toCSVFile(directory);
 		return 1;

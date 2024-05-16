@@ -46,7 +46,7 @@ public class WallSign implements Primitive {
 		Map<String, String> properties = new HashMap<>();
 		properties.put("rotation", orientation.getValue() + "");
 
-		BasicBlock wallSign = new BasicBlock(BasicBlock.WALL_SIGN.getStringId(), properties);
+		BasicBlock wallSign = new BasicBlock(BasicBlock.WALL_SIGN.getStringId(), BasicBlock.WALL_SIGN.getShortId(), properties);
 
 
 		new Boxel(wallSign, position, text).toCSVFile(directory);
