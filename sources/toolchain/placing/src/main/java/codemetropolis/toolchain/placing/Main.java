@@ -18,54 +18,64 @@ public class Main {
 	private static final String COMMAND_LINE_ERROR = "command_line_error";
 
 	public static void main(String[] args) {
-		
 		FileLogger.load(Settings.get("placing_log_file"));
-		
+
 		CommandLineOptions options = new CommandLineOptions();
-	    CmdLineParser parser = new CmdLineParser(options);
+		CmdLineParser parser = new CmdLineParser(options);
 
-	    try {
-	        parser.parseArgument(args);
-	        if(options.getInputFile() == null && !options.showHelp())
-	        	throw new IllegalArgumentException();
+		try {
+			parseArguments(parser, options, args);
+		} catch (CmdLineException | IllegalArgumentException e) {
+			handleError(e);
+			return;
+		}
 
+		if (options.showHelp()) {
+			printHelp();
+			return;
+		}
 
-	    } catch (CmdLineException | IllegalArgumentException e) {
+		executePlacing(options);
+	}
 
-			/**
-			 * Warns the user that the layout file parameter value is missing and exits normally without creating the layout file
-			 * and shows usage help message
-			 */
-			String exceptionMessage = e.getMessage();
-			if (exceptionMessage.contains(Resources.get("layout_exception"))) {
-				System.err.println(Resources.get("missing_layout_error"));
-				System.err.println(Resources.get("placing_usage"));
-				return;
-			}
-	    	String message = Resources.get("command_line_error");
-	    	FileLogger.logError(message, e);
-	    	System.err.println(message);
-	    	System.err.println(Resources.get("placing_usage"));
-	    	return;
-	    }
-	    
-	    if(options.showHelp()) {
-	    	System.out.println(Resources.get("placing_introduction"));
-	    	System.out.println(Resources.get("placing_usage"));
-	    	return;
-	    }
-		
+	private static void parseArguments(CmdLineParser parser, CommandLineOptions options, String[] args) throws CmdLineException {
+		parser.parseArgument(args);
+		if (options.getInputFile() == null && !options.showHelp()) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	private static void handleError(Exception e) {
+		if (e.getMessage().contains(Resources.get(LAYOUT_EXCEPTION))) {
+			printErrorMessage(Resources.get(MISSING_LAYOUT_ERROR));
+			printErrorMessage(Resources.get(PLACING_USAGE));
+		} else {
+			String message = Resources.get(COMMAND_LINE_ERROR);
+			FileLogger.logError(message, e);
+			printErrorMessage(message);
+			printErrorMessage(Resources.get(PLACING_USAGE));
+		}
+	}
+
+	private static void printHelp() {
+		System.out.println(Resources.get(PLACING_INTRODUCTION));
+		System.out.println(Resources.get(PLACING_USAGE));
+	}
+
+	private static void executePlacing(CommandLineOptions options) {
 		PlacingExecutor executor = new PlacingExecutor();
-	    executor.setPrefix(Resources.get("placing_prefix"));
-	    executor.setErrorPrefix(Resources.get("error_prefix"));
+		executor.setPrefix(Resources.get(PLACING_PREFIX));
+		executor.setErrorPrefix(Resources.get(ERROR_PREFIX));
 		executor.execute(
 				new PlacingExecutorArgs(
 						options.getInputFile(),
 						options.getOutputFile(),
 						options.getLayout(),
 						options.showMap())
-				);
-		
+		);
 	}
 
+	private static void printErrorMessage(String message) {
+		System.err.println(message);
+	}
 }
