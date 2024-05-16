@@ -9,6 +9,14 @@ import codemetropolis.toolchain.commons.util.Settings;
 
 public class Main {
 
+	private static final String PLACING_PREFIX = "placing_prefix";
+	private static final String ERROR_PREFIX = "error_prefix";
+	private static final String PLACING_INTRODUCTION = "placing_introduction";
+	private static final String PLACING_USAGE = "placing_usage";
+	private static final String LAYOUT_EXCEPTION = "layout_exception";
+	private static final String MISSING_LAYOUT_ERROR = "missing_layout_error";
+	private static final String COMMAND_LINE_ERROR = "command_line_error";
+
 	public static void main(String[] args) {
 		
 		FileLogger.load(Settings.get("placing_log_file"));
