@@ -170,7 +170,6 @@ public class Floor extends Building {
 
         if (innerBuildable.hasAttribute("character")) {
             _sideBlock = getBlockFromCharacter(innerBuildable.getAttributeValue("character"));
-            System.out.println(innerBuildable.getAttributeValue("character"));
             _topFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.FENCE } } });
         } else {
             _sideBlock = BasicBlock.MAGENTA_WOOL;

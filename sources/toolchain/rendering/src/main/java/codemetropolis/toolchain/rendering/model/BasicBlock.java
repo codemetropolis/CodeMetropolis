@@ -35,9 +35,9 @@ public class BasicBlock {
 	public static final BasicBlock RED_WOOL = new BasicBlock("minecraft:red_wool",(short) 35,
 			new HashMap<>() {{put("color", "14");}});
 	public static final BasicBlock GREEN_WOOL = new BasicBlock("minecraft:green_wool", (short) 35,
-			new HashMap<>() {{put("color", "13");}});
+			new HashMap<>() {{put("color", "5");}});
 	public static final BasicBlock BLUE_WOOL = new BasicBlock("minecraft:blue_wool",(short) 35,
-			new HashMap<>() {{put("color", "3");}});// light blue
+			new HashMap<>() {{put("color", "3");}});
 	public static final BasicBlock YELLOW_WOOL = new BasicBlock("minecraft:yellow_wool",(short) 35,
 			new HashMap<>() {{put("color", "4");}});
 	public static final BasicBlock MAGENTA_WOOL = new BasicBlock("minecraft:magenta_wool",(short) 35,
