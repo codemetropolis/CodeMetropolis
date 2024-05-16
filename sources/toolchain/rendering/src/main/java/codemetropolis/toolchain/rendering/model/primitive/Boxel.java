@@ -34,8 +34,8 @@ public class Boxel implements Primitive {
         String[] parts = csv.split(";");
         Map<String, String> properties = Collections.emptyMap();
         try {
-            String[] rawProperties = parts[1].split("&");
-            if(parts[1].length() > 1) {
+            String[] rawProperties = parts[2].split("&");
+            if(parts[2].length() > 1) {
                 properties = Arrays.stream(rawProperties)
                         .collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
             }
@@ -43,9 +43,9 @@ public class Boxel implements Primitive {
             throw new RuntimeException(e2);
         }
 
-        return new Boxel(new BasicBlock(parts[0], properties),
-                new Point(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])),
-                (parts[5].equals("NULL") ? "" : parts[5]));
+        return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
+                new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
+                (parts[6].equals("NULL") ? "" : parts[6]));
     }
 
     /**
@@ -119,7 +119,7 @@ public class Boxel implements Primitive {
         String fancyProperties = block.getProperties().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
                 .collect(Collectors.joining("&"));
 
-        return String.format("%s;%s;%d;%d;%d;%s", block.getStringId(), fancyProperties, position.getX(), position.getY(),
+        return String.format("%s;%d;%s;%d;%d;%d;%s", block.getStringId(), block.getShortId(), fancyProperties, position.getX(), position.getY(),
                 position.getZ(), (info == null || info.equals("") ? "NULL" : info));
     }
 

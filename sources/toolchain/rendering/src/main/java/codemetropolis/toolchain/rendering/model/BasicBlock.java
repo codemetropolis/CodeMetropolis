@@ -14,7 +14,7 @@ public class BasicBlock {
 	public static final BasicBlock SANDSTONE = new BasicBlock("minecraft:sandstone",(short) 24);
 	public static final BasicBlock GRASS_BLOCK = new BasicBlock("minecraft:grass_block",(short) 2);
 	public static final BasicBlock REDSTONE_BLOCK = new BasicBlock("minecraft:redstone_block",(short) 152);
-	public static final BasicBlock REDSTONE_LAMP = new BasicBlock("minecraft:redstone_lamp",(short) 123,
+	public static final BasicBlock REDSTONE_LAMP = new BasicBlock("minecraft:lit_redstone_lamp",(short) 124,
 			new HashMap<>() {{put("lit", "true");}});
 
 	// Items
@@ -77,6 +77,7 @@ public class BasicBlock {
 
 	public BasicBlock(BasicBlock original) {
 		this.stringId = original.stringId;
+		this.shortId = original.getShortId();
 		this.properties = new HashMap<>(original.properties);
 	}
 

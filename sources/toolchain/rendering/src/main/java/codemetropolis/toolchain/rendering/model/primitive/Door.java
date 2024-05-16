@@ -46,8 +46,8 @@ public class Door implements Primitive {
 		lowerDoorProperties.put("facing", orientation.getValue() + "");
 		lowerDoorProperties.put("half", "lower");
 
-		BasicBlock upperDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), upperDoorProperties);
-		BasicBlock lowerDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), lowerDoorProperties);
+		BasicBlock upperDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), BasicBlock.DOOR.getShortId(), upperDoorProperties);
+		BasicBlock lowerDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), BasicBlock.DOOR.getShortId(), lowerDoorProperties);
 
 		new Boxel(lowerDoor, position).toCSVFile(directory);
 		new Boxel(upperDoor, new Point(position.getX(), position.getY() + 1, position.getZ())).toCSVFile(directory);

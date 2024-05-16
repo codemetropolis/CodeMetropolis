@@ -60,7 +60,7 @@ public class SingleBlock implements Primitive {
         if (name.equals("minecraft:mob_spawner")) {
             String jsonString = JsonUtil.convertMapToJson(setSpawnerData(dangerValue));
 
-            new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
+            new Boxel(new BasicBlock("minecraft:mob_spawner", (short) 52), position, jsonString).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(
                     name, new HashMap<>() {{put("orientation", orientation.toString().toLowerCase());}}),

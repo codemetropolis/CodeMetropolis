@@ -12,6 +12,7 @@ import codemetropolis.toolchain.rendering.model.primitive.*;
 import codemetropolis.toolchain.rendering.model.primitive.Row.BlockFacing;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Floor extends Building {
@@ -168,7 +169,8 @@ public class Floor extends Building {
         LinkedList<Primitive> walls = new LinkedList<>();
 
         if (innerBuildable.hasAttribute("character")) {
-            _sideBlock = new BasicBlock(innerBuildable.getAttributeValue("character"));
+            _sideBlock = getBlockFromCharacter(innerBuildable.getAttributeValue("character"));
+            System.out.println(innerBuildable.getAttributeValue("character"));
             _topFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.FENCE } } });
         } else {
             _sideBlock = BasicBlock.MAGENTA_WOOL;
@@ -176,7 +178,7 @@ public class Floor extends Building {
         }
 
         if (innerBuildable.hasAttribute("external_character")) {
-            BasicBlock block = new BasicBlock(innerBuildable.getAttributeValue("external_character"));
+            BasicBlock block = getBlockFromCharacter(innerBuildable.getAttributeValue("external_character"));
             _bottomFill = new RepeationPattern(new BasicBlock[][][] { { { block } } });
             _strcBlock = block;
             _stroke = new RepeationPattern(new BasicBlock[][][] { { { block } } });
@@ -203,6 +205,41 @@ public class Floor extends Building {
         walls.add(new EmptyBox(position, size, _bottomFill, _topFill, _sideFill, _stroke, new Point(1, 1, 1),
                 new Point(1, 1, 1)));
         return walls;
+    }
+
+    public BasicBlock getBlockFromCharacter(String name){
+        return switch (name.toUpperCase()) {
+            case "STONE" -> new BasicBlock("minecraft:stone", (short) 1);
+            case "COBBLESTONE" -> new BasicBlock("minecraft:cobblestone", (short) 4);
+            case "MOSSY_STONE" -> new BasicBlock("minecraft:mossy_cobblestone", (short) 48);
+            case "SANDSTONE" -> new BasicBlock("minecraft:sandstone", (short) 24);
+            case "OBSIDIAN" -> new BasicBlock("minecraft:obsidian", (short) 49);
+            case "WOOD" -> new BasicBlock("minecraft:oak_wood", (short) 17);
+            case "DARK_WOOD" -> new BasicBlock("minecraft:dark_oak_wood", (short) 162);
+            case "BIRCH_WOOD" -> new BasicBlock("minecraft:birch_wood", (short) 17,
+                    new HashMap<>() {{
+                        put("valami", "2");
+                    }});
+            case "PLANKS" -> new BasicBlock("minecraft:oak_planks", (short) 5);
+            case "DARK_PLANKS" -> new BasicBlock("minecraft:dark_oak_planks", (short) 5,
+                    new HashMap<>() {{
+                        put("valami", "5");
+                    }});
+            case "METAL" -> new BasicBlock("minecraft:iron_block", (short) 42);
+            case "DIRT" -> new BasicBlock("minecraft:dirt", (short) 3);
+            case "SAND" -> new BasicBlock("minecraft:sand", (short) 12);
+            case "RED_SAND" -> new BasicBlock("minecraft:red_sand", (short) 12,
+                    new HashMap<>() {{
+                        put("valami", "1");
+                    }});
+            case "BRICK" -> new BasicBlock("minecraft:bricks", (short) 45);
+            case "STONE_BRICK", "DARK_BRICK" -> new BasicBlock("minecraft:stone_bricks", (short) 98);
+            case "GLASS" -> new BasicBlock("minecraft:glass", (short) 20);
+            case "GOLD" -> new BasicBlock("minecraft:gold_block", (short) 41);
+            case "DIAMOND" -> new BasicBlock("minecraft:diamond_block", (short) 57);
+            case "UNDEFINED" -> new BasicBlock("minecraft:wool", (short) 35);
+            default -> null;
+        };
     }
 
     protected LinkedList<Primitive> prepareSigns() {
