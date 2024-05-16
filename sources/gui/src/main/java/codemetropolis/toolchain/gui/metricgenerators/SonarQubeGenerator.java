@@ -1,7 +1,7 @@
 package codemetropolis.toolchain.gui.metricgenerators;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import codemetropolis.toolchain.converter.control.ConverterType;
@@ -115,13 +115,12 @@ public class SonarQubeGenerator extends CMMetricPanel {
     Map<String, Object> params = executionOptions.getMetricGenerationParams();
 
     try {
-      new URL(params.get("url").toString());
-    } catch (MalformedURLException e) {
-      GuiUtils.showError(Translations.t("gui_err_invalid_sonar_url"));
-      return false;
+      new URI(params.get("url").toString());
+    } catch (URISyntaxException e) {
+        throw new RuntimeException(e);
     }
 
-    return true;
+      return true;
   }
 
 }

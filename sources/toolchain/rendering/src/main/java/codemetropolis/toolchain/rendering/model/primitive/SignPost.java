@@ -1,9 +1,12 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.rendering.util.JsonUtil;
 
 public class SignPost implements Primitive {
 	
@@ -30,20 +33,23 @@ public class SignPost implements Primitive {
 	
 	private Point position;
 	private Orientation orientation;
-	private String text;
+	private Map<String, String> signPostText = new HashMap<>();
 
 	public SignPost(int x, int y, int z, Orientation orientation, String text) {
 		super();
 		this.position = new Point(x, y, z);
 		this.orientation = orientation;
-		this.text = text;
+		this.signPostText.put("textOnSign", text);
 	}
 	
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 63, orientation.getValue()), position, text).toCSVFile(directory);
+		String jsonString = JsonUtil.convertMapToJson(signPostText);
+
+		new Boxel(new BasicBlock((short) 63, orientation.getValue()), position, jsonString).toCSVFile(directory);
 		return 1;
 	}
+
 	@Override
 	public int getNumberOfBlocks() {
 		return 1;

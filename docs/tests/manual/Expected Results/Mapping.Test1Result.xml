@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="mapping" to="placing" version="1.0">
+    <buildable id="1f9fd5ec-f7ab-4907-89ff-72911960c842" name="" type="container">
+        <position x="0" y="0" z="0"/>
+        <size x="9" y="9" z="9"/>
+        <attributes/>
+        <children>
+            <buildable id="65ff918f-30fb-4b47-8bec-263c8440d4bc" name="&lt;root_package&gt;" type="ground">
+                <position x="0" y="0" z="0"/>
+                <size x="9" y="9" z="9"/>
+                <attributes/>
+                <children/>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>
