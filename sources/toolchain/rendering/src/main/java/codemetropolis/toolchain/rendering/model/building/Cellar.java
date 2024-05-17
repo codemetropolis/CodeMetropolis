@@ -26,15 +26,22 @@ public class Cellar extends Floor {
 	public LinkedList<Primitive> makePrimitives(){
 		LinkedList<Primitive> primitive = new LinkedList<>();
 
-		primitive.add(0,
-				new SolidBox(position.translate(new Point(1, 1, 1)), size.translate(new Point(-2, -2, -2)),
-						new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }),
-						new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }), Orientation.NearX));
+		primitives.add(
+				0,
+				new SolidBox(
+						position.translate( new Point( 1, 1, 1 ) ),
+						size.translate( new Point( -2, -2, -2 ) ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						Orientation.NearX ) );
 
-		primitive.add(new SolidBox(position.translate(new Point(center.getX() - 3, size.getY() + 1, center.getZ() - 3)),
-				new Point(7, 1, 7), new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }),
-				new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }), Orientation.NearX));
-
+		primitives.add(
+				new SolidBox(
+						position.translate( new Point( center.getX() - 3, size.getY() + 1, center.getZ() - 3 ) ),
+						new Point( 7, 1, 7 ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						Orientation.NearX ) );
 		return primitive;
 	}
 

@@ -208,41 +208,6 @@ public class Floor extends Building {
         return walls;
     }
 
-    public BasicBlock getBlockFromCharacter(String name){
-        return switch (name.toUpperCase()) {
-            case "STONE" -> new BasicBlock("minecraft:stone", (short) 1);
-            case "COBBLESTONE" -> new BasicBlock("minecraft:cobblestone", (short) 4);
-            case "MOSSY_STONE" -> new BasicBlock("minecraft:mossy_cobblestone", (short) 48);
-            case "SANDSTONE" -> new BasicBlock("minecraft:sandstone", (short) 24);
-            case "OBSIDIAN" -> new BasicBlock("minecraft:obsidian", (short) 49);
-            case "WOOD" -> new BasicBlock("minecraft:oak_wood", (short) 17);
-            case "DARK_WOOD" -> new BasicBlock("minecraft:dark_oak_wood", (short) 162);
-            case "BIRCH_WOOD" -> new BasicBlock("minecraft:birch_wood", (short) 17,
-                    new HashMap<>() {{
-                        put("valami", "2");
-                    }});
-            case "PLANKS" -> new BasicBlock("minecraft:oak_planks", (short) 5);
-            case "DARK_PLANKS" -> new BasicBlock("minecraft:dark_oak_planks", (short) 5,
-                    new HashMap<>() {{
-                        put("valami", "5");
-                    }});
-            case "METAL" -> new BasicBlock("minecraft:iron_block", (short) 42);
-            case "DIRT" -> new BasicBlock("minecraft:dirt", (short) 3);
-            case "SAND" -> new BasicBlock("minecraft:sand", (short) 12);
-            case "RED_SAND" -> new BasicBlock("minecraft:red_sand", (short) 12,
-                    new HashMap<>() {{
-                        put("valami", "1");
-                    }});
-            case "BRICK" -> new BasicBlock("minecraft:bricks", (short) 45);
-            case "STONE_BRICK", "DARK_BRICK" -> new BasicBlock("minecraft:stone_bricks", (short) 98);
-            case "GLASS" -> new BasicBlock("minecraft:glass", (short) 20);
-            case "GOLD" -> new BasicBlock("minecraft:gold_block", (short) 41);
-            case "DIAMOND" -> new BasicBlock("minecraft:diamond_block", (short) 57);
-            case "UNDEFINED" -> new BasicBlock("minecraft:wool", (short) 35);
-            default -> null;
-        };
-    }
-
     protected LinkedList<Primitive> prepareSigns() {
         LinkedList<Primitive> signs = new LinkedList<>();
         //Wall signs outside
