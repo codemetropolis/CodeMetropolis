@@ -10,6 +10,7 @@ import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.primitive.*;
 import codemetropolis.toolchain.rendering.model.primitive.Row.BlockFacing;
+import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.HashMap;
@@ -169,18 +170,19 @@ public class Floor extends Building {
         LinkedList<Primitive> walls = new LinkedList<>();
 
         if (innerBuildable.hasAttribute("character")) {
-            _sideBlock = getBlockFromCharacter(innerBuildable.getAttributeValue("character"));
-            _topFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.FENCE } } });
+            Character character = Character.parse(innerBuildable.getAttributeValue("character"));
+            _sideBlock = character.getBlock();
+            _topFill = new RepeationPattern(new BasicBlock[][][] { { { character.getTopBlock() } } });
         } else {
             _sideBlock = BasicBlock.MAGENTA_WOOL;
             _topFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.MAGENTA_WOOL } } });
         }
 
         if (innerBuildable.hasAttribute("external_character")) {
-            BasicBlock block = getBlockFromCharacter(innerBuildable.getAttributeValue("external_character"));
-            _bottomFill = new RepeationPattern(new BasicBlock[][][] { { { block } } });
-            _strcBlock = block;
-            _stroke = new RepeationPattern(new BasicBlock[][][] { { { block } } });
+            Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
+            _bottomFill = new RepeationPattern(new BasicBlock[][][] { { { externalCharacter.getBlock() } } });
+            _strcBlock = externalCharacter.getBlock();
+            _stroke = new RepeationPattern(new BasicBlock[][][] { { { externalCharacter.getBlock() } } });
         } else {
             _bottomFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.MAGENTA_WOOL } } });
             _strcBlock = BasicBlock.PURPLE_WOOL;
