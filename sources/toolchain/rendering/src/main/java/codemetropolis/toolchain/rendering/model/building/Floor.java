@@ -270,14 +270,14 @@ public class Floor extends Building {
                 size.getX() / 2 - 2,
                 Row.Direction.WEST,
                 pattern,
-                BlockFacing.SOUTH));
+                BlockFacing.NORTH));
 
         torches.add(new Row(
                 new Point(position.getX() + size.getX() / 2 - 2, position.getY() + 2, position.getZ() + 1),
                 size.getX() / 2 - 2,
                 Row.Direction.EAST,
                 pattern,
-                BlockFacing.SOUTH));
+                BlockFacing.NORTH));
 
         pattern = createTorchPattern(numberOfTorches, 4);
         torches.add(new Row(
@@ -285,14 +285,14 @@ public class Floor extends Building {
                 size.getX() / 2 - 2,
                 Row.Direction.WEST,
                 pattern,
-                BlockFacing.NORTH));
+                BlockFacing.SOUTH));
 
         torches.add(new Row(
                 new Point(position.getX() + size.getX() / 2 - 2, position.getY() + 2, position.getZ() + size.getZ() - 2),
                 size.getX() / 2 - 2,
                 Row.Direction.EAST,
                 pattern,
-                BlockFacing.NORTH));
+                BlockFacing.SOUTH));
 
         pattern = createTorchPattern(numberOfTorches, 1);
         torches.add(new Row(
@@ -300,14 +300,14 @@ public class Floor extends Building {
                 size.getZ() / 2 - 2,
                 Row.Direction.NORTH,
                 pattern,
-                BlockFacing.EAST));
+                BlockFacing.WEST));
 
         torches.add(new Row(
                 new Point(position.getX() + 1, position.getY() + 2, position.getZ() + size.getZ() / 2 - 2),
                 size.getZ() / 2 - 2,
                 Row.Direction.SOUTH,
                 pattern,
-                BlockFacing.EAST));
+                BlockFacing.WEST));
 
         pattern = createTorchPattern(numberOfTorches, 2);
         torches.add(new Row(
@@ -315,14 +315,14 @@ public class Floor extends Building {
                 size.getZ() / 2 - 2,
                 Row.Direction.NORTH,
                 pattern,
-                BlockFacing.WEST));
+                BlockFacing.EAST));
 
         torches.add(new Row(
                 new Point(position.getX() + size.getX() - 2, position.getY() + 2, position.getZ() + size.getZ() / 2 - 2),
                 size.getZ() / 2 - 2,
                 Row.Direction.SOUTH,
                 pattern,
-                BlockFacing.WEST));
+                BlockFacing.EAST));
         return torches;
     }
 

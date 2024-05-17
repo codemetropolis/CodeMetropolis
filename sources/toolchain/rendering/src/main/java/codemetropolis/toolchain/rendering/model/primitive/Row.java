@@ -16,12 +16,21 @@ public class Row implements Primitive {
 	}
 
 	public enum BlockFacing {
-		NONE,
-		NORTH,
-		SOUTH,
-		WEST,
-		EAST
+		NONE(0),
+		WEST(1),
+		EAST(2),
+		NORTH(3),
+		SOUTH(4);
 
+		private final int value;
+
+		BlockFacing(int v) {
+			value = v;
+		}
+
+		public int getValue() {
+			return value;
+		}
 	}
 	
 	private Point position;
@@ -49,7 +58,7 @@ public class Row implements Primitive {
 		for(int i = 0; i < length; i++) {
 			BasicBlock block = new BasicBlock(pattern[c]);
 			if(facing != BlockFacing.NONE) {
-				block.getProperties().put("facing", facing.toString().toLowerCase());
+				block.getProperties().put("facing", facing.value + "");
 			}
 			Point blockPos = null;
 			switch(orientation) {
