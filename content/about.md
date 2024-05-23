@@ -13,7 +13,7 @@ CodeMetropolis tools use XML files to communicate with eachother. CDF Converter 
 
 In order to use all functionality of CodeMetropolis you have to install the following dependencies.
 
-- [Java Runtime Environment 8][java] to run the command line tools
+- [Java Runtime Environment 22][java] to run the command line tools
 - [Minecraft client 1.8][mc] to display the Minecraft world
 - [SourceMeter][sm] to get the graph file, which contains the source code metrics
 
@@ -143,7 +143,7 @@ CodeMetropolis converter logic has been designed to make it easy to visualize da
 [_Details..._][cc]
 
 [sm]: https://www.sourcemeter.com/
-[java]: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
+[java]: https://www.oracle.com/java/technologies/downloads/#java22
 [mc]: https://minecraft.net/download
 [mt]: toolchain/mapping.md
 [pt]: toolchain/placing.md
