@@ -69,6 +69,9 @@ public class Boxel implements Primitive {
                 world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
                         blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
+            case "minecraft:chest":
+                world.setChest(position.getX(), position.getY(), position.getZ(), block.getProperties(), new int[]{276, 1});
+                break;
             case "minecraft:wall_sign":
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
                 break;
