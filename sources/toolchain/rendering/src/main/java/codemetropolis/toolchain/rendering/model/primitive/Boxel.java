@@ -56,11 +56,18 @@ public class Boxel implements Primitive {
      */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
+        Map<String, String> blockData = new HashMap<>();
 
         switch (block.getStringId()) {
 
             case "minecraft:sign":
                 world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
+                break;
+            case "minecraft:mob_spawner":
+                blockData = JsonUtil.convertJsonStringToMap(this.info);
+
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
+                        blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
             case "minecraft:wall_sign":
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
