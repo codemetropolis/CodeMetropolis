@@ -262,6 +262,7 @@ public class World {
      */
     public void setBanner(int x, int y, int z, Map<String, String> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
+        currentChunk.setBannerColor(x, y, z, BannerColor.valueOf(data.get("color").toUpperCase()).getValue());
     }
 
 	private Region getRegion(int x, int z) {
@@ -331,22 +332,32 @@ public class World {
 	}
 	
 	public enum BannerColor {
-		BLACK,
-		RED,
-		GREEN,
-		BROWN,
-		BLUE,
-		PURPLE,
-		TURQUOISE,
-		LIGHT_GRAY,
-		GRAY,
-		PINK,
-		LIGHT_GREEN,
-		YELLOW,
-		LIGHT_BLUE,
-		LIGHT_PURPLE,
-		ORANGE,
-		WHITE
+        BLACK(0),
+        RED(1),
+        GREEN(2),
+        BROWN(3),
+        BLUE(4),
+        PURPLE(5),
+        CYAN(6),
+        LIGHT_GRAY(7),
+        GRAY(8),
+        PINK(9),
+        LIME(10),
+        YELLOW(11),
+        LIGHT_BLUE(12),
+        MAGENTA(13),
+        ORANGE(14),
+        WHITE(15);
+
+        private final int value;
+
+        BannerColor(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
 	}
 	
 }
