@@ -40,3 +40,5 @@ http://codemetropolis.github.io/CodeMetropolis/
 1. navigate to `sources` folder
 1. `mvn clean package`
 1. The current distribution will be aviable under `source/distro`.
+
+## Demo
