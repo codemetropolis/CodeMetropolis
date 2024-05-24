@@ -16,6 +16,26 @@ public class World {
 	private boolean groundBuilding = true;
 	private int maxLoadedRegions = 1;
 	private LinkedList<Region> loadedRegions = new LinkedList<Region>();
+    private static final Map<String, Integer> colorMap = new HashMap<>();
+
+    static {
+        colorMap.put("minecraft:white_banner", 15);
+        colorMap.put("minecraft:orange_banner", 14);
+        colorMap.put("minecraft:magenta_banner", 13);
+        colorMap.put("minecraft:light_blue_banner", 12);
+        colorMap.put("minecraft:yellow_banner", 11);
+        colorMap.put("minecraft:lime_banner", 10);
+        colorMap.put("minecraft:pink_banner", 9);
+        colorMap.put("minecraft:gray_banner", 8);
+        colorMap.put("minecraft:light_gray_banner", 7);
+        colorMap.put("minecraft:cyan_banner", 6);
+        colorMap.put("minecraft:purple_banner", 5);
+        colorMap.put("minecraft:blue_banner", 4);
+        colorMap.put("minecraft:brown_banner", 3);
+        colorMap.put("minecraft:green_banner", 2);
+        colorMap.put("minecraft:red_banner", 1);
+        colorMap.put("minecraft:black_banner", 0);
+    }
 	
 	public World(String path, int groundLevel) {
 		
@@ -263,31 +283,7 @@ public class World {
      */
     public void setBanner(int x, int y, int z, String stringId, Map<String, String> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
-        if(!getColorFromStringId(stringId).isEmpty()){
-            String color = getColorFromStringId(stringId);
-            currentChunk.setBannerColor(x, y, z, BannerColor.valueOf(color.toUpperCase()).getValue());
-        }
-    }
-
-    /**
-     *
-     * @param id The Banner block stringId
-     * @return The returned value is obtained by extracting the part of the banner stringId that indicates the color.
-     * For example, in the case of a white banner, the stringId is 'minecraft:white_banner',
-     * and the value between the ':' and '_' indicates the color.
-     */
-    private String getColorFromStringId(String id){
-        String startString = ":";
-        String endString = "_";
-
-        int startIndex = id.indexOf(startString);
-        int endIndex = id.indexOf(endString);
-
-        if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
-            return id.substring(startIndex + 1, endIndex);
-        }else{
-            return "";
-        }
+        currentChunk.setBannerColor(x, y, z, colorMap.get(stringId));
     }
 
 	private Region getRegion(int x, int z) {
@@ -355,34 +351,4 @@ public class World {
 	public void toNBTFile() {
 		toNBTFile(NAME);
 	}
-	
-	public enum BannerColor {
-        BLACK(0),
-        RED(1),
-        GREEN(2),
-        BROWN(3),
-        BLUE(4),
-        PURPLE(5),
-        CYAN(6),
-        LIGHT_GRAY(7),
-        GRAY(8),
-        PINK(9),
-        LIME(10),
-        YELLOW(11),
-        LIGHT_BLUE(12),
-        MAGENTA(13),
-        ORANGE(14),
-        WHITE(15);
-
-        private final int value;
-
-        BannerColor(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-	}
-	
 }
