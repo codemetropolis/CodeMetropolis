@@ -258,11 +258,36 @@ public class World {
      * @param x The x-coordinate index of the banner.
      * @param y The y-coordinate index of the banner.
      * @param z The z-coordinate index of the banner.
+     * @param stringId The banner block stringId.
      * @param data The data of the banner block.
      */
-    public void setBanner(int x, int y, int z, Map<String, String> data) {
+    public void setBanner(int x, int y, int z, String stringId, Map<String, String> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
-        currentChunk.setBannerColor(x, y, z, BannerColor.valueOf(data.get("color").toUpperCase()).getValue());
+        if(!getColorFromStringId(stringId).isEmpty()){
+            String color = getColorFromStringId(stringId);
+            currentChunk.setBannerColor(x, y, z, BannerColor.valueOf(color.toUpperCase()).getValue());
+        }
+    }
+
+    /**
+     *
+     * @param id The Banner block stringId
+     * @return The returned value is obtained by extracting the part of the banner stringId that indicates the color.
+     * For example, in the case of a white banner, the stringId is 'minecraft:white_banner',
+     * and the value between the ':' and '_' indicates the color.
+     */
+    private String getColorFromStringId(String id){
+        String startString = ":";
+        String endString = "_";
+
+        int startIndex = id.indexOf(startString);
+        int endIndex = id.indexOf(endString);
+
+        if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
+            return id.substring(startIndex + 1, endIndex);
+        }else{
+            return "";
+        }
     }
 
 	private Region getRegion(int x, int z) {

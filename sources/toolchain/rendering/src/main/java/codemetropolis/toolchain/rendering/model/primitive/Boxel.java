@@ -58,6 +58,11 @@ public class Boxel implements Primitive {
         if (position.getY() < 0 || position.getY() >= 255) return;
         Map<String, String> blockData = new HashMap<>();
 
+        if(block.getStringId().contains("banner")){
+            world.setBanner(position.getX(), position.getY(), position.getZ(), block.getStringId(), block.getProperties());
+            return;
+        }
+
         switch (block.getStringId()) {
 
             case "minecraft:sign":
@@ -74,9 +79,6 @@ public class Boxel implements Primitive {
                 break;
             case "minecraft:wall_sign":
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
-                break;
-            case "minecraft:white_banner":
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties());
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
@@ -115,7 +117,7 @@ public class Boxel implements Primitive {
                         blockData.get("textOnSign"));
                 break;
             case 176:
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getProperties());
+                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getStringId(), block.getProperties());
                 break;
             default:
                 world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
