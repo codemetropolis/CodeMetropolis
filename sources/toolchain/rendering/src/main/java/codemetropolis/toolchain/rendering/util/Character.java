@@ -45,15 +45,16 @@ public enum Character {
 			case WOOD: return new BasicBlock( "minecraft:oak_wood",(short) 17);
 			case DARK_WOOD: return new BasicBlock( "minecraft:dark_oak_wood",(short) 162);
 			case BIRCH_WOOD: return new BasicBlock( "minecraft:birch_wood",(short) 17,
-					new HashMap<>() {{put("valami", "2");}});
+					new HashMap<>() {{put("type", "2");}});
 			case PLANKS: return new BasicBlock( "minecraft:oak_planks",(short) 5);
 			case DARK_PLANKS: return new BasicBlock( "minecraft:dark_oak_planks",(short) 5,
-					new HashMap<>() {{put("valami", "5");}});
+					new HashMap<>() {{put("type", "5");}});
 			case METAL: return new BasicBlock( "minecraft:iron_block",(short) 42);
 			case DIRT: return new BasicBlock( "minecraft:dirt",(short) 3);
-			case SAND: return new BasicBlock( "minecraft:sand",(short) 12);
+			case SAND: return new BasicBlock( "minecraft:cut_sandstone",(short) 24,
+					new HashMap<>() {{put("type", "2");}});
 			case RED_SAND: return new BasicBlock( "minecraft:red_sand",(short) 12,
-					new HashMap<>() {{put("valami", "1");}});
+					new HashMap<>() {{put("type", "1");}});
 			case BRICK: return new BasicBlock( "minecraft:bricks",(short) 45);
 			case STONE_BRICK, DARK_BRICK: return new BasicBlock( "minecraft:stone_bricks",(short) 98);
             case GLASS: return new BasicBlock( "minecraft:glass",(short) 20);
