@@ -40,7 +40,11 @@ public class Main {
             return;
         }
 
-        executeMapping(options);
+        try {
+            executeMapping(options);
+        } catch (IllegalArgumentException e) {
+            logAndPrintError(e);
+        }
     }
 
     private static void printHelpMessage() {
@@ -60,6 +64,8 @@ public class Main {
     }
 
     private static void executeMapping(CommandLineOptions options) {
+        validateOptions(options);
+
         MappingExecutor executor = new MappingExecutor();
         executor.setPrefix(Resources.get(MAPPING_PREFIX));
         executor.setErrorPrefix(Resources.get(ERROR_PREFIX));
@@ -71,5 +77,15 @@ public class Main {
                         options.getScale(),
                         options.isHierarchyValidationEnabled())
         );
+    }
+
+    private static void validateOptions(CommandLineOptions options) {
+        if (options.getMappingFile() == null || options.getMappingFile().isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (options.getInputFile() == null || options.getInputFile().isEmpty()) {
+            throw new IllegalArgumentException();
+        }
     }
 }
