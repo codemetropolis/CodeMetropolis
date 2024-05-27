@@ -10,12 +10,12 @@ public class ConverterLoader {
 	
 	private ConverterLoader() {}
 	
-	public static CdfConverter load(ConverterType converterType, Map<String, String> params) {
+	public static CdfConverter load(ConverterType converterType, Map<String, String> params, boolean verboseMode) {
 		switch(converterType) {
 			case SOURCEMETER:
-				return new GraphConverter(params);
+				return new GraphConverter(params, verboseMode);
 			case SONARQUBE:
-				return new SonarQubeConverter(params);
+				return new SonarQubeConverter(params, verboseMode);
 			default:
 				return null;
 		}
