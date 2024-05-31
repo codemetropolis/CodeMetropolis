@@ -37,30 +37,26 @@ public enum Character {
 	
 	public BasicBlock getBlock() {
 		switch(this) {
-			case STONE: return new BasicBlock( "minecraft:stone",(short) 1);
-			case COBBLESTONE: return new BasicBlock( "minecraft:cobblestone",(short) 4);
-			case MOSSY_STONE: return new BasicBlock( "minecraft:mossy_cobblestone",(short) 48);
-			case SANDSTONE: return new BasicBlock( "minecraft:sandstone",(short) 24);
-			case OBSIDIAN: return new BasicBlock( "minecraft:obsidian",(short) 49);
-			case WOOD: return new BasicBlock( "minecraft:oak_wood",(short) 17);
-			case DARK_WOOD: return new BasicBlock( "minecraft:dark_oak_wood",(short) 162);
-			case BIRCH_WOOD: return new BasicBlock( "minecraft:birch_wood",(short) 17,
-					new HashMap<>() {{put("type", "2");}});
-			case PLANKS: return new BasicBlock( "minecraft:oak_planks",(short) 5);
-			case DARK_PLANKS: return new BasicBlock( "minecraft:dark_oak_planks",(short) 5,
-					new HashMap<>() {{put("type", "5");}});
-			case METAL: return new BasicBlock( "minecraft:iron_block",(short) 42);
-			case DIRT: return new BasicBlock( "minecraft:dirt",(short) 3);
-			case SAND: return new BasicBlock( "minecraft:cut_sandstone",(short) 24,
-					new HashMap<>() {{put("type", "2");}});
-			case RED_SAND: return new BasicBlock( "minecraft:red_sand",(short) 12,
-					new HashMap<>() {{put("type", "1");}});
-			case BRICK: return new BasicBlock( "minecraft:bricks",(short) 45);
-			case STONE_BRICK, DARK_BRICK: return new BasicBlock( "minecraft:stone_bricks",(short) 98);
-            case GLASS: return new BasicBlock( "minecraft:glass",(short) 20);
-			case GOLD: return new BasicBlock( "minecraft:gold_block",(short) 41);
-			case DIAMOND: return new BasicBlock( "minecraft:diamond_block",(short) 57);
-			case UNDEFINED: return new BasicBlock( "minecraft:wool",(short) 35);
+			case STONE: return BasicBlock.STONE;
+			case COBBLESTONE: return BasicBlock.COBBLESTONE;
+			case MOSSY_STONE: return BasicBlock.MOSSY_COBBLESTONE;
+			case SANDSTONE: return BasicBlock.SANDSTONE;
+			case OBSIDIAN: return BasicBlock.OBSIDIAN;
+			case WOOD: return BasicBlock.OAK_WOOD;
+			case DARK_WOOD: return BasicBlock.DARK_OAK_WOOD;
+			case BIRCH_WOOD: return BasicBlock.BIRCH_WOOD;
+			case PLANKS: return BasicBlock.OAK_PLANKS;
+			case DARK_PLANKS: return BasicBlock.DARK_OAK_PLANKS;
+			case METAL: return BasicBlock.IRON_BLOCK;
+			case DIRT: return BasicBlock.DIRT;
+			case SAND: return BasicBlock.CUT_SANDSTONE;
+			case RED_SAND: return BasicBlock.RED_SAND;
+			case BRICK: return BasicBlock.BRICK_BLOCK;
+			case STONE_BRICK, DARK_BRICK: return BasicBlock.STONE_BRICKS;
+            case GLASS: return BasicBlock.GLASS;
+			case GOLD: return BasicBlock.GOLD_BLOCK;
+			case DIAMOND: return BasicBlock.DIAMOND_BLOCK;
+			case UNDEFINED: return BasicBlock.WHITE_WOOL;
 			default: return null;
 		}
 	}
