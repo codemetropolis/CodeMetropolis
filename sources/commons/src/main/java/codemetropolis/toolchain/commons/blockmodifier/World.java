@@ -35,6 +35,22 @@ public class World {
         colorMap.put("minecraft:green_banner", 2);
         colorMap.put("minecraft:red_banner", 1);
         colorMap.put("minecraft:black_banner", 0);
+        colorMap.put("minecraft:white_wall_banner", 15);
+        colorMap.put("minecraft:orange_wall_banner", 14);
+        colorMap.put("minecraft:magenta_wall_banner", 13);
+        colorMap.put("minecraft:light_blue_wall_banner", 12);
+        colorMap.put("minecraft:yellow_wall_banner", 11);
+        colorMap.put("minecraft:lime_wall_banner", 10);
+        colorMap.put("minecraft:pink_wall_banner", 9);
+        colorMap.put("minecraft:gray_wall_banner", 8);
+        colorMap.put("minecraft:light_gray_wall_banner", 7);
+        colorMap.put("minecraft:cyan_wall_banner", 6);
+        colorMap.put("minecraft:purple_wall_banner", 5);
+        colorMap.put("minecraft:blue_wall_banner", 4);
+        colorMap.put("minecraft:brown_wall_banner", 3);
+        colorMap.put("minecraft:green_wall_banner", 2);
+        colorMap.put("minecraft:red_wall_banner", 1);
+        colorMap.put("minecraft:black_wall_banner", 0);
     }
 	
 	public World(String path, int groundLevel) {
@@ -281,8 +297,8 @@ public class World {
      * @param stringId The banner block stringId.
      * @param data The data of the banner block.
      */
-    public void setBanner(int x, int y, int z, String stringId, Map<String, String> data) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 176, data); // standingBanner id = 176
+    public void setBanner(int x, int y, int z, String stringId,int shortId, Map<String, String> data) {
+        Chunk currentChunk = setBlockInChunk(x, y, z, shortId, data);
         currentChunk.setBannerColor(x, y, z, colorMap.get(stringId));
     }
 

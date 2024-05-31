@@ -10,10 +10,10 @@ import codemetropolis.toolchain.rendering.model.BasicBlock;
 public class Door implements Primitive {
 
 	public enum Orientation {
-		NORTH(1),
-		SOUTH(3),
-		WEST(0),
-		EAST(2);
+		NORTH(3),
+		SOUTH(1),
+		WEST(2),
+		EAST(0);
 
 		private final int value;
 

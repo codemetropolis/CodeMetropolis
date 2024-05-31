@@ -12,40 +12,45 @@ public class SingleBlock implements Primitive {
 
     private Point position;
     private String name;
+    private short shortId;
     private Orientation orientation;
     private String dangerValue;
 
-    public SingleBlock(String name, int x, int y, int z) {
+    public SingleBlock(BasicBlock block, int x, int y, int z) {
         super();
         this.position = new Point(x, y, z);
-        this.name = name;
+        this.name = block.getStringId();
+        this.shortId = block.getShortId();
         this.orientation = Orientation.NORTH;
     }
 
     /**
      * This is a constructor for SingleBlock class which is used to create individual blocks
-     * @param name name of the block
+     * @param block BasicBlock at least with string and short id
      * @param position position of the block using a Point object which contains x, y and z coordinates
      * @param dangerAttrValue the value related to the danger attribute of spawners
      */
-    public SingleBlock(String name, Point position, String dangerAttrValue) {
+    public SingleBlock(BasicBlock block, Point position, String dangerAttrValue) {
         super();
         this.position = position;
-        this.name = name;
+        this.name = block.getStringId();
+        this.shortId = block.getShortId();
         this.dangerValue = dangerAttrValue;
     }
 
-    public SingleBlock(String name, Point position) {
+    public SingleBlock(BasicBlock block, Point position) {
         super();
         this.position = position;
-        this.name = name;
+        this.name = block.getStringId();
+        this.shortId = block.getShortId();
         this.orientation = Orientation.NORTH;
     }
 
-    public SingleBlock(String name, Point position, Orientation orientation) {
+    public SingleBlock(BasicBlock block, Point position, Orientation orientation) {
         super();
         this.position = position;
-        this.name = name;
+        this.name = block.getStringId();
+        this.shortId = block.getShortId();
         this.orientation = orientation;
     }
 
@@ -60,10 +65,10 @@ public class SingleBlock implements Primitive {
         if (name.equals("minecraft:mob_spawner")) {
             String jsonString = JsonUtil.convertMapToJson(setSpawnerData(dangerValue));
 
-            new Boxel(new BasicBlock("minecraft:mob_spawner", (short) 52), position, jsonString).toCSVFile(directory);
+            new Boxel(BasicBlock.MOB_SPAWNER, position, jsonString).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(
-                    name, new HashMap<>() {{put("orientation", orientation.toString().toLowerCase());}}),
+                    name, shortId, new HashMap<>() {{put("orientation", Integer.toString(orientation.getValue()));}}),
                     position).toCSVFile(directory);
         }
 

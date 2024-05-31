@@ -41,7 +41,7 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.8.1</version>
+				<version>5.10.2</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -51,6 +51,10 @@
 		<repository>
 			<id>local-repository</id>
 			<url>file://${user.dir}/../dependencies</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
 

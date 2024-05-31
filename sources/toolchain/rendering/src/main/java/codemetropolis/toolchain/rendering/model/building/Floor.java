@@ -13,7 +13,6 @@ import codemetropolis.toolchain.rendering.model.primitive.Row.BlockFacing;
 import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Floor extends Building {
@@ -38,7 +37,7 @@ public class Floor extends Building {
 
     protected LinkedList<Primitive> prepareSpawner() {
         LinkedList<Primitive> spawners = new LinkedList<>();
-        SingleBlock spawner = new SingleBlock("minecraft:mob_spawner", position.translate(new Point(center.getX(),
+        SingleBlock spawner = new SingleBlock(BasicBlock.MOB_SPAWNER, position.translate(new Point(center.getX(),
                 0, center.getZ())), innerBuildable.getAttributeValue("danger"));
         spawners.add(spawner);
         return spawners;
@@ -46,10 +45,10 @@ public class Floor extends Building {
 
     protected LinkedList<Primitive> prepareChest() {
         LinkedList<Primitive> chests = new LinkedList<>();
-        SingleBlock chestNorth = new SingleBlock("minecraft:chest", position.translate(new Point(center.getX() - 1, 0, -1)));
-        SingleBlock chestSouth = new SingleBlock("minecraft:chest", position.translate(new Point(center.getX() + 1, 0, 2 * (center.getZ()) + 1)), SingleBlock.Orientation.WEST);
-        SingleBlock chestEast = new SingleBlock("minecraft:chest", position.translate(new Point(-1, 0, center.getZ() - 1)), SingleBlock.Orientation.SOUTH);
-        SingleBlock chestWest = new SingleBlock("minecraft:chest", position.translate(new Point(2 * center.getX() + 1, 0, center.getZ() + 1)), SingleBlock.Orientation.EAST);
+        SingleBlock chestNorth = new SingleBlock(BasicBlock.CHEST, position.translate(new Point(center.getX() - 1, 0, -1)));
+        SingleBlock chestSouth = new SingleBlock(BasicBlock.CHEST, position.translate(new Point(center.getX() + 1, 0, 2 * (center.getZ()) + 1)), SingleBlock.Orientation.WEST);
+        SingleBlock chestEast = new SingleBlock(BasicBlock.CHEST, position.translate(new Point(-1, 0, center.getZ() - 1)), SingleBlock.Orientation.SOUTH);
+        SingleBlock chestWest = new SingleBlock(BasicBlock.CHEST, position.translate(new Point(2 * center.getX() + 1, 0, center.getZ() + 1)), SingleBlock.Orientation.EAST);
         chests.add(chestNorth);
         chests.add(chestSouth);
         chests.add(chestEast);
@@ -67,13 +66,13 @@ public class Floor extends Building {
                 Orientation.NearX));
         doors.add(new SolidBox(position.translate(new Point(center.getX() - 1, 0, size.getZ() - 1)), new Point(3, 4, 1),
                 new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.AIR}}}),
-                new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.GREEN_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                        {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.GREEN_WOOL}}}),
+                new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.LIME_WOOL}, {BasicBlock.REDSTONE_LAMP},
+                        {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.LIME_WOOL}}}),
                 Orientation.NearX));
         doors.add(new SolidBox(position.translate(new Point(0, 0, center.getZ() - 1)), new Point(1, 4, 3),
                 new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.AIR}}}),
-                new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.BLUE_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                        {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.BLUE_WOOL}}}),
+                new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.LIGHT_BLUE_WOOL}, {BasicBlock.REDSTONE_LAMP},
+                        {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.LIGHT_BLUE_WOOL}}}),
                 Orientation.NearX));
         doors.add(new SolidBox(position.translate(new Point(size.getX() - 1, 0, center.getZ() - 1)), new Point(1, 4, 3),
                 new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.AIR}}}),

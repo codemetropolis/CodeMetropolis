@@ -64,8 +64,8 @@ public class Garden extends Building {
 		LinkedList<Primitive> doors = new LinkedList<>();
 		BasicBlock _fnc = BasicBlock.FENCE;
 		BasicBlock _rwl = BasicBlock.RED_WOOL;
-		BasicBlock _gwl = BasicBlock.GREEN_WOOL;
-		BasicBlock _bwl = BasicBlock.BLUE_WOOL;
+		BasicBlock _gwl = BasicBlock.LIME_WOOL;
+		BasicBlock _bwl = BasicBlock.LIGHT_BLUE_WOOL;
 		BasicBlock _ywl = BasicBlock.YELLOW_WOOL;
 		doors.add(
 			new SolidBox(
