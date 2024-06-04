@@ -1,4 +1,5 @@
 site_name: CodeMetropolis
+site_url: https://codemetropolis.github.io/CodeMetropolis/
 docs_dir: "content"
 site_dir: "docs"
 nav:
