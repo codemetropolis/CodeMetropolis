@@ -88,6 +88,40 @@ public class BasicBlock {
 	public static final BasicBlock BLACK_WOOL = new BasicBlock("minecraft:black_wool",(short) 35,
 			new HashMap<>() {{put("color", "15");}});
 
+	//Banners
+	public static final BasicBlock WHITE_BANNER = new BasicBlock("minecraft:white_banner",(short) 176);
+	public static final BasicBlock ORANGE_BANNER = new BasicBlock("minecraft:orange_banner",(short) 176);
+	public static final BasicBlock MAGENTA_BANNER = new BasicBlock("minecraft:magenta_banner",(short) 176);
+	public static final BasicBlock LIGHT_BLUE_BANNER = new BasicBlock("minecraft:light_blue_banner",(short) 176);
+	public static final BasicBlock YELLOW_BANNER = new BasicBlock("minecraft:yellow_banner",(short) 176);
+	public static final BasicBlock LIME_BANNER = new BasicBlock("minecraft:lime_banner",(short) 176);
+	public static final BasicBlock PINK_BANNER = new BasicBlock("minecraft:pink_banner",(short) 176);
+	public static final BasicBlock GRAY_BANNER = new BasicBlock("minecraft:gray_banner",(short) 176);
+	public static final BasicBlock LIGHT_GRAY_BANNER = new BasicBlock("minecraft:light_gray_banner",(short) 176);
+	public static final BasicBlock CYAN_BANNER = new BasicBlock("minecraft:cyan_banner",(short) 176);
+	public static final BasicBlock PURPLE_BANNER = new BasicBlock("minecraft:purple_banner",(short) 176);
+	public static final BasicBlock BLUE_BANNER = new BasicBlock("minecraft:blue_banner",(short) 176);
+	public static final BasicBlock BROWN_BANNER = new BasicBlock("minecraft:brown_banner",(short) 176);
+	public static final BasicBlock GREEN_BANNER = new BasicBlock("minecraft:green_banner",(short) 176);
+	public static final BasicBlock RED_BANNER = new BasicBlock("minecraft:red_banner",(short) 176);
+	public static final BasicBlock BLACK_BANNER = new BasicBlock("minecraft:black_banner",(short) 176);
+	public static final BasicBlock WHITE_WALL_BANNER = new BasicBlock("minecraft:white_wall_banner",(short) 177);
+	public static final BasicBlock ORANGE_WALL_BANNER = new BasicBlock("minecraft:orange_wall_banner",(short) 177);
+	public static final BasicBlock MAGENTA_WALL_BANNER = new BasicBlock("minecraft:magenta_wall_banner",(short) 177);
+	public static final BasicBlock LIGHT_BLUE_WALL_BANNER = new BasicBlock("minecraft:light_blue_wall_banner",(short) 177);
+	public static final BasicBlock YELLOW_WALL_BANNER = new BasicBlock("minecraft:yellow_wall_banner",(short) 177);
+	public static final BasicBlock LIME_WALL_BANNER = new BasicBlock("minecraft:lime_wall_banner",(short) 177);
+	public static final BasicBlock PINK_WALL_BANNER = new BasicBlock("minecraft:pink_wall_banner",(short) 177);
+	public static final BasicBlock GRAY_WALL_BANNER = new BasicBlock("minecraft:gray_wall_banner",(short) 177);
+	public static final BasicBlock LIGHT_GRAY_WALL_BANNER = new BasicBlock("minecraft:light_gray_wall_banner",(short) 177);
+	public static final BasicBlock CYAN_WALL_BANNER = new BasicBlock("minecraft:cyan_wall_banner",(short) 177);
+	public static final BasicBlock PURPLE_WALL_BANNER = new BasicBlock("minecraft:purple_wall_banner",(short) 177);
+	public static final BasicBlock BLUE_WALL_BANNER = new BasicBlock("minecraft:blue_wall_banner",(short) 177);
+	public static final BasicBlock BROWN_WALL_BANNER = new BasicBlock("minecraft:brown_wall_banner",(short) 177);
+	public static final BasicBlock GREEN_WALL_BANNER = new BasicBlock("minecraft:green_wall_banner",(short) 177);
+	public static final BasicBlock RED_WALL_BANNER = new BasicBlock("minecraft:red_wall_banner",(short) 177);
+	public static final BasicBlock BLACK_WALL_BANNER = new BasicBlock("minecraft:black_wall_banner",(short) 177);
+
 	private String stringId;
 	private short shortId;
 	private Map<String, String> properties = Collections.emptyMap();
