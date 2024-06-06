@@ -68,7 +68,7 @@ public enum Character {
 			case BIRCH_WOOD:
 			case PLANKS:
 			case DARK_PLANKS:
-				return new BasicBlock( "minecraft:fence" );
+				return BasicBlock.FENCE;
 			default: return getBlock();
 		}
 	}
