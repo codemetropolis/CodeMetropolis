@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+//TODO: If a new block implementation is added, a corresponding test for it should be created in this test file!
 public class TestAllBlockTypesToCsvFile {
     private static Path projectRoot;
 

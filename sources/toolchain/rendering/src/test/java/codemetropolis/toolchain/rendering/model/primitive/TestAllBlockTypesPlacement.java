@@ -8,6 +8,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+//TODO: If a new block implementation is added, a corresponding test for it should be created in this test file!
 public class TestAllBlockTypesPlacement {
     private static Path projectRoot;
 
