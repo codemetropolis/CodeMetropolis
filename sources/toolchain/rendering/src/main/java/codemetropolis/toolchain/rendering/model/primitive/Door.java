@@ -39,11 +39,11 @@ public class Door implements Primitive {
 	@Override
 	public int toCSVFile(File directory) {
 		Map<String, String> upperDoorProperties = new HashMap<>();
-		upperDoorProperties.put("facing", orientation.getValue() + "");
+		upperDoorProperties.put("facing", Integer.toString(orientation.getValue()));
 		upperDoorProperties.put("half", "upper");
 
 		Map<String, String> lowerDoorProperties = new HashMap<>();
-		lowerDoorProperties.put("facing", orientation.getValue() + "");
+		lowerDoorProperties.put("facing", Integer.toString(orientation.getValue()));
 		lowerDoorProperties.put("half", "lower");
 
 		BasicBlock upperDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), BasicBlock.DOOR.getShortId(), upperDoorProperties);

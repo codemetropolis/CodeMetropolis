@@ -44,7 +44,7 @@ public class WallSign implements Primitive {
 	@Override
 	public int toCSVFile(File directory) {
 		Map<String, String> properties = new HashMap<>();
-		properties.put("rotation", orientation.getValue() + "");
+		properties.put("rotation", Integer.toString(orientation.getValue()));
 
 		BasicBlock wallSign = new BasicBlock(BasicBlock.WALL_SIGN.getStringId(), BasicBlock.WALL_SIGN.getShortId(), properties);
 

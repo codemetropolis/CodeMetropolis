@@ -44,7 +44,7 @@ public class Banner implements Primitive {
 	@Override
 	public int toCSVFile(File directory) {
 		Map<String, String> properties = new HashMap<>();
-		properties.put("facing", orientation.getValue() + "");
+		properties.put("facing", Integer.toString(orientation.getValue()));
 
 		BasicBlock banner = new BasicBlock(BasicBlock.BANNER.getStringId(), BasicBlock.BANNER.getShortId(), properties);
 
