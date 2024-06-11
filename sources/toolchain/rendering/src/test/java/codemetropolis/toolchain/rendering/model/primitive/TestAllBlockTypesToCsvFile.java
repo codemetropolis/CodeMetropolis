@@ -33,15 +33,6 @@ public class TestAllBlockTypesToCsvFile {
         }
     }
 
-    @BeforeEach
-    public void setup() throws IOException {
-        Path file = projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv");
-
-        if (Files.exists(file)) {
-            Files.delete(file);
-        }
-    }
-
     public void compareTwoCsvFile(String file1, String file2) throws IOException {
         List<String> fileContent1 = Files.readAllLines(Paths.get(file1));
         List<String> fileContent2 = Files.readAllLines(Paths.get(file2));
@@ -51,7 +42,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testWoolBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldWool").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new Boxel(BasicBlock.WHITE_WOOL,new Point(1,61,1)));
@@ -76,7 +67,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldWool/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldWool/TEMP/blocks.0.0.csv").toString());
         }catch (IOException e){
             throw new RuntimeException(e);
@@ -85,7 +76,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testBannerBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldBanner").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new Boxel(BasicBlock.WHITE_BANNER,new Point(1,61,1)));
@@ -126,7 +117,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldBanner/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldBanner/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -135,7 +126,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testSignPostBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldSignPost").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new SignPost(1,61,1,SignPost.Orientation.SOUTH,"South"));
@@ -153,7 +144,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldSignPost/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldSignPost/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -162,7 +153,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testWallSignBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldWallSign").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new WallSign(1,61,1,WallSign.Orientation.NORTH,"North"));
@@ -177,7 +168,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldWallSign/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldWallSign/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -186,7 +177,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testDoorBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldDoor").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new Door(1,61,1,Door.Orientation.WEST));
@@ -201,7 +192,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldDoor/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldDoor/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -210,7 +201,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testTorchBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldTorch").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
         BasicBlock torch = BasicBlock.TORCH;
 
@@ -242,7 +233,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldTorch/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldTorch/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -251,7 +242,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testChestBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldChest").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new SingleBlock(BasicBlock.CHEST, new Point(1,61,1), SingleBlock.Orientation.NORTH));
@@ -266,7 +257,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldChest/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldChest/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -275,7 +266,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testSpawnerBlockToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldSpawner").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new SingleBlock(BasicBlock.MOB_SPAWNER, new Point(1,61,1), "5"));
@@ -287,7 +278,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldSpawner/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldSpawner/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -296,7 +287,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testRedstoneLampBlockToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldRedstone").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new Boxel(BasicBlock.REDSTONE_BLOCK, new Point(1,61,1)));
@@ -309,7 +300,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldRedstone/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldRedstone/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -318,7 +309,7 @@ public class TestAllBlockTypesToCsvFile {
 
     @Test
     public void testSimpleBlocksToCSVFile(){
-        File tempDir = new File(projectRoot.resolve("sources/world").toString(), "TEMP");
+        File tempDir = new File(projectRoot.resolve("sources/worldSimple").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
         primitives.add(new Boxel(BasicBlock.STONE, new Point(1,61,1)));
@@ -354,7 +345,7 @@ public class TestAllBlockTypesToCsvFile {
         }
 
         try {
-            compareTwoCsvFile(projectRoot.resolve("sources/world/TEMP/blocks.0.0.csv").toString(),
+            compareTwoCsvFile(projectRoot.resolve("sources/worldSimple/TEMP/blocks.0.0.csv").toString(),
                     projectRoot.resolve("docs/tests/manual/Test Files/worldSimple/TEMP/blocks.0.0.csv").toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
