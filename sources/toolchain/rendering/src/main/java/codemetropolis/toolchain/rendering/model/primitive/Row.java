@@ -51,14 +51,27 @@ public class Row implements Primitive {
 	public Row(Point position, int length, Direction orientation, BasicBlock[] pattern) {
 		this(position, length, orientation, pattern, BlockFacing.NONE);
 	}
-	
+
+	/**
+	 * Converts the pattern configuration to CSV files in the specified directory.
+	 *
+	 * <p>This method converts the pattern configuration to CSV files representing the blocks in the pattern,
+	 * and saves them in the specified directory. It iterates through the pattern, creating a BasicBlock instance
+	 * for each block in the pattern and assigning properties such as facing direction if applicable. The method
+	 * calculates the position of each block based on the orientation and position of the pattern, and then converts
+	 * them to CSV files using the Boxel class. The method returns the length of the pattern, indicating the number
+	 * of CSV files created.</p>
+	 *
+	 * @param directory the directory where the CSV files will be saved
+	 * @return the length of the pattern, indicating the number of CSV files created
+	 */
 	@Override
 	public int toCSVFile(File directory) {
 		int c = 0;
 		for(int i = 0; i < length; i++) {
 			BasicBlock block = new BasicBlock(pattern[c]);
 			if(facing != BlockFacing.NONE) {
-				block.getProperties().put("facing", facing.value + "");
+				block.getProperties().put("facing", Integer.toString(facing.value));
 			}
 			Point blockPos = null;
 			switch(orientation) {

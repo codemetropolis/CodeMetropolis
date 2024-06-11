@@ -30,18 +30,22 @@ public class Boxel implements Primitive {
         this.info = info;
     }
 
+    /**
+     * Parses a CSV string to create a Boxel object.
+     * <p>
+     * This method splits the input CSV string into its components, extracts properties,
+     * and constructs a new Boxel object using the parsed values.
+     * </p>
+     *
+     * @param csv The CSV string to parse, which should be in the format:
+     *            "stringId;shortId;properties;x;y;z;info".
+     * @return A new Boxel object constructed from the parsed CSV values.
+     * @throws IllegalArgumentException if the CSV string format is invalid.
+     */
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
-        Map<String, String> properties = Collections.emptyMap();
-        try {
-            String[] rawProperties = parts[2].split("&");
-            if(parts[2].length() > 1) {
-                properties = Arrays.stream(rawProperties)
-                        .collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-            }
-        } catch (Exception e2) {
-            throw new RuntimeException(e2);
-        }
+        Map<String, String> properties = parseProperties(parts[2]);
+
 
         return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
                 new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
@@ -49,10 +53,43 @@ public class Boxel implements Primitive {
     }
 
     /**
-     * This method renders the world between 0 and 255 y coordinates based on pre collected world data from the csv file
+     * Parses a properties string to create a map of property key-value pairs.
+     * <p>
+     * This method handles both multiple properties separated by '&' and a single property.
+     * </p>
      *
-     * @param world World object in which all the data, for example blocks and their data, needs for the creation of the
-     *              Minecraft world is stored
+     * @param propertiesPart The properties string to parse, which may contain multiple
+     *                       key-value pairs separated by '&' or a single key-value pair.
+     * @return A map containing the parsed property key-value pairs.
+     * @throws IllegalArgumentException if the properties string format is invalid.
+     */
+    public static Map<String, String> parseProperties(String propertiesPart){
+        if(propertiesPart.isEmpty()){
+            return Collections.emptyMap();
+        }
+        if(propertiesPart.contains("&")){
+            return Arrays.stream(propertiesPart.split("&"))
+                    .map(prop -> prop.split("="))
+                    .collect(Collectors.toMap(e -> e[0], e -> e[1]));
+        }else{
+            String[] prop = propertiesPart.split("=");
+            if(prop.length == 2){
+                return Collections.singletonMap(prop[0], prop[1]);
+            }else{
+                throw new IllegalArgumentException("Invalid properties format");
+            }
+        }
+    }
+
+    /**
+     * Renders the Boxel object within the specified world.
+     * <p>
+     * This method checks the y-coordinate of the position to ensure it is within valid bounds (0 to 254).
+     * Depending on the block type, it delegates rendering to the appropriate method in the World object.
+     * </p>
+     *
+     * @param world The World object where the Boxel will be rendered. This object contains all necessary
+     *              data and methods for creating blocks and other elements in the Minecraft world.
      */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
@@ -86,46 +123,27 @@ public class Boxel implements Primitive {
     }
 
     /**
-     * This creates the individual blocks based on the block id
+     * Converts the Boxel object to a CSV formatted string.
+     * <p>
+     * The CSV string is formatted as follows:
+     * <pre>
+     * stringId;shortId;properties;x;y;z;info
+     * </pre>
+     * Where:
+     * <ul>
+     *   <li>stringId: The string ID of the block</li>
+     *   <li>shortId: The short ID of the block</li>
+     *   <li>properties: The properties of the block, formatted as key=value pairs joined by &</li>
+     *   <li>x: The x-coordinate of the position</li>
+     *   <li>y: The y-coordinate of the position</li>
+     *   <li>z: The z-coordinate of the position</li>
+     *   <li>info: Additional information, or "NULL" if info is null or empty</li>
+     * </ul>
      *
-     * @param world   World object which contains all the information of the Minecraft world
-     * @param blockID the id of the block that is being created
+     * @return A CSV formatted string representing the Boxel object, or null if the block's string ID is empty.
      */
-    private void createBlocks(World world, short blockID) {
-        Map<String, String> blockData = new HashMap<>();
-
-        switch (blockID) {
-            case 52:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
-                        blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
-                break;
-            case 54:
-                world.setChest(position.getX(), position.getY(), position.getZ(), block.getProperties(), new int[]{276, 1});
-                break;
-            case 63:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getProperties(),
-                        blockData.get("textOnSign"));
-                break;
-            case 68:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(),
-                        blockData.get("textOnSign"));
-                break;
-            case 176:
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getStringId(), block.getShortId(), block.getProperties());
-                break;
-            default:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
-        }
-    }
-
     public String toCSV() {
-        if (block.getStringId().equals("")) {
+        if (block.getStringId().isEmpty()) {
             return null;
         }
         String fancyProperties = block.getProperties().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())

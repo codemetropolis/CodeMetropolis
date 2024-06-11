@@ -63,6 +63,17 @@ public class World {
 		level.writeToFile();
 	}
 
+    /**
+     * Sets a block in a specified chunk at given coordinates with a specified type and data.
+     *
+     * @param x the x-coordinate of the block in the world
+     * @param y the y-coordinate of the block in the world
+     * @param z the z-coordinate of the block in the world
+     * @param type the type of the block to set
+     * @param data additional data for the block as a map of string keys and values
+     * @return the chunk where the block was set
+     * @throws IllegalArgumentException if the y-coordinate is out of valid boundaries
+     */
     private Chunk setBlockInChunk(int x, int y, int z, int type, Map<String, String> data) {
         checkCoordinateYBoundaries(y);
 
@@ -110,6 +121,23 @@ public class World {
         return blockA;
     }
 
+    /**
+     * Locates or creates a chunk in a specified region and sets a block at the given coordinates
+     * within the chunk, applying the specified block type and additional data.
+     *
+     * @param xChunkIndex the x-index of the chunk within the region
+     * @param zChunkIndex the z-index of the chunk within the region
+     * @param chunkX the x-coordinate of the chunk in the world
+     * @param chunkZ the z-coordinate of the chunk in the world
+     * @param regionX the x-coordinate of the region in the world
+     * @param regionZ the z-coordinate of the region in the world
+     * @param blockX the x-coordinate of the block within the chunk
+     * @param y the y-coordinate of the block within the chunk
+     * @param blockZ the z-coordinate of the block within the chunk
+     * @param type the type of the block to set
+     * @param data additional data for the block as a map of string keys and values
+     * @return the chunk where the block was set
+     */
     private Chunk locateChunk(int xChunkIndex, int zChunkIndex, int chunkX, int chunkZ, int regionX, int regionZ,
                               int blockX, int y, int blockZ, int type, Map<String, String> data) {
         Region region = getRegion(regionX, regionZ);
@@ -338,6 +366,15 @@ public class World {
 		loadedRegions.clear();
 	}
 
+    /**
+     * Returns a string representation of the regions and their details in the region directory.
+     *
+     * <p>This method constructs a string that includes the names of all region files in the
+     * specified directory and their respective details. It looks for files matching the
+     * pattern "r.<x>.<z>.mca" and retrieves the corresponding region information.</p>
+     *
+     * @return a string representation of the region files and their details
+     */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

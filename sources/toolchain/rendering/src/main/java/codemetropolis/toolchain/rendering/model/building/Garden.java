@@ -58,82 +58,47 @@ public class Garden extends Building {
 
 		return repeatPattern;
 	}
-	
-	protected LinkedList<Primitive> prepareDoor( )
-	{
+
+	protected LinkedList<Primitive> prepareDoor() {
 		LinkedList<Primitive> doors = new LinkedList<>();
-		BasicBlock _fnc = BasicBlock.FENCE;
-		BasicBlock _rwl = BasicBlock.RED_WOOL;
-		BasicBlock _gwl = BasicBlock.LIME_WOOL;
-		BasicBlock _bwl = BasicBlock.LIGHT_BLUE_WOOL;
-		BasicBlock _ywl = BasicBlock.YELLOW_WOOL;
-		doors.add(
-			new SolidBox(
-				position.translate( new Point( center.getX() - 1, 0, 0 ) ), new Point( 3, 4, 1 ),
-				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.AIR } } } ),
-				new RepeationPattern(
-					new BasicBlock[][][]
-					{
-						{
-							{ _fnc },
-							{ _fnc },
-							{ _fnc },
-							{ _rwl }
-						}
-					} ),
-				Orientation.NearX )
-			);
-		doors.add(
-			new SolidBox(
-				position.translate( new Point( center.getX() - 1, 0, size.getZ() - 1 ) ), new Point( 3, 4, 1 ),
-				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.AIR } } } ),
-				new RepeationPattern(
-					new BasicBlock[][][]
-					{
-						{
-							{ _fnc },
-							{ _fnc },
-							{ _fnc },
-							{ _gwl }
-						}
-					} ),
-				Orientation.NearX )
-			);
-		doors.add(
-			new SolidBox(
-				position.translate( new Point( 0, 0, center.getZ()-1 ) ), new Point( 1, 4, 3 ),
-				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.AIR } } } ),
-				new RepeationPattern(
-					new BasicBlock[][][]
-					{
-						{
-							{ _fnc },
-							{ _fnc },
-							{ _fnc },
-							{ _bwl }
-						}
-					} ),
-				Orientation.NearX )
-			);
-		doors.add(
-			new SolidBox(
-				position.translate( new Point( size.getX()-1, 0, center.getZ() - 1 ) ), new Point( 1, 4, 3 ),
-				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.AIR } } } ),
-				new RepeationPattern(
-					new BasicBlock[][][]
-					{
-						{
-							{ _fnc },
-							{ _fnc },
-							{ _fnc },
-							{ _ywl }
-						}
-					} ),
-				Orientation.NearX )
-			);
+		BasicBlock fence = BasicBlock.FENCE;
+		BasicBlock[] woolBlocks = {
+				BasicBlock.RED_WOOL,
+				BasicBlock.LIME_WOOL,
+				BasicBlock.LIGHT_BLUE_WOOL,
+				BasicBlock.YELLOW_WOOL
+		};
+
+		addDoor(doors, new Point(center.getX() - 1, 0, 0), new Point(3, 4, 1), fence, woolBlocks[0]);
+		addDoor(doors, new Point(center.getX() - 1, 0, size.getZ() - 1), new Point(3, 4, 1), fence, woolBlocks[1]);
+		addDoor(doors, new Point(0, 0, center.getZ() - 1), new Point(1, 4, 3), fence, woolBlocks[2]);
+		addDoor(doors, new Point(size.getX() - 1, 0, center.getZ() - 1), new Point(1, 4, 3), fence, woolBlocks[3]);
+
 		return doors;
 	}
-	
+
+	private void addDoor(LinkedList<Primitive> doors, Point translatePoint, Point size, BasicBlock fence, BasicBlock wool) {
+		doors.add(
+				new SolidBox(
+						position.translate(translatePoint),
+						size,
+						new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }),
+						new RepeationPattern(
+								new BasicBlock[][][] {
+										{
+												{ fence },
+												{ fence },
+												{ fence },
+												{ wool }
+										}
+								}
+						),
+						Orientation.NearX
+				)
+		);
+	}
+
+
 	protected LinkedList<Primitive> prepareSigns( ) {
 		LinkedList<Primitive> signs = new LinkedList<>();
 		signs.add(new SignPost(position.getX(), position.getY() + 2, position.getZ(), SignPost.Orientation.NORTHWEST, innerBuildable.getName()));
