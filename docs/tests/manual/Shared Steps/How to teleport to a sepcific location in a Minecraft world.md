@@ -1,4 +1,5 @@
 # The step by step guide to teleport to a required coordinate in a Minecraft world after opening it.
+
 **Steps:**
 1. Open the Minecraft world and wait for it to load in.
 2. After the world completely loaded press **ESC**
