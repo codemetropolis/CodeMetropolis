@@ -7,6 +7,8 @@ import java.util.Map;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.WALL_SIGN;
+
 public class WallSign implements Primitive {
 
 	public enum Orientation {
@@ -46,7 +48,7 @@ public class WallSign implements Primitive {
 		Map<String, String> properties = new HashMap<>();
 		properties.put("rotation", Integer.toString(orientation.getValue()));
 
-		BasicBlock wallSign = new BasicBlock(BasicBlock.WALL_SIGN.getStringId(), BasicBlock.WALL_SIGN.getShortId(), properties);
+		BasicBlock wallSign = new BasicBlock(WALL_SIGN.getBlock(), properties);
 
 
 		new Boxel(wallSign, position, text).toCSVFile(directory);

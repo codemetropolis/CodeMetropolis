@@ -16,42 +16,6 @@ public class World {
 	private boolean groundBuilding = true;
 	private int maxLoadedRegions = 1;
 	private LinkedList<Region> loadedRegions = new LinkedList<Region>();
-    private static final Map<String, Integer> colorMap = new HashMap<>();
-
-    static {
-        colorMap.put("minecraft:white_banner", 15);
-        colorMap.put("minecraft:orange_banner", 14);
-        colorMap.put("minecraft:magenta_banner", 13);
-        colorMap.put("minecraft:light_blue_banner", 12);
-        colorMap.put("minecraft:yellow_banner", 11);
-        colorMap.put("minecraft:lime_banner", 10);
-        colorMap.put("minecraft:pink_banner", 9);
-        colorMap.put("minecraft:gray_banner", 8);
-        colorMap.put("minecraft:light_gray_banner", 7);
-        colorMap.put("minecraft:cyan_banner", 6);
-        colorMap.put("minecraft:purple_banner", 5);
-        colorMap.put("minecraft:blue_banner", 4);
-        colorMap.put("minecraft:brown_banner", 3);
-        colorMap.put("minecraft:green_banner", 2);
-        colorMap.put("minecraft:red_banner", 1);
-        colorMap.put("minecraft:black_banner", 0);
-        colorMap.put("minecraft:white_wall_banner", 15);
-        colorMap.put("minecraft:orange_wall_banner", 14);
-        colorMap.put("minecraft:magenta_wall_banner", 13);
-        colorMap.put("minecraft:light_blue_wall_banner", 12);
-        colorMap.put("minecraft:yellow_wall_banner", 11);
-        colorMap.put("minecraft:lime_wall_banner", 10);
-        colorMap.put("minecraft:pink_wall_banner", 9);
-        colorMap.put("minecraft:gray_wall_banner", 8);
-        colorMap.put("minecraft:light_gray_wall_banner", 7);
-        colorMap.put("minecraft:cyan_wall_banner", 6);
-        colorMap.put("minecraft:purple_wall_banner", 5);
-        colorMap.put("minecraft:blue_wall_banner", 4);
-        colorMap.put("minecraft:brown_wall_banner", 3);
-        colorMap.put("minecraft:green_wall_banner", 2);
-        colorMap.put("minecraft:red_wall_banner", 1);
-        colorMap.put("minecraft:black_wall_banner", 0);
-    }
 	
 	public World(String path, int groundLevel) {
 		
@@ -322,12 +286,11 @@ public class World {
      * @param x The x-coordinate index of the banner.
      * @param y The y-coordinate index of the banner.
      * @param z The z-coordinate index of the banner.
-     * @param stringId The banner block stringId.
      * @param data The data of the banner block.
      */
-    public void setBanner(int x, int y, int z, String stringId,int shortId, Map<String, String> data) {
+    public void setBanner(int x, int y, int z,int shortId, Map<String, String> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, shortId, data);
-        currentChunk.setBannerColor(x, y, z, colorMap.get(stringId));
+        currentChunk.setBannerColor(x, y, z, Integer.parseInt(data.get("bannerColor")));
     }
 
 	private Region getRegion(int x, int z) {

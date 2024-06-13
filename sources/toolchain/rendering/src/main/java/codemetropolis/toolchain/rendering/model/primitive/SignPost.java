@@ -7,6 +7,8 @@ import java.util.Map;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.SIGN;
+
 public class SignPost implements Primitive {
 	
 	public enum Orientation {
@@ -46,7 +48,7 @@ public class SignPost implements Primitive {
 		Map<String, String> properties = new HashMap<>();
 		properties.put("rotation", Integer.toString(orientation.getValue()));
 
-		BasicBlock signPost = new BasicBlock(BasicBlock.SIGN.getStringId(), BasicBlock.SIGN.getShortId(), properties);
+		BasicBlock signPost = new BasicBlock(SIGN.getBlock(), properties);
 
 		new Boxel(signPost, position, text).toCSVFile(directory);
 		return 1;

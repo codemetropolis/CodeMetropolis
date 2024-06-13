@@ -39,10 +39,22 @@ public class TestAllBlockTypesPlacement {
     }
 
     @Test
-    public void testGenerateBannerBlocks(){
-        File tempDir = projectRoot.resolve("sources/worldBanner/TEMP").toFile();
+    public void testGenerateBannerColorBlocks(){
+        File tempDir = projectRoot.resolve("sources/worldBannerColor/TEMP").toFile();
 
-        WorldBuilder worldBuilder = new WorldBuilder(projectRoot.resolve("sources/worldBanner").toString());
+        WorldBuilder worldBuilder = new WorldBuilder(projectRoot.resolve("sources/worldBannerColor").toString());
+        try {
+            worldBuilder.build(tempDir);
+        } catch (RenderingException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateBannerOrientationBlocks(){
+        File tempDir = projectRoot.resolve("sources/worldBannerOrientation/TEMP").toFile();
+
+        WorldBuilder worldBuilder = new WorldBuilder(projectRoot.resolve("sources/worldBannerOrientation").toString());
         try {
             worldBuilder.build(tempDir);
         } catch (RenderingException e) {

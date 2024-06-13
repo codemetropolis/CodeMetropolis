@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.MOB_SPAWNER;
+
 public class SingleBlock implements Primitive {
 
     private Point position;
@@ -65,7 +67,7 @@ public class SingleBlock implements Primitive {
         if (name.equals("minecraft:mob_spawner")) {
             String jsonString = JsonUtil.convertMapToJson(setSpawnerData(dangerValue));
 
-            new Boxel(BasicBlock.MOB_SPAWNER, position, jsonString).toCSVFile(directory);
+            new Boxel(MOB_SPAWNER, position, jsonString).toCSVFile(directory);
         } else {
             new Boxel(new BasicBlock(
                     name, shortId, new HashMap<>() {{put("orientation", Integer.toString(orientation.getValue()));}}),

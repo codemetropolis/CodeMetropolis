@@ -73,29 +73,16 @@ public class Row implements Primitive {
 			if(facing != BlockFacing.NONE) {
 				block.getProperties().put("facing", Integer.toString(facing.value));
 			}
-			Point blockPos = null;
-			switch(orientation) {
-				case UP:
-					blockPos = new Point(position.getX(), position.getY() + i, position.getZ());
-					break;
-				case DOWN:
-					blockPos = new Point(position.getX(), position.getY() - i, position.getZ());
-					break;
-				case NORTH:
-					blockPos = new Point(position.getX(), position.getY(), position.getZ() + i);
-					break;
-				case SOUTH:
-					blockPos = new Point(position.getX(), position.getY(), position.getZ() - i);
-					break;
-				case WEST:
-					blockPos = new Point(position.getX() + i, position.getY(), position.getZ());
-					break;
-				case EAST:
-					blockPos = new Point(position.getX() - i, position.getY(), position.getZ());
-					break;
-			}
+			Point blockPos = switch (orientation) {
+                case UP -> new Point(position.getX(), position.getY() + i, position.getZ());
+                case DOWN -> new Point(position.getX(), position.getY() - i, position.getZ());
+                case NORTH -> new Point(position.getX(), position.getY(), position.getZ() + i);
+                case SOUTH -> new Point(position.getX(), position.getY(), position.getZ() - i);
+                case WEST -> new Point(position.getX() + i, position.getY(), position.getZ());
+                case EAST -> new Point(position.getX() - i, position.getY(), position.getZ());
+            };
 
-			new Boxel(block, blockPos).toCSVFile(directory);
+            new Boxel(block, blockPos).toCSVFile(directory);
 			if(++c > pattern.length - 1) c = 0;
 		}
 		return length;

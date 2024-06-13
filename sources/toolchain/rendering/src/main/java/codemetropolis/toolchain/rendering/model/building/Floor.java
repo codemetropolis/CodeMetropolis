@@ -15,6 +15,8 @@ import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.LinkedList;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.*;
+
 public class Floor extends Building {
 
     public Floor(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -45,7 +47,7 @@ public class Floor extends Building {
      */
     protected LinkedList<Primitive> prepareSpawner() {
         LinkedList<Primitive> spawners = new LinkedList<>();
-        SingleBlock spawner = new SingleBlock(BasicBlock.MOB_SPAWNER, position.translate(new Point(center.getX(),
+        SingleBlock spawner = new SingleBlock(MOB_SPAWNER.getBlock(), position.translate(new Point(center.getX(),
                 0, center.getZ())), innerBuildable.getAttributeValue("danger"));
         spawners.add(spawner);
         return spawners;
@@ -61,10 +63,10 @@ public class Floor extends Building {
      */
     protected LinkedList<Primitive> prepareChest() {
         LinkedList<Primitive> chests = new LinkedList<>();
-        chests.add(createSingleBlock(BasicBlock.CHEST, center.getX() - 1, -1, SingleBlock.Orientation.NORTH));
-        chests.add(createSingleBlock(BasicBlock.CHEST, center.getX() + 1, 2 * (center.getZ()) + 1, SingleBlock.Orientation.SOUTH));
-        chests.add(createSingleBlock(BasicBlock.CHEST, -1, center.getZ() - 1, SingleBlock.Orientation.EAST));
-        chests.add(createSingleBlock(BasicBlock.CHEST, 2 * center.getX() + 1, center.getZ() + 1, SingleBlock.Orientation.WEST));
+        chests.add(createSingleBlock(CHEST.getBlock(), center.getX() - 1, -1, SingleBlock.Orientation.NORTH));
+        chests.add(createSingleBlock(CHEST.getBlock(), center.getX() + 1, 2 * (center.getZ()) + 1, SingleBlock.Orientation.SOUTH));
+        chests.add(createSingleBlock(CHEST.getBlock(), -1, center.getZ() - 1, SingleBlock.Orientation.EAST));
+        chests.add(createSingleBlock(CHEST.getBlock(), 2 * center.getX() + 1, center.getZ() + 1, SingleBlock.Orientation.WEST));
         return chests;
     }
 
@@ -93,14 +95,14 @@ public class Floor extends Building {
 
         Point doorSize = new Point(1, 4, 3);
 
-        RepeationPattern doorMaterial1 = new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.RED_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.RED_WOOL}}});
-        RepeationPattern doorMaterial2 = new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.LIME_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.LIME_WOOL}}});
-        RepeationPattern doorMaterial3 = new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.LIGHT_BLUE_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.LIGHT_BLUE_WOOL}}});
-        RepeationPattern doorMaterial4 = new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.YELLOW_WOOL}, {BasicBlock.REDSTONE_LAMP},
-                {BasicBlock.REDSTONE_BLOCK}, {BasicBlock.YELLOW_WOOL}}});
+        RepeationPattern doorMaterial1 = new RepeationPattern(new BasicBlock[][][]{{{RED_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+                {REDSTONE_BLOCK.getBlock()}, {RED_WOOL.getBlock()}}});
+        RepeationPattern doorMaterial2 = new RepeationPattern(new BasicBlock[][][]{{{LIME_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+                {REDSTONE_BLOCK.getBlock()}, {LIME_WOOL.getBlock()}}});
+        RepeationPattern doorMaterial3 = new RepeationPattern(new BasicBlock[][][]{{{LIGHT_BLUE_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+                {REDSTONE_BLOCK.getBlock()}, {LIGHT_BLUE_WOOL.getBlock()}}});
+        RepeationPattern doorMaterial4 = new RepeationPattern(new BasicBlock[][][]{{{YELLOW_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+                {REDSTONE_BLOCK.getBlock()}, {YELLOW_WOOL.getBlock()}}});
 
         doors.add(createDoorBox(door1Pos, new Point(3, 4, 1), doorMaterial1, Orientation.NearX));
         doors.add(createDoorBox(door2Pos, new Point(3, 4, 1), doorMaterial2, Orientation.NearX));
@@ -116,7 +118,7 @@ public class Floor extends Building {
     }
 
     private SolidBox createDoorBox(Point position, Point size, RepeationPattern material, Orientation orientation) {
-        return new SolidBox(position, size, new RepeationPattern(new BasicBlock[][][]{{{BasicBlock.AIR}}}), material, orientation);
+        return new SolidBox(position, size, new RepeationPattern(new BasicBlock[][][]{{{AIR.getBlock()}}}), material, orientation);
     }
 
 
@@ -135,14 +137,14 @@ public class Floor extends Building {
 
         stairs.add(new SolidBox(position.translate(new Point(center.getX() - 2, 0, center.getZ() - 2)),
                 new Point(5, size.getY() + 1, 5), getStairRepetationPattern(),
-                new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.FENCE } } }), Orientation.NearY));
+                new RepeationPattern(new BasicBlock[][][] { { { FENCE.getBlock() } } }), Orientation.NearY));
         return stairs;
     }
 
     protected Pattern getStairRepetationPattern() {
-        BasicBlock _air = BasicBlock.AIR;
-        BasicBlock _str = BasicBlock.STONE;
-        BasicBlock _cre = BasicBlock.FENCE;
+        BasicBlock _air = AIR.getBlock();
+        BasicBlock _str = STONE.getBlock();
+        BasicBlock _cre = FENCE.getBlock();
 
         return new RepeationPattern(new BasicBlock[][][] {
                 {       { _air, _air, _air, _air, _air },
@@ -209,11 +211,11 @@ public class Floor extends Building {
      * @return A LinkedList containing the prepared walls as Primitive objects.
      */
     protected LinkedList<Primitive> prepareWalls() {
-        BasicBlock sideBlock = BasicBlock.MAGENTA_WOOL;
-        BasicBlock strcBlock = BasicBlock.PURPLE_WOOL;
-        RepeationPattern bottomFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.MAGENTA_WOOL } } });
-        RepeationPattern topFill = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.MAGENTA_WOOL } } });
-        RepeationPattern stroke = new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.BLACK_WOOL } } });
+        BasicBlock sideBlock = MAGENTA_WOOL.getBlock();
+        BasicBlock strcBlock = PURPLE_WOOL.getBlock();
+        RepeationPattern bottomFill = new RepeationPattern(new BasicBlock[][][] { { { MAGENTA_WOOL.getBlock() } } });
+        RepeationPattern topFill = new RepeationPattern(new BasicBlock[][][] { { { MAGENTA_WOOL.getBlock() } } });
+        RepeationPattern stroke = new RepeationPattern(new BasicBlock[][][] { { { BLACK_WOOL.getBlock() } } });
 
         if (innerBuildable.hasAttribute("character")) {
             Character character = Character.parse(innerBuildable.getAttributeValue("character"));
@@ -229,8 +231,8 @@ public class Floor extends Building {
         }
 
         RandomPattern fallbackPattern = new RandomPattern(
-                new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.NON_BLOCK } } }));
-        fallbackPattern.add(new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.FENCE } } }), .5);
+                new RepeationPattern(new BasicBlock[][][] { { { NON_BLOCK.getBlock() } } }));
+        fallbackPattern.add(new RepeationPattern(new BasicBlock[][][] { { { FENCE.getBlock() } } }), .5);
 
         RandomPattern sideFill = new RandomPattern(fallbackPattern);
         sideFill.add(new RepeationPattern(
@@ -362,8 +364,8 @@ public class Floor extends Building {
      */
     protected BasicBlock[] createTorchPattern(int number, int data) {
         BasicBlock[] pattern = null;
-        BasicBlock torch = BasicBlock.TORCH;
-        BasicBlock space = BasicBlock.NON_BLOCK;
+        BasicBlock torch = TORCH.getBlock();
+        BasicBlock space = NON_BLOCK.getBlock();
 
         switch (number) {
             case 0:

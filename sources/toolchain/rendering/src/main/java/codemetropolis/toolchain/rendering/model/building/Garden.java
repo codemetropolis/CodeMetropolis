@@ -15,6 +15,8 @@ import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.LinkedList;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.*;
+
 public class Garden extends Building {
 
 	public Garden(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -29,30 +31,30 @@ public class Garden extends Building {
 	}
 	
 	protected LinkedList<Primitive> prepareBase( ) {
-		BasicBlock _fnc = BasicBlock.FENCE;
-		BasicBlock _sns = BasicBlock.SANDSTONE;
+		BasicBlock _fnc = FENCE.getBlock();
+		BasicBlock _sns = SANDSTONE.getBlock();
 		LinkedList<Primitive> repeatPattern = new LinkedList<>();
-		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.NON_BLOCK } } } ) );
+		RandomPattern _flowers = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { NON_BLOCK.getBlock() } } } ) );
 		
-		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.DANDELION } } } ) );
-		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { BasicBlock.POPPY } } } ), 0.5);
+		RandomPattern _redOrYellow = new RandomPattern( new RepeationPattern(  new BasicBlock[][][]{ { { DANDELION.getBlock() } } } ) );
+		_redOrYellow.add(new RepeationPattern(  new BasicBlock[][][]{ { { POPPY.getBlock() } } } ), 0.5);
 		_flowers.add(
 			_redOrYellow,
 			innerBuildable.hasAttribute( "flower-ratio" )
 				? Double.parseDouble( innerBuildable.getAttributeValue("flower-ratio") )
 				: 0 );
 		_flowers.add(
-			new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.BROWN_MUSHROOM } } } ),
+			new RepeationPattern( new BasicBlock[][][] { { { BROWN_MUSHROOM.getBlock() } } } ),
 			innerBuildable.hasAttribute( "mushroom-ratio" )
 				? Double.parseDouble( innerBuildable.getAttributeValue("mushroom-ratio") )
 				: 0 );
 		_flowers.add(
-			new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.OAK_SAPLING } } } ),
+			new RepeationPattern( new BasicBlock[][][] { { { OAK_SAPLING.getBlock() } } } ),
 			innerBuildable.hasAttribute( "tree-ratio" )
 				? Double.parseDouble( innerBuildable.getAttributeValue("tree-ratio") )
 				: 0 );
 		repeatPattern.add(new SolidBox(position, new Point(size.getX(), 2, size.getZ()),
-				new YSplitPattern(0, new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.GRASS_BLOCK } } }),
+				new YSplitPattern(0, new RepeationPattern(new BasicBlock[][][] { { { GRASS_BLOCK.getBlock() } } }),
 						_flowers),
 				new RepeationPattern(new BasicBlock[][][] { { { _fnc }, { _sns } } }), Orientation.NearX));
 
@@ -61,12 +63,12 @@ public class Garden extends Building {
 
 	protected LinkedList<Primitive> prepareDoor() {
 		LinkedList<Primitive> doors = new LinkedList<>();
-		BasicBlock fence = BasicBlock.FENCE;
+		BasicBlock fence = FENCE.getBlock();
 		BasicBlock[] woolBlocks = {
-				BasicBlock.RED_WOOL,
-				BasicBlock.LIME_WOOL,
-				BasicBlock.LIGHT_BLUE_WOOL,
-				BasicBlock.YELLOW_WOOL
+				RED_WOOL.getBlock(),
+				LIME_WOOL.getBlock(),
+				LIGHT_BLUE_WOOL.getBlock(),
+				YELLOW_WOOL.getBlock()
 		};
 
 		addDoor(doors, new Point(center.getX() - 1, 0, 0), new Point(3, 4, 1), fence, woolBlocks[0]);
@@ -82,7 +84,7 @@ public class Garden extends Building {
 				new SolidBox(
 						position.translate(translatePoint),
 						size,
-						new RepeationPattern(new BasicBlock[][][] { { { BasicBlock.AIR } } }),
+						new RepeationPattern(new BasicBlock[][][] { { { AIR.getBlock() } } }),
 						new RepeationPattern(
 								new BasicBlock[][][] {
 										{

@@ -12,6 +12,8 @@ import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.LinkedList;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.AIR;
+
 public class Cellar extends Floor {
 
 	public Cellar(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -31,16 +33,16 @@ public class Cellar extends Floor {
 				new SolidBox(
 						position.translate( new Point( 1, 1, 1 ) ),
 						size.translate( new Point( -2, -2, -2 ) ),
-						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
-						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( AIR.getBlock() ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( AIR.getBlock() ) } } } ),
 						Orientation.NearX ) );
 
 		primitives.add(
 				new SolidBox(
 						position.translate( new Point( center.getX() - 3, size.getY() + 1, center.getZ() - 3 ) ),
 						new Point( 7, 1, 7 ),
-						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
-						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( BasicBlock.AIR ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( AIR.getBlock() ) } } } ),
+						new RepeationPattern( new BasicBlock[][][] { { { new BasicBlock( AIR.getBlock() ) } } } ),
 						Orientation.NearX ) );
 		return primitive;
 	}

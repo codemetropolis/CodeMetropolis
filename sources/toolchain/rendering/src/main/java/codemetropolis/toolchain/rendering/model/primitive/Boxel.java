@@ -9,7 +9,6 @@ import codemetropolis.toolchain.rendering.util.JsonUtil;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,6 +17,17 @@ public class Boxel implements Primitive {
     public BasicBlock block;
     public Point position;
     public String info;
+
+    public Boxel(BasicBlock.BasicBlockType block, Point position) {
+        super();
+        this.block = block.getBlock();
+        this.position = position;
+    }
+
+    public Boxel(BasicBlock.BasicBlockType block, Point position, String info) {
+        this(block.getBlock(), position);
+        this.info = info;
+    }
 
     public Boxel(BasicBlock block, Point position) {
         super();
@@ -93,10 +103,14 @@ public class Boxel implements Primitive {
      */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
-        Map<String, String> blockData = new HashMap<>();
+        Map<String, String> blockData;
 
         if(block.getStringId().contains("banner")){
-            world.setBanner(position.getX(), position.getY(), position.getZ(), block.getStringId(), block.getShortId(), block.getProperties());
+            world.setBanner(position.getX(),
+                    position.getY(),
+                    position.getZ(),
+                    block.getShortId(),
+                    block.getProperties());
             return;
         }
 

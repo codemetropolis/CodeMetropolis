@@ -7,6 +7,8 @@ import java.util.Map;
 import codemetropolis.toolchain.commons.cmxml.Point;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.DOOR;
+
 public class Door implements Primitive {
 
 	public enum Orientation {
@@ -46,8 +48,8 @@ public class Door implements Primitive {
 		lowerDoorProperties.put("facing", Integer.toString(orientation.getValue()));
 		lowerDoorProperties.put("half", "lower");
 
-		BasicBlock upperDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), BasicBlock.DOOR.getShortId(), upperDoorProperties);
-		BasicBlock lowerDoor = new BasicBlock(BasicBlock.DOOR.getStringId(), BasicBlock.DOOR.getShortId(), lowerDoorProperties);
+		BasicBlock upperDoor = new BasicBlock(DOOR.getBlock(), upperDoorProperties);
+		BasicBlock lowerDoor = new BasicBlock(DOOR.getBlock(), lowerDoorProperties);
 
 		new Boxel(lowerDoor, position).toCSVFile(directory);
 		new Boxel(upperDoor, new Point(position.getX(), position.getY() + 1, position.getZ())).toCSVFile(directory);

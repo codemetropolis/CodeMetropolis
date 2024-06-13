@@ -13,6 +13,9 @@ import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.LinkedList;
 
+import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.STONE_BRICKS;
+import static codemetropolis.toolchain.rendering.util.Character.STONE;
+
 public class Ground extends Building {
 
 	public Ground(Buildable innerBuildable) throws BuildingTypeMismatchException {
@@ -31,8 +34,8 @@ public class Ground extends Building {
 			new SolidBox(
 				position,
 				new Point( size.getX(), 1, size.getZ() ),
-				new RepeationPattern( new BasicBlock[][][]{ { { BasicBlock.STONE } } } ),
-				new RepeationPattern( new BasicBlock[][][] { { { BasicBlock.STONE_BRICKS } } } ),
+				new RepeationPattern( new BasicBlock[][][]{ { { STONE.getBlock() } } } ),
+				new RepeationPattern( new BasicBlock[][][] { { { STONE_BRICKS.getBlock() } } } ),
 				Orientation.NearX ) );
 		return base;
 	}
