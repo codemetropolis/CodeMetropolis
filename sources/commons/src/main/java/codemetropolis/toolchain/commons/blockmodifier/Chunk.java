@@ -3,7 +3,12 @@ package codemetropolis.toolchain.commons.blockmodifier;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 
 //TODO: Refactor this class

@@ -3,7 +3,10 @@ package codemetropolis.toolchain.commons.blockmodifier;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Map;
 
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 
