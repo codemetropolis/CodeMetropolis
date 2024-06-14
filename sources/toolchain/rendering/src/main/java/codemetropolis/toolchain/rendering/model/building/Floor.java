@@ -88,26 +88,26 @@ public class Floor extends Building {
     protected LinkedList<Primitive> prepareDoor() {
         LinkedList<Primitive> doors = new LinkedList<>();
 
-        Point door1Pos = position.translate(new Point(center.getX() - 1, 0, 0));
-        Point door2Pos = position.translate(new Point(center.getX() - 1, 0, size.getZ() - 1));
-        Point door3Pos = position.translate(new Point(0, 0, center.getZ() - 1));
-        Point door4Pos = position.translate(new Point(size.getX() - 1, 0, center.getZ() - 1));
+        Point southDoorPos = position.translate(new Point(center.getX() - 1, 0, 0));
+        Point northDoorPos = position.translate(new Point(center.getX() - 1, 0, size.getZ() - 1));
+        Point eastDoorPos = position.translate(new Point(0, 0, center.getZ() - 1));
+        Point westDoorPos = position.translate(new Point(size.getX() - 1, 0, center.getZ() - 1));
 
         Point doorSize = new Point(1, 4, 3);
 
-        RepeationPattern doorMaterial1 = new RepeationPattern(new BasicBlock[][][]{{{RED_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+        RepeationPattern redDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{RED_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
                 {REDSTONE_BLOCK.getBlock()}, {RED_WOOL.getBlock()}}});
-        RepeationPattern doorMaterial2 = new RepeationPattern(new BasicBlock[][][]{{{LIME_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+        RepeationPattern limeDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{LIME_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
                 {REDSTONE_BLOCK.getBlock()}, {LIME_WOOL.getBlock()}}});
-        RepeationPattern doorMaterial3 = new RepeationPattern(new BasicBlock[][][]{{{LIGHT_BLUE_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+        RepeationPattern lightBlueDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{LIGHT_BLUE_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
                 {REDSTONE_BLOCK.getBlock()}, {LIGHT_BLUE_WOOL.getBlock()}}});
-        RepeationPattern doorMaterial4 = new RepeationPattern(new BasicBlock[][][]{{{YELLOW_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
+        RepeationPattern yellowDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{YELLOW_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
                 {REDSTONE_BLOCK.getBlock()}, {YELLOW_WOOL.getBlock()}}});
 
-        doors.add(createDoorBox(door1Pos, new Point(3, 4, 1), doorMaterial1, Orientation.NearX));
-        doors.add(createDoorBox(door2Pos, new Point(3, 4, 1), doorMaterial2, Orientation.NearX));
-        doors.add(createDoorBox(door3Pos, doorSize, doorMaterial3, Orientation.NearX));
-        doors.add(createDoorBox(door4Pos, doorSize, doorMaterial4, Orientation.NearX));
+        doors.add(createDoorBox(southDoorPos, new Point(3, 4, 1), redDoorMaterial, Orientation.NearX));
+        doors.add(createDoorBox(northDoorPos, new Point(3, 4, 1), limeDoorMaterial, Orientation.NearX));
+        doors.add(createDoorBox(eastDoorPos, doorSize, lightBlueDoorMaterial, Orientation.NearX));
+        doors.add(createDoorBox(westDoorPos, doorSize, yellowDoorMaterial, Orientation.NearX));
 
         doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ(), Door.Orientation.SOUTH));
         doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ() + size.getZ() - 1, Door.Orientation.NORTH));
@@ -117,6 +117,15 @@ public class Floor extends Building {
         return doors;
     }
 
+    /**
+     * Creates the frame of the door with the appropriate colored wool blocks.
+     *
+     * @param position the position of the door in the world
+     * @param size the size of the door
+     * @param material the material pattern for the door, defining the block types and their arrangement
+     * @param orientation the orientation of the door
+     * @return a SolidBox representing the door frame
+     */
     private SolidBox createDoorBox(Point position, Point size, RepeationPattern material, Orientation orientation) {
         return new SolidBox(position, size, new RepeationPattern(new BasicBlock[][][]{{{AIR.getBlock()}}}), material, orientation);
     }
