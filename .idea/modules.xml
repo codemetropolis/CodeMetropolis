@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CodeMetropolis-k18.iml" filepath="$PROJECT_DIR$/.idea/CodeMetropolis-k18.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/codemetropolis.iml" filepath="$PROJECT_DIR$/sources/codemetropolis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/commons/commons.iml" filepath="$PROJECT_DIR$/sources/commons/commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/toolchain/converter/converter.iml" filepath="$PROJECT_DIR$/sources/toolchain/converter/converter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/gui/gui.iml" filepath="$PROJECT_DIR$/sources/gui/gui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/integration/integration.iml" filepath="$PROJECT_DIR$/sources/integration/integration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/toolchain/mapping/mapping.iml" filepath="$PROJECT_DIR$/sources/toolchain/mapping/mapping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/toolchain/placing/placing.iml" filepath="$PROJECT_DIR$/sources/toolchain/placing/placing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/toolchain/rendering/rendering.iml" filepath="$PROJECT_DIR$/sources/toolchain/rendering/rendering.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/integration/spigot-plugin/spigot-plugin.iml" filepath="$PROJECT_DIR$/sources/integration/spigot-plugin/spigot-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sources/toolchain/toolchain.iml" filepath="$PROJECT_DIR$/sources/toolchain/toolchain.iml" />
+    </modules>
+  </component>
+</project>
