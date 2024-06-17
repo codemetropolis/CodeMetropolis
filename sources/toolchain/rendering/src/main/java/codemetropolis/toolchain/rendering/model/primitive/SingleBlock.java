@@ -96,8 +96,8 @@ public class SingleBlock implements Primitive {
 
     public enum Orientation {
         NORTH(2),
-        SOUTH(4),
-        WEST(3),
+        SOUTH(3),
+        WEST(4),
         EAST(5);
 
         private final int value;
