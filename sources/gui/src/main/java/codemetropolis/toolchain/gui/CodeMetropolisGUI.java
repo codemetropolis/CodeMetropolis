@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.PipedOutputStream;
 import java.util.Random;
@@ -46,6 +48,8 @@ public class CodeMetropolisGUI extends JFrame {
   private static final FileFilter XML_FILTER = new XmlFileFilter();
   private static final int COVER_IMAGE_COUNT = 4;
   private static final Random rng = new Random();
+  private static final Color colorGreen = Color.decode(Translations.t("color_green"));
+  private static final Color colorRed = Color.decode(Translations.t("color_red"));
 
   private GUIController controller;
 
@@ -57,6 +61,8 @@ public class CodeMetropolisGUI extends JFrame {
   private CMCheckBox validateStructure;
   private CMSpinner scaleSpinner;
   private CMComboBox<LayoutAlgorithm> layoutSelector;
+  private FocusListener highlighter;
+  private CMLabel projectNameErrorMessage;
 
   /**
    * Instantiates the CodeMetropolis GUI.
@@ -78,6 +84,56 @@ public class CodeMetropolisGUI extends JFrame {
     addStartButton(panel);
 
     initFields();
+
+    projectNameErrorMessage = new CMLabel("", 205, 365, 300, 30);
+    highlighter = new FocusListener() {
+      /***
+       * When the focus gained, this method checks the rules of the project name and shows if there are any problems.
+       *
+       * @param e The FocusEvent to modify the background of the textfield
+       */
+      @Override
+      public void focusGained(FocusEvent e) {
+        ExecutionOptions executionOptions = controller.getExecutionOptions();
+        fillOptions(executionOptions);
+
+        if (executionOptions.getProjectName().isEmpty()) {
+          e.getComponent().setBackground(Color.WHITE);
+          projectNameErrorMessage.setText("");
+        } else if (executionOptions.getProjectName().length() < 3) {
+          e.getComponent().setBackground(colorRed);
+          projectNameErrorMessage.setText("Project name must be at least three characters");
+        } else {
+          e.getComponent().setBackground(colorGreen);
+          projectNameErrorMessage.setText("");
+        }
+      }
+
+      /***
+       * When the focus gained, this method checks the rules of the project name and shows if there are any problems.
+       *
+       * @param e The FocusEvent to modify the background of the textfield
+       */
+      @Override
+      public void focusLost(FocusEvent e) {
+        ExecutionOptions executionOptions = controller.getExecutionOptions();
+        fillOptions(executionOptions);
+
+        if (executionOptions.getProjectName().isEmpty()) {
+          e.getComponent().setBackground(Color.WHITE);
+          projectNameErrorMessage.setText("");
+        } else if (executionOptions.getProjectName().length() < 3) {
+          e.getComponent().setBackground(colorRed);
+          projectNameErrorMessage.setText("Project name must be at least three characters");
+        } else {
+          e.getComponent().setBackground(colorGreen);
+          projectNameErrorMessage.setText("");
+        }
+      }
+    };
+
+    projectName.addFocusListener(highlighter);
+    panel.add(projectNameErrorMessage);
 
     this.setResizable(false);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
