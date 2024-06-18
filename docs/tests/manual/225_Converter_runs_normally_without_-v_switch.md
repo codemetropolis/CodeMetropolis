@@ -1,0 +1,27 @@
+# Check issue no. #225's solution for missing -v switch reaction.
+
+## Tags
+#pullRequest_225 #component_converter #category_output
+
+_Related issue:_ https://github.com/codemetropolis/CodeMetropolis/issues/225 <br>
+_Related branch:_ https://github.com/codemetropolis/CodeMetropolis/tree/225-extending-the-sourcemeter-converter-with-verbose-mode
+
+### Purpose
+ The purpose of this test is to see if the tool still runs even without the *-v* switch, but gives back less information.
+
+### Test File
+- [[codemetropolis-toolchain-commons-valid.graph]]
+
+### Pre-requisites
+- Java runtime 22
+- Command line opened in the folder of converter-1.5.0.jar
+- A *codemetropolis-toolchain-commons-valid.graph* file exists in the converter-1.5.0.jar's folder. 
+
+### Steps
+1. Run the following command in the folder of converter-1.5.0.jar:
+	```cmd
+	java -jar converter-1.5.0.jar -t sourcemeter -s codemetropolis-toolchain-commons-valid.graph
+	```
+
+### Expected Result
+The tool can still be used (with or without *-v* switch) and without the switch it gives back less information.
