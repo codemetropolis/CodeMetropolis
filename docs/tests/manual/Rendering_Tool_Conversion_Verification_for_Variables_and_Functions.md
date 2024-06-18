@@ -31,4 +31,4 @@ This test's objective is to verify that the rendering tool converted the TG_005.
 2. Open the received world with a Java Edition Minecraft 1.20 launcher
 
 ### Expected Result
-The result in the received world is a combination of the [[TG_005.TC_033-Rendering_Tool_Conversion_Verification_for_Primitive_Variables]] and [[TG_005.TC_035-Rendering_Tool_Conversion_Verification_for_Functions]] worlds.
+The result in the received world is a combination of the [[Rendering_Tool_Conversion_Verification_for_Primitive_Variables]] and [[Rendering_Tool_Conversion_Verification_for_Functions]] worlds.
