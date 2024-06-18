@@ -2,6 +2,7 @@
 
 ## Tags
 #component_converter #testFile-format_graph #category_input #category_correct_working
+
 ### Purpose
 This test ensures that the converter tool provides a help message on its usage when prompted. It checks the tool's ability to instruct users on correct operation through command-line help output.
 

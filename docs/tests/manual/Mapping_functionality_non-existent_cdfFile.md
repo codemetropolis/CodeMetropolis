@@ -1,10 +1,10 @@
 # Test mapping with non-existent cdfFile
 
-### Purpose
-This test checks the mapping tool's response to a non-existent cdf file, ensuring it warns the user and exits without attempting to process the missing file.
-
 ## Tags
 #component_mapping #testFile-format_XML  #category_input #category_correct_working
+
+### Purpose
+This test checks the mapping tool's response to a non-existent cdf file, ensuring it warns the user and exits without attempting to process the missing file.
 
 ### Pre-requisites
 * Java runtime 22

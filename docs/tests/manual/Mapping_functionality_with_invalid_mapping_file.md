@@ -1,4 +1,5 @@
 # Test mapping with invalid mapping file
+
 ## Tags
 #component_mapping #testFile-format_XML  #category_input #category_error_handling
 

@@ -1,4 +1,5 @@
 # Test rendering without any parameters
+
 ## Tags
 #component_rendering #testFile-format_IXML #category_input #category_error_handling
 

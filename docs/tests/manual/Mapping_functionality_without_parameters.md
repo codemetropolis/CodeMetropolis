@@ -1,4 +1,5 @@
 # Test mapping without any parameters
+
 ## Tags
 #component_mapping #testFile-format_XML  #category_input #category_error_handling
 
