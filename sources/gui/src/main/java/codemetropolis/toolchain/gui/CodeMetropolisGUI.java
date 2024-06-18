@@ -6,8 +6,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.PipedOutputStream;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -58,6 +63,9 @@ public class CodeMetropolisGUI extends JFrame {
   private CMSpinner scaleSpinner;
   private CMComboBox<LayoutAlgorithm> layoutSelector;
 
+  private static final Color colorGreen = Color.decode(Translations.t("color_green"));
+  private static final Color colorRed = Color.decode(Translations.t("color_red"));
+
   /**
    * Instantiates the CodeMetropolis GUI.
    *
@@ -94,6 +102,52 @@ public class CodeMetropolisGUI extends JFrame {
     if (minecraftRoot != null) {
       mcRootPath.setText(minecraftRoot);
     }
+  }
+
+  public boolean validatePath(String path) {
+    if (path.isEmpty())
+      return false;
+    try {
+      return Files.exists(Paths.get(path));
+    } catch (InvalidPathException | NullPointerException ex) {
+      return false;
+    }
+  }
+
+  /**
+   * Function for checking the mapping path field, if the file is correct, the field turns green, otherwise it turns red.
+   *
+   * @return Return with focuslistener.
+   */
+  public FocusListener getFocusListener() {
+    FocusListener focusListener = new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        try {
+          mappingPath = (CMTextField) e.getSource();
+          if(!(validatePath(mappingPath.getText()) && (mappingPath.getText().endsWith(".xml"))) || mappingPath.getText().isEmpty()) {
+            mappingPath.setBackground(colorRed);
+          } else {
+            mappingPath.setBackground(colorGreen);
+          }
+        } catch (ClassCastException ignored) {
+          GuiUtils.showError(Translations.t("gui_err_unexpected_err"));
+        }
+      }
+
+      public void focusLost(FocusEvent e) {
+        try {
+          mappingPath = (CMTextField) e.getSource();
+          if(!(validatePath(mappingPath.getText()) && (mappingPath.getText().endsWith(".xml"))) || mappingPath.getText().isEmpty()) {
+            mappingPath.setBackground(colorRed);
+          } else {
+            mappingPath.setBackground(colorGreen);
+          }
+        } catch (ClassCastException ignored) {
+          GuiUtils.showError(Translations.t("gui_err_unexpected_err"));
+        }
+      }
+    };
+    return focusListener;
   }
 
   /**
@@ -202,6 +256,7 @@ public class CodeMetropolisGUI extends JFrame {
     mappingPath = new CMTextField(145, 555, 235, 30);
     CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 100, 30);
     mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));
+    mappingPath.addFocusListener(getFocusListener());
 
     CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 590, 120, 30);
     scaleSpinner = new CMSpinner(145, 590, 120, 30);
