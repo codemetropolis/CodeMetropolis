@@ -7,7 +7,7 @@ _Related issue:_ https://github.com/codemetropolis/CodeMetropolis/issues/195 <br
 _Related branch:_ https://github.com/codemetropolis/CodeMetropolis/tree/195-placing-with-empty-layout-parameter-is-not-handled-correctly
 
 ### Purpose
-The purpose of this test is to check if the issue's solution also works as intended when the argument order of the *-i* and *-l* swtiches have been swapped and a warning is returned.
+The purpose of this test is to check if the issue's solution did not change the default error given back if the layout switch is swapped with the input switch while the layout switch does not get a value.
 
 ### Test File
 - [[defaultValidCodeMetroMappingToPlacing.xml]]
@@ -24,4 +24,4 @@ The purpose of this test is to check if the issue's solution also works as inten
    ```
    
 ### Expected Result
-The tool warns the user that the layout siwtch's value is missing and the program finishes running.
+The gives back an error regarding the incorrect arguments and a usage on how to use placing tool arguments.
