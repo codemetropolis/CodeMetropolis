@@ -24,4 +24,4 @@ The purpose of this test is to see if the solution committed to issue no. #203 s
    ```
 
 ### Expected Result
-The tool warns the user that the layout value is missing then it ends the run of the program without creating anything.
+The tool gives back an error that the layout parameter is missing or incorrect.
