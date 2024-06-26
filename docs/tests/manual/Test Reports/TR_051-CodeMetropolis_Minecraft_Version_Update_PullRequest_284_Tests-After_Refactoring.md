@@ -1,0 +1,14 @@
+# Testing The Solution of Issue #284 for CodeMetropolis Minecraft Version Update After Refactoring
+
+| Datetime   | Test Case Link                                                             | Tester     | Passed/Failed | Links to issues (if a bug is found) | Consequences (if the test case needs to be fixed) |
+|------------|----------------------------------------------------------------------------|------------|---------------|-------------------------------------|---------------------------------------------------|
+| 2024-06-21 | [[284_Immidiate_validation_on_valid_project_name]]                         | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Immidiate_validation_on_too_short_project_name]]                     | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Immidiate_validation_feedback_dissapearance]]                        | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Field_validation_name_field_focus_loss]]                             | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Input_validation_for_non-character_name]]                            | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Validation_for_name_with_spaces]]                                    | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Validation_for_name_with_special_characters]]                        | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Validation_for_name_with_international_characters]]                  | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Validation_for_empty_project_name]]                                  | Búcsú Áron | Failed        |                                     |                                                   |
+| 2024-06-21 | [[284_Validation_message_clarity_for_incorrect_names]]                     | Búcsú Áron | Failed        |                                     |                                                   |
