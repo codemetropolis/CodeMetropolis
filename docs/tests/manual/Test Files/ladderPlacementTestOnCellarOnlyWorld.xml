@@ -1,0 +1,67 @@
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="placing" to="rendering" version="1.0">
+    <buildable id="f908188c-600d-4ea7-91e8-a79f8702a1ab" name="" type="container">
+        <position x="0" y="60" z="0"/>
+        <size x="39" y="9" z="39"/>
+        <attributes/>
+        <children>
+            <buildable id="ad568f44-139b-4375-b0de-a59f91434b03" name="&lt;root_package&gt;" type="ground">
+                <position x="3" y="61" z="3"/>
+                <size x="33" y="9" z="33"/>
+                <attributes/>
+                <children>
+                    <buildable id="72c87979-dd6f-45c9-9036-171d77a68c6d" name="org" type="ground">
+                        <position x="6" y="62" z="6"/>
+                        <size x="27" y="9" z="27"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="302b4fde-442f-4341-b05c-e4d1425c64a8" name="example" type="ground">
+                                <position x="9" y="63" z="9"/>
+                                <size x="21" y="9" z="21"/>
+                                <attributes/>
+                                <children>
+                                    <buildable id="9983b581-8476-495f-bcc3-b23148fb7e21" name="Main" type="garden">
+                                        <position x="12" y="64" z="12"/>
+                                        <size x="15" y="9" z="15"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="1.0"/>
+                                        </attributes>
+                                        <children>
+                                            <buildable id="4ba7fb2c-ca0b-4cb2-9b4e-801813634481" name="a" type="cellar">
+                                                <position x="15" y="35" z="15"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="6ebe38f2-485a-4ac0-b7e6-8d53bb2b7e07" name="b" type="cellar">
+                                                <position x="15" y="45" z="15"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="ec253260-b5ae-45bd-9ce4-d500bb32304c" name="c" type="cellar">
+                                                <position x="15" y="55" z="15"/>
+                                                <size x="9" y="9" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="planks"/>
+                                                    <attribute name="external_character" value="wood"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>
