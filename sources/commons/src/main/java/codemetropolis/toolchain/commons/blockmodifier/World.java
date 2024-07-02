@@ -30,7 +30,7 @@ public class World {
 		level.writeToFile();
 	}
 
-    private Chunk setBlockInChunk(int x, int y, int z, int type, List<Integer> data) {
+    private Chunk setBlockInChunk(int x, int y, int z, int type, List<Integer> data, boolean hasData) {
         checkCoordinateYBoundaries(y);
 
         int regionX = getRegionCoordinate(x);
@@ -44,7 +44,7 @@ public class World {
         int blockX = getBlockCoordinate(x);
         int blockZ = getBlockCoordinate(z);
 
-        Chunk activeChunk = locateChunk(chunkIndexX, chunkIndexZ, chunkX, chunkZ, regionX, regionZ, blockX, y, blockZ, type, data);
+        Chunk activeChunk = locateChunk(chunkIndexX, chunkIndexZ, chunkX, chunkZ, regionX, regionZ, blockX, y, blockZ, type, data, hasData);
 
         int[] blockTypes = new int[]{63, 68, 54, 176, 52}; //standing sign 63, wallsign 68, chest 54, standing banner 176, mob spawner 52
         Arrays.sort(blockTypes);
@@ -79,14 +79,14 @@ public class World {
 
 
     private Chunk locateChunk(int xChunkIndex, int zChunkIndex, int chunkX, int chunkZ, int regionX, int regionZ,
-                              int blockX, int y, int blockZ, int type, List<Integer> data) {
+                              int blockX, int y, int blockZ, int type, List<Integer> data, boolean hasData) {
         Region region = getRegion(regionX, regionZ);
         Chunk chunk = region.getChunk(xChunkIndex, zChunkIndex);
         if (chunk == null) {
             chunk = createChunkIfNotExist(chunkX, chunkZ, region, xChunkIndex, zChunkIndex);
         }
 
-        chunk.setBlock(blockX, y, blockZ, (byte) type, data);
+        chunk.setBlock(blockX, y, blockZ, (byte) type, data, hasData);
 
         return chunk;
     }
@@ -109,12 +109,12 @@ public class World {
         }
     }
 
-    public void setBlock(int x, int y, int z, int type, List<Integer> data) {
-        setBlockInChunk(x, y, z, type, data);
+    public void setBlock(int x, int y, int z, int type, List<Integer> data, boolean hasData) {
+        setBlockInChunk(x, y, z, type, data, hasData);
     }
 
     public void setBlock(int x, int y, int z, int type) {
-        setBlock(x, y, z, type, null);
+        setBlock(x, y, z, type, null, false);
     }
 
     public void removeBlock(int x, int y, int z) {
@@ -122,7 +122,7 @@ public class World {
     }
 
     public void setSignPost(int x, int y, int z, List<Integer> data, String text) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 63, data); //signPost id = 63
+        Chunk currentChunk = setBlockInChunk(x, y, z, 63, data, true); //signPost id = 63
         currentChunk.setSignText(x, y, z, text);
     }
 
@@ -131,23 +131,23 @@ public class World {
     }
 
     public void setWallSign(int x, int y, int z, List<Integer> data, String text) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 68, data); //wallSign id = 68
+        Chunk currentChunk = setBlockInChunk(x, y, z, 68, data, true); //wallSign id = 68
         currentChunk.setSignText(x, y, z, text);
     }
 
     public void setSpawner(int x, int y, int z, List<Integer> data, String entityId, Short dangerLevel) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 52, data); // mobSpawner id = 52
+        Chunk currentChunk = setBlockInChunk(x, y, z, 52, data, true); // mobSpawner id = 52
         currentChunk.setSpawnerContent(x, y, z, entityId, dangerLevel);
     }
 
     public void setChest(int x, int y, int z, List<Integer> data, int[] items) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, 54, data); // chest id = 54
+        Chunk currentChunk = setBlockInChunk(x, y, z, 54, data, true); // chest id = 54
         for (int i = 0; i < items.length; i += 2)
             currentChunk.addChestItem(x, y, z, items[i], items[i + 1]);
     }
 
     public void setBanner(int x, int y, int z,int shortId, List<Integer> data) {
-        Chunk currentChunk = setBlockInChunk(x, y, z, shortId, data);
+        Chunk currentChunk = setBlockInChunk(x, y, z, shortId, data, true);
         currentChunk.setBannerColor(x, y, z, data.get(1));
     }
 

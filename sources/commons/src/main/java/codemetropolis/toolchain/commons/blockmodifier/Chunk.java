@@ -105,20 +105,21 @@ public class Chunk {
      * @param type the type of the block to set
      * @param data additional data for the block as a map of string keys and values
      */
-    public void setBlock(int x, int y, int z, byte type, List<Integer> data) {
+    public void setBlock(int x, int y, int z, byte type, List<Integer> data, boolean hasData) {
         int index = y >> 4;
         NBTTag section = getOrCreateSection(index);
 
         int blockIndex = getBlockIndex(x, y, z);
         setType(section, blockIndex, type);
 
-        byte value = getDataValue(section, blockIndex / 2);
-        for (int dataValue : data){
-            if(dataValue >= 0)
-                value = updateDataValue(value, x, dataValue);
+        if (hasData) {
+            byte value = getDataValue(section, blockIndex / 2);
+            for (int dataValue : data) {
+                if (dataValue >= 0)
+                    value = updateDataValue(value, x, dataValue);
+            }
+            setDataValue(section, blockIndex / 2, value);
         }
-        setDataValue(section, blockIndex / 2, value);
-
         updateHeightMap(z, x, y);
     }
 

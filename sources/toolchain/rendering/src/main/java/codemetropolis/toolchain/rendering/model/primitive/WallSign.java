@@ -32,7 +32,7 @@ public class WallSign implements Primitive {
 		wallSign.addProperty(orientation4);
 
 
-		new Boxel(wallSign, position, text).toCSVFile(directory);
+		new Boxel(wallSign, position, text, true).toCSVFile(directory);
 		return 1;
 	}
 
