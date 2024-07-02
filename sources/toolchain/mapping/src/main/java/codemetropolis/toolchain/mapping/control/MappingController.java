@@ -2,16 +2,19 @@ package codemetropolis.toolchain.mapping.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
+import java.util.List;
+import java.util.Collection;
+import java.util.NoSuchElementException;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import codemetropolis.toolchain.commons.model.BlockType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -159,8 +162,20 @@ public class MappingController {
 				b.setSizeZ((int)value);
 				break;
 			default:
-				b.addAttribute(propertyName, String.valueOf(value));
+				if(propertyName.equals("character") || propertyName.equals("external_character")){
+					b.addAttribute(propertyName, getBlockFromCharacter(String.valueOf(value)));
+				}
+
 		}	
+	}
+
+	private String getBlockFromCharacter(String character){
+		for (var block : BlockType.values()){
+			if (block.getStringId().equalsIgnoreCase(character)){
+				return block.name();
+			}
+		}
+		throw new NoSuchElementException("No such block");
 	}
 	
 	private void setChildren(Buildable buildable, Element element){
