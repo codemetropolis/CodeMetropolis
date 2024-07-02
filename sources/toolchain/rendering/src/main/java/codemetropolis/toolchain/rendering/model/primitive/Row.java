@@ -2,6 +2,8 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import java.io.File;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.BlockFacingTorch;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
 public class Row implements Primitive {
@@ -14,32 +16,14 @@ public class Row implements Primitive {
 		WEST,
 		EAST
 	}
-
-	public enum BlockFacing {
-		NONE(0),
-		WEST(1),
-		EAST(2),
-		NORTH(3),
-		SOUTH(4);
-
-		private final int value;
-
-		BlockFacing(int v) {
-			value = v;
-		}
-
-		public int getValue() {
-			return value;
-		}
-	}
 	
 	private Point position;
 	private int length;
 	private Direction orientation;
-	private BasicBlock[] pattern;
-	private BlockFacing facing;
+	private BlockType[] pattern;
+	private BlockFacingTorch facing;
 	
-	public Row(Point position, int length, Direction orientation, BasicBlock[] pattern, BlockFacing facing) {
+	public Row(Point position, int length, Direction orientation, BlockType[] pattern, BlockFacingTorch facing) {
 		super();
 		this.facing = facing;
 		this.position = position;
@@ -48,8 +32,8 @@ public class Row implements Primitive {
 		this.pattern = pattern;
 	}
 
-	public Row(Point position, int length, Direction orientation, BasicBlock[] pattern) {
-		this(position, length, orientation, pattern, BlockFacing.NONE);
+	public Row(Point position, int length, Direction orientation, BlockType[] pattern) {
+		this(position, length, orientation, pattern, BlockFacingTorch.NONE);
 	}
 
 	/**
@@ -70,8 +54,8 @@ public class Row implements Primitive {
 		int c = 0;
 		for(int i = 0; i < length; i++) {
 			BasicBlock block = new BasicBlock(pattern[c]);
-			if(facing != BlockFacing.NONE) {
-				block.getProperties().put("facing", Integer.toString(facing.value));
+			if(facing != BlockFacingTorch.NONE) {
+				block.getProperties().add(facing);
 			}
 			Point blockPos = switch (orientation) {
                 case UP -> new Point(position.getX(), position.getY() + i, position.getZ());

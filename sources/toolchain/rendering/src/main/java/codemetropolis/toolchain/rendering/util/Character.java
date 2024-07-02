@@ -1,9 +1,10 @@
 package codemetropolis.toolchain.rendering.util;
 
+import codemetropolis.toolchain.commons.model.BlockType;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
 public enum Character {
-	STONE(BasicBlock.BasicBlockType.STONE),
+	/*STONE(BasicBlock.BasicBlockType.STONE),
 	COBBLESTONE(BasicBlock.BasicBlockType.COBBLESTONE),
 	MOSSY_STONE(BasicBlock.BasicBlockType.MOSSY_COBBLESTONE),
 	SANDSTONE(BasicBlock.BasicBlockType.SANDSTONE),
@@ -25,8 +26,8 @@ public enum Character {
 	DIAMOND(BasicBlock.BasicBlockType.DIAMOND_BLOCK),
 	UNDEFINED(BasicBlock.BasicBlockType.WHITE_WOOL);
 
-	private final BasicBlock block;
-	private final BasicBlock topBlock;
+	private final BlockType block;
+	private final BlockType topBlock;
 
 	Character(BasicBlock.BasicBlockType block) {
 		this(block, block);
@@ -51,5 +52,5 @@ public enum Character {
 
 	public BasicBlock getTopBlock() {
 		return topBlock;
-	}
+	}*/
 }

@@ -6,7 +6,6 @@ import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -106,7 +105,7 @@ public class Chunk {
      * @param type the type of the block to set
      * @param data additional data for the block as a map of string keys and values
      */
-    public void setBlock(int x, int y, int z, byte type, Map<String, String> data) {
+    public void setBlock(int x, int y, int z, byte type, List<Integer> data) {
         int index = y >> 4;
         NBTTag section = getOrCreateSection(index);
 
@@ -114,7 +113,10 @@ public class Chunk {
         setType(section, blockIndex, type);
 
         byte value = getDataValue(section, blockIndex / 2);
-        value = updateDataValue(value, x, data);
+        for (int dataValue : data){
+            if(dataValue >= 0)
+                value = updateDataValue(value, x, dataValue);
+        }
         setDataValue(section, blockIndex / 2, value);
 
         updateHeightMap(z, x, y);
@@ -163,20 +165,13 @@ public class Chunk {
      * @param data additional data for the block as a map of string keys and values
      * @return the updated data value of the block byte
      */
-    private byte updateDataValue(byte value, int x, Map<String, String> data) {
+    private byte updateDataValue(byte value, int x, int data) {
         boolean lastBits = ((double) x / 2) % 1 == 0;
-        for (String key : data.keySet()) {
-            String dataValue = data.get(key);
-            if (isNumeric(dataValue)) {
-                int numericValue = Integer.parseInt(dataValue);
-                if (lastBits) {
-                    return (byte) ((value & 0xF0) | numericValue);
-                } else {
-                    return (byte) ((value & 0x0F) | (numericValue << 4));
-                }
-            }
+        if (lastBits) {
+            return (byte) ((value & 0xF0) | data);
+        } else {
+            return (byte) ((value & 0x0F) | (data << 4));
         }
-        return value;
     }
 
     private void setDataValue(NBTTag section, int blockIndex, byte value) {

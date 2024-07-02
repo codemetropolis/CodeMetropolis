@@ -1,7 +1,11 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.BlockFacingTorch;
+import codemetropolis.toolchain.commons.model.property.Orientation4;
+import codemetropolis.toolchain.commons.model.property.Orientation8;
+import codemetropolis.toolchain.commons.model.property.OrientationDoor;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.*;
+import static codemetropolis.toolchain.commons.model.BlockType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //TODO: If a new block implementation is added, a corresponding test for it should be created in this test file!
@@ -85,70 +89,70 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldBannerColor").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.NORTH, new Point(1,61,1)));
-        primitives.add(new Banner(ORANGE_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,2)));
-        primitives.add(new Banner(MAGENTA_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,3)));
-        primitives.add(new Banner(LIGHT_BLUE_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,4)));
-        primitives.add(new Banner(YELLOW_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,5)));
-        primitives.add(new Banner(LIME_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,6)));
-        primitives.add(new Banner(PINK_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,7)));
-        primitives.add(new Banner(GRAY_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,8)));
-        primitives.add(new Banner(LIGHT_GRAY_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,9)));
-        primitives.add(new Banner(CYAN_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,10)));
-        primitives.add(new Banner(PURPLE_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,11)));
-        primitives.add(new Banner(BLUE_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,12)));
-        primitives.add(new Banner(BROWN_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,13)));
-        primitives.add(new Banner(GREEN_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,14)));
-        primitives.add(new Banner(RED_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,15)));
-        primitives.add(new Banner(BLACK_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(1,61,16)));
-        primitives.add(new Banner(WHITE_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,1)));
-        primitives.add(new Banner(ORANGE_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,2)));
-        primitives.add(new Banner(MAGENTA_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,3)));
-        primitives.add(new Banner(LIGHT_BLUE_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,4)));
-        primitives.add(new Banner(YELLOW_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,5)));
-        primitives.add(new Banner(LIME_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,6)));
-        primitives.add(new Banner(PINK_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,7)));
-        primitives.add(new Banner(GRAY_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,8)));
-        primitives.add(new Banner(LIGHT_GRAY_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,9)));
-        primitives.add(new Banner(CYAN_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,10)));
-        primitives.add(new Banner(PURPLE_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,11)));
-        primitives.add(new Banner(BLUE_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,12)));
-        primitives.add(new Banner(BROWN_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,13)));
-        primitives.add(new Banner(GREEN_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,14)));
-        primitives.add(new Banner(RED_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,15)));
-        primitives.add(new Banner(BLACK_WALL_BANNER.getBlock(),
-                Banner.Orientation.NORTH,new Point(4,62,16)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.NORTH, new Point(1,61,1)));
+        primitives.add(new Banner(ORANGE_BANNER,
+                Orientation8.NORTH,new Point(1,61,2)));
+        primitives.add(new Banner(MAGENTA_BANNER,
+                Orientation8.NORTH,new Point(1,61,3)));
+        primitives.add(new Banner(LIGHT_BLUE_BANNER,
+                Orientation8.NORTH,new Point(1,61,4)));
+        primitives.add(new Banner(YELLOW_BANNER,
+                Orientation8.NORTH,new Point(1,61,5)));
+        primitives.add(new Banner(LIME_BANNER,
+                Orientation8.NORTH,new Point(1,61,6)));
+        primitives.add(new Banner(PINK_BANNER,
+                Orientation8.NORTH,new Point(1,61,7)));
+        primitives.add(new Banner(GRAY_BANNER,
+                Orientation8.NORTH,new Point(1,61,8)));
+        primitives.add(new Banner(LIGHT_GRAY_BANNER,
+                Orientation8.NORTH,new Point(1,61,9)));
+        primitives.add(new Banner(CYAN_BANNER,
+                Orientation8.NORTH,new Point(1,61,10)));
+        primitives.add(new Banner(PURPLE_BANNER,
+                Orientation8.NORTH,new Point(1,61,11)));
+        primitives.add(new Banner(BLUE_BANNER,
+                Orientation8.NORTH,new Point(1,61,12)));
+        primitives.add(new Banner(BROWN_BANNER,
+                Orientation8.NORTH,new Point(1,61,13)));
+        primitives.add(new Banner(GREEN_BANNER,
+                Orientation8.NORTH,new Point(1,61,14)));
+        primitives.add(new Banner(RED_BANNER,
+                Orientation8.NORTH,new Point(1,61,15)));
+        primitives.add(new Banner(BLACK_BANNER,
+                Orientation8.NORTH,new Point(1,61,16)));
+        primitives.add(new Banner(WHITE_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,1)));
+        primitives.add(new Banner(ORANGE_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,2)));
+        primitives.add(new Banner(MAGENTA_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,3)));
+        primitives.add(new Banner(LIGHT_BLUE_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,4)));
+        primitives.add(new Banner(YELLOW_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,5)));
+        primitives.add(new Banner(LIME_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,6)));
+        primitives.add(new Banner(PINK_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,7)));
+        primitives.add(new Banner(GRAY_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,8)));
+        primitives.add(new Banner(LIGHT_GRAY_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,9)));
+        primitives.add(new Banner(CYAN_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,10)));
+        primitives.add(new Banner(PURPLE_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,11)));
+        primitives.add(new Banner(BLUE_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,12)));
+        primitives.add(new Banner(BROWN_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,13)));
+        primitives.add(new Banner(GREEN_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,14)));
+        primitives.add(new Banner(RED_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,15)));
+        primitives.add(new Banner(BLACK_WALL_BANNER,
+                Orientation8.NORTH,new Point(4,62,16)));
 
         toCsv(primitives,
                 tempDir,
@@ -161,22 +165,22 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldBannerOrientation").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.SOUTH, new Point(1,61,1)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.SOUTHWEST, new Point(1,61,2)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.WEST, new Point(1,61,3)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.NORTHWEST, new Point(1,61,4)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.NORTH, new Point(1,61,5)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.NORTHEAST, new Point(1,61,6)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.EAST, new Point(1,61,7)));
-        primitives.add(new Banner(WHITE_BANNER.getBlock(),
-                Banner.Orientation.SOUTHEAST, new Point(1,61,8)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.SOUTH, new Point(1,61,1)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.SOUTHWEST, new Point(1,61,2)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.WEST, new Point(1,61,3)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.NORTHWEST, new Point(1,61,4)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.NORTH, new Point(1,61,5)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.NORTHEAST, new Point(1,61,6)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.EAST, new Point(1,61,7)));
+        primitives.add(new Banner(WHITE_BANNER,
+                Orientation8.SOUTHEAST, new Point(1,61,8)));
 
         toCsv(primitives,
                 tempDir,
@@ -189,14 +193,14 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldSignPost").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new SignPost(1,61,1,SignPost.Orientation.SOUTH,"South"));
-        primitives.add(new SignPost(1,61,2,SignPost.Orientation.SOUTHWEST,"SouthWest"));
-        primitives.add(new SignPost(1,61,3,SignPost.Orientation.WEST,"West"));
-        primitives.add(new SignPost(1,61,4,SignPost.Orientation.NORTHWEST,"NorthWest"));
-        primitives.add(new SignPost(1,61,5,SignPost.Orientation.NORTH,"North"));
-        primitives.add(new SignPost(1,61,6,SignPost.Orientation.NORTHEAST,"NorthEast"));
-        primitives.add(new SignPost(1,61,7,SignPost.Orientation.EAST,"East"));
-        primitives.add(new SignPost(1,61,8,SignPost.Orientation.SOUTHEAST,"SouthEast"));
+        primitives.add(new SignPost(1,61,1,Orientation8.SOUTH,"South"));
+        primitives.add(new SignPost(1,61,2,Orientation8.SOUTHWEST,"SouthWest"));
+        primitives.add(new SignPost(1,61,3,Orientation8.WEST,"West"));
+        primitives.add(new SignPost(1,61,4,Orientation8.NORTHWEST,"NorthWest"));
+        primitives.add(new SignPost(1,61,5,Orientation8.NORTH,"North"));
+        primitives.add(new SignPost(1,61,6,Orientation8.NORTHEAST,"NorthEast"));
+        primitives.add(new SignPost(1,61,7,Orientation8.EAST,"East"));
+        primitives.add(new SignPost(1,61,8,Orientation8.SOUTHEAST,"SouthEast"));
 
 
         toCsv(primitives,
@@ -210,10 +214,10 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldWallSign").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new WallSign(1,61,1,WallSign.Orientation.NORTH,"North"));
-        primitives.add(new WallSign(1,61,2,WallSign.Orientation.SOUTH,"South"));
-        primitives.add(new WallSign(1,61,3,WallSign.Orientation.WEST,"West"));
-        primitives.add(new WallSign(1,61,4,WallSign.Orientation.EAST,"East"));
+        primitives.add(new WallSign(1,61,1,Orientation4.NORTH,"North"));
+        primitives.add(new WallSign(1,61,2,Orientation4.SOUTH,"South"));
+        primitives.add(new WallSign(1,61,3,Orientation4.WEST,"West"));
+        primitives.add(new WallSign(1,61,4,Orientation4.EAST,"East"));
 
         toCsv(primitives,
                 tempDir,
@@ -226,10 +230,10 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldDoor").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new Door(1,61,1,Door.Orientation.WEST));
-        primitives.add(new Door(1,61,2,Door.Orientation.NORTH));
-        primitives.add(new Door(1,61,3,Door.Orientation.EAST));
-        primitives.add(new Door(1,61,4,Door.Orientation.SOUTH));
+        primitives.add(new Door(1,61,1, OrientationDoor.WEST));
+        primitives.add(new Door(1,61,2, OrientationDoor.NORTH));
+        primitives.add(new Door(1,61,3, OrientationDoor.EAST));
+        primitives.add(new Door(1,61,4, OrientationDoor.SOUTH));
 
         toCsv(primitives,
                 tempDir,
@@ -241,28 +245,28 @@ public class TestAllBlockTypesToCsvFile {
     public void testTorchBlocksToCSVFile(){
         File tempDir = new File(projectRoot.resolve("sources/worldTorch").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
-        BasicBlock torch = TORCH.getBlock();
+        BlockType torch = TORCH;
 
         primitives.add(new Row(new Point(5,61,1),
                 2,
                 Row.Direction.EAST,
-                new BasicBlock[]{torch, torch},
-                Row.BlockFacing.WEST));
+                new BlockType[]{torch, torch},
+                BlockFacingTorch.WEST));
         primitives.add(new Row(new Point(2,61,1),
                 2,
                 Row.Direction.WEST,
-                new BasicBlock[]{torch, torch},
-                Row.BlockFacing.EAST));
+                new BlockType[]{torch, torch},
+                BlockFacingTorch.EAST));
         primitives.add(new Row(new Point(1,61,5),
                 2,
                 Row.Direction.SOUTH,
-                new BasicBlock[]{torch, torch},
-                Row.BlockFacing.NORTH));
+                new BlockType[]{torch, torch},
+                BlockFacingTorch.NORTH));
         primitives.add(new Row(new Point(1,61,2),
                 2,
                 Row.Direction.NORTH,
-                new BasicBlock[]{torch, torch},
-                Row.BlockFacing.SOUTH));
+                new BlockType[]{torch, torch},
+                BlockFacingTorch.SOUTH));
 
         toCsv(primitives,
                 tempDir,
@@ -275,10 +279,10 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldChest").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new SingleBlock(CHEST.getBlock(), new Point(1,61,1), SingleBlock.Orientation.NORTH));
-        primitives.add(new SingleBlock(CHEST.getBlock(), new Point(3,61,1), SingleBlock.Orientation.WEST));
-        primitives.add(new SingleBlock(CHEST.getBlock(), new Point(5,61,1), SingleBlock.Orientation.SOUTH));
-        primitives.add(new SingleBlock(CHEST.getBlock(), new Point(7,61,1), SingleBlock.Orientation.EAST));
+        primitives.add(new SingleBlock(CHEST, new Point(1,61,1), Orientation4.NORTH));
+        primitives.add(new SingleBlock(CHEST, new Point(3,61,1), Orientation4.WEST));
+        primitives.add(new SingleBlock(CHEST, new Point(5,61,1), Orientation4.SOUTH));
+        primitives.add(new SingleBlock(CHEST, new Point(7,61,1), Orientation4.EAST));
 
         toCsv(primitives,
                 tempDir,
@@ -291,7 +295,7 @@ public class TestAllBlockTypesToCsvFile {
         File tempDir = new File(projectRoot.resolve("sources/worldSpawner").toString(), "TEMP");
         LinkedList<Primitive> primitives = new LinkedList<>();
 
-        primitives.add(new SingleBlock(MOB_SPAWNER.getBlock(), new Point(1,61,1), "5"));
+        primitives.add(new SingleBlock(MOB_SPAWNER, new Point(1,61,1), "5"));
 
         toCsv(primitives,
                 tempDir,

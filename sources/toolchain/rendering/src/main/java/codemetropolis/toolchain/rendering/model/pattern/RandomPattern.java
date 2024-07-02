@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.commons.model.BlockType;
 
 public class RandomPattern implements Pattern {
 	
@@ -25,7 +25,7 @@ public class RandomPattern implements Pattern {
 	}
 
 	@Override
-	public BasicBlock applyTo(Point position, PositionModification positionModification) {
+	public BlockType applyTo(Point position, PositionModification positionModification) {
 		List<Pattern> mixedPatterns = new ArrayList<Pattern>(subPatterns.keySet());
 		Collections.shuffle(mixedPatterns);
 		

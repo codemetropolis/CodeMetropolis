@@ -3,19 +3,21 @@ package codemetropolis.toolchain.rendering.model.building;
 import codemetropolis.toolchain.commons.cmxml.Buildable;
 import codemetropolis.toolchain.commons.cmxml.Buildable.Type;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.BlockFacingTorch;
+import codemetropolis.toolchain.commons.model.property.Orientation4;
+import codemetropolis.toolchain.commons.model.property.OrientationDoor;
 import codemetropolis.toolchain.rendering.exceptions.BuildingTypeMismatchException;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.model.pattern.Pattern;
 import codemetropolis.toolchain.rendering.model.pattern.RandomPattern;
 import codemetropolis.toolchain.rendering.model.pattern.RepeationPattern;
 import codemetropolis.toolchain.rendering.model.primitive.*;
-import codemetropolis.toolchain.rendering.model.primitive.Row.BlockFacing;
-import codemetropolis.toolchain.rendering.util.Character;
 import codemetropolis.toolchain.rendering.util.Orientation;
 
 import java.util.LinkedList;
 
-import static codemetropolis.toolchain.rendering.model.BasicBlock.BasicBlockType.*;
+import static codemetropolis.toolchain.commons.model.BlockType.*;
 
 public class Floor extends Building {
 
@@ -47,7 +49,7 @@ public class Floor extends Building {
      */
     protected LinkedList<Primitive> prepareSpawner() {
         LinkedList<Primitive> spawners = new LinkedList<>();
-        SingleBlock spawner = new SingleBlock(MOB_SPAWNER.getBlock(), position.translate(new Point(center.getX(),
+        SingleBlock spawner = new SingleBlock(MOB_SPAWNER, position.translate(new Point(center.getX(),
                 0, center.getZ())), innerBuildable.getAttributeValue("danger"));
         spawners.add(spawner);
         return spawners;
@@ -63,14 +65,14 @@ public class Floor extends Building {
      */
     protected LinkedList<Primitive> prepareChest() {
         LinkedList<Primitive> chests = new LinkedList<>();
-        chests.add(createSingleBlock(CHEST.getBlock(), center.getX() - 1, -1, SingleBlock.Orientation.NORTH));
-        chests.add(createSingleBlock(CHEST.getBlock(), center.getX() + 1, 2 * (center.getZ()) + 1, SingleBlock.Orientation.SOUTH));
-        chests.add(createSingleBlock(CHEST.getBlock(), -1, center.getZ() - 1, SingleBlock.Orientation.EAST));
-        chests.add(createSingleBlock(CHEST.getBlock(), 2 * center.getX() + 1, center.getZ() + 1, SingleBlock.Orientation.WEST));
+        chests.add(createSingleBlock(CHEST, center.getX() - 1, -1, Orientation4.NORTH));
+        chests.add(createSingleBlock(CHEST, center.getX() + 1, 2 * (center.getZ()) + 1, Orientation4.SOUTH));
+        chests.add(createSingleBlock(CHEST, -1, center.getZ() - 1, Orientation4.EAST));
+        chests.add(createSingleBlock(CHEST, 2 * center.getX() + 1, center.getZ() + 1, Orientation4.WEST));
         return chests;
     }
 
-    private SingleBlock createSingleBlock(BasicBlock block, int offsetX, int offsetZ, SingleBlock.Orientation orientation) {
+    private SingleBlock createSingleBlock(BlockType block, int offsetX, int offsetZ, Orientation4 orientation) {
         return new SingleBlock(block, position.translate(new Point(offsetX, 0, offsetZ)), orientation);
     }
 
@@ -95,24 +97,24 @@ public class Floor extends Building {
 
         Point doorSize = new Point(1, 4, 3);
 
-        RepeationPattern redDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{RED_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
-                {REDSTONE_BLOCK.getBlock()}, {RED_WOOL.getBlock()}}});
-        RepeationPattern limeDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{LIME_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
-                {REDSTONE_BLOCK.getBlock()}, {LIME_WOOL.getBlock()}}});
-        RepeationPattern lightBlueDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{LIGHT_BLUE_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
-                {REDSTONE_BLOCK.getBlock()}, {LIGHT_BLUE_WOOL.getBlock()}}});
-        RepeationPattern yellowDoorMaterial = new RepeationPattern(new BasicBlock[][][]{{{YELLOW_WOOL.getBlock()}, {REDSTONE_LAMP.getBlock()},
-                {REDSTONE_BLOCK.getBlock()}, {YELLOW_WOOL.getBlock()}}});
+        RepeationPattern redDoorMaterial = new RepeationPattern(new BlockType[][][]{{{RED_WOOL}, {REDSTONE_LAMP},
+                {REDSTONE_BLOCK}, {RED_WOOL}}});
+        RepeationPattern limeDoorMaterial = new RepeationPattern(new BlockType[][][]{{{LIME_WOOL}, {REDSTONE_LAMP},
+                {REDSTONE_BLOCK}, {LIME_WOOL}}});
+        RepeationPattern lightBlueDoorMaterial = new RepeationPattern(new BlockType[][][]{{{LIGHT_BLUE_WOOL}, {REDSTONE_LAMP},
+                {REDSTONE_BLOCK}, {LIGHT_BLUE_WOOL}}});
+        RepeationPattern yellowDoorMaterial = new RepeationPattern(new BlockType[][][]{{{YELLOW_WOOL}, {REDSTONE_LAMP},
+                {REDSTONE_BLOCK}, {YELLOW_WOOL}}});
 
-        doors.add(createDoorBox(southDoorPos, new Point(3, 4, 1), redDoorMaterial, Orientation.NearX));
-        doors.add(createDoorBox(northDoorPos, new Point(3, 4, 1), limeDoorMaterial, Orientation.NearX));
-        doors.add(createDoorBox(eastDoorPos, doorSize, lightBlueDoorMaterial, Orientation.NearX));
-        doors.add(createDoorBox(westDoorPos, doorSize, yellowDoorMaterial, Orientation.NearX));
+        doors.add(createDoorBox(southDoorPos, new Point(3, 4, 1), redDoorMaterial));
+        doors.add(createDoorBox(northDoorPos, new Point(3, 4, 1), limeDoorMaterial));
+        doors.add(createDoorBox(eastDoorPos, doorSize, lightBlueDoorMaterial));
+        doors.add(createDoorBox(westDoorPos, doorSize, yellowDoorMaterial));
 
-        doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ(), Door.Orientation.SOUTH));
-        doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ() + size.getZ() - 1, Door.Orientation.NORTH));
-        doors.add(new Door(position.getX(), position.getY() + 1, position.getZ() + size.getZ() / 2, Door.Orientation.EAST));
-        doors.add(new Door(position.getX() + size.getX() - 1, position.getY() + 1, position.getZ() + size.getZ() / 2, Door.Orientation.WEST));
+        doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ(), OrientationDoor.SOUTH));
+        doors.add(new Door(position.getX() + size.getX() / 2, position.getY() + 1, position.getZ() + size.getZ() - 1, OrientationDoor.NORTH));
+        doors.add(new Door(position.getX(), position.getY() + 1, position.getZ() + size.getZ() / 2, OrientationDoor.EAST));
+        doors.add(new Door(position.getX() + size.getX() - 1, position.getY() + 1, position.getZ() + size.getZ() / 2, OrientationDoor.WEST));
 
         return doors;
     }
@@ -123,11 +125,10 @@ public class Floor extends Building {
      * @param position the position of the door in the world
      * @param size the size of the door
      * @param material the material pattern for the door, defining the block types and their arrangement
-     * @param orientation the orientation of the door
      * @return a SolidBox representing the door frame
      */
-    private SolidBox createDoorBox(Point position, Point size, RepeationPattern material, Orientation orientation) {
-        return new SolidBox(position, size, new RepeationPattern(new BasicBlock[][][]{{{AIR.getBlock()}}}), material, orientation);
+    private SolidBox createDoorBox(Point position, Point size, RepeationPattern material) {
+        return new SolidBox(position, size, new RepeationPattern(new BlockType[][][]{{{AIR}}}), material, Orientation.NearX);
     }
 
 
@@ -146,16 +147,16 @@ public class Floor extends Building {
 
         stairs.add(new SolidBox(position.translate(new Point(center.getX() - 2, 0, center.getZ() - 2)),
                 new Point(5, size.getY() + 1, 5), getStairRepetationPattern(),
-                new RepeationPattern(new BasicBlock[][][] { { { FENCE.getBlock() } } }), Orientation.NearY));
+                new RepeationPattern(new BlockType[][][] { { { FENCE } } }), Orientation.NearY));
         return stairs;
     }
 
     protected Pattern getStairRepetationPattern() {
-        BasicBlock _air = AIR.getBlock();
-        BasicBlock _str = STONE.getBlock();
-        BasicBlock _cre = FENCE.getBlock();
+        BlockType _air = AIR;
+        BlockType _str = STONE;
+        BlockType _cre = FENCE;
 
-        return new RepeationPattern(new BasicBlock[][][] {
+        return new RepeationPattern(new BlockType[][][] {
                 {       { _air, _air, _air, _air, _air },
                         { _air, _str, _air, _air, _air },
                         { _air, _air, _cre, _air, _air },
@@ -220,32 +221,45 @@ public class Floor extends Building {
      * @return A LinkedList containing the prepared walls as Primitive objects.
      */
     protected LinkedList<Primitive> prepareWalls() {
-        BasicBlock sideBlock = MAGENTA_WOOL.getBlock();
-        BasicBlock strcBlock = PURPLE_WOOL.getBlock();
-        RepeationPattern bottomFill = new RepeationPattern(new BasicBlock[][][] { { { MAGENTA_WOOL.getBlock() } } });
-        RepeationPattern topFill = new RepeationPattern(new BasicBlock[][][] { { { MAGENTA_WOOL.getBlock() } } });
-        RepeationPattern stroke = new RepeationPattern(new BasicBlock[][][] { { { BLACK_WOOL.getBlock() } } });
+        BlockType sideBlock = MAGENTA_WOOL;
+        BlockType strcBlock = PURPLE_WOOL;
+        RepeationPattern bottomFill = new RepeationPattern(new BlockType[][][] { { { MAGENTA_WOOL } } });
+        RepeationPattern topFill = new RepeationPattern(new BlockType[][][] { { { MAGENTA_WOOL } } });
+        RepeationPattern stroke = new RepeationPattern(new BlockType[][][] { { { BLACK_WOOL } } });
 
         if (innerBuildable.hasAttribute("character")) {
-            Character character = Character.parse(innerBuildable.getAttributeValue("character"));
-            sideBlock = character.getBlock();
-            topFill = new RepeationPattern(new BasicBlock[][][] { { { character.getTopBlock() } } });
+            for (var block : BlockType.values()){
+                if (block.toString().toUpperCase().equals(innerBuildable.getAttributeValue("character"))){
+                    sideBlock = block;
+                    if(block.toString().toUpperCase().contains("WOOD") ||
+                            block.toString().toUpperCase().contains("PLANKS")){
+                        topFill = new RepeationPattern(new BlockType[][][] { { { FENCE } } });
+                    }else{
+                        topFill = new RepeationPattern(new BlockType[][][] { { { block } } });
+                    }
+                    break;
+                }
+            }
         }
 
         if (innerBuildable.hasAttribute("external_character")) {
-            Character externalCharacter = Character.parse(innerBuildable.getAttributeValue("external_character"));
-            bottomFill = new RepeationPattern(new BasicBlock[][][] { { { externalCharacter.getBlock() } } });
-            strcBlock = externalCharacter.getBlock();
-            stroke = new RepeationPattern(new BasicBlock[][][] { { { externalCharacter.getBlock() } } });
+            for (var block : BlockType.values()){
+                if (block.toString().toUpperCase().equals(innerBuildable.getAttributeValue("external_character"))){
+                    bottomFill = new RepeationPattern(new BlockType[][][] { { { block } } });
+                    strcBlock = block;
+                    stroke = new RepeationPattern(new BlockType[][][] { { { block } } });
+                    break;
+                }
+            }
         }
 
         RandomPattern fallbackPattern = new RandomPattern(
-                new RepeationPattern(new BasicBlock[][][] { { { NON_BLOCK.getBlock() } } }));
-        fallbackPattern.add(new RepeationPattern(new BasicBlock[][][] { { { FENCE.getBlock() } } }), .5);
+                new RepeationPattern(new BlockType[][][] { { { AIR } } }));
+        fallbackPattern.add(new RepeationPattern(new BlockType[][][] { { { FENCE } } }), .5);
 
         RandomPattern sideFill = new RandomPattern(fallbackPattern);
         sideFill.add(new RepeationPattern(
-                        new BasicBlock[][][] { { { sideBlock, sideBlock, strcBlock, sideBlock, sideBlock },
+                        new BlockType[][][] { { { sideBlock, sideBlock, strcBlock, sideBlock, sideBlock },
                                 { sideBlock, sideBlock, strcBlock, sideBlock, sideBlock },
                                 { strcBlock, strcBlock, strcBlock, strcBlock, strcBlock },
                                 { sideBlock, sideBlock, strcBlock, sideBlock, sideBlock },
@@ -270,15 +284,15 @@ public class Floor extends Building {
     protected LinkedList<Primitive> prepareSigns() {
         LinkedList<Primitive> signs = new LinkedList<>();
         //Wall signs outside
-        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() - 1, WallSign.Orientation.NORTH, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + size.getZ(), WallSign.Orientation.SOUTH, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() - 1, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.WEST, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() + size.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.EAST, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() - 1, Orientation4.NORTH, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + size.getZ(), Orientation4.SOUTH, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() - 1, position.getY() + 3, position.getZ() + size.getZ() / 2, Orientation4.WEST, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX(), position.getY() + 3, position.getZ() + size.getZ() / 2, Orientation4.EAST, innerBuildable.getName()));
         //Wall signs inside
-        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + 1, WallSign.Orientation.SOUTH, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + size.getZ() - 2, WallSign.Orientation.NORTH, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() + 1, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.EAST, innerBuildable.getName()));
-        primitives.add(new WallSign(position.getX() + size.getX() - 2, position.getY() + 3, position.getZ() + size.getZ() / 2, WallSign.Orientation.WEST, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + 1, Orientation4.SOUTH, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX() / 2, position.getY() + 3, position.getZ() + size.getZ() - 2, Orientation4.NORTH, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + 1, position.getY() + 3, position.getZ() + size.getZ() / 2, Orientation4.EAST, innerBuildable.getName()));
+        primitives.add(new WallSign(position.getX() + size.getX() - 2, position.getY() + 3, position.getZ() + size.getZ() / 2, Orientation4.WEST, innerBuildable.getName()));
         return signs;
     }
 
@@ -295,48 +309,48 @@ public class Floor extends Building {
         if (!innerBuildable.hasAttribute("torches")) return torches;
 
         int numberOfTorches = Integer.parseInt(innerBuildable.getAttributeValue("torches"));
-        BasicBlock[] pattern;
+        BlockType[] pattern;
 
         pattern = createTorchPattern(numberOfTorches, 3);
-        torches.add(createTorchRow(pattern, Row.Direction.WEST, BlockFacing.NORTH,
+        torches.add(createTorchRow(pattern, Row.Direction.WEST, BlockFacingTorch.NORTH,
                 position.getX() + size.getX() / 2 + 2,
                 position.getY() + 2,
                 position.getZ() + 1));
 
-        torches.add(createTorchRow(pattern, Row.Direction.EAST, BlockFacing.NORTH,
+        torches.add(createTorchRow(pattern, Row.Direction.EAST, BlockFacingTorch.NORTH,
                 position.getX() + size.getX() / 2 - 2,
                 position.getY() + 2,
                 position.getZ() + 1));
 
         pattern = createTorchPattern(numberOfTorches, 4);
-        torches.add(createTorchRow(pattern, Row.Direction.WEST, BlockFacing.SOUTH,
+        torches.add(createTorchRow(pattern, Row.Direction.WEST, BlockFacingTorch.SOUTH,
                 position.getX() + size.getX() / 2 + 2,
                 position.getY() + 2,
                 position.getZ() + size.getZ() - 2));
 
-        torches.add(createTorchRow(pattern, Row.Direction.EAST, BlockFacing.SOUTH,
+        torches.add(createTorchRow(pattern, Row.Direction.EAST, BlockFacingTorch.SOUTH,
                 position.getX() + size.getX() / 2 - 2,
                 position.getY() + 2,
                 position.getZ() + size.getZ() - 2));
 
         pattern = createTorchPattern(numberOfTorches, 1);
-        torches.add(createTorchRow(pattern, Row.Direction.NORTH, BlockFacing.WEST,
+        torches.add(createTorchRow(pattern, Row.Direction.NORTH, BlockFacingTorch.WEST,
                 position.getX() + 1,
                 position.getY() + 2,
                 position.getZ() + size.getZ() / 2 + 2));
 
-        torches.add(createTorchRow(pattern, Row.Direction.SOUTH, BlockFacing.WEST,
+        torches.add(createTorchRow(pattern, Row.Direction.SOUTH, BlockFacingTorch.WEST,
                 position.getX() + 1,
                 position.getY() + 2,
                 position.getZ() + size.getZ() / 2 - 2));
 
         pattern = createTorchPattern(numberOfTorches, 2);
-        torches.add(createTorchRow(pattern, Row.Direction.NORTH, BlockFacing.EAST,
+        torches.add(createTorchRow(pattern, Row.Direction.NORTH, BlockFacingTorch.EAST,
                 position.getX() + size.getX() - 2,
                 position.getY() + 2,
                 position.getZ() + size.getZ() / 2 + 2));
 
-        torches.add(createTorchRow(pattern, Row.Direction.SOUTH, BlockFacing.EAST,
+        torches.add(createTorchRow(pattern, Row.Direction.SOUTH, BlockFacingTorch.EAST,
                 position.getX() + size.getX() - 2,
                 position.getY() + 2,
                 position.getZ() + size.getZ() / 2 - 2));
@@ -354,7 +368,7 @@ public class Floor extends Building {
      * @param z         The z-coordinate of the starting point of the row.
      * @return A {@link Row} object representing the torch row.
      */
-    private Row createTorchRow(BasicBlock[] pattern, Row.Direction direction, BlockFacing facing, int x, int y, int z) {
+    private Row createTorchRow(BlockType[] pattern, Row.Direction direction, BlockFacingTorch facing, int x, int y, int z) {
         return (new Row(
                 new Point(x, y, z),
                 (direction == Row.Direction.EAST || direction == Row.Direction.WEST) ?
@@ -371,29 +385,29 @@ public class Floor extends Building {
      * @param data   The data representing the torch pattern.
      * @return An array of {@link BasicBlock} representing the torch pattern.
      */
-    protected BasicBlock[] createTorchPattern(int number, int data) {
-        BasicBlock[] pattern = null;
-        BasicBlock torch = TORCH.getBlock();
-        BasicBlock space = NON_BLOCK.getBlock();
+    protected BlockType[] createTorchPattern(int number, int data) {
+        BlockType[] pattern = null;
+        BlockType torch = TORCH;
+        BlockType space = AIR;
 
         switch (number) {
             case 0:
-                pattern = new BasicBlock[]{space};
+                pattern = new BlockType[]{space};
                 break;
             case 1:
-                pattern = new BasicBlock[]{torch, space, space, space, space};
+                pattern = new BlockType[]{torch, space, space, space, space};
                 break;
             case 2:
-                pattern = new BasicBlock[]{torch, space, space, space};
+                pattern = new BlockType[]{torch, space, space, space};
                 break;
             case 3:
-                pattern = new BasicBlock[]{torch, space, space};
+                pattern = new BlockType[]{torch, space, space};
                 break;
             case 4:
-                pattern = new BasicBlock[]{torch, space};
+                pattern = new BlockType[]{torch, space};
                 break;
             case 5:
-                pattern = new BasicBlock[]{torch};
+                pattern = new BlockType[]{torch};
                 break;
         }
         return pattern;

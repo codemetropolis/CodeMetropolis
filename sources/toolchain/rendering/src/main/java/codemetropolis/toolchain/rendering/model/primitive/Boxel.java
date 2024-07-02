@@ -2,6 +2,8 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.PropertyOrdinal;
 import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.util.JsonUtil;
@@ -13,9 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Boxel implements Primitive {
@@ -24,14 +24,14 @@ public class Boxel implements Primitive {
     public Point position;
     public String info;
 
-    public Boxel(BasicBlock.BasicBlockType block, Point position) {
+    public Boxel(BlockType block, Point position) {
         super();
-        this.block = block.getBlock();
+        this.block = new BasicBlock(block);
         this.position = position;
     }
 
-    public Boxel(BasicBlock.BasicBlockType block, Point position, String info) {
-        this(block.getBlock(), position);
+    public Boxel(BlockType block, Point position, String info) {
+        this(block, position);
         this.info = info;
     }
 
@@ -60,7 +60,7 @@ public class Boxel implements Primitive {
      */
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
-        Map<String, String> properties = parseProperties(parts[2]);
+        List<Integer> properties = parseProperties(parts[2]);
 
 
         return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
@@ -68,34 +68,46 @@ public class Boxel implements Primitive {
                 (parts[6].equals("NULL") ? "" : parts[6]));
     }
 
-    /**
-     * Parses a properties string to create a map of property key-value pairs.
-     * <p>
-     * This method handles both multiple properties separated by '&' and a single property.
-     * </p>
-     *
-     * @param propertiesPart The properties string to parse, which may contain multiple
-     *                       key-value pairs separated by '&' or a single key-value pair.
-     * @return A map containing the parsed property key-value pairs.
-     * @throws IllegalArgumentException if the properties string format is invalid.
-     */
-    public static Map<String, String> parseProperties(String propertiesPart){
-        if(propertiesPart.isEmpty()){
-            return Collections.emptyMap();
+    public static List<Integer> parseProperties(String propertiesPart) {
+        if (propertiesPart.isEmpty()) {
+            return Collections.emptyList();
         }
-        if(propertiesPart.contains("&")){
-            return Arrays.stream(propertiesPart.split("&"))
+
+        List<Integer> resultList = new ArrayList<>();
+        for (var ordinal : PropertyOrdinal.values()) {
+            resultList.add(ordinal.getValue(), -1);
+        }
+
+        if (propertiesPart.contains("&")) {
+            Arrays.stream(propertiesPart.split("&"))
                     .map(prop -> prop.split("="))
-                    .collect(Collectors.toMap(e -> e[0], e -> e[1]));
-        }else{
+                    .forEach(prop -> {
+                        addProperty(prop, resultList);
+                    });
+        } else {
             String[] prop = propertiesPart.split("=");
-            if(prop.length == 2){
-                return Collections.singletonMap(prop[0], prop[1]);
-            }else{
+            if (prop.length == 2) {
+                addProperty(prop, resultList);
+            } else {
                 throw new IllegalArgumentException("Invalid properties format");
             }
         }
+
+        return resultList;
     }
+
+    private static void addProperty(String[] prop, List<Integer> resultList){
+        int index = -1;
+        for (var ordinal : PropertyOrdinal.values()){
+            if (prop[0].equalsIgnoreCase(ordinal.toString())){
+                index = ordinal.getValue();
+            }
+        }
+
+        int value = Integer.parseInt(prop[1]);
+        resultList.add(index, value);
+    }
+
 
     /**
      * Renders the Boxel object within the specified world.
@@ -116,29 +128,29 @@ public class Boxel implements Primitive {
                     position.getY(),
                     position.getZ(),
                     block.getShortId(),
-                    block.getProperties());
+                    block.getiProperties());
             return;
         }
 
         switch (block.getStringId()) {
 
             case "minecraft:oak_sign":
-                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
+                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getiProperties(), info);
                 break;
             case "minecraft:mob_spawner":
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getProperties(),
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getiProperties(),
                         blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
             case "minecraft:chest":
-                world.setChest(position.getX(), position.getY(), position.getZ(), block.getProperties(), new int[]{276, 1});
+                world.setChest(position.getX(), position.getY(), position.getZ(), block.getiProperties(), new int[]{276, 1});
                 break;
             case "minecraft:wall_sign":
-                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getProperties(), info);
+                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getiProperties(), info);
                 break;
             default:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getProperties());
+                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getiProperties());
         }
     }
 
@@ -166,11 +178,30 @@ public class Boxel implements Primitive {
         if (block.getStringId().isEmpty()) {
             return null;
         }
-        String fancyProperties = block.getProperties().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
+        String fancyProperties = block.getProperties().stream()
+                .sorted(Comparator.comparingInt(e -> {
+                    String className = e.getClass().getSimpleName();
+                    for (PropertyOrdinal ordinal : PropertyOrdinal.values()) {
+                        if (ordinal.name().equalsIgnoreCase(className)) {
+                            return ordinal.getValue();
+                        }
+                    }
+                    return Integer.MAX_VALUE;
+                }))
+                .map(e -> e.getClass().getSimpleName() + "=" + getEnumValue((Enum<?>) e))
                 .collect(Collectors.joining("&"));
 
         return String.format("%s;%d;%s;%d;%d;%d;%s", block.getStringId(), block.getShortId(), fancyProperties, position.getX(), position.getY(),
                 position.getZ(), (info == null || info.equals("") ? "NULL" : info));
+    }
+
+    private int getEnumValue(Enum<?> e) {
+        try {
+            return (Integer) e.getClass().getMethod("getValue").invoke(e);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return -1;
+        }
     }
 
     /**

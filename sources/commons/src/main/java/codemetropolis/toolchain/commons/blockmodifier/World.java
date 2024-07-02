@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
 
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 
@@ -30,7 +30,7 @@ public class World {
 		level.writeToFile();
 	}
 
-    private Chunk setBlockInChunk(int x, int y, int z, int type, Map<String, String> data) {
+    private Chunk setBlockInChunk(int x, int y, int z, int type, List<Integer> data) {
         checkCoordinateYBoundaries(y);
 
         int regionX = getRegionCoordinate(x);
@@ -79,7 +79,7 @@ public class World {
 
 
     private Chunk locateChunk(int xChunkIndex, int zChunkIndex, int chunkX, int chunkZ, int regionX, int regionZ,
-                              int blockX, int y, int blockZ, int type, Map<String, String> data) {
+                              int blockX, int y, int blockZ, int type, List<Integer> data) {
         Region region = getRegion(regionX, regionZ);
         Chunk chunk = region.getChunk(xChunkIndex, zChunkIndex);
         if (chunk == null) {
@@ -109,7 +109,7 @@ public class World {
         }
     }
 
-    public void setBlock(int x, int y, int z, int type, Map<String,String> data) {
+    public void setBlock(int x, int y, int z, int type, List<Integer> data) {
         setBlockInChunk(x, y, z, type, data);
     }
 
@@ -121,7 +121,7 @@ public class World {
         setBlock(x, y, z, 0);
     }
 
-    public void setSignPost(int x, int y, int z, Map<String, String> data, String text) {
+    public void setSignPost(int x, int y, int z, List<Integer> data, String text) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 63, data); //signPost id = 63
         currentChunk.setSignText(x, y, z, text);
     }
@@ -130,25 +130,25 @@ public class World {
         setSignPost(x, y, z, null, text);
     }
 
-    public void setWallSign(int x, int y, int z, Map<String, String> data, String text) {
+    public void setWallSign(int x, int y, int z, List<Integer> data, String text) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 68, data); //wallSign id = 68
         currentChunk.setSignText(x, y, z, text);
     }
 
-    public void setSpawner(int x, int y, int z, Map<String, String> data, String entityId, Short dangerLevel) {
+    public void setSpawner(int x, int y, int z, List<Integer> data, String entityId, Short dangerLevel) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 52, data); // mobSpawner id = 52
         currentChunk.setSpawnerContent(x, y, z, entityId, dangerLevel);
     }
 
-    public void setChest(int x, int y, int z, Map<String, String> data, int[] items) {
+    public void setChest(int x, int y, int z, List<Integer> data, int[] items) {
         Chunk currentChunk = setBlockInChunk(x, y, z, 54, data); // chest id = 54
         for (int i = 0; i < items.length; i += 2)
             currentChunk.addChestItem(x, y, z, items[i], items[i + 1]);
     }
 
-    public void setBanner(int x, int y, int z,int shortId, Map<String, String> data) {
+    public void setBanner(int x, int y, int z,int shortId, List<Integer> data) {
         Chunk currentChunk = setBlockInChunk(x, y, z, shortId, data);
-        currentChunk.setBannerColor(x, y, z, Integer.parseInt(data.get("bannerColor")));
+        currentChunk.setBannerColor(x, y, z, data.get(1));
     }
 
 	private Region getRegion(int x, int z) {
