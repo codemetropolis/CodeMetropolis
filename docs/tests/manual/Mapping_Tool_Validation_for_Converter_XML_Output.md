@@ -19,12 +19,12 @@ This test's objective is to verify that the mapping tool converted the TG_005.TC
 - Java runtime 22
 - Command line opened in the folder of mapping-1.5.0.jar (path to the folder `CodeMetropolis\sources\distro\`)
 - Test file inserted into `CodeMetropolis\sources\distro\` folder
-- sourcemeter_mapping_example_2_0.xml file inserted into `CodeMetropolis\sources\distro\` folder
+- sourcemeter_mapping_example_3_0.xml file inserted into `CodeMetropolis\sources\distro\` folder
 
 ### Steps
 1.  Run
 	```cmd
-	java -jar mapping-1.5.0.jar -i Converter.Test1Result.xml -m sourcemeter_mapping_example_2_0.xml
+	java -jar mapping-1.5.0.jar -i Converter.Test1Result.xml -m sourcemeter_mapping_example_3_0.xml
 	```
 	in mapping-1.5.0.jar command line
 2. Compare the resulting file with the [[Expected Results/Mapping.Test1Result.xml]] file
