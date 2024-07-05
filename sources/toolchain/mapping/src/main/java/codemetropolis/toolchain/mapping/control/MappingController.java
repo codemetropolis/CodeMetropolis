@@ -164,6 +164,8 @@ public class MappingController {
 			default:
 				if(propertyName.equals("character") || propertyName.equals("external_character")){
 					b.addAttribute(propertyName, getBlockFromCharacter(String.valueOf(value)));
+				}else{
+					b.addAttribute(propertyName, String.valueOf(value));
 				}
 
 		}	
