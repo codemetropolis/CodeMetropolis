@@ -28,7 +28,7 @@ public class SignPost implements Primitive {
 		BasicBlock signPost = new BasicBlock(SIGN);
 		signPost.addProperty(orientation8);
 
-		new Boxel(signPost, position, text, true).toCSVFile(directory);
+		new Boxel(signPost, position, text).toCSVFile(directory);
 		return 1;
 	}
 

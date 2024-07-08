@@ -23,7 +23,6 @@ public class Boxel implements Primitive {
     public BasicBlock block;
     public Point position;
     public String info;
-    public boolean hasData;
 
     public Boxel(BlockType block, Point position) {
         super();
@@ -42,10 +41,9 @@ public class Boxel implements Primitive {
         this.position = position;
     }
 
-    public Boxel(BasicBlock block, Point position, String info, boolean hasData) {
+    public Boxel(BasicBlock block, Point position, String info) {
         this(block, position);
         this.info = info;
-        this.hasData = hasData;
     }
 
     /**
@@ -64,15 +62,9 @@ public class Boxel implements Primitive {
         String[] parts = csv.split(";");
         List<Integer> properties = parseProperties(parts[2]);
 
-        if(properties.isEmpty()){
-            return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
-                    new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
-                    (parts[6].equals("NULL") ? "" : parts[6]), false);
-        }else{
-            return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
-                    new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
-                    (parts[6].equals("NULL") ? "" : parts[6]), true);
-        }
+        return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
+                new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
+                (parts[6].equals("NULL") ? "" : parts[6]));
     }
 
     public static List<Integer> parseProperties(String propertiesPart) {
@@ -157,7 +149,7 @@ public class Boxel implements Primitive {
                 world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getiProperties(), info);
                 break;
             default:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getiProperties(), hasData);
+                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getiProperties());
         }
     }
 

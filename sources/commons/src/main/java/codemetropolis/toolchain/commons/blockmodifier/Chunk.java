@@ -105,14 +105,14 @@ public class Chunk {
      * @param type the type of the block to set
      * @param data additional data for the block as a map of string keys and values
      */
-    public void setBlock(int x, int y, int z, byte type, List<Integer> data, boolean hasData) {
+    public void setBlock(int x, int y, int z, byte type, List<Integer> data) {
         int index = y >> 4;
         NBTTag section = getOrCreateSection(index);
 
         int blockIndex = getBlockIndex(x, y, z);
         setType(section, blockIndex, type);
 
-        if (hasData) {
+        if (!data.isEmpty()) {
             byte value = getDataValue(section, blockIndex / 2);
             for (int dataValue : data) {
                 if (dataValue >= 0)
@@ -197,16 +197,6 @@ public class Chunk {
             heightMap[heightMapIndex] = y + 1;
         }
     }
-
-    private boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
 
     /**
      * This method sets the spawner block NBT tags correctly depending on the entity, and then adds it to the rest of the
