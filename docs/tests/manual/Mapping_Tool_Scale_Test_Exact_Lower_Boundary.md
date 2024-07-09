@@ -18,12 +18,12 @@ The purpose of this test is to confirm that the mapping tool functions correctly
 - Java runtime 22
 - Command line opened in the folder of mapping-1.5.0.jar (path to the folder `CodeMetropolis\sources\distro\`)
 - Test file inserted into `CodeMetropolis\sources\distro\` folder
-- sourcemeter_mapping_example_3_0.xml file inserted into `CodeMetropolis\sources\distro\` folder
+- sourcemeter_mapping_example_2_1.xml file inserted into `CodeMetropolis\sources\distro\` folder
 
 ### Steps
 1. Run
 	```cmd
-	java -jar mapping-1.5.0.jar -i Mapping.TestX.xml -m sourcemeter_mapping_example_3_0.xml -s 0.01
+	java -jar mapping-1.5.0.jar -i Mapping.TestX.xml -m sourcemeter_mapping_example_2_1.xml -s 0.01
 	```
 	in mapping-1.5.0.jar command line
 2. Compare the resulting file with the [[Expected Results/Mapping.Test12Result.xml]] file

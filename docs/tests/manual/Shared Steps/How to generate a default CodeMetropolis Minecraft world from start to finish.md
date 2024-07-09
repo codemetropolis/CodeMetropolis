@@ -7,7 +7,7 @@
 	```
 	[[Legends and other additions]]
 	```cmd
-	\examples\mapping\sourcemeter_mapping_example_3_0.xml"
+	\examples\mapping\sourcemeter_mapping_example_2_1.xml"
 	```
 2. Run the following command in the folder of mapping-1.5.0.jar:
 	```cmd
