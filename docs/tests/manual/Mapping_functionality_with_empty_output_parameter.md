@@ -9,13 +9,13 @@ This test assesses the mapping tool's behavior when the output file parameter is
 ### Pre-requisites
 * Java runtime 22
 * converterToMapping.xml exists in the mapping-1.5.0.jar's folder and is a valid cdfFile (produced by converter-1.5.0.jar with the input codemetropolis-toolchain-commons.graph)
-* sourcemeter_mapping_example_2_0.xml mapping description exists in the mapping-1.5.0.jar's folder and is valid
+* sourcemeter_mapping_example_3_0.xml mapping description exists in the mapping-1.5.0.jar's folder and is valid
 * command line opened in the folder of mapping-1.5.0.jar
 
 ### Steps
 1. Run:
 	```cmd
-	java -jar mapping-1.5.0.jar -i converterToMapping.xml -m sourcemeter_mapping_example_2_0.xml -o
+	java -jar mapping-1.5.0.jar -i converterToMapping.xml -m sourcemeter_mapping_example_3_0.xml -o
 	``` 
 
 ### Expected result

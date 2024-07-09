@@ -9,13 +9,13 @@ This test checks the mapping tool's response to a non-existent cdf file, ensurin
 ### Pre-requisites
 * Java runtime 22
 * missing.xml should not exist
-* sourcemeter_mapping_example_2_0.xml mapping description exists in the mapping-1.5.0.jar's folder and is valid
+* sourcemeter_mapping_example_3_0.xml mapping description exists in the mapping-1.5.0.jar's folder and is valid
 * command line opened in the folder of mapping-1.5.0.jar
 
 ### Steps
 1. Run:
 	```cmd 
-	java -jar mapping-1.5.0.jar -i missing.xml -m sourcemeter_mapping_example_2_0.xml 
+	java -jar mapping-1.5.0.jar -i missing.xml -m sourcemeter_mapping_example_3_0.xml 
 	```
 
 ### Expected result
