@@ -17,7 +17,7 @@ The purpose of this test is to see if the solution committed to issue no. #176 w
 ### Steps
 1. Run the following command in the folder of mapping-1.5.0.jar:
 	```cmd
-	java -jar mapping-1.5.0.jar -i converterToMapping.xml -m "CodeMetropolis\examples\mapping\sourcemeter_mapping_example_2_0.xml"
+	java -jar mapping-1.5.0.jar -i converterToMapping.xml -m "CodeMetropolis\examples\mapping\sourcemeter_mapping_example_2_1.xml"
 	```
 
 ### Expected Result

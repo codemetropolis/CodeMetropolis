@@ -2,19 +2,38 @@ package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.blockmodifier.World;
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.PropertyOrdinal;
 import codemetropolis.toolchain.commons.util.EU;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.util.JsonUtil;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Boxel implements Primitive {
 
     public BasicBlock block;
     public Point position;
     public String info;
+
+    public Boxel(BlockType block, Point position) {
+        super();
+        this.block = new BasicBlock(block);
+        this.position = position;
+    }
+
+    public Boxel(BlockType block, Point position, String info) {
+        this(block, position);
+        this.info = info;
+    }
 
     public Boxel(BasicBlock block, Point position) {
         super();
@@ -27,78 +46,161 @@ public class Boxel implements Primitive {
         this.info = info;
     }
 
+    /**
+     * Parses a CSV string to create a Boxel object.
+     * <p>
+     * This method splits the input CSV string into its components, extracts properties,
+     * and constructs a new Boxel object using the parsed values.
+     * </p>
+     *
+     * @param csv The CSV string to parse, which should be in the format:
+     *            "stringId;shortId;properties;x;y;z;info".
+     * @return A new Boxel object constructed from the parsed CSV values.
+     * @throws IllegalArgumentException if the CSV string format is invalid.
+     */
     public static Boxel parseCSV(String csv) {
         String[] parts = csv.split(";");
-        return new Boxel(
-                new BasicBlock(
-                        Short.parseShort(parts[0]),
-                        Integer.parseInt(parts[1])),
-                new Point(
-                        Integer.parseInt(parts[2]),
-                        Integer.parseInt(parts[3]),
-                        Integer.parseInt(parts[4])),
-                (parts[5].equals("NULL") ? "" : parts[5])
-        );
+        List<Integer> properties = parseProperties(parts[2]);
 
+        return new Boxel(new BasicBlock(parts[0], Short.parseShort(parts[1]), properties),
+                new Point(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])),
+                (parts[6].equals("NULL") ? "" : parts[6]));
     }
 
+    public static List<Integer> parseProperties(String propertiesPart) {
+        if (propertiesPart.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Integer> resultList = new ArrayList<>();
+        for (var ordinal : PropertyOrdinal.values()) {
+            resultList.add(ordinal.getValue(), -1);
+        }
+
+        if (propertiesPart.contains("&")) {
+            Arrays.stream(propertiesPart.split("&"))
+                    .map(prop -> prop.split("="))
+                    .forEach(prop -> {
+                        addProperty(prop, resultList);
+                    });
+        } else {
+            String[] prop = propertiesPart.split("=");
+            if (prop.length == 2) {
+                addProperty(prop, resultList);
+            } else {
+                throw new IllegalArgumentException("Invalid properties format");
+            }
+        }
+
+        return resultList;
+    }
+
+    private static void addProperty(String[] prop, List<Integer> resultList){
+        int index = -1;
+        for (var ordinal : PropertyOrdinal.values()){
+            if (prop[0].equalsIgnoreCase(ordinal.toString())){
+                index = ordinal.getValue();
+            }
+        }
+
+        int value = Integer.parseInt(prop[1]);
+        resultList.add(index, value);
+    }
+
+
     /**
-     * This method renders the world between 0 and 255 y coordinates based on pre collected world data from the csv file
+     * Renders the Boxel object within the specified world.
+     * <p>
+     * This method checks the y-coordinate of the position to ensure it is within valid bounds (0 to 254).
+     * Depending on the block type, it delegates rendering to the appropriate method in the World object.
+     * </p>
      *
-     * @param world World object in which all the data, for example blocks and their data, needs for the creation of the
-     *              Minecraft world is stored
+     * @param world The World object where the Boxel will be rendered. This object contains all necessary
+     *              data and methods for creating blocks and other elements in the Minecraft world.
      */
     public void render(World world) {
         if (position.getY() < 0 || position.getY() >= 255) return;
+        Map<String, String> blockData;
 
-        createBlocks(world, block.getId());
-    }
+        if(block.getStringId().contains("banner")){
+            world.setBanner(position.getX(),
+                    position.getY(),
+                    position.getZ(),
+                    block.getShortId(),
+                    block.getiProperties());
+            return;
+        }
 
-    /**
-     * This creates the individual blocks based on the block id
-     *
-     * @param world World object which contains all the information of the Minecraft world
-     * @param blockID the id of the block that is being created
-     */
-    private void createBlocks(World world, short blockID){
-        Map<String, String> blockData = new HashMap<>();
+        switch (block.getStringId()) {
 
-        switch (blockID) {
-            case 52:
+            case "minecraft:oak_sign":
+                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getiProperties(), info);
+                break;
+            case "minecraft:mob_spawner":
                 blockData = JsonUtil.convertJsonStringToMap(this.info);
 
-                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getData(),
+                world.setSpawner(position.getX(), position.getY(), position.getZ(), block.getiProperties(),
                         blockData.get("idOfEntity"), Short.parseShort(blockData.get("dangerValue")));
                 break;
-            case 54:
-                world.setChest(position.getX(), position.getY(), position.getZ(), block.getData(), new int[]{276, 1});
+            case "minecraft:chest":
+                world.setChest(position.getX(), position.getY(), position.getZ(), block.getiProperties(), new int[]{276, 1});
                 break;
-            case 63:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setSignPost(position.getX(), position.getY(), position.getZ(), block.getData(),
-                        blockData.get("textOnSign"));
-                break;
-            case 68:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getData(),
-                        blockData.get("textOnSign"));
-                break;
-            case 176:
-                blockData = JsonUtil.convertJsonStringToMap(this.info);
-
-                world.setBanner(position.getX(), position.getY(), position.getZ(), block.getData(),
-                        World.BannerColor.valueOf(blockData.get("bannerColor").toUpperCase()));
+            case "minecraft:wall_sign":
+                world.setWallSign(position.getX(), position.getY(), position.getZ(), block.getiProperties(), info);
                 break;
             default:
-                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getId(), block.getData());
+                world.setBlock(position.getX(), position.getY(), position.getZ(), block.getShortId(), block.getiProperties());
         }
     }
 
+    /**
+     * Converts the Boxel object to a CSV formatted string.
+     * <p>
+     * The CSV string is formatted as follows:
+     * <pre>
+     * stringId;shortId;properties;x;y;z;info
+     * </pre>
+     * Where:
+     * <ul>
+     *   <li>stringId: The string ID of the block</li>
+     *   <li>shortId: The short ID of the block</li>
+     *   <li>properties: The properties of the block, formatted as key=value pairs joined by &</li>
+     *   <li>x: The x-coordinate of the position</li>
+     *   <li>y: The y-coordinate of the position</li>
+     *   <li>z: The z-coordinate of the position</li>
+     *   <li>info: Additional information, or "NULL" if info is null or empty</li>
+     * </ul>
+     *
+     * @return A CSV formatted string representing the Boxel object, or null if the block's string ID is empty.
+     */
     public String toCSV() {
-        if (block.getId() == -1) return null;
-        return String.format("%d;%d;%d;%d;%d;%s", block.getId(), block.getData(), position.getX(), position.getY(), position.getZ(), (info == null || info.equals("") ? "NULL" : info));
+        if (block.getStringId().isEmpty()) {
+            return null;
+        }
+        String fancyProperties = block.getProperties().stream()
+                .sorted(Comparator.comparingInt(e -> {
+                    String className = e.getClass().getSimpleName();
+                    for (PropertyOrdinal ordinal : PropertyOrdinal.values()) {
+                        if (ordinal.name().equalsIgnoreCase(className)) {
+                            return ordinal.getValue();
+                        }
+                    }
+                    return Integer.MAX_VALUE;
+                }))
+                .map(e -> e.getClass().getSimpleName() + "=" + getEnumValue((Enum<?>) e))
+                .collect(Collectors.joining("&"));
+
+        return String.format("%s;%d;%s;%d;%d;%d;%s", block.getStringId(), block.getShortId(), fancyProperties, position.getX(), position.getY(),
+                position.getZ(), (info == null || info.equals("") ? "NULL" : info));
+    }
+
+    private int getEnumValue(Enum<?> e) {
+        try {
+            return (Integer) e.getClass().getMethod("getValue").invoke(e);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return -1;
+        }
     }
 
     /**
@@ -139,7 +241,7 @@ public class Boxel implements Primitive {
      *
      * @param file where teh blocks' data will be written into
      */
-    private void writeBlocksToFile(File file){
+    private void writeBlocksToFile(File file) {
         //TODO: Fix IoException catch
         try {
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
@@ -158,4 +260,45 @@ public class Boxel implements Primitive {
         return 1;
     }
 
+    @Override
+    public String toString() {
+        return "Boxel [block=" + block + ", position=" + position + ", info=" + info + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((block == null) ? 0 : block.hashCode());
+        result = prime * result + ((info == null) ? 0 : info.hashCode());
+        result = prime * result + ((position == null) ? 0 : position.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Boxel other = (Boxel) obj;
+        if (block == null) {
+            if (other.block != null)
+                return false;
+        } else if (!block.equals(other.block))
+            return false;
+        if (info == null) {
+            if (other.info != null)
+                return false;
+        } else if (!info.equals(other.info))
+            return false;
+        if (position == null) {
+            if (other.position != null)
+                return false;
+        } else if (!position.equals(other.position))
+            return false;
+        return true;
+    }
 }

@@ -1,90 +1,75 @@
 package codemetropolis.toolchain.rendering.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import codemetropolis.toolchain.commons.model.BlockType;
 
-import codemetropolis.toolchain.rendering.RenderingExecutor;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class BasicBlock {
 
-	public static final BasicBlock NonBlock;
-	public static final Map<Short, String> idToName;
-	public static final Map<Short, String> idToHumanReadableName;
-	public static final Map<String, Short> nameToId;
-	public static final Map<String, Short> humanReadableNameToId;
-	
-	static {
-		NonBlock = new BasicBlock((short)-1 );
-		idToName = new HashMap<Short,String>();
-		idToHumanReadableName = new HashMap<Short,String>();
-		nameToId = new HashMap<String,Short>();
-		humanReadableNameToId = new HashMap<String,Short>();
-		
-		InputStream csvStream = RenderingExecutor.class.getClassLoader().getResourceAsStream("blocks.csv");
-		try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvStream, "UTF-8"))) {
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				String[] blockInfo = line.split(",");
-				idToName.put(Short.parseShort(blockInfo[0]), blockInfo[1]);
-				idToHumanReadableName.put(Short.parseShort(blockInfo[0]), blockInfo[2]);
-				nameToId.put(blockInfo[1], Short.parseShort(blockInfo[0]));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-	}
-	
-	private short id;
-	private int data;
-	
-	public BasicBlock(short id) {
-		this(id, 0);
+	private String stringId;
+	private short shortId;
+	private HashSet<Enum<?>> properties;
+	private List<Integer> iProperties;
+
+	public BasicBlock(BlockType blockType){
+		this.stringId = blockType.getStringId();
+		this.shortId = blockType.getShortId();
+		this.properties = new HashSet<>(blockType.getProperties());
 	}
 
-	public BasicBlock(short id, int data) {
-		this.id = id;
-		this.data = data;
+	public BasicBlock(BasicBlock block, HashSet<Enum<?>> properties) {
+		this.stringId = block.getStringId();
+		this.shortId = block.getShortId();
+		this.properties = new HashSet<>(properties);
 	}
-	
-	public BasicBlock(String name) {
-		this(nameToId.get(name), 0);
+
+	public BasicBlock(String stringId, short shortId, List<Integer> iProperties){
+		this.stringId = stringId;
+		this.shortId = shortId;
+		this.iProperties = new ArrayList<>(iProperties);
 	}
-	
-	public BasicBlock(String name, int data) {
-		this(nameToId.get(name), data);
-	}
-	
+
 	public BasicBlock(BasicBlock original) {
-		this.id = original.id;
-		this.data = original.data;
-	}
-	
-	public String getName() {
-		return idToName.get(id);
-	}
-	
-	public String getHumanReadableName() {
-		return idToHumanReadableName.get(id);
+		this.stringId = original.stringId;
+		this.shortId = original.getShortId();
+		this.properties = new HashSet<>(original.properties);
+		this.iProperties = new ArrayList<>(original.iProperties);
 	}
 
-	public short getId() {
-		return id;
+	public HashSet<Enum<?>> getProperties() {
+		return properties;
 	}
 
-	public int getData() {
-		return data;
+	public void setProperties(HashSet<Enum<?>> properties) {
+			this.properties = properties;
 	}
-		
+
+	public String getStringId() {
+			return stringId;
+		}
+
+	public short getShortId() {
+			return shortId;
+	}
+
+	public List<Integer> getiProperties() { return iProperties; }
+
+	public void setiProperties(List<Integer> iProperties) {
+		this.iProperties = iProperties;
+	}
+
+	public void addProperty(Enum<?> property){
+		this.properties.add(property);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + data;
-		result = prime * result + id;
+		result = prime * result + ((stringId == null) ? 0 : stringId.hashCode());
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
 		return result;
 	}
 
@@ -97,16 +82,21 @@ public class BasicBlock {
 		if (getClass() != obj.getClass())
 			return false;
 		BasicBlock other = (BasicBlock) obj;
-		if (data != other.data)
+		if (stringId == null) {
+			if (other.stringId != null)
+				return false;
+		} else if (!stringId.equals(other.stringId))
 			return false;
-		if (id != other.id)
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return getHumanReadableName() + (data != 0 ? data : "");
-	}
-	
+			return "BasicBlock [id=" + stringId + ", properties=" + properties + "]";
+		}
 }

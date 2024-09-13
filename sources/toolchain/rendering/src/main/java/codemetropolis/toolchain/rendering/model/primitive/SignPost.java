@@ -1,52 +1,34 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.property.Orientation8;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
-import codemetropolis.toolchain.rendering.util.JsonUtil;
+
+import static codemetropolis.toolchain.commons.model.BlockType.SIGN;
+
 
 public class SignPost implements Primitive {
 	
-	public enum Orientation {
-		SOUTH(0),
-		SOUTHWEST(2),
-		WEST(4),
-		NORTHWEST(6),
-		NORTH(8),
-		NORTHEAST(10),
-		EAST(12),
-		SOUTHEAST(14);
-		
-		private final int value;
-		
-		Orientation(int v) {
-			value = v;
-		}
-		
-		public int getValue() {
-			return value;
-		}
-	}
-	
 	private Point position;
-	private Orientation orientation;
-	private Map<String, String> signPostText = new HashMap<>();
+	private Orientation8 orientation8;
+	private String text;
 
-	public SignPost(int x, int y, int z, Orientation orientation, String text) {
+	public SignPost(int x, int y, int z, Orientation8 orientation8, String text) {
 		super();
 		this.position = new Point(x, y, z);
-		this.orientation = orientation;
-		this.signPostText.put("textOnSign", text);
+		this.orientation8 = orientation8;
+		this.text = text;
 	}
 	
 	@Override
 	public int toCSVFile(File directory) {
-		String jsonString = JsonUtil.convertMapToJson(signPostText);
 
-		new Boxel(new BasicBlock((short) 63, orientation.getValue()), position, jsonString).toCSVFile(directory);
+		BasicBlock signPost = new BasicBlock(SIGN);
+		signPost.addProperty(orientation8);
+
+		new Boxel(signPost, position, text).toCSVFile(directory);
 		return 1;
 	}
 

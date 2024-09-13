@@ -3,18 +3,17 @@ package codemetropolis.toolchain.commons.blockmodifier;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTException;
 import codemetropolis.toolchain.commons.blockmodifier.ext.NBTTag;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 
 //TODO: Refactor this class
 public class Chunk {
 
     public NBTTag tag;
-
 
     //TODO: Fix RuntimeException to make it NBTException
     private Chunk(NBTTag tag) {
@@ -63,6 +62,17 @@ public class Chunk {
         return new Chunk(t);
     }
 
+    /**
+     * Sets a 4-bit value (a nibble) at the specified index in the given byte array.
+     *
+     * <p>This method is used to manipulate individual nibbles within a byte array. It calculates
+     * the appropriate byte index based on the given index and sets the nibble value accordingly.
+     * If the index is out of bounds of the array or negative, no operation is performed.</p>
+     *
+     * @param a the byte array in which to set the nibble
+     * @param index the index at which to set the nibble (0-based)
+     * @param value the 4-bit value to set (0 to 15)
+     */
     private static void setNibble(byte[] a, int index, byte value) {
         if (index / 2 < 0 || index / 2 > a.length - 1) return;
 
@@ -81,29 +91,111 @@ public class Chunk {
         return tag;
     }
 
-    public void setBlock(int x, int y, int z, byte type, byte data) {
+    /**
+     * Sets a block of the specified type at the given coordinates in the world.
+     *
+     * <p>This method sets a block of the specified type at the specified (x, y, z) coordinates
+     * in the world. It divides the world into sections (16-block tall segments) and updates the
+     * corresponding section to reflect the new block. Additionally, if there is associated data
+     * with the block, it updates the data value accordingly.</p>
+     *
+     * @param x the x-coordinate of the block in the world
+     * @param y the y-coordinate of the block in the world
+     * @param z the z-coordinate of the block in the world
+     * @param type the type of the block to set
+     * @param data additional data for the block as a map of string keys and values
+     */
+    public void setBlock(int x, int y, int z, byte type, List<Integer> data) {
         int index = y >> 4;
+        NBTTag section = getOrCreateSection(index);
+
+        int blockIndex = getBlockIndex(x, y, z);
+        setType(section, blockIndex, type);
+
+        if (!data.isEmpty()) {
+            byte value = getDataValue(section, blockIndex / 2);
+            for (int dataValue : data) {
+                if (dataValue >= 0)
+                    value = updateDataValue(value, x, dataValue);
+            }
+            setDataValue(section, blockIndex / 2, value);
+        }
+        updateHeightMap(z, x, y);
+    }
+
+    /**
+     * Retrieves or creates a section (16-block tall segment) at the specified index.
+     *
+     * <p>This method retrieves the section at the specified index if it exists, or creates
+     * a new section if it doesn't. Sections are used to organize blocks in the world, with
+     * each section representing a 16-block tall segment of the world's height.</p>
+     *
+     * @param index the index of the section to retrieve or create
+     * @return the section at the specified index, either retrieved or newly created
+     */
+    private NBTTag getOrCreateSection(int index) {
         NBTTag section = getSection(index);
         if (section == null) {
             section = addSection(index);
         }
+        return section;
+    }
 
-        int blockIndex = (y % 16) * 256 + z * 16 + x;
+    private int getBlockIndex(int x, int y, int z) {
+        return (y % 16) * 256 + z * 16 + x;
+    }
+
+    private void setType(NBTTag section, int blockIndex, byte type) {
         ((byte[]) section.getSubtagByName("Blocks").getValue())[blockIndex] = type;
+    }
 
-        boolean lastBits = ((double) x / 2) % 1 == 0 ? true : false;
-        byte value = ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex / 2];
+    private byte getDataValue(NBTTag section, int blockIndex) {
+        return ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex];
+    }
+
+    /**
+     * Updates the data value of a block based on additional data and x-coordinate.
+     *
+     * <p>This method updates the data value of a block byte based on additional data provided
+     * as a map of string keys and values. It also considers the x-coordinate to determine whether
+     * to modify the upper or lower 4 bits of the byte. If no suitable numeric value is found
+     * in the additional data, the original value is returned.</p>
+     *
+     * @param value the current data value of the block
+     * @param x the x-coordinate of the block in the world
+     * @param data additional data for the block as a map of string keys and values
+     * @return the updated data value of the block byte
+     */
+    private byte updateDataValue(byte value, int x, int data) {
+        boolean lastBits = ((double) x / 2) % 1 == 0;
         if (lastBits) {
-            value = (byte) ((value & 0xF0) | data);
+            return (byte) ((value & 0xF0) | data);
         } else {
-            value = (byte) ((value & 0x0F) | (data << 4));
+            return (byte) ((value & 0x0F) | (data << 4));
         }
-        ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex / 2] = value;
+    }
 
+    private void setDataValue(NBTTag section, int blockIndex, byte value) {
+        ((byte[]) section.getSubtagByName("Data").getValue())[blockIndex] = value;
+    }
+
+    /**
+     * Updates the height map with the height of a block at the given coordinates.
+     *
+     * <p>This method updates the height map to reflect the height of a block at the specified
+     * (x, y, z) coordinates in the world. It retrieves the height map array from the level data
+     * and updates the corresponding entry based on the provided x, y, and z coordinates.</p>
+     *
+     * @param z the z-coordinate of the block in the world
+     * @param x the x-coordinate of the block in the world
+     * @param y the y-coordinate of the block in the world
+     */
+    private void updateHeightMap(int z, int x, int y) {
         int[] heightMap = (int[]) tag.getSubtagByName("Level").getSubtagByName("HeightMap").getValue();
-
-        if (heightMap[z * 16 + x] < y + 1)
-            heightMap[z * 16 + x] = y + 1;
+        int heightMapIndex = z * 16 + x;
+        if (heightMap[heightMapIndex] < y + 1) {
+            heightMap[heightMapIndex] = y + 1;
+        }
     }
 
     /**
@@ -221,6 +313,19 @@ public class Chunk {
 
     }
 
+    /**
+     * Sets the text on a sign block at the specified coordinates.
+     *
+     * <p>This method sets the text on a sign block at the provided (x, y, z) coordinates in the world.
+     * It divides the input text into up to four lines of maximum length 15 characters each, ensuring
+     * that the text fits within the sign's capacity. If the sign block already exists at the specified
+     * coordinates, it updates the text. If not, it creates a new sign block with the provided text.</p>
+     *
+     * @param x the x-coordinate of the sign block in the world
+     * @param y the y-coordinate of the sign block in the world
+     * @param z the z-coordinate of the sign block in the world
+     * @param text the text to set on the sign block
+     */
     public void setSignText(int x, int y, int z, String text) {
 
         String[] texts = new String[4];
@@ -267,6 +372,18 @@ public class Chunk {
 
     }
 
+    /**
+     * Sets the color of a banner block at the specified coordinates.
+     *
+     * <p>This method sets the color of a banner block at the provided (x, y, z) coordinates in the world.
+     * If the banner block already exists at the specified coordinates, it updates the color. If not, it
+     * creates a new banner block with the specified color.</p>
+     *
+     * @param x the x-coordinate of the banner block in the world
+     * @param y the y-coordinate of the banner block in the world
+     * @param z the z-coordinate of the banner block in the world
+     * @param color the color code representing the color of the banner
+     */
     public void setBannerColor(int x, int y, int z, int color) {
 
         NBTTag tileEntities = tag.getSubtagByName("Level").getSubtagByName("TileEntities");
@@ -294,10 +411,20 @@ public class Chunk {
 
     }
 
-    public void removeSignText(int x, int y, int z) {
-        removeTileEntity(x, y, z, "Sign");
-    }
-
+    /**
+     * Adds an item to a chest block at the specified coordinates.
+     *
+     * <p>This method adds an item to a chest block at the provided (x, y, z) coordinates in the world.
+     * If a chest block doesn't exist at the specified coordinates, it creates a new one and adds the
+     * item to it. It ensures that the item is added to an available slot within the chest, considering
+     * existing items and their slots.</p>
+     *
+     * @param x the x-coordinate of the chest block in the world
+     * @param y the y-coordinate of the chest block in the world
+     * @param z the z-coordinate of the chest block in the world
+     * @param id the ID of the item to add
+     * @param quantity the quantity of the item to add
+     */
     public void addChestItem(int x, int y, int z, int id, int quantity) {
         NBTTag tileEntity = getTileEntity(x, y, z, "Chest");
 
@@ -332,10 +459,19 @@ public class Chunk {
 
     }
 
-    public void clearChestItems(int x, int y, int z) {
-        removeTileEntity(x, y, z, "Chest");
-    }
-
+    /**
+     * Retrieves the tile entity at the specified coordinates and with the specified ID.
+     *
+     * <p>This method retrieves the tile entity (such as a chest or a sign) at the provided (x, y, z)
+     * coordinates in the world, matching the given ID. If a tile entity exists at the specified coordinates
+     * with the specified ID, it is returned. If not, null is returned.</p>
+     *
+     * @param x the x-coordinate of the tile entity in the world
+     * @param y the y-coordinate of the tile entity in the world
+     * @param z the z-coordinate of the tile entity in the world
+     * @param id the ID of the tile entity to retrieve
+     * @return the tile entity at the specified coordinates and with the specified ID, or null if not found
+     */
     private NBTTag getTileEntity(int x, int y, int z, String id) {
         NBTTag tileEntities = tag.getSubtagByName("Level").getSubtagByName("TileEntities");
         for (NBTTag t : (NBTTag[]) tileEntities.getValue()) {
@@ -351,6 +487,18 @@ public class Chunk {
         return null;
     }
 
+    /**
+     * Removes a tile entity at the specified coordinates and with the specified ID.
+     *
+     * <p>This method removes a tile entity (such as a chest or a sign) at the provided (x, y, z)
+     * coordinates in the world, matching the given ID. If no ID is provided, it removes all tile
+     * entities at the specified coordinates. If a matching tile entity is found, it is removed.</p>
+     *
+     * @param x the x-coordinate of the tile entity in the world
+     * @param y the y-coordinate of the tile entity in the world
+     * @param z the z-coordinate of the tile entity in the world
+     * @param id the ID of the tile entity to remove, or null to remove all tile entities at the specified coordinates
+     */
     public void removeTileEntity(int x, int y, int z, String id) {
 
         Set<Integer> tagsToRemoveIndex = new HashSet<Integer>();
@@ -389,6 +537,16 @@ public class Chunk {
         return null;
     }
 
+    /**
+     * Adds a new section to the world data for a specified y-coordinate.
+     *
+     * <p>This method adds a new section to the world data for the specified y-coordinate. It initializes
+     * the block light, blocks, data, and sky light arrays with default values. The section is then added
+     * to the list of sections in the world data.</p>
+     *
+     * @param y the y-coordinate of the section in the world
+     * @return the newly created section as a NBTTag
+     */
     private NBTTag addSection(int y) {
 
         byte[] blockLight = new byte[2048];
@@ -423,6 +581,19 @@ public class Chunk {
         return section;
     }
 
+    /**
+     * Adds a new section filled with a specified block type up to a certain height.
+     *
+     * <p>This method adds a new section to the world data for the specified y-coordinate, filling it with
+     * the specified block type up to the given height. Blocks above the specified height are set to air (ID 0).
+     * The sky light levels are adjusted accordingly based on the specified height. The height map is updated
+     * to reflect the highest block level within the section.</p>
+     *
+     * @param y the y-coordinate of the section in the world
+     * @param type the block type to fill the section with
+     * @param height the height up to which the section should be filled with the specified block type
+     * @return the newly created section as a NBTTag
+     */
     public NBTTag addSectionFilled(int y, byte type, int height) {
         byte[] blocks = new byte[4096];
         byte[] skyLight = new byte[2048];
@@ -464,6 +635,14 @@ public class Chunk {
 
     }
 
+    /**
+     * Calculates lighting for all sections in the world data.
+     *
+     * <p>This method calculates lighting for all sections in the world data. It iterates through each
+     * section and updates the sky light and block light levels based on the presence of lighting objects
+     * such as torches and glowstones. Sky light levels are set to 0 if a block is present, while block
+     * light levels are set to maximum (15) around lighting objects.</p>
+     */
     public void calculateLighting() {
         byte[] lightingObjects = new byte[]{50, 124};
         NBTTag[] sectionTags = tag.getSubtagByName("Level").getSubtagByName("Sections").getSubtags();

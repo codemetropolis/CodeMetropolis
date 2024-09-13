@@ -31,8 +31,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="11" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="glass"/>
-                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="character" value="GLASS"/>
+                                                    <attribute name="external_character" value="IRON_BLOCK"/>
                                                     <attribute name="torches" value="1"/>
                                                 </attributes>
                                                 <children/>

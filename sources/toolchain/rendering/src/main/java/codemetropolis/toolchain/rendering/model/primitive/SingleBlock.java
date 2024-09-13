@@ -1,6 +1,8 @@
 package codemetropolis.toolchain.rendering.model.primitive;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.Orientation4;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 import codemetropolis.toolchain.rendering.util.JsonUtil;
 
@@ -8,45 +10,46 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import static codemetropolis.toolchain.commons.model.BlockType.MOB_SPAWNER;
+
 public class SingleBlock implements Primitive {
 
     private Point position;
-    private String name;
-    private Orientation orientation;
+    private String stringId;
+    private short shortId;
+    private Orientation4 orientation4;
     private String dangerValue;
 
-    public SingleBlock(String name, int x, int y, int z) {
+    public SingleBlock(BasicBlock block, int x, int y, int z) {
         super();
         this.position = new Point(x, y, z);
-        this.name = name;
-        this.orientation = Orientation.NORTH;
+        this.stringId = block.getStringId();
+        this.shortId = block.getShortId();
+        this.orientation4 = Orientation4.NORTH;
     }
 
-    /**
-     * This is a constructor for SingleBlock class which is used to create individual blocks
-     * @param name name of the block
-     * @param position position of the block using a Point object which contains x, y and z coordinates
-     * @param dangerAttrValue the value related to the danger attribute of spawners
-     */
-    public SingleBlock(String name, Point position, String dangerAttrValue) {
+    public SingleBlock(BlockType block, Point position, String dangerAttrValue) {
         super();
         this.position = position;
-        this.name = name;
+        this.stringId = block.getStringId();
+        this.shortId = block.getShortId();
         this.dangerValue = dangerAttrValue;
     }
 
-    public SingleBlock(String name, Point position) {
+    public SingleBlock(BasicBlock block, Point position) {
         super();
         this.position = position;
-        this.name = name;
-        this.orientation = Orientation.NORTH;
+        this.stringId = block.getStringId();
+        this.shortId = block.getShortId();
+        this.orientation4 = Orientation4.NORTH;
     }
 
-    public SingleBlock(String name, Point position, Orientation orientation) {
+    public SingleBlock(BlockType block, Point position, Orientation4 orientation4) {
         super();
         this.position = position;
-        this.name = name;
-        this.orientation = orientation;
+        this.stringId = block.getStringId();
+        this.shortId = block.getShortId();
+        this.orientation4 = orientation4;
     }
 
     /**
@@ -57,12 +60,18 @@ public class SingleBlock implements Primitive {
      */
     @Override
     public int toCSVFile(File directory) {
-        if (name.equals("minecraft:mob_spawner")) {
+        if (stringId.equals("minecraft:mob_spawner")) {
             String jsonString = JsonUtil.convertMapToJson(setSpawnerData(dangerValue));
 
-            new Boxel(new BasicBlock((short) 52), position, jsonString).toCSVFile(directory);
+            new Boxel(MOB_SPAWNER, position, jsonString).toCSVFile(directory);
         } else {
-            new Boxel(new BasicBlock(name, orientation.getValue()), position).toCSVFile(directory);
+            for (var block : BlockType.values()) {
+                if (stringId.equals(block.getStringId())) {
+                    BasicBlock basicBlock = new BasicBlock(block);
+                    basicBlock.addProperty(orientation4);
+                    new Boxel(basicBlock, position).toCSVFile(directory);
+                }
+            }
         }
 
         return 1;
@@ -83,22 +92,5 @@ public class SingleBlock implements Primitive {
     @Override
     public int getNumberOfBlocks() {
         return 1;
-    }
-
-    public enum Orientation {
-        NORTH(2),
-        SOUTH(4),
-        WEST(3),
-        EAST(5);
-
-        private final int value;
-
-        Orientation(int v) {
-            value = v;
-        }
-
-        public int getValue() {
-            return value;
-        }
     }
 }

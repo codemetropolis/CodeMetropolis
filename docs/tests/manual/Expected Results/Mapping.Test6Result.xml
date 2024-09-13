@@ -31,8 +31,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="9" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="planks"/>
-                                                    <attribute name="external_character" value="wood"/>
+                                                    <attribute name="character" value="OAK_PLANKS"/>
+                                                    <attribute name="external_character" value="OAK_WOOD"/>
                                                 </attributes>
                                                 <children/>
                                             </buildable>
@@ -40,8 +40,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="9" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="planks"/>
-                                                    <attribute name="external_character" value="wood"/>
+                                                    <attribute name="character" value="OAK_PLANKS"/>
+                                                    <attribute name="external_character" value="OAK_WOOD"/>
                                                 </attributes>
                                                 <children/>
                                             </buildable>
@@ -49,8 +49,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="9" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="planks"/>
-                                                    <attribute name="external_character" value="wood"/>
+                                                    <attribute name="character" value="OAK_PLANKS"/>
+                                                    <attribute name="external_character" value="OAK_WOOD"/>
                                                 </attributes>
                                                 <children/>
                                             </buildable>
@@ -58,8 +58,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="13" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="glass"/>
-                                                    <attribute name="external_character" value="metal"/>
+                                                    <attribute name="character" value="GLASS"/>
+                                                    <attribute name="external_character" value="IRON_BLOCK"/>
                                                     <attribute name="torches" value="3"/>
                                                 </attributes>
                                                 <children/>
@@ -68,8 +68,8 @@
                                                 <position x="0" y="0" z="0"/>
                                                 <size x="9" y="17" z="9"/>
                                                 <attributes>
-                                                    <attribute name="character" value="obsidian"/>
-                                                    <attribute name="external_character" value="obsidian"/>
+                                                    <attribute name="character" value="OBSIDIAN"/>
+                                                    <attribute name="external_character" value="OBSIDIAN"/>
                                                     <attribute name="torches" value="1"/>
                                                 </attributes>
                                                 <children/>

@@ -16,7 +16,7 @@ The purpose of this test is to see when running the mapping tool (from the solut
 ### Steps
 1. Run the following command in the folder of mapping-1.5.0.jar:
    ```cmd
-   java -jar mapping-1.5.0.jar -m "CodeMetropolis\examples\mapping\sourcemeter_mapping_example_2_0.xmln"
+   java -jar mapping-1.5.0.jar -m "CodeMetropolis\examples\mapping\sourcemeter_mapping_example_2_1.xmln"
    ```
 
 ### Expected Result
