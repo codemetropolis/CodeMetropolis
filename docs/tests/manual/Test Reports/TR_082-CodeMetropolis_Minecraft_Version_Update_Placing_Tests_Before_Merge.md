@@ -1,4 +1,4 @@
-# Assessing CodeMetropolis Placing tool for Minecraft Version Update before merge.
+# Assessing CodeMetropolis Placing tool for Minecraft Version Update before merge
 
 | Datetime   | Test Case Link                                                     | Tester            | Passed/Failed | Links to issues (if a bug is found) | Consequences (if the test case needs to be fixed)                                                                               |     |
 | ---------- | ------------------------------------------------------------------ | ----------------- | ------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --- |

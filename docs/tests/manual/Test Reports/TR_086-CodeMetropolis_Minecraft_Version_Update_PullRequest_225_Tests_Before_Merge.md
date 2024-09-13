@@ -1,4 +1,4 @@
-# Testing The Solution of Issue #225 for CodeMetropolis Minecraft Version before merge.
+# Testing The Solution of Issue #225 for CodeMetropolis Minecraft Version before merge
 
 | Datetime   | Test Case Link                                              | Tester            | Passed/Failed | Links to issues (if a bug is found) | Consequences (if the test case needs to be fixed) |
 | ---------- | ----------------------------------------------------------- | ----------------- | ------------- | ----------------------------------- | ------------------------------------------------- |
