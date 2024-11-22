@@ -1,7 +1,7 @@
 package codemetropolis.toolchain.rendering.model.pattern;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.commons.model.BlockType;
 
 public class YSplitPattern extends SplitPattern {
 
@@ -10,7 +10,7 @@ public class YSplitPattern extends SplitPattern {
 	}
 
 	@Override
-	public BasicBlock applyTo(Point position, PositionModification positionModification) {
+	public BlockType applyTo(Point position, PositionModification positionModification) {
 		if ( position.getY() > limit ) {
 			return farPattern.applyTo( position, positionModification );
 		} else {

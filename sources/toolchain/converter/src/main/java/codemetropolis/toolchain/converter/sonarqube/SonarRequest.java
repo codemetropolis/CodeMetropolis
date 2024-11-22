@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Base64;
 
@@ -38,8 +40,8 @@ public class SonarRequest {
 	
 	private String send(String method) throws SonarConnectException {
 		try {
-			URL url = new URL(method.equalsIgnoreCase("GET") ? getUrlWithParams() : this.url);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			URI uri = new URI(method.equalsIgnoreCase("GET") ? getUrlWithParams() : this.url);
+			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setRequestMethod(method);
 			
 			if(isLoginInfoSet()) {
@@ -66,8 +68,10 @@ public class SonarRequest {
 			return line;
 		} catch(IOException e) {
 			throw new SonarConnectException(Resources.get("sonar_connect_error"));
-		}
-	}
+		} catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	
 	private String createAuthenticationString() {
 		String authStr = String.format("%s:%s", username, password);

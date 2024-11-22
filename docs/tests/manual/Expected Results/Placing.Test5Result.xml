@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildables from="placing" to="rendering" version="1.0">
+    <buildable id="d5ac810e-8839-4958-8d71-48376a22e75e" name="" type="container">
+        <position x="0" y="60" z="0"/>
+        <size x="39" y="9" z="39"/>
+        <attributes/>
+        <children>
+            <buildable id="f747f6e5-ffcc-42e4-98cf-1027ca4d0f56" name="&lt;root_package&gt;" type="ground">
+                <position x="3" y="61" z="3"/>
+                <size x="33" y="9" z="33"/>
+                <attributes/>
+                <children>
+                    <buildable id="95c3c968-e8e2-40f5-8788-8cbad00f0d1e" name="org" type="ground">
+                        <position x="6" y="62" z="6"/>
+                        <size x="27" y="9" z="27"/>
+                        <attributes/>
+                        <children>
+                            <buildable id="00895fe0-a65f-43a8-83a1-e51c77189a52" name="example" type="ground">
+                                <position x="9" y="63" z="9"/>
+                                <size x="21" y="9" z="21"/>
+                                <attributes/>
+                                <children>
+                                    <buildable id="03dd3554-57a9-4126-a2be-88fe74ac12c4" name="Main" type="garden">
+                                        <position x="12" y="64" z="12"/>
+                                        <size x="15" y="9" z="15"/>
+                                        <attributes>
+                                            <attribute name="flower-ratio" value="1.0"/>
+                                        </attributes>
+                                        <children>
+                                            <buildable id="56128318-7abd-4495-97f4-4db33a117fca" name="int Smth(int a, int b)" type="floor">
+                                                <position x="15" y="82" z="15"/>
+                                                <size x="9" y="13" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="GLASS"/>
+                                                    <attribute name="external_character" value="IRON_BLOCK"/>
+                                                    <attribute name="torches" value="3"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                            <buildable id="1610f56a-6d0a-4e1b-9866-b49d75c46584" name="int doSmth(boolean a)" type="floor">
+                                                <position x="15" y="65" z="15"/>
+                                                <size x="9" y="17" z="9"/>
+                                                <attributes>
+                                                    <attribute name="character" value="OBSIDIAN"/>
+                                                    <attribute name="external_character" value="OBSIDIAN"/>
+                                                    <attribute name="torches" value="1"/>
+                                                </attributes>
+                                                <children/>
+                                            </buildable>
+                                        </children>
+                                    </buildable>
+                                </children>
+                            </buildable>
+                        </children>
+                    </buildable>
+                </children>
+            </buildable>
+        </children>
+    </buildable>
+</buildables>

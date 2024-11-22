@@ -1,0 +1,24 @@
+# Assessing CodeMetropolis Tools for Minecraft Version Update
+
+| Datetime   | Test Case Link                                                                 | Tester            | Passed/Failed | Links to issues (if a bug is found) | Consequences (if the test case needs to be fixed) |
+| ---------- | ------------------------------------------------------------------------------ | ----------------- | ------------- | ----------------------------------- | ------------------------------------------------- |
+| 2024-06-06 | [[Writing_wool_blocks_to_CSV_file]]                              | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_banner_blocks_to_CSV_file]]                            | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_signPost_blocks_to_CSV_file]]                          | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_wallSign_blocks_to_CSV_file]]                          | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_door_blocks_to_CSV_file]]                              | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_torch_blocks_to_CSV_file]]                             | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_chest_blocks_to_CSV_file]]                             | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_spawner_blocks_to_CSV_file]]                           | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_redstone_and_redstone_lamp_blocks_to_CSV_file]]        | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Writing_simple_blocks_to_CSV_file]]                            | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_wools_from_CSV_file]]                      | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_banners_from_CSV_file]]                    | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_signPosts_from_CSV_file]]                  | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_wallSigns_from_CSV_file]]                  | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_Chests_from_CSV_file]]                     | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_Spawner_from_CSV_file]]                    | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_doors_from_CSV_file]]                      | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_redstone_and_redstone_lamp_from_CSV_file]] | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_Torches_from_CSV_file]]                    | Tóth Bojnik Tibor | Passed        |                                     |                                                   |
+| 2024-06-06 | [[Creating_world_with_simple_blocks_from_CSV_file]]              | Tóth Bojnik Tibor | Passed        |                                     |                                                   |

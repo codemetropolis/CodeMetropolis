@@ -13,7 +13,7 @@ http://codemetropolis.github.io/CodeMetropolis/
 3. Download Minecraft Java version from its [webpage](https://www.minecraft.net/en-us/download).
 4. Install Minecraft.
 5. Optionally you could use the Minecraft starter to change the version of Minecraft to 1.8 (the officialy supported one), but newer versions could also open CodeMetropolis generated worlds.
-6. Download the current [stable releas](https://github.com/codemetropolis/CodeMetropolis/releases/tag/latest) of CodeMetropolis.
+6. Download the current [stable releas](https://github.com/codemetropolis/CodeMetropolis/releases/latest) of CodeMetropolis.
 7. Extract CodeMetropolis
 
 ### Visualize source code meterics
@@ -35,10 +35,8 @@ http://codemetropolis.github.io/CodeMetropolis/
 
 1. clone repository
 1. checkout `develop` branch
-1. install Java 1.8
+1. install Java 22
 1. install Maven 3.8.3 or newer
 1. navigate to `sources` folder
 1. `mvn clean package`
 1. The current distribution will be aviable under `source/distro`.
-
-## Demo

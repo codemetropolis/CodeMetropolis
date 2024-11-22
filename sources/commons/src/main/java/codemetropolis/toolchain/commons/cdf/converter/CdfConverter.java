@@ -11,13 +11,22 @@ public abstract class CdfConverter {
 	
 	private Map<String, String> params;
 	private List<ConverterEventListener> listeners = new ArrayList<>();
+	private boolean verboseMode;
 	
-	protected CdfConverter(Map<String, String> params) {
+	protected CdfConverter(Map<String, String> params, boolean verboseMode) {
 		this.params = params;
+		this.verboseMode = verboseMode;
 	}
 	
 	protected String getParameter(String key) {
 		return params.get(key);
+	}
+
+	/**
+	 * @return is verbose mode enabled
+	 */
+	protected boolean getVerboseMode() {
+		return this.verboseMode;
 	}
 	
 	public abstract CdfTree createElements(String source) throws CodeMetropolisException;

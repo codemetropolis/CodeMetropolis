@@ -114,4 +114,14 @@ hs_err_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
 
+# CodeMetropolis General
 logs/
+.idea/
+converterToMapping.xml
+mappingToPlacing.xml
+placingToRendering.xml
+
+# Obsidian
+/.obsidian/workspace.json
+/.obsidian/themes/
+
