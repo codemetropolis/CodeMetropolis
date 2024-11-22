@@ -1,19 +1,19 @@
 package codemetropolis.toolchain.rendering.model.pattern;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.commons.model.BlockType;
 
 public class RepeationPattern implements Pattern {
 
-	BasicBlock[][][] pattern;
+	BlockType[][][] pattern;
 	
-	public RepeationPattern(BasicBlock[][][] pattern) {
+	public RepeationPattern(BlockType[][][] pattern) {
 		super();
 		this.pattern = pattern;
 	}
 
 	@Override
-	public BasicBlock applyTo(Point position, PositionModification positionModification) {
+	public BlockType applyTo(Point position, PositionModification positionModification) {
 		Point size = new Point(
 				pattern.length,
 				pattern[0].length,

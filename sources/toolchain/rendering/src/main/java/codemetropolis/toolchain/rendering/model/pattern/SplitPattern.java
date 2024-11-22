@@ -1,7 +1,7 @@
 package codemetropolis.toolchain.rendering.model.pattern;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
-import codemetropolis.toolchain.rendering.model.BasicBlock;
+import codemetropolis.toolchain.commons.model.BlockType;
 
 public abstract class SplitPattern implements Pattern {
 
@@ -17,7 +17,7 @@ public abstract class SplitPattern implements Pattern {
 	}
 
 	@Override
-	public abstract BasicBlock applyTo(Point position, PositionModification positionModification);
+	public abstract BlockType applyTo(Point position, PositionModification positionModification);
 
 	public int getLimit() {
 		return limit;

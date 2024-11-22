@@ -1,0 +1,8 @@
+minecraft:wall_torch;50;BlockFacingTorch=1;5;61;1;NULL
+minecraft:wall_torch;50;BlockFacingTorch=1;4;61;1;NULL
+minecraft:wall_torch;50;BlockFacingTorch=2;2;61;1;NULL
+minecraft:wall_torch;50;BlockFacingTorch=2;3;61;1;NULL
+minecraft:wall_torch;50;BlockFacingTorch=3;1;61;5;NULL
+minecraft:wall_torch;50;BlockFacingTorch=3;1;61;4;NULL
+minecraft:wall_torch;50;BlockFacingTorch=4;1;61;2;NULL
+minecraft:wall_torch;50;BlockFacingTorch=4;1;61;3;NULL

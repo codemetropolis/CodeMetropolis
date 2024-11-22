@@ -3,50 +3,34 @@ package codemetropolis.toolchain.rendering.model.primitive;
 import java.io.File;
 
 import codemetropolis.toolchain.commons.cmxml.Point;
+import codemetropolis.toolchain.commons.model.BlockType;
+import codemetropolis.toolchain.commons.model.property.Orientation8;
 import codemetropolis.toolchain.rendering.model.BasicBlock;
 
 public class Banner implements Primitive {
-	
-	public enum Orientation {
-		SOUTH(0),
-		SOUTHWEST(2),
-		WEST(4),
-		NORTHWEST(6),
-		NORTH(8),
-		NORTHEAST(10),
-		EAST(12),
-		SOUTHEAST(14);
-		
-		private final int value;
-		
-		Orientation(int v) {
-			value = v;
-		}
-		
-		public int getValue() {
-			return value;
-		}
-	}
-	
-	private Point position;
-	private Orientation orientation;
-	private String color;
 
-	public Banner(int x, int y, int z, Orientation orientation, String color) {
+	private Point position;
+	private BasicBlock block;
+	private Orientation8 orientation8;
+
+	public Banner(BlockType block, Orientation8 orientation8, Point p) {
 		super();
-		this.position = new Point(x, y, z);
-		this.orientation = orientation;
-		this.color = color;
+		this.position = p;
+		this.orientation8 = orientation8;
+		this.block = new BasicBlock(block);
 	}
-	
+
+
 	@Override
 	public int toCSVFile(File directory) {
-		new Boxel(new BasicBlock((short) 176, orientation.getValue()), position, color).toCSVFile(directory);
+		BasicBlock block = this.block;
+		block.addProperty(orientation8);
+		new Boxel(block, position).toCSVFile(directory);
 		return 1;
 	}
+
 	@Override
 	public int getNumberOfBlocks() {
 		return 1;
 	}
-	
 }

@@ -32,8 +32,12 @@ public class Main {
 	    	System.err.println(Resources.get("converter_usage"));
 	    	return;
 	    }
-	    
-	    ConverterType converterType = null;
+
+		if(options.getVerboseMode() && !options.showHelp()) {
+	    	System.out.println(Resources.get("verbose_mode_enabled"));
+	    }
+
+	    ConverterType converterType;
 	    try {
 	    	converterType = ConverterType.valueOf(options.getType().toUpperCase());
 	    } catch(IllegalArgumentException e) {
@@ -72,7 +76,8 @@ public class Main {
 	    			converterType,
 		    		options.getSource(),
 		    		options.getOutputFile(),
-		    		params
+		    		params,
+					options.getVerboseMode()
 	    		));	
 		
 	}
