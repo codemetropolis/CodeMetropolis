@@ -3,3 +3,7 @@ main: codemetropolis.integration.spigot.plugin.Plugin
 version: 0.1
 api-version: 1.16
 commands:
+  sub-buildings:
+    description: Lists all the subbuildings in the player's current position. Usage: /sub-building [-d] [page]
+    aliases:
+      - sb
