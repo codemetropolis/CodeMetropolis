@@ -3,3 +3,5 @@ main: codemetropolis.integration.spigot.plugin.Plugin
 version: 0.1
 api-version: 1.16
 commands:
+  tpToBuilding:
+    description: Teleport Player To Specific Building
